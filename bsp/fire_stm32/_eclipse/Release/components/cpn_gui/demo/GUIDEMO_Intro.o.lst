@@ -1,0 +1,204 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO_Intro.c"
+  15              		.section	.text.GUIDEMO_Intro,"ax",%progbits
+  16              		.align	1
+  17              		.global	GUIDEMO_Intro
+  18              		.thumb
+  19              		.thumb_func
+  21              	GUIDEMO_Intro:
+  22              		@ args = 0, pretend = 0, frame = 32
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  25 0004 424B     		ldr	r3, .L5
+  26 0006 88B0     		sub	sp, sp, #32
+  27 0008 6A46     		mov	r2, sp
+  28 000a 03F11005 		add	r5, r3, #16
+  29              	.L2:
+  30 000e 1868     		ldr	r0, [r3]	@ unaligned
+  31 0010 5968     		ldr	r1, [r3, #4]	@ unaligned
+  32 0012 1446     		mov	r4, r2
+  33 0014 03C4     		stmia	r4!, {r0, r1}
+  34 0016 0833     		adds	r3, r3, #8
+  35 0018 AB42     		cmp	r3, r5
+  36 001a 2246     		mov	r2, r4
+  37 001c F7D1     		bne	.L2
+  38 001e 1868     		ldr	r0, [r3]	@ unaligned
+  39 0020 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+  40 0022 0021     		movs	r1, #0
+  41 0024 2371     		strb	r3, [r4, #4]
+  42 0026 0922     		movs	r2, #9
+  43 0028 2060     		str	r0, [r4]	@ unaligned
+  44 002a 0DF11500 		add	r0, sp, #21
+  45 002e FFF7FEFF 		bl	memset
+  46 0032 FFF7FEFF 		bl	LCD_GetXSize
+  47 0036 0646     		mov	r6, r0
+  48 0038 FFF7FEFF 		bl	LCD_GetYSize
+  49 003c 0546     		mov	r5, r0
+  50 003e 0020     		movs	r0, #0
+  51 0040 FFF7FEFF 		bl	GUIDEMO_DrawBk
+  52 0044 0220     		movs	r0, #2
+  53 0046 FFF7FEFF 		bl	GUI_SetTextMode
+  54 004a 6FF07F40 		mvn	r0, #-16777216
+  55 004e 7410     		asrs	r4, r6, #1
+  56 0050 FFF7FEFF 		bl	GUI_SetColor
+  57 0054 2F48     		ldr	r0, .L5+4
+  58 0056 FFF7FEFF 		bl	GUI_SetFont
+  59 005a 2146     		mov	r1, r4
+  60 005c 45F31912 		sbfx	r2, r5, #4, #26
+  61 0060 2D48     		ldr	r0, .L5+8
+  62 0062 FFF7FEFF 		bl	GUI_DispStringHCenterAt
+  63 0066 2D48     		ldr	r0, .L5+12
+  64 0068 FFF7FEFF 		bl	GUI_SetFont
+  65 006c 0B22     		movs	r2, #11
+  66 006e 6A43     		muls	r2, r5, r2
+  67 0070 4FF01608 		mov	r8, #22
+  68 0074 08FB05F8 		mul	r8, r8, r5
+  69 0078 2146     		mov	r1, r4
+  70 007a 9211     		asrs	r2, r2, #6
+  71 007c 2848     		ldr	r0, .L5+16
+  72 007e FFF7FEFF 		bl	GUI_DispStringHCenterAt
+  73 0082 4FEAA818 		asr	r8, r8, #6
+  74 0086 2748     		ldr	r0, .L5+20
+  75 0088 FFF7FEFF 		bl	GUI_SetColor
+  76 008c 2146     		mov	r1, r4
+  77 008e 4246     		mov	r2, r8
+  78 0090 2548     		ldr	r0, .L5+24
+  79 0092 FFF7FEFF 		bl	GUI_DispStringHCenterAt
+  80 0096 2548     		ldr	r0, .L5+28
+  81 0098 FFF7FEFF 		bl	GUI_SetFont
+  82 009c 08F11202 		add	r2, r8, #18
+  83 00a0 2146     		mov	r1, r4
+  84 00a2 2348     		ldr	r0, .L5+32
+  85 00a4 FFF7FEFF 		bl	GUI_DispStringHCenterAt
+  86 00a8 6FF07F40 		mvn	r0, #-16777216
+  87 00ac FFF7FEFF 		bl	GUI_SetColor
+  88 00b0 1A48     		ldr	r0, .L5+12
+  89 00b2 FFF7FEFF 		bl	GUI_SetFont
+  90 00b6 FFF7FEFF 		bl	GUI_GetVersionString
+  91 00ba 0146     		mov	r1, r0
+  92 00bc 6846     		mov	r0, sp
+  93 00be FFF7FEFF 		bl	strcat
+  94 00c2 1F22     		movs	r2, #31
+  95 00c4 6A43     		muls	r2, r5, r2
+  96 00c6 6846     		mov	r0, sp
+  97 00c8 2146     		mov	r1, r4
+  98 00ca 9211     		asrs	r2, r2, #6
+  99 00cc FFF7FEFF 		bl	GUI_DispStringHCenterAt
+ 100 00d0 184B     		ldr	r3, .L5+36
+ 101 00d2 2622     		movs	r2, #38
+ 102 00d4 6A43     		muls	r2, r5, r2
+ 103 00d6 1B88     		ldrh	r3, [r3]
+ 104 00d8 9211     		asrs	r2, r2, #6
+ 105 00da F11A     		subs	r1, r6, r3
+ 106 00dc 4910     		asrs	r1, r1, #1
+ 107 00de 1648     		ldr	r0, .L5+40
+ 108 00e0 FFF7FEFF 		bl	GUI_DrawBitmap
+ 109 00e4 6FF07F40 		mvn	r0, #-16777216
+ 110 00e8 FFF7FEFF 		bl	GUI_SetColor
+ 111 00ec 0948     		ldr	r0, .L5+4
+ 112 00ee FFF7FEFF 		bl	GUI_SetFont
+ 113 00f2 3823     		movs	r3, #56
+ 114 00f4 03FB05F2 		mul	r2, r3, r5
+ 115 00f8 2146     		mov	r1, r4
+ 116 00fa 9211     		asrs	r2, r2, #6
+ 117 00fc 0F48     		ldr	r0, .L5+44
+ 118 00fe FFF7FEFF 		bl	GUI_DispStringHCenterAt
+ 119 0102 40F2DC50 		movw	r0, #1500
+ 120 0106 FFF7FEFF 		bl	GUIDEMO_Delay
+ 121 010a 08B0     		add	sp, sp, #32
+ 122              		@ sp needed
+ 123 010c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 124              	.L6:
+ 125              		.align	2
+ 126              	.L5:
+ 127 0110 00000000 		.word	.LANCHOR0
+ 128 0114 00000000 		.word	GUI_FontRounded22
+ 129 0118 00000000 		.word	.LC1
+ 130 011c 00000000 		.word	GUI_Font16_ASCII
+ 131 0120 08000000 		.word	.LC2
+ 132 0124 FF882200 		.word	2263295
+ 133 0128 3D000000 		.word	.LC3
+ 134 012c 00000000 		.word	GUI_Font10S_ASCII
+ 135 0130 6C000000 		.word	.LC4
+ 136 0134 00000000 		.word	bmSeggerLogo
+ 137 0138 00000000 		.word	bmSTLogo
+ 138 013c 8A000000 		.word	.LC5
+ 140              		.section	.rodata
+ 141              		.set	.LANCHOR0,. + 0
+ 142              	.LC0:
+ 143 0000 56657273 		.ascii	"Version of STemWin: \000"
+ 143      696F6E20 
+ 143      6F662053 
+ 143      54656D57 
+ 143      696E3A20 
+ 144 0015 00000000 		.space	9
+ 144      00000000 
+ 144      00
+ 145              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 146              	.LC1:
+ 147 0000 5354656D 		.ascii	"STemWin\000"
+ 147      57696E00 
+ 148              	.LC2:
+ 149 0008 556E6976 		.ascii	"Universal graphic software\012for embedded applicat"
+ 149      65727361 
+ 149      6C206772 
+ 149      61706869 
+ 149      6320736F 
+ 150 0038 696F6E73 		.ascii	"ions\000"
+ 150      00
+ 151              	.LC3:
+ 152 003d 466F7220 		.ascii	"For STM32 MCU Products - Cortex M3 - Cortex M4\000"
+ 152      53544D33 
+ 152      32204D43 
+ 152      55205072 
+ 152      6F647563 
+ 153              	.LC4:
+ 154 006c 436F6D70 		.ascii	"Compiled Mar 31 2014 00:14:48\000"
+ 154      696C6564 
+ 154      204D6172 
+ 154      20333120 
+ 154      32303134 
+ 155              	.LC5:
+ 156 008a 7777772E 		.ascii	"www.st.com/stm32\000"
+ 156      73742E63 
+ 156      6F6D2F73 
+ 156      746D3332 
+ 156      00
+ 157              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO_Intro.c
+D:\Users\draapho\AppData\Local\Temp\ccQlQDnE.s:16     .text.GUIDEMO_Intro:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQlQDnE.s:21     .text.GUIDEMO_Intro:00000000 GUIDEMO_Intro
+D:\Users\draapho\AppData\Local\Temp\ccQlQDnE.s:127    .text.GUIDEMO_Intro:00000110 $d
+D:\Users\draapho\AppData\Local\Temp\ccQlQDnE.s:144    .rodata:00000015 $d
+
+UNDEFINED SYMBOLS
+memset
+LCD_GetXSize
+LCD_GetYSize
+GUIDEMO_DrawBk
+GUI_SetTextMode
+GUI_SetColor
+GUI_SetFont
+GUI_DispStringHCenterAt
+GUI_GetVersionString
+strcat
+GUI_DrawBitmap
+GUIDEMO_Delay
+GUI_FontRounded22
+GUI_Font16_ASCII
+GUI_Font10S_ASCII
+bmSeggerLogo
+bmSTLogo

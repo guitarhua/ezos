@@ -1,0 +1,442 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_net.c"
+  15              		.section	.text.task_dns,"ax",%progbits
+  16              		.align	1
+  17              		.global	task_dns
+  18              		.thumb
+  19              		.thumb_func
+  21              	task_dns:
+  22              		@ args = 0, pretend = 0, frame = 24
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 70B5     		push	{r4, r5, r6, lr}
+  25 0002 264B     		ldr	r3, .L9
+  26 0004 88B0     		sub	sp, sp, #32
+  27 0006 04AC     		add	r4, sp, #16
+  28 0008 03F10802 		add	r2, r3, #8
+  29 000c 2646     		mov	r6, r4
+  30              	.L2:
+  31 000e 1868     		ldr	r0, [r3]	@ unaligned
+  32 0010 5968     		ldr	r1, [r3, #4]	@ unaligned
+  33 0012 2546     		mov	r5, r4
+  34 0014 03C5     		stmia	r5!, {r0, r1}
+  35 0016 0833     		adds	r3, r3, #8
+  36 0018 9342     		cmp	r3, r2
+  37 001a 2C46     		mov	r4, r5
+  38 001c F7D1     		bne	.L2
+  39 001e 1868     		ldr	r0, [r3]	@ unaligned
+  40 0020 9B88     		ldrh	r3, [r3, #4]	@ unaligned
+  41 0022 2860     		str	r0, [r5]	@ unaligned
+  42 0024 AB80     		strh	r3, [r5, #4]	@ unaligned
+  43 0026 3046     		mov	r0, r6
+  44 0028 03A9     		add	r1, sp, #12
+  45 002a FFF7FEFF 		bl	dns_lookup
+  46 002e 0446     		mov	r4, r0
+  47 0030 98B9     		cbnz	r0, .L3
+  48 0032 1B49     		ldr	r1, .L9+4
+  49 0034 FFF7FEFF 		bl	uart_printf
+  50 0038 2046     		mov	r0, r4
+  51 003a 1A49     		ldr	r1, .L9+8
+  52 003c 3246     		mov	r2, r6
+  53 003e FFF7FEFF 		bl	uart_printf
+  54 0042 9DF80E10 		ldrb	r1, [sp, #14]	@ zero_extendqisi2
+  55 0046 9DF80C20 		ldrb	r2, [sp, #12]	@ zero_extendqisi2
+  56 004a 0091     		str	r1, [sp]
+  57 004c 9DF80F10 		ldrb	r1, [sp, #15]	@ zero_extendqisi2
+  58 0050 9DF80D30 		ldrb	r3, [sp, #13]	@ zero_extendqisi2
+  59 0054 0191     		str	r1, [sp, #4]
+  60 0056 2046     		mov	r0, r4
+  61 0058 15E0     		b	.L7
+  62              	.L3:
+  63 005a 0128     		cmp	r0, #1
+  64 005c 17D1     		bne	.L5
+  65 005e 0020     		movs	r0, #0
+  66 0060 1149     		ldr	r1, .L9+12
+  67 0062 FFF7FEFF 		bl	uart_printf
+  68 0066 0020     		movs	r0, #0
+  69 0068 0E49     		ldr	r1, .L9+8
+  70 006a 3246     		mov	r2, r6
+  71 006c FFF7FEFF 		bl	uart_printf
+  72 0070 9DF80E10 		ldrb	r1, [sp, #14]	@ zero_extendqisi2
+  73 0074 9DF80C20 		ldrb	r2, [sp, #12]	@ zero_extendqisi2
+  74 0078 0091     		str	r1, [sp]
+  75 007a 9DF80F10 		ldrb	r1, [sp, #15]	@ zero_extendqisi2
+  76 007e 9DF80D30 		ldrb	r3, [sp, #13]	@ zero_extendqisi2
+  77 0082 0191     		str	r1, [sp, #4]
+  78 0084 0020     		movs	r0, #0
+  79              	.L7:
+  80 0086 0949     		ldr	r1, .L9+16
+  81 0088 FFF7FEFF 		bl	uart_printf
+  82 008c 03E0     		b	.L1
+  83              	.L5:
+  84 008e 4FF4FA70 		mov	r0, #500
+  85 0092 FFF7FEFF 		bl	ezos_delay
+  86              	.L1:
+  87 0096 08B0     		add	sp, sp, #32
+  88              		@ sp needed
+  89 0098 70BD     		pop	{r4, r5, r6, pc}
+  90              	.L10:
+  91 009a 00BF     		.align	2
+  92              	.L9:
+  93 009c 4A000000 		.word	.LC0
+  94 00a0 00000000 		.word	.LC1
+  95 00a4 0F000000 		.word	.LC2
+  96 00a8 38000000 		.word	.LC4
+  97 00ac 1F000000 		.word	.LC3
+  99              		.section	.text.net_start,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	net_start
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	net_start:
+ 106              		@ args = 0, pretend = 0, frame = 8
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108 0000 1FB5     		push	{r0, r1, r2, r3, r4, lr}
+ 109 0002 0423     		movs	r3, #4
+ 110 0004 8DF80930 		strb	r3, [sp, #9]
+ 111 0008 A323     		movs	r3, #163
+ 112 000a 8DF80A30 		strb	r3, [sp, #10]
+ 113 000e 1123     		movs	r3, #17
+ 114 0010 8DF80B30 		strb	r3, [sp, #11]
+ 115 0014 2223     		movs	r3, #34
+ 116 0016 0024     		movs	r4, #0
+ 117 0018 8DF80C30 		strb	r3, [sp, #12]
+ 118 001c 3323     		movs	r3, #51
+ 119 001e 8DF80D30 		strb	r3, [sp, #13]
+ 120 0022 8DF80840 		strb	r4, [sp, #8]
+ 121 0026 04AB     		add	r3, sp, #16
+ 122 0028 13E90300 		ldmdb	r3, {r0, r1}
+ 123 002c FFF7FEFF 		bl	uipsys_init
+ 124 0030 0448     		ldr	r0, .L12
+ 125 0032 0A23     		movs	r3, #10
+ 126 0034 0093     		str	r3, [sp]
+ 127 0036 0146     		mov	r1, r0
+ 128 0038 2246     		mov	r2, r4
+ 129 003a 2346     		mov	r3, r4
+ 130 003c FFF7FEFF 		bl	ezos_add
+ 131 0040 04B0     		add	sp, sp, #16
+ 132              		@ sp needed
+ 133 0042 10BD     		pop	{r4, pc}
+ 134              	.L13:
+ 135              		.align	2
+ 136              	.L12:
+ 137 0044 00000000 		.word	task_net_check
+ 139              		.section	.text.net_static_ip_set,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	net_static_ip_set
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	net_static_ip_set:
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148 0000 0D4A     		ldr	r2, .L15
+ 149 0002 10B5     		push	{r4, lr}
+ 150 0004 0123     		movs	r3, #1
+ 151 0006 C020     		movs	r0, #192
+ 152 0008 A821     		movs	r1, #168
+ 153 000a 0A24     		movs	r4, #10
+ 154 000c D470     		strb	r4, [r2, #3]
+ 155 000e 1070     		strb	r0, [r2]
+ 156 0010 5170     		strb	r1, [r2, #1]
+ 157 0012 9370     		strb	r3, [r2, #2]
+ 158 0014 094A     		ldr	r2, .L15+4
+ 159 0016 FF24     		movs	r4, #255
+ 160 0018 1470     		strb	r4, [r2]
+ 161 001a 5470     		strb	r4, [r2, #1]
+ 162 001c 9470     		strb	r4, [r2, #2]
+ 163 001e 0024     		movs	r4, #0
+ 164 0020 D470     		strb	r4, [r2, #3]
+ 165 0022 074A     		ldr	r2, .L15+8
+ 166 0024 1070     		strb	r0, [r2]
+ 167 0026 5170     		strb	r1, [r2, #1]
+ 168 0028 9370     		strb	r3, [r2, #2]
+ 169 002a D370     		strb	r3, [r2, #3]
+ 170 002c 054A     		ldr	r2, .L15+12
+ 171 002e 1070     		strb	r0, [r2]
+ 172 0030 5170     		strb	r1, [r2, #1]
+ 173 0032 9370     		strb	r3, [r2, #2]
+ 174 0034 D370     		strb	r3, [r2, #3]
+ 175 0036 10BD     		pop	{r4, pc}
+ 176              	.L16:
+ 177              		.align	2
+ 178              	.L15:
+ 179 0038 00000000 		.word	uip_hostaddr
+ 180 003c 00000000 		.word	uip_netmask
+ 181 0040 00000000 		.word	uip_draddr
+ 182 0044 00000000 		.word	uip_dnsaddr
+ 184              		.section	.text.net_example_add,"ax",%progbits
+ 185              		.align	1
+ 186              		.global	net_example_add
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	net_example_add:
+ 191              		@ args = 0, pretend = 0, frame = 8
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 194 0002 4FF47A70 		mov	r0, #1000
+ 195 0006 85B0     		sub	sp, sp, #20
+ 196 0008 FFF7FEFF 		bl	example_tcp_server
+ 197 000c C027     		movs	r7, #192
+ 198 000e A826     		movs	r6, #168
+ 199 0010 0125     		movs	r5, #1
+ 200 0012 0724     		movs	r4, #7
+ 201 0014 03A8     		add	r0, sp, #12
+ 202 0016 4FF47A71 		mov	r1, #1000
+ 203 001a 8DF80C70 		strb	r7, [sp, #12]
+ 204 001e 8DF80D60 		strb	r6, [sp, #13]
+ 205 0022 8DF80E50 		strb	r5, [sp, #14]
+ 206 0026 8DF80F40 		strb	r4, [sp, #15]
+ 207 002a FFF7FEFF 		bl	example_tcp_client
+ 208 002e 4FF47A70 		mov	r0, #1000
+ 209 0032 FFF7FEFF 		bl	example_udp_server
+ 210 0036 03A8     		add	r0, sp, #12
+ 211 0038 4FF47A71 		mov	r1, #1000
+ 212 003c 8DF80C70 		strb	r7, [sp, #12]
+ 213 0040 8DF80D60 		strb	r6, [sp, #13]
+ 214 0044 8DF80E50 		strb	r5, [sp, #14]
+ 215 0048 8DF80F40 		strb	r4, [sp, #15]
+ 216 004c FFF7FEFF 		bl	example_udp_client
+ 217 0050 FFF7FEFF 		bl	example_web_server
+ 218 0054 0448     		ldr	r0, .L18
+ 219 0056 0022     		movs	r2, #0
+ 220 0058 0A23     		movs	r3, #10
+ 221 005a 0093     		str	r3, [sp]
+ 222 005c 0146     		mov	r1, r0
+ 223 005e 1346     		mov	r3, r2
+ 224 0060 FFF7FEFF 		bl	ezos_add
+ 225 0064 05B0     		add	sp, sp, #20
+ 226              		@ sp needed
+ 227 0066 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 228              	.L19:
+ 229              		.align	2
+ 230              	.L18:
+ 231 0068 00000000 		.word	task_dns
+ 233              		.section	.text.task_net_check,"ax",%progbits
+ 234              		.align	1
+ 235              		.global	task_net_check
+ 236              		.thumb
+ 237              		.thumb_func
+ 239              	task_net_check:
+ 240              		@ args = 0, pretend = 0, frame = 0
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 243 0002 FFF7FEFF 		bl	uipsys_check
+ 244 0006 2D4A     		ldr	r2, .L28
+ 245 0008 0446     		mov	r4, r0
+ 246 000a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 247 000c 1546     		mov	r5, r2
+ 248 000e 9842     		cmp	r0, r3
+ 249 0010 4CD0     		beq	.L21
+ 250 0012 0128     		cmp	r0, #1
+ 251 0014 04D1     		bne	.L22
+ 252 0016 0020     		movs	r0, #0
+ 253 0018 2949     		ldr	r1, .L28+4
+ 254 001a FFF7FEFF 		bl	uart_printf
+ 255 001e 09E0     		b	.L23
+ 256              	.L22:
+ 257 0020 012B     		cmp	r3, #1
+ 258 0022 03D1     		bne	.L24
+ 259 0024 0020     		movs	r0, #0
+ 260 0026 2749     		ldr	r1, .L28+8
+ 261 0028 FFF7FEFF 		bl	uart_printf
+ 262              	.L24:
+ 263 002c F22C     		cmp	r4, #242
+ 264 002e 01D1     		bne	.L23
+ 265 0030 FFF7FEFF 		bl	net_static_ip_set
+ 266              	.L23:
+ 267 0034 04F0F003 		and	r3, r4, #240
+ 268 0038 F02B     		cmp	r3, #240
+ 269 003a 30D1     		bne	.L25
+ 270 003c 0020     		movs	r0, #0
+ 271 003e 2249     		ldr	r1, .L28+12
+ 272 0040 FFF7FEFF 		bl	uart_printf
+ 273 0044 2149     		ldr	r1, .L28+16
+ 274 0046 8878     		ldrb	r0, [r1, #2]	@ zero_extendqisi2
+ 275 0048 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 276 004a 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
+ 277 004c 0090     		str	r0, [sp]
+ 278 004e C978     		ldrb	r1, [r1, #3]	@ zero_extendqisi2
+ 279 0050 0020     		movs	r0, #0
+ 280 0052 0191     		str	r1, [sp, #4]
+ 281 0054 1E49     		ldr	r1, .L28+20
+ 282 0056 FFF7FEFF 		bl	uart_printf
+ 283 005a 1E49     		ldr	r1, .L28+24
+ 284 005c 8878     		ldrb	r0, [r1, #2]	@ zero_extendqisi2
+ 285 005e 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 286 0060 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
+ 287 0062 0090     		str	r0, [sp]
+ 288 0064 C978     		ldrb	r1, [r1, #3]	@ zero_extendqisi2
+ 289 0066 0020     		movs	r0, #0
+ 290 0068 0191     		str	r1, [sp, #4]
+ 291 006a 1B49     		ldr	r1, .L28+28
+ 292 006c FFF7FEFF 		bl	uart_printf
+ 293 0070 1A49     		ldr	r1, .L28+32
+ 294 0072 8878     		ldrb	r0, [r1, #2]	@ zero_extendqisi2
+ 295 0074 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 296 0076 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
+ 297 0078 0090     		str	r0, [sp]
+ 298 007a C978     		ldrb	r1, [r1, #3]	@ zero_extendqisi2
+ 299 007c 0020     		movs	r0, #0
+ 300 007e 0191     		str	r1, [sp, #4]
+ 301 0080 1749     		ldr	r1, .L28+36
+ 302 0082 FFF7FEFF 		bl	uart_printf
+ 303 0086 1749     		ldr	r1, .L28+40
+ 304 0088 8878     		ldrb	r0, [r1, #2]	@ zero_extendqisi2
+ 305 008a 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 306 008c 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
+ 307 008e 0090     		str	r0, [sp]
+ 308 0090 C978     		ldrb	r1, [r1, #3]	@ zero_extendqisi2
+ 309 0092 0020     		movs	r0, #0
+ 310 0094 0191     		str	r1, [sp, #4]
+ 311 0096 1449     		ldr	r1, .L28+44
+ 312 0098 FFF7FEFF 		bl	uart_printf
+ 313 009c 03E0     		b	.L27
+ 314              	.L25:
+ 315 009e 122C     		cmp	r4, #18
+ 316 00a0 03D1     		bne	.L26
+ 317 00a2 FFF7FEFF 		bl	net_static_ip_set
+ 318              	.L27:
+ 319 00a6 FFF7FEFF 		bl	net_example_add
+ 320              	.L26:
+ 321 00aa 2C70     		strb	r4, [r5]
+ 322              	.L21:
+ 323 00ac 4FF47A70 		mov	r0, #1000
+ 324 00b0 03B0     		add	sp, sp, #12
+ 325              		@ sp needed
+ 326 00b2 BDE83040 		pop	{r4, r5, lr}
+ 327 00b6 FFF7FEBF 		b	ezos_delay
+ 328              	.L29:
+ 329 00ba 00BF     		.align	2
+ 330              	.L28:
+ 331 00bc 00000000 		.word	.LANCHOR0
+ 332 00c0 58000000 		.word	.LC5
+ 333 00c4 68000000 		.word	.LC6
+ 334 00c8 78000000 		.word	.LC7
+ 335 00cc 00000000 		.word	uip_hostaddr
+ 336 00d0 91000000 		.word	.LC8
+ 337 00d4 00000000 		.word	uip_netmask
+ 338 00d8 AB000000 		.word	.LC9
+ 339 00dc 00000000 		.word	uip_draddr
+ 340 00e0 C5000000 		.word	.LC10
+ 341 00e4 00000000 		.word	uip_dnsaddr
+ 342 00e8 DF000000 		.word	.LC11
+ 344              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 345              	.LC1:
+ 346 0000 0D0A2D2D 		.ascii	"\015\012-- DNS OK!\015\012\000"
+ 346      20444E53 
+ 346      204F4B21 
+ 346      0D0A00
+ 347              	.LC2:
+ 348 000f 2020204E 		.ascii	"   Name: \"%s\"\015\012\000"
+ 348      616D653A 
+ 348      20222573 
+ 348      220D0A00 
+ 349              	.LC3:
+ 350 001f 20202049 		.ascii	"   IP  : %d.%d.%d.%d\015\012\015\012\000"
+ 350      5020203A 
+ 350      2025642E 
+ 350      25642E25 
+ 350      642E2564 
+ 351              	.LC4:
+ 352 0038 0D0A2D2D 		.ascii	"\015\012-- dns error!\015\012\000"
+ 352      20646E73 
+ 352      20657272 
+ 352      6F72210D 
+ 352      0A00
+ 353              	.LC0:
+ 354 004a 7777772E 		.ascii	"www.baidu.com\000"
+ 354      62616964 
+ 354      752E636F 
+ 354      6D00
+ 355              	.LC5:
+ 356 0058 6E65745F 		.ascii	"net_unlink!!!\015\012\000"
+ 356      756E6C69 
+ 356      6E6B2121 
+ 356      210D0A00 
+ 357              	.LC6:
+ 358 0068 6E65745F 		.ascii	"net_linked!!!\015\012\000"
+ 358      6C696E6B 
+ 358      65642121 
+ 358      210D0A00 
+ 359              	.LC7:
+ 360 0078 0D0A2D2D 		.ascii	"\015\012-- uIP ip infomation\015\012\000"
+ 360      20754950 
+ 360      20697020 
+ 360      696E666F 
+ 360      6D617469 
+ 361              	.LC8:
+ 362 0091 20202049 		.ascii	"   IP addr: %d.%d.%d.%d\015\012\000"
+ 362      50206164 
+ 362      64723A20 
+ 362      25642E25 
+ 362      642E2564 
+ 363              	.LC9:
+ 364 00ab 2020206E 		.ascii	"   netmask: %d.%d.%d.%d\015\012\000"
+ 364      65746D61 
+ 364      736B3A20 
+ 364      25642E25 
+ 364      642E2564 
+ 365              	.LC10:
+ 366 00c5 20202072 		.ascii	"   router:  %d.%d.%d.%d\015\012\000"
+ 366      6F757465 
+ 366      723A2020 
+ 366      25642E25 
+ 366      642E2564 
+ 367              	.LC11:
+ 368 00df 20202044 		.ascii	"   DNS:     %d.%d.%d.%d\015\012\015\012\000"
+ 368      4E533A20 
+ 368      20202020 
+ 368      25642E25 
+ 368      642E2564 
+ 369              		.section	.bss.old.7126,"aw",%nobits
+ 370              		.set	.LANCHOR0,. + 0
+ 373              	old.7126:
+ 374 0000 00       		.space	1
+ 375              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_net.c
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:16     .text.task_dns:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:21     .text.task_dns:00000000 task_dns
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:93     .text.task_dns:0000009c $d
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:100    .text.net_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:105    .text.net_start:00000000 net_start
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:137    .text.net_start:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:239    .text.task_net_check:00000000 task_net_check
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:140    .text.net_static_ip_set:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:145    .text.net_static_ip_set:00000000 net_static_ip_set
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:179    .text.net_static_ip_set:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:185    .text.net_example_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:190    .text.net_example_add:00000000 net_example_add
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:231    .text.net_example_add:00000068 $d
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:234    .text.task_net_check:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:331    .text.task_net_check:000000bc $d
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:373    .bss.old.7126:00000000 old.7126
+D:\Users\draapho\AppData\Local\Temp\ccyxnVlG.s:374    .bss.old.7126:00000000 $d
+
+UNDEFINED SYMBOLS
+dns_lookup
+uart_printf
+ezos_delay
+uipsys_init
+ezos_add
+uip_hostaddr
+uip_netmask
+uip_draddr
+uip_dnsaddr
+example_tcp_server
+example_tcp_client
+example_udp_server
+example_udp_client
+example_web_server
+uipsys_check

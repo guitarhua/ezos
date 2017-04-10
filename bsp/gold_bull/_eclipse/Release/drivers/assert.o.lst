@@ -1,0 +1,106 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"assert.c"
+  15              		.section	.text.assert_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	assert_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	assert_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 07B5     		push	{r0, r1, r2, lr}
+  25 0002 0020     		movs	r0, #0
+  26 0004 0090     		str	r0, [sp]
+  27 0006 4FF4E131 		mov	r1, #115200
+  28 000a 0246     		mov	r2, r0
+  29 000c 0346     		mov	r3, r0
+  30 000e FFF7FEFF 		bl	uart_init
+  31 0012 03B0     		add	sp, sp, #12
+  32              		@ sp needed
+  33 0014 5DF804FB 		ldr	pc, [sp], #4
+  35              		.section	.text.__io_putchar,"ax",%progbits
+  36              		.align	1
+  37              		.global	__io_putchar
+  38              		.thumb
+  39              		.thumb_func
+  41              	__io_putchar:
+  42              		@ args = 0, pretend = 0, frame = 0
+  43              		@ frame_needed = 0, uses_anonymous_args = 0
+  44 0000 10B5     		push	{r4, lr}
+  45 0002 0446     		mov	r4, r0
+  46 0004 E1B2     		uxtb	r1, r4
+  47 0006 0020     		movs	r0, #0
+  48 0008 FFF7FEFF 		bl	uart_tx_byte
+  49 000c 2046     		mov	r0, r4
+  50 000e 10BD     		pop	{r4, pc}
+  52              		.section	.text.assert_err,"ax",%progbits
+  53              		.align	1
+  54              		.global	assert_err
+  55              		.thumb
+  56              		.thumb_func
+  58              	assert_err:
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61 0000 38B5     		push	{r3, r4, r5, lr}
+  62 0002 0546     		mov	r5, r0
+  63 0004 0648     		ldr	r0, .L4
+  64 0006 0C46     		mov	r4, r1
+  65 0008 FFF7FEFF 		bl	puts
+  66 000c 2946     		mov	r1, r5
+  67 000e 0548     		ldr	r0, .L4+4
+  68 0010 FFF7FEFF 		bl	printf
+  69 0014 2146     		mov	r1, r4
+  70 0016 0448     		ldr	r0, .L4+8
+  71 0018 BDE83840 		pop	{r3, r4, r5, lr}
+  72 001c FFF7FEBF 		b	printf
+  73              	.L5:
+  74              		.align	2
+  75              	.L4:
+  76 0020 00000000 		.word	.LC0
+  77 0024 25000000 		.word	.LC1
+  78 0028 34000000 		.word	.LC2
+  80              		.section	.rodata.str1.1,"aMS",%progbits,1
+  81              	.LC0:
+  82 0000 0D0A7772 		.ascii	"\015\012wrong parameter value detected on\015\000"
+  82      6F6E6720 
+  82      70617261 
+  82      6D657465 
+  82      72207661 
+  83              	.LC1:
+  84 0025 20202020 		.ascii	"    file: %s\015\012\000"
+  84      66696C65 
+  84      3A202573 
+  84      0D0A00
+  85              	.LC2:
+  86 0034 20202020 		.ascii	"    line: %d\015\012\000"
+  86      6C696E65 
+  86      3A202564 
+  86      0D0A00
+  87              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 assert.c
+D:\Users\draapho\AppData\Local\Temp\ccXwVi2o.s:16     .text.assert_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccXwVi2o.s:21     .text.assert_init:00000000 assert_init
+D:\Users\draapho\AppData\Local\Temp\ccXwVi2o.s:36     .text.__io_putchar:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccXwVi2o.s:41     .text.__io_putchar:00000000 __io_putchar
+D:\Users\draapho\AppData\Local\Temp\ccXwVi2o.s:53     .text.assert_err:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccXwVi2o.s:58     .text.assert_err:00000000 assert_err
+D:\Users\draapho\AppData\Local\Temp\ccXwVi2o.s:76     .text.assert_err:00000020 $d
+
+UNDEFINED SYMBOLS
+uart_init
+uart_tx_byte
+puts
+printf

@@ -1,0 +1,144 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_rtc.c"
+  15              		.section	.text.task_rtc_1s,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_rtc_1s:
+  21              		@ args = 0, pretend = 0, frame = 48
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 30B5     		push	{r4, r5, lr}
+  24 0002 93B0     		sub	sp, sp, #76
+  25 0004 FFF7FEFF 		bl	time_get_unix
+  26 0008 0446     		mov	r4, r0
+  27 000a 07A8     		add	r0, sp, #28
+  28 000c FFF7FEFF 		bl	time_get_calendar
+  29 0010 C4F30723 		ubfx	r3, r4, #8, #8
+  30 0014 0093     		str	r3, [sp]
+  31 0016 E3B2     		uxtb	r3, r4
+  32 0018 0193     		str	r3, [sp, #4]
+  33 001a 220E     		lsrs	r2, r4, #24
+  34 001c C4F30743 		ubfx	r3, r4, #16, #8
+  35 0020 0020     		movs	r0, #0
+  36 0022 1249     		ldr	r1, .L2
+  37 0024 0C9D     		ldr	r5, [sp, #48]
+  38 0026 FFF7FEFF 		bl	uart_printf
+  39 002a 9DF82C10 		ldrb	r1, [sp, #44]	@ zero_extendqisi2
+  40 002e 6423     		movs	r3, #100
+  41 0030 0091     		str	r1, [sp]
+  42 0032 9DF82810 		ldrb	r1, [sp, #40]	@ zero_extendqisi2
+  43 0036 95FBF3F2 		sdiv	r2, r5, r3
+  44 003a 0191     		str	r1, [sp, #4]
+  45 003c 9DF82410 		ldrb	r1, [sp, #36]	@ zero_extendqisi2
+  46 0040 03FB1253 		mls	r3, r3, r2, r5
+  47 0044 0291     		str	r1, [sp, #8]
+  48 0046 9DF82010 		ldrb	r1, [sp, #32]	@ zero_extendqisi2
+  49 004a 0020     		movs	r0, #0
+  50 004c 0391     		str	r1, [sp, #12]
+  51 004e 9DF81C10 		ldrb	r1, [sp, #28]	@ zero_extendqisi2
+  52 0052 D2B2     		uxtb	r2, r2
+  53 0054 0491     		str	r1, [sp, #16]
+  54 0056 DBB2     		uxtb	r3, r3
+  55 0058 0549     		ldr	r1, .L2+4
+  56 005a FFF7FEFF 		bl	uart_printf
+  57 005e 4FF47A70 		mov	r0, #1000
+  58 0062 13B0     		add	sp, sp, #76
+  59              		@ sp needed
+  60 0064 BDE83040 		pop	{r4, r5, lr}
+  61 0068 FFF7FEBF 		b	ezos_delay
+  62              	.L3:
+  63              		.align	2
+  64              	.L2:
+  65 006c 00000000 		.word	.LC0
+  66 0070 1D000000 		.word	.LC1
+  68              		.section	.text.rtc_start,"ax",%progbits
+  69              		.align	1
+  70              		.global	rtc_start
+  71              		.thumb
+  72              		.thumb_func
+  74              	rtc_start:
+  75              		@ args = 0, pretend = 0, frame = 48
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77 0000 30B5     		push	{r4, r5, lr}
+  78 0002 95B0     		sub	sp, sp, #84
+  79 0004 FFF7FEFF 		bl	rtc_init
+  80 0008 B8B1     		cbz	r0, .L5
+  81 000a 40F2DC73 		movw	r3, #2012
+  82 000e 0E93     		str	r3, [sp, #56]
+  83 0010 0123     		movs	r3, #1
+  84 0012 0D93     		str	r3, [sp, #52]
+  85 0014 0423     		movs	r3, #4
+  86 0016 0C93     		str	r3, [sp, #48]
+  87 0018 0A23     		movs	r3, #10
+  88 001a 0B93     		str	r3, [sp, #44]
+  89 001c 6C46     		mov	r4, sp
+  90 001e 0023     		movs	r3, #0
+  91 0020 0DAD     		add	r5, sp, #52
+  92 0022 0A93     		str	r3, [sp, #40]
+  93 0024 0993     		str	r3, [sp, #36]
+  94 0026 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  95 0028 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  96 002a 95E80700 		ldmia	r5, {r0, r1, r2}
+  97 002e 84E80700 		stmia	r4, {r0, r1, r2}
+  98 0032 09AB     		add	r3, sp, #36
+  99 0034 0FCB     		ldmia	r3, {r0, r1, r2, r3}
+ 100 0036 FFF7FEFF 		bl	time_set_calendar
+ 101              	.L5:
+ 102 003a 0548     		ldr	r0, .L10
+ 103 003c 0022     		movs	r2, #0
+ 104 003e 0A23     		movs	r3, #10
+ 105 0040 0093     		str	r3, [sp]
+ 106 0042 0146     		mov	r1, r0
+ 107 0044 1346     		mov	r3, r2
+ 108 0046 FFF7FEFF 		bl	ezos_add
+ 109 004a 15B0     		add	sp, sp, #84
+ 110              		@ sp needed
+ 111 004c 30BD     		pop	{r4, r5, pc}
+ 112              	.L11:
+ 113 004e 00BF     		.align	2
+ 114              	.L10:
+ 115 0050 00000000 		.word	task_rtc_1s
+ 117              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 118              	.LC0:
+ 119 0000 756E6978 		.ascii	"unix_time: %02x%02x%02x%02x.\000"
+ 119      5F74696D 
+ 119      653A2025 
+ 119      30327825 
+ 119      30327825 
+ 120              	.LC1:
+ 121 001d 63616C5F 		.ascii	"cal_time: %02u%02u-%02u-%02u, %02u:%02u:%02u \015\012"
+ 121      74696D65 
+ 121      3A202530 
+ 121      32752530 
+ 121      32752D25 
+ 122 004c 00       		.ascii	"\000"
+ 123              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_rtc.c
+D:\Users\draapho\AppData\Local\Temp\ccQWHyJ8.s:16     .text.task_rtc_1s:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQWHyJ8.s:20     .text.task_rtc_1s:00000000 task_rtc_1s
+D:\Users\draapho\AppData\Local\Temp\ccQWHyJ8.s:65     .text.task_rtc_1s:0000006c $d
+D:\Users\draapho\AppData\Local\Temp\ccQWHyJ8.s:69     .text.rtc_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQWHyJ8.s:74     .text.rtc_start:00000000 rtc_start
+D:\Users\draapho\AppData\Local\Temp\ccQWHyJ8.s:115    .text.rtc_start:00000050 $d
+
+UNDEFINED SYMBOLS
+time_get_unix
+time_get_calendar
+uart_printf
+ezos_delay
+rtc_init
+time_set_calendar
+ezos_add

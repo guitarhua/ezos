@@ -1,0 +1,430 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_bkp.c"
+  15              		.section	.text.BKP_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	BKP_DeInit
+  18              		.thumb
+  19              		.thumb_func
+  21              	BKP_DeInit:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 0120     		movs	r0, #1
+  26 0004 FFF7FEFF 		bl	RCC_BackupResetCmd
+  27 0008 BDE80840 		pop	{r3, lr}
+  28 000c 0020     		movs	r0, #0
+  29 000e FFF7FEBF 		b	RCC_BackupResetCmd
+  31              		.section	.text.BKP_TamperPinLevelConfig,"ax",%progbits
+  32              		.align	1
+  33              		.global	BKP_TamperPinLevelConfig
+  34              		.thumb
+  35              		.thumb_func
+  37              	BKP_TamperPinLevelConfig:
+  38              		@ args = 0, pretend = 0, frame = 0
+  39              		@ frame_needed = 0, uses_anonymous_args = 0
+  40 0000 0128     		cmp	r0, #1
+  41 0002 10B5     		push	{r4, lr}
+  42 0004 0446     		mov	r4, r0
+  43 0006 03D9     		bls	.L3
+  44 0008 0348     		ldr	r0, .L5
+  45 000a 8921     		movs	r1, #137
+  46 000c FFF7FEFF 		bl	assert_err
+  47              	.L3:
+  48 0010 024B     		ldr	r3, .L5+4
+  49 0012 1C60     		str	r4, [r3]
+  50 0014 10BD     		pop	{r4, pc}
+  51              	.L6:
+  52 0016 00BF     		.align	2
+  53              	.L5:
+  54 0018 00000000 		.word	.LC0
+  55 001c 04860D42 		.word	1108182532
+  57              		.section	.text.BKP_TamperPinCmd,"ax",%progbits
+  58              		.align	1
+  59              		.global	BKP_TamperPinCmd
+  60              		.thumb
+  61              		.thumb_func
+  63              	BKP_TamperPinCmd:
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66 0000 0128     		cmp	r0, #1
+  67 0002 10B5     		push	{r4, lr}
+  68 0004 0446     		mov	r4, r0
+  69 0006 03D9     		bls	.L8
+  70 0008 0348     		ldr	r0, .L9
+  71 000a 9621     		movs	r1, #150
+  72 000c FFF7FEFF 		bl	assert_err
+  73              	.L8:
+  74 0010 024B     		ldr	r3, .L9+4
+  75 0012 1C60     		str	r4, [r3]
+  76 0014 10BD     		pop	{r4, pc}
+  77              	.L10:
+  78 0016 00BF     		.align	2
+  79              	.L9:
+  80 0018 00000000 		.word	.LC0
+  81 001c 00860D42 		.word	1108182528
+  83              		.section	.text.BKP_ITConfig,"ax",%progbits
+  84              		.align	1
+  85              		.global	BKP_ITConfig
+  86              		.thumb
+  87              		.thumb_func
+  89              	BKP_ITConfig:
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92 0000 0128     		cmp	r0, #1
+  93 0002 10B5     		push	{r4, lr}
+  94 0004 0446     		mov	r4, r0
+  95 0006 03D9     		bls	.L12
+  96 0008 0348     		ldr	r0, .L13
+  97 000a A321     		movs	r1, #163
+  98 000c FFF7FEFF 		bl	assert_err
+  99              	.L12:
+ 100 0010 024B     		ldr	r3, .L13+4
+ 101 0012 1C60     		str	r4, [r3]
+ 102 0014 10BD     		pop	{r4, pc}
+ 103              	.L14:
+ 104 0016 00BF     		.align	2
+ 105              	.L13:
+ 106 0018 00000000 		.word	.LC0
+ 107 001c 88860D42 		.word	1108182664
+ 109              		.section	.text.BKP_RTCOutputConfig,"ax",%progbits
+ 110              		.align	1
+ 111              		.global	BKP_RTCOutputConfig
+ 112              		.thumb
+ 113              		.thumb_func
+ 115              	BKP_RTCOutputConfig:
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118 0000 20F08003 		bic	r3, r0, #128
+ 119 0004 10B5     		push	{r4, lr}
+ 120 0006 0446     		mov	r4, r0
+ 121 0008 43B1     		cbz	r3, .L16
+ 122 000a 20F40073 		bic	r3, r0, #512
+ 123 000e B3F5807F 		cmp	r3, #256
+ 124 0012 03D0     		beq	.L16
+ 125 0014 0648     		ldr	r0, .L23
+ 126 0016 B821     		movs	r1, #184
+ 127 0018 FFF7FEFF 		bl	assert_err
+ 128              	.L16:
+ 129 001c 054A     		ldr	r2, .L23+4
+ 130 001e 938D     		ldrh	r3, [r2, #44]
+ 131 0020 23F46073 		bic	r3, r3, #896
+ 132 0024 1B04     		lsls	r3, r3, #16
+ 133 0026 1B0C     		lsrs	r3, r3, #16
+ 134 0028 2343     		orrs	r3, r3, r4
+ 135 002a 9385     		strh	r3, [r2, #44]	@ movhi
+ 136 002c 10BD     		pop	{r4, pc}
+ 137              	.L24:
+ 138 002e 00BF     		.align	2
+ 139              	.L23:
+ 140 0030 00000000 		.word	.LC0
+ 141 0034 006C0040 		.word	1073769472
+ 143              		.section	.text.BKP_SetRTCCalibrationValue,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	BKP_SetRTCCalibrationValue
+ 146              		.thumb
+ 147              		.thumb_func
+ 149              	BKP_SetRTCCalibrationValue:
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152 0000 0306     		lsls	r3, r0, #24
+ 153 0002 10B5     		push	{r4, lr}
+ 154 0004 0446     		mov	r4, r0
+ 155 0006 03D5     		bpl	.L26
+ 156 0008 0648     		ldr	r0, .L27
+ 157 000a CD21     		movs	r1, #205
+ 158 000c FFF7FEFF 		bl	assert_err
+ 159              	.L26:
+ 160 0010 054A     		ldr	r2, .L27+4
+ 161 0012 938D     		ldrh	r3, [r2, #44]
+ 162 0014 23F07F03 		bic	r3, r3, #127
+ 163 0018 1B04     		lsls	r3, r3, #16
+ 164 001a 1B0C     		lsrs	r3, r3, #16
+ 165 001c 2343     		orrs	r3, r3, r4
+ 166 001e 9385     		strh	r3, [r2, #44]	@ movhi
+ 167 0020 10BD     		pop	{r4, pc}
+ 168              	.L28:
+ 169 0022 00BF     		.align	2
+ 170              	.L27:
+ 171 0024 00000000 		.word	.LC0
+ 172 0028 006C0040 		.word	1073769472
+ 174              		.section	.text.BKP_WriteBackupRegister,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	BKP_WriteBackupRegister
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	BKP_WriteBackupRegister:
+ 181              		@ args = 0, pretend = 0, frame = 8
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 184 0002 0023     		movs	r3, #0
+ 185 0004 0193     		str	r3, [sp, #4]
+ 186 0006 20F00803 		bic	r3, r0, #8
+ 187 000a 042B     		cmp	r3, #4
+ 188 000c 0446     		mov	r4, r0
+ 189 000e 0D46     		mov	r5, r1
+ 190 0010 2ED0     		beq	.L30
+ 191 0012 20F01002 		bic	r2, r0, #16
+ 192 0016 92B2     		uxth	r2, r2
+ 193 0018 082A     		cmp	r2, #8
+ 194 001a 29D0     		beq	.L30
+ 195 001c 20F00403 		bic	r3, r0, #4
+ 196 0020 102B     		cmp	r3, #16
+ 197 0022 25D0     		beq	.L30
+ 198 0024 20F04003 		bic	r3, r0, #64
+ 199 0028 9BB2     		uxth	r3, r3
+ 200 002a 1C2B     		cmp	r3, #28
+ 201 002c 20D0     		beq	.L30
+ 202 002e 20F04401 		bic	r1, r0, #68
+ 203 0032 2029     		cmp	r1, #32
+ 204 0034 1CD0     		beq	.L30
+ 205 0036 282B     		cmp	r3, #40
+ 206 0038 1AD0     		beq	.L30
+ 207 003a 20F00C03 		bic	r3, r0, #12
+ 208 003e 9BB2     		uxth	r3, r3
+ 209 0040 402B     		cmp	r3, #64
+ 210 0042 15D0     		beq	.L30
+ 211 0044 20F02401 		bic	r1, r0, #36
+ 212 0048 5029     		cmp	r1, #80
+ 213 004a 11D0     		beq	.L30
+ 214 004c 20F02001 		bic	r1, r0, #32
+ 215 0050 5829     		cmp	r1, #88
+ 216 0052 0DD0     		beq	.L30
+ 217 0054 6C2A     		cmp	r2, #108
+ 218 0056 0BD0     		beq	.L30
+ 219 0058 802B     		cmp	r3, #128
+ 220 005a 09D0     		beq	.L30
+ 221 005c 902B     		cmp	r3, #144
+ 222 005e 07D0     		beq	.L30
+ 223 0060 A02B     		cmp	r3, #160
+ 224 0062 05D0     		beq	.L30
+ 225 0064 B02B     		cmp	r3, #176
+ 226 0066 03D0     		beq	.L30
+ 227 0068 0648     		ldr	r0, .L73
+ 228 006a E321     		movs	r1, #227
+ 229 006c FFF7FEFF 		bl	assert_err
+ 230              	.L30:
+ 231 0070 054B     		ldr	r3, .L73+4
+ 232 0072 0193     		str	r3, [sp, #4]
+ 233 0074 019B     		ldr	r3, [sp, #4]
+ 234 0076 1C44     		add	r4, r4, r3
+ 235 0078 0194     		str	r4, [sp, #4]
+ 236 007a 019B     		ldr	r3, [sp, #4]
+ 237 007c 1D60     		str	r5, [r3]
+ 238 007e 03B0     		add	sp, sp, #12
+ 239              		@ sp needed
+ 240 0080 30BD     		pop	{r4, r5, pc}
+ 241              	.L74:
+ 242 0082 00BF     		.align	2
+ 243              	.L73:
+ 244 0084 00000000 		.word	.LC0
+ 245 0088 006C0040 		.word	1073769472
+ 247              		.section	.text.BKP_ReadBackupRegister,"ax",%progbits
+ 248              		.align	1
+ 249              		.global	BKP_ReadBackupRegister
+ 250              		.thumb
+ 251              		.thumb_func
+ 253              	BKP_ReadBackupRegister:
+ 254              		@ args = 0, pretend = 0, frame = 8
+ 255              		@ frame_needed = 0, uses_anonymous_args = 0
+ 256 0000 13B5     		push	{r0, r1, r4, lr}
+ 257 0002 0023     		movs	r3, #0
+ 258 0004 0193     		str	r3, [sp, #4]
+ 259 0006 20F00803 		bic	r3, r0, #8
+ 260 000a 042B     		cmp	r3, #4
+ 261 000c 0446     		mov	r4, r0
+ 262 000e 2ED0     		beq	.L76
+ 263 0010 20F01002 		bic	r2, r0, #16
+ 264 0014 92B2     		uxth	r2, r2
+ 265 0016 082A     		cmp	r2, #8
+ 266 0018 29D0     		beq	.L76
+ 267 001a 20F00403 		bic	r3, r0, #4
+ 268 001e 102B     		cmp	r3, #16
+ 269 0020 25D0     		beq	.L76
+ 270 0022 20F04003 		bic	r3, r0, #64
+ 271 0026 9BB2     		uxth	r3, r3
+ 272 0028 1C2B     		cmp	r3, #28
+ 273 002a 20D0     		beq	.L76
+ 274 002c 20F04401 		bic	r1, r0, #68
+ 275 0030 2029     		cmp	r1, #32
+ 276 0032 1CD0     		beq	.L76
+ 277 0034 282B     		cmp	r3, #40
+ 278 0036 1AD0     		beq	.L76
+ 279 0038 20F00C03 		bic	r3, r0, #12
+ 280 003c 9BB2     		uxth	r3, r3
+ 281 003e 402B     		cmp	r3, #64
+ 282 0040 15D0     		beq	.L76
+ 283 0042 20F02401 		bic	r1, r0, #36
+ 284 0046 5029     		cmp	r1, #80
+ 285 0048 11D0     		beq	.L76
+ 286 004a 20F02001 		bic	r1, r0, #32
+ 287 004e 5829     		cmp	r1, #88
+ 288 0050 0DD0     		beq	.L76
+ 289 0052 6C2A     		cmp	r2, #108
+ 290 0054 0BD0     		beq	.L76
+ 291 0056 802B     		cmp	r3, #128
+ 292 0058 09D0     		beq	.L76
+ 293 005a 902B     		cmp	r3, #144
+ 294 005c 07D0     		beq	.L76
+ 295 005e A02B     		cmp	r3, #160
+ 296 0060 05D0     		beq	.L76
+ 297 0062 B02B     		cmp	r3, #176
+ 298 0064 03D0     		beq	.L76
+ 299 0066 0748     		ldr	r0, .L119
+ 300 0068 F621     		movs	r1, #246
+ 301 006a FFF7FEFF 		bl	assert_err
+ 302              	.L76:
+ 303 006e 064B     		ldr	r3, .L119+4
+ 304 0070 0193     		str	r3, [sp, #4]
+ 305 0072 019B     		ldr	r3, [sp, #4]
+ 306 0074 1C44     		add	r4, r4, r3
+ 307 0076 0194     		str	r4, [sp, #4]
+ 308 0078 019B     		ldr	r3, [sp, #4]
+ 309 007a 1888     		ldrh	r0, [r3]
+ 310 007c 80B2     		uxth	r0, r0
+ 311 007e 02B0     		add	sp, sp, #8
+ 312              		@ sp needed
+ 313 0080 10BD     		pop	{r4, pc}
+ 314              	.L120:
+ 315 0082 00BF     		.align	2
+ 316              	.L119:
+ 317 0084 00000000 		.word	.LC0
+ 318 0088 006C0040 		.word	1073769472
+ 320              		.section	.text.BKP_GetFlagStatus,"ax",%progbits
+ 321              		.align	1
+ 322              		.global	BKP_GetFlagStatus
+ 323              		.thumb
+ 324              		.thumb_func
+ 326              	BKP_GetFlagStatus:
+ 327              		@ args = 0, pretend = 0, frame = 0
+ 328              		@ frame_needed = 0, uses_anonymous_args = 0
+ 329              		@ link register save eliminated.
+ 330 0000 014B     		ldr	r3, .L122
+ 331 0002 1868     		ldr	r0, [r3]
+ 332 0004 C0B2     		uxtb	r0, r0
+ 333 0006 7047     		bx	lr
+ 334              	.L123:
+ 335              		.align	2
+ 336              	.L122:
+ 337 0008 A0860D42 		.word	1108182688
+ 339              		.section	.text.BKP_ClearFlag,"ax",%progbits
+ 340              		.align	1
+ 341              		.global	BKP_ClearFlag
+ 342              		.thumb
+ 343              		.thumb_func
+ 345              	BKP_ClearFlag:
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348              		@ link register save eliminated.
+ 349 0000 034B     		ldr	r3, .L125
+ 350 0002 9A8E     		ldrh	r2, [r3, #52]
+ 351 0004 92B2     		uxth	r2, r2
+ 352 0006 42F00102 		orr	r2, r2, #1
+ 353 000a 9A86     		strh	r2, [r3, #52]	@ movhi
+ 354 000c 7047     		bx	lr
+ 355              	.L126:
+ 356 000e 00BF     		.align	2
+ 357              	.L125:
+ 358 0010 006C0040 		.word	1073769472
+ 360              		.section	.text.BKP_GetITStatus,"ax",%progbits
+ 361              		.align	1
+ 362              		.global	BKP_GetITStatus
+ 363              		.thumb
+ 364              		.thumb_func
+ 366              	BKP_GetITStatus:
+ 367              		@ args = 0, pretend = 0, frame = 0
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369              		@ link register save eliminated.
+ 370 0000 014B     		ldr	r3, .L128
+ 371 0002 1868     		ldr	r0, [r3]
+ 372 0004 C0B2     		uxtb	r0, r0
+ 373 0006 7047     		bx	lr
+ 374              	.L129:
+ 375              		.align	2
+ 376              	.L128:
+ 377 0008 A4860D42 		.word	1108182692
+ 379              		.section	.text.BKP_ClearITPendingBit,"ax",%progbits
+ 380              		.align	1
+ 381              		.global	BKP_ClearITPendingBit
+ 382              		.thumb
+ 383              		.thumb_func
+ 385              	BKP_ClearITPendingBit:
+ 386              		@ args = 0, pretend = 0, frame = 0
+ 387              		@ frame_needed = 0, uses_anonymous_args = 0
+ 388              		@ link register save eliminated.
+ 389 0000 034B     		ldr	r3, .L131
+ 390 0002 9A8E     		ldrh	r2, [r3, #52]
+ 391 0004 92B2     		uxth	r2, r2
+ 392 0006 42F00202 		orr	r2, r2, #2
+ 393 000a 9A86     		strh	r2, [r3, #52]	@ movhi
+ 394 000c 7047     		bx	lr
+ 395              	.L132:
+ 396 000e 00BF     		.align	2
+ 397              	.L131:
+ 398 0010 006C0040 		.word	1073769472
+ 400              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 401              	.LC0:
+ 402 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 402      73657273 
+ 402      2F647261 
+ 402      6170686F 
+ 402      2F446573 
+ 403 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_bk"
+ 403      6965732F 
+ 403      53544D33 
+ 403      32463130 
+ 403      785F5374 
+ 404 0066 702E6300 		.ascii	"p.c\000"
+ 405              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_bkp.c
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:16     .text.BKP_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:21     .text.BKP_DeInit:00000000 BKP_DeInit
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:32     .text.BKP_TamperPinLevelConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:37     .text.BKP_TamperPinLevelConfig:00000000 BKP_TamperPinLevelConfig
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:54     .text.BKP_TamperPinLevelConfig:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:58     .text.BKP_TamperPinCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:63     .text.BKP_TamperPinCmd:00000000 BKP_TamperPinCmd
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:80     .text.BKP_TamperPinCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:84     .text.BKP_ITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:89     .text.BKP_ITConfig:00000000 BKP_ITConfig
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:106    .text.BKP_ITConfig:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:110    .text.BKP_RTCOutputConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:115    .text.BKP_RTCOutputConfig:00000000 BKP_RTCOutputConfig
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:140    .text.BKP_RTCOutputConfig:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:144    .text.BKP_SetRTCCalibrationValue:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:149    .text.BKP_SetRTCCalibrationValue:00000000 BKP_SetRTCCalibrationValue
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:171    .text.BKP_SetRTCCalibrationValue:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:175    .text.BKP_WriteBackupRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:180    .text.BKP_WriteBackupRegister:00000000 BKP_WriteBackupRegister
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:244    .text.BKP_WriteBackupRegister:00000084 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:248    .text.BKP_ReadBackupRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:253    .text.BKP_ReadBackupRegister:00000000 BKP_ReadBackupRegister
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:317    .text.BKP_ReadBackupRegister:00000084 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:321    .text.BKP_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:326    .text.BKP_GetFlagStatus:00000000 BKP_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:337    .text.BKP_GetFlagStatus:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:340    .text.BKP_ClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:345    .text.BKP_ClearFlag:00000000 BKP_ClearFlag
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:358    .text.BKP_ClearFlag:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:361    .text.BKP_GetITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:366    .text.BKP_GetITStatus:00000000 BKP_GetITStatus
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:377    .text.BKP_GetITStatus:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:380    .text.BKP_ClearITPendingBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:385    .text.BKP_ClearITPendingBit:00000000 BKP_ClearITPendingBit
+D:\Users\draapho\AppData\Local\Temp\cch0Lutg.s:398    .text.BKP_ClearITPendingBit:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_BackupResetCmd
+assert_err

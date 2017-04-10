@@ -1,0 +1,764 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lcd_main.c"
+  15              		.section	.text.lcd_chip_pixel_wr,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	lcd_chip_pixel_wr:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  24 0002 0223     		movs	r3, #2
+  25 0004 4FF0C044 		mov	r4, #1610612736
+  26 0008 2380     		strh	r3, [r4]	@ movhi
+  27 000a 0F4B     		ldr	r3, .L2
+  28 000c 060A     		lsrs	r6, r0, #8
+  29 000e 0325     		movs	r5, #3
+  30 0010 C0B2     		uxtb	r0, r0
+  31 0012 0627     		movs	r7, #6
+  32 0014 1E80     		strh	r6, [r3]	@ movhi
+  33 0016 2580     		strh	r5, [r4]	@ movhi
+  34 0018 1880     		strh	r0, [r3]	@ movhi
+  35 001a 0D0A     		lsrs	r5, r1, #8
+  36 001c 2780     		strh	r7, [r4]	@ movhi
+  37 001e 0727     		movs	r7, #7
+  38 0020 1D80     		strh	r5, [r3]	@ movhi
+  39 0022 C9B2     		uxtb	r1, r1
+  40 0024 2780     		strh	r7, [r4]	@ movhi
+  41 0026 0427     		movs	r7, #4
+  42 0028 1980     		strh	r1, [r3]	@ movhi
+  43 002a 2780     		strh	r7, [r4]	@ movhi
+  44 002c 1E80     		strh	r6, [r3]	@ movhi
+  45 002e 0526     		movs	r6, #5
+  46 0030 2680     		strh	r6, [r4]	@ movhi
+  47 0032 1880     		strh	r0, [r3]	@ movhi
+  48 0034 0820     		movs	r0, #8
+  49 0036 2080     		strh	r0, [r4]	@ movhi
+  50 0038 0920     		movs	r0, #9
+  51 003a 1D80     		strh	r5, [r3]	@ movhi
+  52 003c 2080     		strh	r0, [r4]	@ movhi
+  53 003e 1980     		strh	r1, [r3]	@ movhi
+  54 0040 2221     		movs	r1, #34
+  55 0042 2180     		strh	r1, [r4]	@ movhi
+  56 0044 1A80     		strh	r2, [r3]	@ movhi
+  57 0046 F0BD     		pop	{r4, r5, r6, r7, pc}
+  58              	.L3:
+  59              		.align	2
+  60              	.L2:
+  61 0048 00000260 		.word	1610743808
+  63              		.section	.text.lcd_chip_pixel_rd,"ax",%progbits
+  64              		.align	1
+  65              		.thumb
+  66              		.thumb_func
+  68              	lcd_chip_pixel_rd:
+  69              		@ args = 0, pretend = 0, frame = 8
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71 0000 4FF0C042 		mov	r2, #1610612736
+  72 0004 0223     		movs	r3, #2
+  73 0006 73B5     		push	{r0, r1, r4, r5, r6, lr}
+  74 0008 1380     		strh	r3, [r2]	@ movhi
+  75 000a 224B     		ldr	r3, .L5
+  76 000c 050A     		lsrs	r5, r0, #8
+  77 000e 0324     		movs	r4, #3
+  78 0010 C0B2     		uxtb	r0, r0
+  79 0012 0626     		movs	r6, #6
+  80 0014 1D80     		strh	r5, [r3]	@ movhi
+  81 0016 1480     		strh	r4, [r2]	@ movhi
+  82 0018 1880     		strh	r0, [r3]	@ movhi
+  83 001a 0C0A     		lsrs	r4, r1, #8
+  84 001c 1680     		strh	r6, [r2]	@ movhi
+  85 001e 0726     		movs	r6, #7
+  86 0020 1C80     		strh	r4, [r3]	@ movhi
+  87 0022 C9B2     		uxtb	r1, r1
+  88 0024 1680     		strh	r6, [r2]	@ movhi
+  89 0026 0426     		movs	r6, #4
+  90 0028 1980     		strh	r1, [r3]	@ movhi
+  91 002a 1680     		strh	r6, [r2]	@ movhi
+  92 002c 1D80     		strh	r5, [r3]	@ movhi
+  93 002e 0525     		movs	r5, #5
+  94 0030 1580     		strh	r5, [r2]	@ movhi
+  95 0032 1880     		strh	r0, [r3]	@ movhi
+  96 0034 0820     		movs	r0, #8
+  97 0036 1080     		strh	r0, [r2]	@ movhi
+  98 0038 0920     		movs	r0, #9
+  99 003a 1C80     		strh	r4, [r3]	@ movhi
+ 100 003c 1080     		strh	r0, [r2]	@ movhi
+ 101 003e 1980     		strh	r1, [r3]	@ movhi
+ 102 0040 2221     		movs	r1, #34
+ 103 0042 1180     		strh	r1, [r2]	@ movhi
+ 104 0044 1A88     		ldrh	r2, [r3]
+ 105 0046 1A88     		ldrh	r2, [r3]
+ 106 0048 92B2     		uxth	r2, r2
+ 107 004a ADF80620 		strh	r2, [sp, #6]	@ movhi
+ 108 004e BDF80620 		ldrh	r2, [sp, #6]
+ 109 0052 02F47842 		and	r2, r2, #63488
+ 110 0056 ADF80220 		strh	r2, [sp, #2]	@ movhi
+ 111 005a BDF80620 		ldrh	r2, [sp, #6]
+ 112 005e 02F0FC02 		and	r2, r2, #252
+ 113 0062 D200     		lsls	r2, r2, #3
+ 114 0064 ADF80420 		strh	r2, [sp, #4]	@ movhi
+ 115 0068 1B88     		ldrh	r3, [r3]
+ 116 006a 9BB2     		uxth	r3, r3
+ 117 006c ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 118 0070 BDF80630 		ldrh	r3, [sp, #6]
+ 119 0074 C3F3C423 		ubfx	r3, r3, #11, #5
+ 120 0078 ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 121 007c BDF80230 		ldrh	r3, [sp, #2]
+ 122 0080 BDF80400 		ldrh	r0, [sp, #4]
+ 123 0084 1843     		orrs	r0, r0, r3
+ 124 0086 BDF80630 		ldrh	r3, [sp, #6]
+ 125 008a 1843     		orrs	r0, r0, r3
+ 126 008c 80B2     		uxth	r0, r0
+ 127 008e 02B0     		add	sp, sp, #8
+ 128              		@ sp needed
+ 129 0090 70BD     		pop	{r4, r5, r6, pc}
+ 130              	.L6:
+ 131 0092 00BF     		.align	2
+ 132              	.L5:
+ 133 0094 00000260 		.word	1610743808
+ 135              		.section	.text.lcd_power_on,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	lcd_power_on
+ 138              		.thumb
+ 139              		.thumb_func
+ 141              	lcd_power_on:
+ 142              		@ args = 0, pretend = 0, frame = 0
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144              		@ link register save eliminated.
+ 145 0000 0120     		movs	r0, #1
+ 146 0002 FFF7FEBF 		b	ctrlport_on
+ 148              		.section	.text.lcd_power_off,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	lcd_power_off
+ 151              		.thumb
+ 152              		.thumb_func
+ 154              	lcd_power_off:
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              		@ link register save eliminated.
+ 158 0000 0120     		movs	r0, #1
+ 159 0002 FFF7FEBF 		b	ctrlport_off
+ 161              		.section	.text.lcd_light_on,"ax",%progbits
+ 162              		.align	1
+ 163              		.global	lcd_light_on
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	lcd_light_on:
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+ 170              		@ link register save eliminated.
+ 171 0000 0220     		movs	r0, #2
+ 172 0002 FFF7FEBF 		b	ctrlport_on
+ 174              		.section	.text.lcd_light_adjust,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	lcd_light_adjust
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	lcd_light_adjust:
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183              		@ link register save eliminated.
+ 184 0000 FF28     		cmp	r0, #255
+ 185 0002 4FF00200 		mov	r0, #2
+ 186 0006 01D0     		beq	.L11
+ 187 0008 FFF7FEBF 		b	ctrlport_on
+ 188              	.L11:
+ 189 000c FFF7FEBF 		b	ctrlport_off
+ 191              		.section	.text.lcd_light_off,"ax",%progbits
+ 192              		.align	1
+ 193              		.global	lcd_light_off
+ 194              		.thumb
+ 195              		.thumb_func
+ 197              	lcd_light_off:
+ 198              		@ args = 0, pretend = 0, frame = 0
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 200              		@ link register save eliminated.
+ 201 0000 0220     		movs	r0, #2
+ 202 0002 FFF7FEBF 		b	ctrlport_off
+ 204              		.section	.text.lcd_init,"ax",%progbits
+ 205              		.align	1
+ 206              		.global	lcd_init
+ 207              		.thumb
+ 208              		.thumb_func
+ 210              	lcd_init:
+ 211              		@ args = 0, pretend = 0, frame = 96
+ 212              		@ frame_needed = 0, uses_anonymous_args = 0
+ 213 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 214 0004 4020     		movs	r0, #64
+ 215 0006 99B0     		sub	sp, sp, #100
+ 216 0008 0121     		movs	r1, #1
+ 217 000a FFF7FEFF 		bl	RCC_AHBPeriphClockCmd
+ 218 000e 4FF48070 		mov	r0, #256
+ 219 0012 0121     		movs	r1, #1
+ 220 0014 FFF7FEFF 		bl	RCC_AHBPeriphClockCmd
+ 221 0018 6020     		movs	r0, #96
+ 222 001a 0121     		movs	r1, #1
+ 223 001c FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 224 0020 CF4C     		ldr	r4, .L15
+ 225 0022 18AD     		add	r5, sp, #96
+ 226 0024 4CF6B373 		movw	r3, #53171
+ 227 0028 25F85C3D 		strh	r3, [r5, #-92]!	@ movhi
+ 228 002c 4FF00300 		mov	r0, #3
+ 229 0030 1827     		movs	r7, #24
+ 230 0032 8DF80600 		strb	r0, [sp, #6]
+ 231 0036 2946     		mov	r1, r5
+ 232 0038 2046     		mov	r0, r4
+ 233 003a 8DF80770 		strb	r7, [sp, #7]
+ 234 003e FFF7FEFF 		bl	GPIO_Init
+ 235 0042 4FF68073 		movw	r3, #65408
+ 236 0046 2946     		mov	r1, r5
+ 237 0048 C648     		ldr	r0, .L15+4
+ 238 004a ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 239 004e FFF7FEFF 		bl	GPIO_Init
+ 240 0052 2046     		mov	r0, r4
+ 241 0054 0821     		movs	r1, #8
+ 242 0056 FFF7FEFF 		bl	GPIO_ResetBits
+ 243 005a 2046     		mov	r0, r4
+ 244 005c 1021     		movs	r1, #16
+ 245 005e FFF7FEFF 		bl	GPIO_SetBits
+ 246 0062 2046     		mov	r0, r4
+ 247 0064 2021     		movs	r1, #32
+ 248 0066 FFF7FEFF 		bl	GPIO_SetBits
+ 249 006a 2046     		mov	r0, r4
+ 250 006c 8021     		movs	r1, #128
+ 251 006e FFF7FEFF 		bl	GPIO_SetBits
+ 252 0072 4FF08053 		mov	r3, #268435456
+ 253 0076 0893     		str	r3, [sp, #32]
+ 254 0078 1023     		movs	r3, #16
+ 255 007a 0826     		movs	r6, #8
+ 256 007c 0C93     		str	r3, [sp, #48]
+ 257 007e 4FF48053 		mov	r3, #4096
+ 258 0082 0024     		movs	r4, #0
+ 259 0084 0225     		movs	r5, #2
+ 260 0086 0521     		movs	r1, #5
+ 261 0088 1293     		str	r3, [sp, #72]
+ 262 008a 09A8     		add	r0, sp, #36
+ 263 008c 0DEB0603 		add	r3, sp, r6
+ 264 0090 1693     		str	r3, [sp, #88]
+ 265 0092 1793     		str	r3, [sp, #92]
+ 266 0094 0295     		str	r5, [sp, #8]
+ 267 0096 0491     		str	r1, [sp, #16]
+ 268 0098 0394     		str	r4, [sp, #12]
+ 269 009a 0594     		str	r4, [sp, #20]
+ 270 009c 0694     		str	r4, [sp, #24]
+ 271 009e 0794     		str	r4, [sp, #28]
+ 272 00a0 0994     		str	r4, [sp, #36]
+ 273 00a2 0A94     		str	r4, [sp, #40]
+ 274 00a4 0B96     		str	r6, [sp, #44]
+ 275 00a6 0D94     		str	r4, [sp, #52]
+ 276 00a8 0F94     		str	r4, [sp, #60]
+ 277 00aa 1094     		str	r4, [sp, #64]
+ 278 00ac 1194     		str	r4, [sp, #68]
+ 279 00ae 1394     		str	r4, [sp, #76]
+ 280 00b0 1494     		str	r4, [sp, #80]
+ 281 00b2 1594     		str	r4, [sp, #84]
+ 282 00b4 FFF7FEFF 		bl	FSMC_NORSRAMInit
+ 283 00b8 0121     		movs	r1, #1
+ 284 00ba 2046     		mov	r0, r4
+ 285 00bc FFF7FEFF 		bl	FSMC_NORSRAMCmd
+ 286 00c0 0120     		movs	r0, #1
+ 287 00c2 FFF7FEFF 		bl	ctrlport_init
+ 288 00c6 0120     		movs	r0, #1
+ 289 00c8 FFF7FEFF 		bl	ctrlport_off
+ 290 00cc 2846     		mov	r0, r5
+ 291 00ce FFF7FEFF 		bl	ctrlport_init
+ 292 00d2 2846     		mov	r0, r5
+ 293 00d4 FFF7FEFF 		bl	ctrlport_off
+ 294 00d8 FFF7FEFF 		bl	lcd_light_off
+ 295 00dc FFF7FEFF 		bl	lcd_power_off
+ 296 00e0 0A20     		movs	r0, #10
+ 297 00e2 FFF7FEFF 		bl	delay_ms
+ 298 00e6 FFF7FEFF 		bl	lcd_power_on
+ 299 00ea 0A20     		movs	r0, #10
+ 300 00ec FFF7FEFF 		bl	delay_ms
+ 301 00f0 4FF0C042 		mov	r2, #1610612736
+ 302 00f4 EA23     		movs	r3, #234
+ 303 00f6 1380     		strh	r3, [r2]	@ movhi
+ 304 00f8 9B4B     		ldr	r3, .L15+8
+ 305 00fa EB21     		movs	r1, #235
+ 306 00fc 1C80     		strh	r4, [r3]	@ movhi
+ 307 00fe 4FF0200E 		mov	lr, #32
+ 308 0102 1180     		strh	r1, [r2]	@ movhi
+ 309 0104 EC21     		movs	r1, #236
+ 310 0106 A3F800E0 		strh	lr, [r3]	@ movhi
+ 311 010a 1180     		strh	r1, [r2]	@ movhi
+ 312 010c 3C21     		movs	r1, #60
+ 313 010e 1980     		strh	r1, [r3]	@ movhi
+ 314 0110 ED21     		movs	r1, #237
+ 315 0112 1180     		strh	r1, [r2]	@ movhi
+ 316 0114 C421     		movs	r1, #196
+ 317 0116 1980     		strh	r1, [r3]	@ movhi
+ 318 0118 E821     		movs	r1, #232
+ 319 011a 1180     		strh	r1, [r2]	@ movhi
+ 320 011c 4820     		movs	r0, #72
+ 321 011e E921     		movs	r1, #233
+ 322 0120 1880     		strh	r0, [r3]	@ movhi
+ 323 0122 4FF03808 		mov	r8, #56
+ 324 0126 1180     		strh	r1, [r2]	@ movhi
+ 325 0128 F121     		movs	r1, #241
+ 326 012a A3F80080 		strh	r8, [r3]	@ movhi
+ 327 012e 4FF0F20C 		mov	ip, #242
+ 328 0132 1180     		strh	r1, [r2]	@ movhi
+ 329 0134 0121     		movs	r1, #1
+ 330 0136 1980     		strh	r1, [r3]	@ movhi
+ 331 0138 A2F800C0 		strh	ip, [r2]	@ movhi
+ 332 013c 4FF0400C 		mov	ip, #64
+ 333 0140 1E80     		strh	r6, [r3]	@ movhi
+ 334 0142 A2F800C0 		strh	ip, [r2]	@ movhi
+ 335 0146 4FF0410C 		mov	ip, #65
+ 336 014a 1980     		strh	r1, [r3]	@ movhi
+ 337 014c 4FF00709 		mov	r9, #7	@ movhi
+ 338 0150 A2F800C0 		strh	ip, [r2]	@ movhi
+ 339 0154 4FF0420C 		mov	ip, #66
+ 340 0158 A3F80090 		strh	r9, [r3]	@ movhi
+ 341 015c A2F800C0 		strh	ip, [r2]	@ movhi
+ 342 0160 4FF0090C 		mov	ip, #9	@ movhi
+ 343 0164 A3F800C0 		strh	ip, [r3]	@ movhi
+ 344 0168 4FF0430C 		mov	ip, #67
+ 345 016c A2F800C0 		strh	ip, [r2]	@ movhi
+ 346 0170 4FF04409 		mov	r9, #68
+ 347 0174 4FF0190C 		mov	ip, #25
+ 348 0178 A3F800C0 		strh	ip, [r3]	@ movhi
+ 349 017c A2F80090 		strh	r9, [r2]	@ movhi
+ 350 0180 4FF01709 		mov	r9, #23	@ movhi
+ 351 0184 A3F80090 		strh	r9, [r3]	@ movhi
+ 352 0188 4FF04509 		mov	r9, #69
+ 353 018c A2F80090 		strh	r9, [r2]	@ movhi
+ 354 0190 A3F800E0 		strh	lr, [r3]	@ movhi
+ 355 0194 4FF0460E 		mov	lr, #70
+ 356 0198 A2F800E0 		strh	lr, [r2]	@ movhi
+ 357 019c 4FF0470E 		mov	lr, #71
+ 358 01a0 1F80     		strh	r7, [r3]	@ movhi
+ 359 01a2 A2F800E0 		strh	lr, [r2]	@ movhi
+ 360 01a6 4FF0610E 		mov	lr, #97
+ 361 01aa A3F800E0 		strh	lr, [r3]	@ movhi
+ 362 01ae 1080     		strh	r0, [r2]	@ movhi
+ 363 01b0 4920     		movs	r0, #73
+ 364 01b2 1C80     		strh	r4, [r3]	@ movhi
+ 365 01b4 1080     		strh	r0, [r2]	@ movhi
+ 366 01b6 4FF01000 		mov	r0, #16	@ movhi
+ 367 01ba 1880     		strh	r0, [r3]	@ movhi
+ 368 01bc 4A20     		movs	r0, #74
+ 369 01be 1080     		strh	r0, [r2]	@ movhi
+ 370 01c0 4FF01709 		mov	r9, #23	@ movhi
+ 371 01c4 4B20     		movs	r0, #75
+ 372 01c6 A3F80090 		strh	r9, [r3]	@ movhi
+ 373 01ca 1080     		strh	r0, [r2]	@ movhi
+ 374 01cc 4C20     		movs	r0, #76
+ 375 01ce A3F800C0 		strh	ip, [r3]	@ movhi
+ 376 01d2 1080     		strh	r0, [r2]	@ movhi
+ 377 01d4 1420     		movs	r0, #20
+ 378 01d6 1880     		strh	r0, [r3]	@ movhi
+ 379 01d8 5020     		movs	r0, #80
+ 380 01da 1080     		strh	r0, [r2]	@ movhi
+ 381 01dc 4FF01F0E 		mov	lr, #31
+ 382 01e0 5120     		movs	r0, #81
+ 383 01e2 A3F800E0 		strh	lr, [r3]	@ movhi
+ 384 01e6 4FF02809 		mov	r9, #40
+ 385 01ea 1080     		strh	r0, [r2]	@ movhi
+ 386 01ec 5220     		movs	r0, #82
+ 387 01ee A3F80090 		strh	r9, [r3]	@ movhi
+ 388 01f2 1080     		strh	r0, [r2]	@ movhi
+ 389 01f4 2620     		movs	r0, #38
+ 390 01f6 1880     		strh	r0, [r3]	@ movhi
+ 391 01f8 5320     		movs	r0, #83
+ 392 01fa 1080     		strh	r0, [r2]	@ movhi
+ 393 01fc 4FF0540A 		mov	r10, #84
+ 394 0200 3620     		movs	r0, #54
+ 395 0202 1880     		strh	r0, [r3]	@ movhi
+ 396 0204 A2F800A0 		strh	r10, [r2]	@ movhi
+ 397 0208 A3F80080 		strh	r8, [r3]	@ movhi
+ 398 020c 4FF05508 		mov	r8, #85
+ 399 0210 A2F80080 		strh	r8, [r2]	@ movhi
+ 400 0214 4FF03E08 		mov	r8, #62
+ 401 0218 A3F80080 		strh	r8, [r3]	@ movhi
+ 402 021c 4FF05608 		mov	r8, #86
+ 403 0220 A2F80080 		strh	r8, [r2]	@ movhi
+ 404 0224 4FF01E08 		mov	r8, #30
+ 405 0228 A3F80080 		strh	r8, [r3]	@ movhi
+ 406 022c 4FF05708 		mov	r8, #87
+ 407 0230 A2F80080 		strh	r8, [r2]	@ movhi
+ 408 0234 4FF06708 		mov	r8, #103
+ 409 0238 A3F80080 		strh	r8, [r3]	@ movhi
+ 410 023c 4FF0580A 		mov	r10, #88
+ 411 0240 4FF00B08 		mov	r8, #11
+ 412 0244 A2F800A0 		strh	r10, [r2]	@ movhi
+ 413 0248 A3F80080 		strh	r8, [r3]	@ movhi
+ 414 024c 4FF05908 		mov	r8, #89
+ 415 0250 A2F80080 		strh	r8, [r2]	@ movhi
+ 416 0254 4FF05A0B 		mov	fp, #90
+ 417 0258 4FF00608 		mov	r8, #6
+ 418 025c A3F80080 		strh	r8, [r3]	@ movhi
+ 419 0260 A2F800B0 		strh	fp, [r2]	@ movhi
+ 420 0264 4FF05B0B 		mov	fp, #91
+ 421 0268 1E80     		strh	r6, [r3]	@ movhi
+ 422 026a A2F800B0 		strh	fp, [r2]	@ movhi
+ 423 026e 4FF00F0B 		mov	fp, #15
+ 424 0272 A3F800B0 		strh	fp, [r3]	@ movhi
+ 425 0276 4FF05C0B 		mov	fp, #92
+ 426 027a A2F800B0 		strh	fp, [r2]	@ movhi
+ 427 027e 4FF05D0B 		mov	fp, #93
+ 428 0282 A3F800E0 		strh	lr, [r3]	@ movhi
+ 429 0286 A2F800B0 		strh	fp, [r2]	@ movhi
+ 430 028a 4FF0CC0B 		mov	fp, #204
+ 431 028e A3F800B0 		strh	fp, [r3]	@ movhi
+ 432 0292 4FF01B0B 		mov	fp, #27
+ 433 0296 A2F800B0 		strh	fp, [r2]	@ movhi
+ 434 029a A3F800B0 		strh	fp, [r3]	@ movhi
+ 435 029e 4FF01A0B 		mov	fp, #26
+ 436 02a2 A2F800B0 		strh	fp, [r2]	@ movhi
+ 437 02a6 4FF0240B 		mov	fp, #36
+ 438 02aa 1980     		strh	r1, [r3]	@ movhi
+ 439 02ac A2F800B0 		strh	fp, [r2]	@ movhi
+ 440 02b0 4FF0700B 		mov	fp, #112
+ 441 02b4 A3F800B0 		strh	fp, [r3]	@ movhi
+ 442 02b8 4FF0250B 		mov	fp, #37
+ 443 02bc A2F800B0 		strh	fp, [r2]	@ movhi
+ 444 02c0 A3F800A0 		strh	r10, [r3]	@ movhi
+ 445 02c4 4FF0230A 		mov	r10, #35
+ 446 02c8 A2F800A0 		strh	r10, [r2]	@ movhi
+ 447 02cc 4FF06E0A 		mov	r10, #110
+ 448 02d0 A3F800A0 		strh	r10, [r3]	@ movhi
+ 449 02d4 1780     		strh	r7, [r2]	@ movhi
+ 450 02d6 D027     		movs	r7, #208
+ 451 02d8 1880     		strh	r0, [r3]	@ movhi
+ 452 02da A2F800C0 		strh	ip, [r2]	@ movhi
+ 453 02de 1980     		strh	r1, [r3]	@ movhi
+ 454 02e0 4FF0170C 		mov	ip, #23	@ movhi
+ 455 02e4 1180     		strh	r1, [r2]	@ movhi
+ 456 02e6 1C80     		strh	r4, [r3]	@ movhi
+ 457 02e8 A2F800E0 		strh	lr, [r2]	@ movhi
+ 458 02ec 1F80     		strh	r7, [r3]	@ movhi
+ 459 02ee 4FF00507 		mov	r7, #5	@ movhi
+ 460 02f2 A2F800C0 		strh	ip, [r2]	@ movhi
+ 461 02f6 1F80     		strh	r7, [r3]	@ movhi
+ 462 02f8 4FF0090C 		mov	ip, #9	@ movhi
+ 463 02fc 1080     		strh	r0, [r2]	@ movhi
+ 464 02fe 1627     		movs	r7, #22
+ 465 0300 3F20     		movs	r0, #63
+ 466 0302 A3F800C0 		strh	ip, [r3]	@ movhi
+ 467 0306 A2F80090 		strh	r9, [r2]	@ movhi
+ 468 030a 1880     		strh	r0, [r3]	@ movhi
+ 469 030c 1780     		strh	r7, [r2]	@ movhi
+ 470 030e 4FF01007 		mov	r7, #16	@ movhi
+ 471 0312 1F80     		strh	r7, [r3]	@ movhi
+ 472 0314 4FF00309 		mov	r9, #3	@ movhi
+ 473 0318 1580     		strh	r5, [r2]	@ movhi
+ 474 031a 0425     		movs	r5, #4
+ 475 031c 1C80     		strh	r4, [r3]	@ movhi
+ 476 031e 4FF0050C 		mov	ip, #5	@ movhi
+ 477 0322 A2F80090 		strh	r9, [r2]	@ movhi
+ 478 0326 1C80     		strh	r4, [r3]	@ movhi
+ 479 0328 1580     		strh	r5, [r2]	@ movhi
+ 480 032a EF25     		movs	r5, #239
+ 481 032c 1C80     		strh	r4, [r3]	@ movhi
+ 482 032e 4FF00907 		mov	r7, #9	@ movhi
+ 483 0332 A2F800C0 		strh	ip, [r2]	@ movhi
+ 484 0336 1D80     		strh	r5, [r3]	@ movhi
+ 485 0338 4FF00705 		mov	r5, #7	@ movhi
+ 486 033c A2F80080 		strh	r8, [r2]	@ movhi
+ 487 0340 1C80     		strh	r4, [r3]	@ movhi
+ 488 0342 1580     		strh	r5, [r2]	@ movhi
+ 489 0344 1C80     		strh	r4, [r3]	@ movhi
+ 490 0346 1680     		strh	r6, [r2]	@ movhi
+ 491 0348 1980     		strh	r1, [r3]	@ movhi
+ 492 034a 1780     		strh	r7, [r2]	@ movhi
+ 493 034c 1880     		strh	r0, [r3]	@ movhi
+ 494 034e 6420     		movs	r0, #100
+ 495 0350 FFF7FEFF 		bl	delay_ms
+ 496 0354 FFF7FEFF 		bl	lcd_light_on
+ 497 0358 19B0     		add	sp, sp, #100
+ 498              		@ sp needed
+ 499 035a BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 500              	.L16:
+ 501 035e 00BF     		.align	2
+ 502              	.L15:
+ 503 0360 00140140 		.word	1073812480
+ 504 0364 00180140 		.word	1073813504
+ 505 0368 00000260 		.word	1610743808
+ 507              		.section	.text.lcd_rgb565,"ax",%progbits
+ 508              		.align	1
+ 509              		.global	lcd_rgb565
+ 510              		.thumb
+ 511              		.thumb_func
+ 513              	lcd_rgb565:
+ 514              		@ args = 0, pretend = 0, frame = 0
+ 515              		@ frame_needed = 0, uses_anonymous_args = 0
+ 516              		@ link register save eliminated.
+ 517 0000 4901     		lsls	r1, r1, #5
+ 518 0002 01F4FC61 		and	r1, r1, #2016
+ 519 0006 41EAC020 		orr	r0, r1, r0, lsl #11
+ 520 000a 02F01F02 		and	r2, r2, #31
+ 521 000e 1043     		orrs	r0, r0, r2
+ 522 0010 80B2     		uxth	r0, r0
+ 523 0012 7047     		bx	lr
+ 525              		.section	.text.lcd_set_pixel,"ax",%progbits
+ 526              		.align	1
+ 527              		.global	lcd_set_pixel
+ 528              		.thumb
+ 529              		.thumb_func
+ 531              	lcd_set_pixel:
+ 532              		@ args = 0, pretend = 0, frame = 0
+ 533              		@ frame_needed = 0, uses_anonymous_args = 0
+ 534              		@ link register save eliminated.
+ 535 0000 FFF7FEBF 		b	lcd_chip_pixel_wr
+ 537              		.section	.text.lcd_get_pixel,"ax",%progbits
+ 538              		.align	1
+ 539              		.global	lcd_get_pixel
+ 540              		.thumb
+ 541              		.thumb_func
+ 543              	lcd_get_pixel:
+ 544              		@ args = 0, pretend = 0, frame = 0
+ 545              		@ frame_needed = 0, uses_anonymous_args = 0
+ 546              		@ link register save eliminated.
+ 547 0000 FFF7FEBF 		b	lcd_chip_pixel_rd
+ 549              		.section	.text.lcd_fill_rectangle,"ax",%progbits
+ 550              		.align	1
+ 551              		.global	lcd_fill_rectangle
+ 552              		.thumb
+ 553              		.thumb_func
+ 555              	lcd_fill_rectangle:
+ 556              		@ args = 4, pretend = 0, frame = 0
+ 557              		@ frame_needed = 0, uses_anonymous_args = 0
+ 558 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 559 0002 4FF0C045 		mov	r5, #1610612736
+ 560 0006 0224     		movs	r4, #2
+ 561 0008 BDF81460 		ldrh	r6, [sp, #20]
+ 562 000c 2C80     		strh	r4, [r5]	@ movhi
+ 563 000e 1C4C     		ldr	r4, .L24
+ 564 0010 070A     		lsrs	r7, r0, #8
+ 565 0012 2780     		strh	r7, [r4]	@ movhi
+ 566 0014 4FF0030C 		mov	ip, #3
+ 567 0018 C7B2     		uxtb	r7, r0
+ 568 001a A5F800C0 		strh	ip, [r5]	@ movhi
+ 569 001e 2780     		strh	r7, [r4]	@ movhi
+ 570 0020 4FF0060C 		mov	ip, #6
+ 571 0024 0F0A     		lsrs	r7, r1, #8
+ 572 0026 A5F800C0 		strh	ip, [r5]	@ movhi
+ 573 002a 2780     		strh	r7, [r4]	@ movhi
+ 574 002c 4FF0070C 		mov	ip, #7
+ 575 0030 CFB2     		uxtb	r7, r1
+ 576 0032 A5F800C0 		strh	ip, [r5]	@ movhi
+ 577 0036 2780     		strh	r7, [r4]	@ movhi
+ 578 0038 8718     		adds	r7, r0, r2
+ 579 003a 013F     		subs	r7, r7, #1
+ 580 003c C7F30F27 		ubfx	r7, r7, #8, #16
+ 581 0040 4FF0040C 		mov	ip, #4
+ 582 0044 A5F800C0 		strh	ip, [r5]	@ movhi
+ 583 0048 2780     		strh	r7, [r4]	@ movhi
+ 584 004a 571E     		subs	r7, r2, #1
+ 585 004c 3844     		add	r0, r0, r7
+ 586 004e C0B2     		uxtb	r0, r0
+ 587 0050 0527     		movs	r7, #5
+ 588 0052 2F80     		strh	r7, [r5]	@ movhi
+ 589 0054 2080     		strh	r0, [r4]	@ movhi
+ 590 0056 C818     		adds	r0, r1, r3
+ 591 0058 0138     		subs	r0, r0, #1
+ 592 005a C0F30F20 		ubfx	r0, r0, #8, #16
+ 593 005e 0827     		movs	r7, #8
+ 594 0060 2F80     		strh	r7, [r5]	@ movhi
+ 595 0062 2080     		strh	r0, [r4]	@ movhi
+ 596 0064 581E     		subs	r0, r3, #1
+ 597 0066 0144     		add	r1, r1, r0
+ 598 0068 5A43     		muls	r2, r3, r2
+ 599 006a C9B2     		uxtb	r1, r1
+ 600 006c 0920     		movs	r0, #9
+ 601 006e 2880     		strh	r0, [r5]	@ movhi
+ 602 0070 2180     		strh	r1, [r4]	@ movhi
+ 603 0072 2221     		movs	r1, #34
+ 604 0074 2980     		strh	r1, [r5]	@ movhi
+ 605              	.L21:
+ 606 0076 12B1     		cbz	r2, .L23
+ 607 0078 2680     		strh	r6, [r4]	@ movhi
+ 608 007a 013A     		subs	r2, r2, #1
+ 609 007c FBE7     		b	.L21
+ 610              	.L23:
+ 611 007e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 612              	.L25:
+ 613              		.align	2
+ 614              	.L24:
+ 615 0080 00000260 		.word	1610743808
+ 617              		.section	.text.lcd_test_driver,"ax",%progbits
+ 618              		.align	1
+ 619              		.global	lcd_test_driver
+ 620              		.thumb
+ 621              		.thumb_func
+ 623              	lcd_test_driver:
+ 624              		@ args = 0, pretend = 0, frame = 8
+ 625              		@ frame_needed = 0, uses_anonymous_args = 0
+ 626 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 627 0002 85B0     		sub	sp, sp, #20
+ 628 0004 FFF7FEFF 		bl	lcd_init
+ 629 0008 4FF61F03 		movw	r3, #63519
+ 630 000c 0020     		movs	r0, #0
+ 631 000e 6422     		movs	r2, #100
+ 632 0010 0093     		str	r3, [sp]
+ 633 0012 0146     		mov	r1, r0
+ 634 0014 1346     		mov	r3, r2
+ 635 0016 FFF7FEFF 		bl	lcd_fill_rectangle
+ 636 001a 0A25     		movs	r5, #10
+ 637              	.L27:
+ 638 001c 0A24     		movs	r4, #10
+ 639 001e 05EB040C 		add	ip, r5, r4
+ 640 0022 05F11407 		add	r7, r5, #20
+ 641 0026 05F11E06 		add	r6, r5, #30
+ 642 002a 1FFA8CFC 		uxth	ip, ip
+ 643 002e BFB2     		uxth	r7, r7
+ 644 0030 B6B2     		uxth	r6, r6
+ 645              	.L30:
+ 646 0032 2146     		mov	r1, r4
+ 647 0034 2846     		mov	r0, r5
+ 648 0036 4FF6FF72 		movw	r2, #65535
+ 649 003a FFF7FEFF 		bl	lcd_chip_pixel_wr
+ 650 003e 2146     		mov	r1, r4
+ 651 0040 6046     		mov	r0, ip
+ 652 0042 0022     		movs	r2, #0
+ 653 0044 FFF7FEFF 		bl	lcd_chip_pixel_wr
+ 654 0048 2146     		mov	r1, r4
+ 655 004a 3846     		mov	r0, r7
+ 656 004c 4FF47842 		mov	r2, #63488
+ 657 0050 FFF7FEFF 		bl	lcd_chip_pixel_wr
+ 658 0054 2146     		mov	r1, r4
+ 659 0056 3046     		mov	r0, r6
+ 660 0058 4FF4FC62 		mov	r2, #2016
+ 661 005c FFF7FEFF 		bl	lcd_chip_pixel_wr
+ 662 0060 05F12800 		add	r0, r5, #40
+ 663 0064 2146     		mov	r1, r4
+ 664 0066 80B2     		uxth	r0, r0
+ 665 0068 1F22     		movs	r2, #31
+ 666 006a FFF7FEFF 		bl	lcd_chip_pixel_wr
+ 667 006e 05F13200 		add	r0, r5, #50
+ 668 0072 2146     		mov	r1, r4
+ 669 0074 80B2     		uxth	r0, r0
+ 670 0076 4FF6FF72 		movw	r2, #65535
+ 671 007a FFF7FEFF 		bl	lcd_chip_pixel_wr
+ 672 007e 2146     		mov	r1, r4
+ 673 0080 05F13C00 		add	r0, r5, #60
+ 674 0084 0134     		adds	r4, r4, #1
+ 675 0086 80B2     		uxth	r0, r0
+ 676 0088 0022     		movs	r2, #0
+ 677 008a A4B2     		uxth	r4, r4
+ 678 008c FFF7FEFF 		bl	lcd_chip_pixel_wr
+ 679 0090 142C     		cmp	r4, #20
+ 680 0092 CED1     		bne	.L30
+ 681 0094 0135     		adds	r5, r5, #1
+ 682 0096 ADB2     		uxth	r5, r5
+ 683 0098 142D     		cmp	r5, #20
+ 684 009a BFD1     		bne	.L27
+ 685 009c 0F24     		movs	r4, #15
+ 686              	.L32:
+ 687 009e 2046     		mov	r0, r4
+ 688 00a0 0A21     		movs	r1, #10
+ 689 00a2 FFF7FEFF 		bl	lcd_chip_pixel_rd
+ 690 00a6 631F     		subs	r3, r4, #5
+ 691 00a8 0A22     		movs	r2, #10
+ 692 00aa 0A34     		adds	r4, r4, #10
+ 693 00ac 0090     		str	r0, [sp]
+ 694 00ae 1E21     		movs	r1, #30
+ 695 00b0 98B2     		uxth	r0, r3
+ 696 00b2 A4B2     		uxth	r4, r4
+ 697 00b4 1346     		mov	r3, r2
+ 698 00b6 FFF7FEFF 		bl	lcd_fill_rectangle
+ 699 00ba 552C     		cmp	r4, #85
+ 700 00bc EFD1     		bne	.L32
+ 701 00be 4FF4FA60 		mov	r0, #2000
+ 702 00c2 FFF7FEFF 		bl	delay_ms
+ 703 00c6 FFF7FEFF 		bl	GUI_Init
+ 704 00ca 4FF47F00 		mov	r0, #16711680
+ 705 00ce FFF7FEFF 		bl	GUI_SetBkColor
+ 706 00d2 FFF7FEFF 		bl	GUI_Clear
+ 707 00d6 1421     		movs	r1, #20
+ 708 00d8 0A20     		movs	r0, #10
+ 709 00da FFF7FEFF 		bl	GUI_GotoXY
+ 710 00de 0B48     		ldr	r0, .L33
+ 711 00e0 FFF7FEFF 		bl	GUI_DispString
+ 712 00e4 0020     		movs	r0, #0
+ 713 00e6 FFF7FEFF 		bl	GUI_SetDrawMode
+ 714 00ea 3C21     		movs	r1, #60
+ 715 00ec 2822     		movs	r2, #40
+ 716 00ee 7820     		movs	r0, #120
+ 717 00f0 FFF7FEFF 		bl	GUI_FillCircle
+ 718 00f4 0120     		movs	r0, #1
+ 719 00f6 FFF7FEFF 		bl	GUI_SetDrawMode
+ 720 00fa 8C20     		movs	r0, #140
+ 721 00fc 5A21     		movs	r1, #90
+ 722 00fe 2822     		movs	r2, #40
+ 723 0100 05B0     		add	sp, sp, #20
+ 724              		@ sp needed
+ 725 0102 BDE8F040 		pop	{r4, r5, r6, r7, lr}
+ 726 0106 FFF7FEBF 		b	GUI_FillCircle
+ 727              	.L34:
+ 728 010a 00BF     		.align	2
+ 729              	.L33:
+ 730 010c 00000000 		.word	.LC0
+ 732              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 733              	.LC0:
+ 734 0000 656D5749 		.ascii	"emWIN BLUE\000"
+ 734      4E20424C 
+ 734      554500
+ 735              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lcd_main.c
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:16     .text.lcd_chip_pixel_wr:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:20     .text.lcd_chip_pixel_wr:00000000 lcd_chip_pixel_wr
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:61     .text.lcd_chip_pixel_wr:00000048 $d
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:64     .text.lcd_chip_pixel_rd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:68     .text.lcd_chip_pixel_rd:00000000 lcd_chip_pixel_rd
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:133    .text.lcd_chip_pixel_rd:00000094 $d
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:136    .text.lcd_power_on:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:141    .text.lcd_power_on:00000000 lcd_power_on
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:149    .text.lcd_power_off:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:154    .text.lcd_power_off:00000000 lcd_power_off
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:162    .text.lcd_light_on:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:167    .text.lcd_light_on:00000000 lcd_light_on
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:175    .text.lcd_light_adjust:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:180    .text.lcd_light_adjust:00000000 lcd_light_adjust
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:192    .text.lcd_light_off:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:197    .text.lcd_light_off:00000000 lcd_light_off
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:205    .text.lcd_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:210    .text.lcd_init:00000000 lcd_init
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:503    .text.lcd_init:00000360 $d
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:508    .text.lcd_rgb565:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:513    .text.lcd_rgb565:00000000 lcd_rgb565
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:526    .text.lcd_set_pixel:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:531    .text.lcd_set_pixel:00000000 lcd_set_pixel
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:538    .text.lcd_get_pixel:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:543    .text.lcd_get_pixel:00000000 lcd_get_pixel
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:550    .text.lcd_fill_rectangle:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:555    .text.lcd_fill_rectangle:00000000 lcd_fill_rectangle
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:615    .text.lcd_fill_rectangle:00000080 $d
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:618    .text.lcd_test_driver:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:623    .text.lcd_test_driver:00000000 lcd_test_driver
+D:\Users\draapho\AppData\Local\Temp\ccQbfSIe.s:730    .text.lcd_test_driver:0000010c $d
+
+UNDEFINED SYMBOLS
+ctrlport_on
+ctrlport_off
+RCC_AHBPeriphClockCmd
+RCC_APB2PeriphClockCmd
+GPIO_Init
+GPIO_ResetBits
+GPIO_SetBits
+FSMC_NORSRAMInit
+FSMC_NORSRAMCmd
+ctrlport_init
+delay_ms
+GUI_Init
+GUI_SetBkColor
+GUI_Clear
+GUI_GotoXY
+GUI_DispString
+GUI_SetDrawMode
+GUI_FillCircle

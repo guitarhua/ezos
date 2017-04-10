@@ -1,0 +1,242 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_wwdg.c"
+  15              		.section	.text.WWDG_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	WWDG_DeInit
+  18              		.thumb
+  19              		.thumb_func
+  21              	WWDG_DeInit:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 4FF40060 		mov	r0, #2048
+  26 0006 0121     		movs	r1, #1
+  27 0008 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  28 000c BDE80840 		pop	{r3, lr}
+  29 0010 4FF40060 		mov	r0, #2048
+  30 0014 0021     		movs	r1, #0
+  31 0016 FFF7FEBF 		b	RCC_APB1PeriphResetCmd
+  33              		.section	.text.WWDG_SetPrescaler,"ax",%progbits
+  34              		.align	1
+  35              		.global	WWDG_SetPrescaler
+  36              		.thumb
+  37              		.thumb_func
+  39              	WWDG_SetPrescaler:
+  40              		@ args = 0, pretend = 0, frame = 0
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42 0000 30F4C073 		bics	r3, r0, #384
+  43 0004 10B5     		push	{r4, lr}
+  44 0006 0446     		mov	r4, r0
+  45 0008 03D0     		beq	.L3
+  46 000a 0548     		ldr	r0, .L8
+  47 000c 7A21     		movs	r1, #122
+  48 000e FFF7FEFF 		bl	assert_err
+  49              	.L3:
+  50 0012 044B     		ldr	r3, .L8+4
+  51 0014 5A68     		ldr	r2, [r3, #4]
+  52 0016 22F4C072 		bic	r2, r2, #384
+  53 001a 1443     		orrs	r4, r4, r2
+  54 001c 5C60     		str	r4, [r3, #4]
+  55 001e 10BD     		pop	{r4, pc}
+  56              	.L9:
+  57              		.align	2
+  58              	.L8:
+  59 0020 00000000 		.word	.LC0
+  60 0024 002C0040 		.word	1073753088
+  62              		.section	.text.WWDG_SetWindowValue,"ax",%progbits
+  63              		.align	1
+  64              		.global	WWDG_SetWindowValue
+  65              		.thumb
+  66              		.thumb_func
+  68              	WWDG_SetWindowValue:
+  69              		@ args = 0, pretend = 0, frame = 8
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71 0000 13B5     		push	{r0, r1, r4, lr}
+  72 0002 0023     		movs	r3, #0
+  73 0004 0193     		str	r3, [sp, #4]
+  74 0006 0306     		lsls	r3, r0, #24
+  75 0008 0446     		mov	r4, r0
+  76 000a 03D5     		bpl	.L11
+  77 000c 0848     		ldr	r0, .L12
+  78 000e 8E21     		movs	r1, #142
+  79 0010 FFF7FEFF 		bl	assert_err
+  80              	.L11:
+  81 0014 074B     		ldr	r3, .L12+4
+  82 0016 04F07F04 		and	r4, r4, #127
+  83 001a 5A68     		ldr	r2, [r3, #4]
+  84 001c 22F07F02 		bic	r2, r2, #127
+  85 0020 0192     		str	r2, [sp, #4]
+  86 0022 019A     		ldr	r2, [sp, #4]
+  87 0024 1443     		orrs	r4, r4, r2
+  88 0026 0194     		str	r4, [sp, #4]
+  89 0028 019A     		ldr	r2, [sp, #4]
+  90 002a 5A60     		str	r2, [r3, #4]
+  91 002c 02B0     		add	sp, sp, #8
+  92              		@ sp needed
+  93 002e 10BD     		pop	{r4, pc}
+  94              	.L13:
+  95              		.align	2
+  96              	.L12:
+  97 0030 00000000 		.word	.LC0
+  98 0034 002C0040 		.word	1073753088
+ 100              		.section	.text.WWDG_EnableIT,"ax",%progbits
+ 101              		.align	1
+ 102              		.global	WWDG_EnableIT
+ 103              		.thumb
+ 104              		.thumb_func
+ 106              	WWDG_EnableIT:
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
+ 110 0000 014B     		ldr	r3, .L15
+ 111 0002 0122     		movs	r2, #1
+ 112 0004 1A60     		str	r2, [r3]
+ 113 0006 7047     		bx	lr
+ 114              	.L16:
+ 115              		.align	2
+ 116              	.L15:
+ 117 0008 A4800542 		.word	1107656868
+ 119              		.section	.text.WWDG_SetCounter,"ax",%progbits
+ 120              		.align	1
+ 121              		.global	WWDG_SetCounter
+ 122              		.thumb
+ 123              		.thumb_func
+ 125              	WWDG_SetCounter:
+ 126              		@ args = 0, pretend = 0, frame = 0
+ 127              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128 0000 A0F14003 		sub	r3, r0, #64
+ 129 0004 DBB2     		uxtb	r3, r3
+ 130 0006 3F2B     		cmp	r3, #63
+ 131 0008 10B5     		push	{r4, lr}
+ 132 000a 0446     		mov	r4, r0
+ 133 000c 03D9     		bls	.L18
+ 134 000e 0448     		ldr	r0, .L19
+ 135 0010 AD21     		movs	r1, #173
+ 136 0012 FFF7FEFF 		bl	assert_err
+ 137              	.L18:
+ 138 0016 034B     		ldr	r3, .L19+4
+ 139 0018 04F07F04 		and	r4, r4, #127
+ 140 001c 1C60     		str	r4, [r3]
+ 141 001e 10BD     		pop	{r4, pc}
+ 142              	.L20:
+ 143              		.align	2
+ 144              	.L19:
+ 145 0020 00000000 		.word	.LC0
+ 146 0024 002C0040 		.word	1073753088
+ 148              		.section	.text.WWDG_Enable,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	WWDG_Enable
+ 151              		.thumb
+ 152              		.thumb_func
+ 154              	WWDG_Enable:
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157 0000 A0F14003 		sub	r3, r0, #64
+ 158 0004 DBB2     		uxtb	r3, r3
+ 159 0006 3F2B     		cmp	r3, #63
+ 160 0008 10B5     		push	{r4, lr}
+ 161 000a 0446     		mov	r4, r0
+ 162 000c 03D9     		bls	.L22
+ 163 000e 0448     		ldr	r0, .L23
+ 164 0010 BC21     		movs	r1, #188
+ 165 0012 FFF7FEFF 		bl	assert_err
+ 166              	.L22:
+ 167 0016 034B     		ldr	r3, .L23+4
+ 168 0018 44F08004 		orr	r4, r4, #128
+ 169 001c 1C60     		str	r4, [r3]
+ 170 001e 10BD     		pop	{r4, pc}
+ 171              	.L24:
+ 172              		.align	2
+ 173              	.L23:
+ 174 0020 00000000 		.word	.LC0
+ 175 0024 002C0040 		.word	1073753088
+ 177              		.section	.text.WWDG_GetFlagStatus,"ax",%progbits
+ 178              		.align	1
+ 179              		.global	WWDG_GetFlagStatus
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	WWDG_GetFlagStatus:
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 187 0000 014B     		ldr	r3, .L26
+ 188 0002 9868     		ldr	r0, [r3, #8]
+ 189 0004 C0B2     		uxtb	r0, r0
+ 190 0006 7047     		bx	lr
+ 191              	.L27:
+ 192              		.align	2
+ 193              	.L26:
+ 194 0008 002C0040 		.word	1073753088
+ 196              		.section	.text.WWDG_ClearFlag,"ax",%progbits
+ 197              		.align	1
+ 198              		.global	WWDG_ClearFlag
+ 199              		.thumb
+ 200              		.thumb_func
+ 202              	WWDG_ClearFlag:
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              		@ link register save eliminated.
+ 206 0000 014B     		ldr	r3, .L29
+ 207 0002 0022     		movs	r2, #0
+ 208 0004 9A60     		str	r2, [r3, #8]
+ 209 0006 7047     		bx	lr
+ 210              	.L30:
+ 211              		.align	2
+ 212              	.L29:
+ 213 0008 002C0040 		.word	1073753088
+ 215              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 216              	.LC0:
+ 217 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 217      73657273 
+ 217      2F647261 
+ 217      6170686F 
+ 217      2F446573 
+ 218 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_ww"
+ 218      6965732F 
+ 218      53544D33 
+ 218      32463130 
+ 218      785F5374 
+ 219 0066 64672E63 		.ascii	"dg.c\000"
+ 219      00
+ 220              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_wwdg.c
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:16     .text.WWDG_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:21     .text.WWDG_DeInit:00000000 WWDG_DeInit
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:34     .text.WWDG_SetPrescaler:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:39     .text.WWDG_SetPrescaler:00000000 WWDG_SetPrescaler
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:59     .text.WWDG_SetPrescaler:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:63     .text.WWDG_SetWindowValue:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:68     .text.WWDG_SetWindowValue:00000000 WWDG_SetWindowValue
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:97     .text.WWDG_SetWindowValue:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:101    .text.WWDG_EnableIT:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:106    .text.WWDG_EnableIT:00000000 WWDG_EnableIT
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:117    .text.WWDG_EnableIT:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:120    .text.WWDG_SetCounter:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:125    .text.WWDG_SetCounter:00000000 WWDG_SetCounter
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:145    .text.WWDG_SetCounter:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:149    .text.WWDG_Enable:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:154    .text.WWDG_Enable:00000000 WWDG_Enable
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:174    .text.WWDG_Enable:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:178    .text.WWDG_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:183    .text.WWDG_GetFlagStatus:00000000 WWDG_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:194    .text.WWDG_GetFlagStatus:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:197    .text.WWDG_ClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:202    .text.WWDG_ClearFlag:00000000 WWDG_ClearFlag
+D:\Users\draapho\AppData\Local\Temp\ccN6pcJv.s:213    .text.WWDG_ClearFlag:00000008 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd
+assert_err

@@ -1,0 +1,645 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"enc28j60_uip.c"
+  15              		.section	.text.enc28j60_cs_disable,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	enc28j60_cs_disable:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23              		@ link register save eliminated.
+  24 0000 0148     		ldr	r0, .L2
+  25 0002 1021     		movs	r1, #16
+  26 0004 FFF7FEBF 		b	GPIO_SetBits
+  27              	.L3:
+  28              		.align	2
+  29              	.L2:
+  30 0008 00080140 		.word	1073809408
+  32              		.section	.text.enc28j60_cs_enable,"ax",%progbits
+  33              		.align	1
+  34              		.thumb
+  35              		.thumb_func
+  37              	enc28j60_cs_enable:
+  38              		@ args = 0, pretend = 0, frame = 0
+  39              		@ frame_needed = 0, uses_anonymous_args = 0
+  40              		@ link register save eliminated.
+  41 0000 0148     		ldr	r0, .L5
+  42 0002 1021     		movs	r1, #16
+  43 0004 FFF7FEBF 		b	GPIO_ResetBits
+  44              	.L6:
+  45              		.align	2
+  46              	.L5:
+  47 0008 00080140 		.word	1073809408
+  49              		.section	.text.enc28j60_spi_tx_rx_byte,"ax",%progbits
+  50              		.align	1
+  51              		.thumb
+  52              		.thumb_func
+  54              	enc28j60_spi_tx_rx_byte:
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57              		@ link register save eliminated.
+  58 0000 0146     		mov	r1, r0
+  59 0002 0220     		movs	r0, #2
+  60 0004 FFF7FEBF 		b	spi_tx_rx_byte
+  62              		.section	.text.enc28j60_read_op,"ax",%progbits
+  63              		.align	1
+  64              		.thumb
+  65              		.thumb_func
+  67              	enc28j60_read_op:
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70 0000 38B5     		push	{r3, r4, r5, lr}
+  71 0002 0C46     		mov	r4, r1
+  72 0004 E4B2     		uxtb	r4, r4
+  73 0006 0546     		mov	r5, r0
+  74 0008 FFF7FEFF 		bl	enc28j60_cs_enable
+  75 000c 04F01F00 		and	r0, r4, #31
+  76 0010 2843     		orrs	r0, r0, r5
+  77 0012 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+  78 0016 0020     		movs	r0, #0
+  79 0018 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+  80 001c 2306     		lsls	r3, r4, #24
+  81 001e 0546     		mov	r5, r0
+  82 0020 03D5     		bpl	.L9
+  83 0022 0020     		movs	r0, #0
+  84 0024 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+  85 0028 0546     		mov	r5, r0
+  86              	.L9:
+  87 002a FFF7FEFF 		bl	enc28j60_cs_disable
+  88 002e E8B2     		uxtb	r0, r5
+  89 0030 38BD     		pop	{r3, r4, r5, pc}
+  91              		.section	.text.enc28j60_write_op,"ax",%progbits
+  92              		.align	1
+  93              		.thumb
+  94              		.thumb_func
+  96              	enc28j60_write_op:
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99 0000 70B5     		push	{r4, r5, r6, lr}
+ 100 0002 0E46     		mov	r6, r1
+ 101 0004 1546     		mov	r5, r2
+ 102 0006 0446     		mov	r4, r0
+ 103 0008 FFF7FEFF 		bl	enc28j60_cs_enable
+ 104 000c 06F01F00 		and	r0, r6, #31
+ 105 0010 2043     		orrs	r0, r0, r4
+ 106 0012 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+ 107 0016 2846     		mov	r0, r5
+ 108 0018 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+ 109 001c BDE87040 		pop	{r4, r5, r6, lr}
+ 110 0020 FFF7FEBF 		b	enc28j60_cs_disable
+ 112              		.section	.text.enc28j60_set_bank,"ax",%progbits
+ 113              		.align	1
+ 114              		.thumb
+ 115              		.thumb_func
+ 117              	enc28j60_set_bank:
+ 118              		@ args = 0, pretend = 0, frame = 0
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120 0000 38B5     		push	{r3, r4, r5, lr}
+ 121 0002 094D     		ldr	r5, .L14
+ 122 0004 00F06004 		and	r4, r0, #96
+ 123 0008 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 124 000a 9C42     		cmp	r4, r3
+ 125 000c 0AD0     		beq	.L12
+ 126 000e A020     		movs	r0, #160
+ 127 0010 1F21     		movs	r1, #31
+ 128 0012 0322     		movs	r2, #3
+ 129 0014 FFF7FEFF 		bl	enc28j60_write_op
+ 130 0018 8020     		movs	r0, #128
+ 131 001a 1F21     		movs	r1, #31
+ 132 001c 6209     		lsrs	r2, r4, #5
+ 133 001e FFF7FEFF 		bl	enc28j60_write_op
+ 134 0022 2C70     		strb	r4, [r5]
+ 135              	.L12:
+ 136 0024 38BD     		pop	{r3, r4, r5, pc}
+ 137              	.L15:
+ 138 0026 00BF     		.align	2
+ 139              	.L14:
+ 140 0028 00000000 		.word	.LANCHOR0
+ 142              		.section	.text.enc28j60_read,"ax",%progbits
+ 143              		.align	1
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	enc28j60_read:
+ 148              		@ args = 0, pretend = 0, frame = 0
+ 149              		@ frame_needed = 0, uses_anonymous_args = 0
+ 150 0000 10B5     		push	{r4, lr}
+ 151 0002 0446     		mov	r4, r0
+ 152 0004 FFF7FEFF 		bl	enc28j60_set_bank
+ 153 0008 2146     		mov	r1, r4
+ 154 000a 0020     		movs	r0, #0
+ 155 000c BDE81040 		pop	{r4, lr}
+ 156 0010 FFF7FEBF 		b	enc28j60_read_op
+ 158              		.section	.text.enc28j60_write,"ax",%progbits
+ 159              		.align	1
+ 160              		.thumb
+ 161              		.thumb_func
+ 163              	enc28j60_write:
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166 0000 38B5     		push	{r3, r4, r5, lr}
+ 167 0002 0546     		mov	r5, r0
+ 168 0004 0C46     		mov	r4, r1
+ 169 0006 FFF7FEFF 		bl	enc28j60_set_bank
+ 170 000a 2946     		mov	r1, r5
+ 171 000c 2246     		mov	r2, r4
+ 172 000e 4020     		movs	r0, #64
+ 173 0010 BDE83840 		pop	{r3, r4, r5, lr}
+ 174 0014 FFF7FEBF 		b	enc28j60_write_op
+ 176              		.section	.text.enc28j60_phy_write,"ax",%progbits
+ 177              		.align	1
+ 178              		.thumb
+ 179              		.thumb_func
+ 181              	enc28j60_phy_write:
+ 182              		@ args = 0, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 184 0000 0346     		mov	r3, r0
+ 185 0002 10B5     		push	{r4, lr}
+ 186 0004 D420     		movs	r0, #212
+ 187 0006 0C46     		mov	r4, r1
+ 188 0008 1946     		mov	r1, r3
+ 189 000a FFF7FEFF 		bl	enc28j60_write
+ 190 000e D620     		movs	r0, #214
+ 191 0010 E1B2     		uxtb	r1, r4
+ 192 0012 FFF7FEFF 		bl	enc28j60_write
+ 193 0016 D720     		movs	r0, #215
+ 194 0018 210A     		lsrs	r1, r4, #8
+ 195 001a FFF7FEFF 		bl	enc28j60_write
+ 196              	.L19:
+ 197 001e EA20     		movs	r0, #234
+ 198 0020 FFF7FEFF 		bl	enc28j60_read
+ 199 0024 C207     		lsls	r2, r0, #31
+ 200 0026 01D5     		bpl	.L21
+ 201              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 202 0028 00BF     		nop
+ 203              	@ 0 "" 2
+ 204              		.thumb
+ 205 002a F8E7     		b	.L19
+ 206              	.L21:
+ 207 002c 10BD     		pop	{r4, pc}
+ 209              		.section	.text.enc28j60_isr,"ax",%progbits
+ 210              		.align	1
+ 211              		.global	enc28j60_isr
+ 212              		.thumb
+ 213              		.thumb_func
+ 215              	enc28j60_isr:
+ 216              		@ args = 0, pretend = 0, frame = 0
+ 217              		@ frame_needed = 0, uses_anonymous_args = 0
+ 218              		@ link register save eliminated.
+ 219 0000 FFF7FEBF 		b	uip_chip_irq_rx
+ 221              		.section	.text.enc28j60_port_init,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	enc28j60_port_init
+ 224              		.thumb
+ 225              		.thumb_func
+ 227              	enc28j60_port_init:
+ 228              		@ args = 0, pretend = 0, frame = 8
+ 229              		@ frame_needed = 0, uses_anonymous_args = 0
+ 230 0000 07B5     		push	{r0, r1, r2, lr}
+ 231 0002 0020     		movs	r0, #0
+ 232 0004 0C21     		movs	r1, #12
+ 233 0006 FFF7FEFF 		bl	extint_init
+ 234 000a 0822     		movs	r2, #8
+ 235 000c 0220     		movs	r0, #2
+ 236 000e 8021     		movs	r1, #128
+ 237 0010 FFF7FEFF 		bl	spi_init
+ 238 0014 0420     		movs	r0, #4
+ 239 0016 0121     		movs	r1, #1
+ 240 0018 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 241 001c 1023     		movs	r3, #16
+ 242 001e 02A9     		add	r1, sp, #8
+ 243 0020 0322     		movs	r2, #3
+ 244 0022 21F8043D 		strh	r3, [r1, #-4]!	@ movhi
+ 245 0026 0648     		ldr	r0, .L24
+ 246 0028 8DF80730 		strb	r3, [sp, #7]
+ 247 002c 8DF80620 		strb	r2, [sp, #6]
+ 248 0030 FFF7FEFF 		bl	GPIO_Init
+ 249 0034 FFF7FEFF 		bl	enc28j60_cs_disable
+ 250 0038 03B0     		add	sp, sp, #12
+ 251              		@ sp needed
+ 252 003a 5DF804FB 		ldr	pc, [sp], #4
+ 253              	.L25:
+ 254 003e 00BF     		.align	2
+ 255              	.L24:
+ 256 0040 00080140 		.word	1073809408
+ 258              		.section	.text.enc28j60_init,"ax",%progbits
+ 259              		.align	1
+ 260              		.global	enc28j60_init
+ 261              		.thumb
+ 262              		.thumb_func
+ 264              	enc28j60_init:
+ 265              		@ args = 0, pretend = 0, frame = 8
+ 266              		@ frame_needed = 0, uses_anonymous_args = 0
+ 267 0000 13B5     		push	{r0, r1, r4, lr}
+ 268 0002 02AB     		add	r3, sp, #8
+ 269 0004 03E90300 		stmdb	r3, {r0, r1}
+ 270 0008 FFF7FEFF 		bl	enc28j60_cs_disable
+ 271 000c FF20     		movs	r0, #255
+ 272 000e 0021     		movs	r1, #0
+ 273 0010 0246     		mov	r2, r0
+ 274 0012 FFF7FEFF 		bl	enc28j60_write_op
+ 275 0016 4CF25033 		movw	r3, #50000
+ 276              	.L29:
+ 277              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 278 001a 00BF     		nop
+ 279              	@ 0 "" 2
+ 280              		.thumb
+ 281 001c 013B     		subs	r3, r3, #1
+ 282 001e FCD1     		bne	.L29
+ 283 0020 514C     		ldr	r4, .L33
+ 284              	.L28:
+ 285 0022 1D20     		movs	r0, #29
+ 286 0024 FFF7FEFF 		bl	enc28j60_read
+ 287 0028 C107     		lsls	r1, r0, #31
+ 288 002a 03D4     		bmi	.L32
+ 289 002c 013C     		subs	r4, r4, #1
+ 290 002e F8D1     		bne	.L28
+ 291 0030 02B0     		add	sp, sp, #8
+ 292              		@ sp needed
+ 293 0032 10BD     		pop	{r4, pc}
+ 294              	.L32:
+ 295 0034 4D4B     		ldr	r3, .L33+4
+ 296 0036 0024     		movs	r4, #0
+ 297 0038 2146     		mov	r1, r4
+ 298 003a 0820     		movs	r0, #8
+ 299 003c 1C80     		strh	r4, [r3]	@ movhi
+ 300 003e FFF7FEFF 		bl	enc28j60_write
+ 301 0042 2146     		mov	r1, r4
+ 302 0044 0920     		movs	r0, #9
+ 303 0046 FFF7FEFF 		bl	enc28j60_write
+ 304 004a 0C20     		movs	r0, #12
+ 305 004c FE21     		movs	r1, #254
+ 306 004e FFF7FEFF 		bl	enc28j60_write
+ 307 0052 0D20     		movs	r0, #13
+ 308 0054 1921     		movs	r1, #25
+ 309 0056 FFF7FEFF 		bl	enc28j60_write
+ 310 005a 0A20     		movs	r0, #10
+ 311 005c FE21     		movs	r1, #254
+ 312 005e FFF7FEFF 		bl	enc28j60_write
+ 313 0062 0B20     		movs	r0, #11
+ 314 0064 1921     		movs	r1, #25
+ 315 0066 FFF7FEFF 		bl	enc28j60_write
+ 316 006a 0420     		movs	r0, #4
+ 317 006c FF21     		movs	r1, #255
+ 318 006e FFF7FEFF 		bl	enc28j60_write
+ 319 0072 0520     		movs	r0, #5
+ 320 0074 1921     		movs	r1, #25
+ 321 0076 FFF7FEFF 		bl	enc28j60_write
+ 322 007a 0220     		movs	r0, #2
+ 323 007c FF21     		movs	r1, #255
+ 324 007e FFF7FEFF 		bl	enc28j60_write
+ 325 0082 0320     		movs	r0, #3
+ 326 0084 1921     		movs	r1, #25
+ 327 0086 FFF7FEFF 		bl	enc28j60_write
+ 328 008a 0620     		movs	r0, #6
+ 329 008c FF21     		movs	r1, #255
+ 330 008e FFF7FEFF 		bl	enc28j60_write
+ 331 0092 0720     		movs	r0, #7
+ 332 0094 1F21     		movs	r1, #31
+ 333 0096 FFF7FEFF 		bl	enc28j60_write
+ 334 009a 3820     		movs	r0, #56
+ 335 009c A121     		movs	r1, #161
+ 336 009e FFF7FEFF 		bl	enc28j60_write
+ 337 00a2 C020     		movs	r0, #192
+ 338 00a4 0D21     		movs	r1, #13
+ 339 00a6 FFF7FEFF 		bl	enc28j60_write
+ 340 00aa 2146     		mov	r1, r4
+ 341 00ac C120     		movs	r0, #193
+ 342 00ae FFF7FEFF 		bl	enc28j60_write
+ 343 00b2 3322     		movs	r2, #51
+ 344 00b4 8020     		movs	r0, #128
+ 345 00b6 C221     		movs	r1, #194
+ 346 00b8 FFF7FEFF 		bl	enc28j60_write_op
+ 347 00bc C420     		movs	r0, #196
+ 348 00be 1521     		movs	r1, #21
+ 349 00c0 FFF7FEFF 		bl	enc28j60_write
+ 350 00c4 C620     		movs	r0, #198
+ 351 00c6 1221     		movs	r1, #18
+ 352 00c8 FFF7FEFF 		bl	enc28j60_write
+ 353 00cc C720     		movs	r0, #199
+ 354 00ce 0C21     		movs	r1, #12
+ 355 00d0 FFF7FEFF 		bl	enc28j60_write
+ 356 00d4 CA20     		movs	r0, #202
+ 357 00d6 DC21     		movs	r1, #220
+ 358 00d8 FFF7FEFF 		bl	enc28j60_write
+ 359 00dc CB20     		movs	r0, #203
+ 360 00de 0521     		movs	r1, #5
+ 361 00e0 FFF7FEFF 		bl	enc28j60_write
+ 362 00e4 9DF80510 		ldrb	r1, [sp, #5]	@ zero_extendqisi2
+ 363 00e8 E120     		movs	r0, #225
+ 364 00ea FFF7FEFF 		bl	enc28j60_write
+ 365 00ee 9DF80410 		ldrb	r1, [sp, #4]	@ zero_extendqisi2
+ 366 00f2 E020     		movs	r0, #224
+ 367 00f4 FFF7FEFF 		bl	enc28j60_write
+ 368 00f8 9DF80310 		ldrb	r1, [sp, #3]	@ zero_extendqisi2
+ 369 00fc E320     		movs	r0, #227
+ 370 00fe FFF7FEFF 		bl	enc28j60_write
+ 371 0102 9DF80210 		ldrb	r1, [sp, #2]	@ zero_extendqisi2
+ 372 0106 E220     		movs	r0, #226
+ 373 0108 FFF7FEFF 		bl	enc28j60_write
+ 374 010c 9DF80110 		ldrb	r1, [sp, #1]	@ zero_extendqisi2
+ 375 0110 E520     		movs	r0, #229
+ 376 0112 FFF7FEFF 		bl	enc28j60_write
+ 377 0116 9DF80010 		ldrb	r1, [sp]	@ zero_extendqisi2
+ 378 011a E420     		movs	r0, #228
+ 379 011c FFF7FEFF 		bl	enc28j60_write
+ 380 0120 2146     		mov	r1, r4
+ 381 0122 7520     		movs	r0, #117
+ 382 0124 FFF7FEFF 		bl	enc28j60_write
+ 383 0128 2046     		mov	r0, r4
+ 384 012a 4FF48071 		mov	r1, #256
+ 385 012e FFF7FEFF 		bl	enc28j60_phy_write
+ 386 0132 4FF48071 		mov	r1, #256
+ 387 0136 1020     		movs	r0, #16
+ 388 0138 FFF7FEFF 		bl	enc28j60_phy_write
+ 389 013c 1F20     		movs	r0, #31
+ 390 013e FFF7FEFF 		bl	enc28j60_set_bank
+ 391 0142 8020     		movs	r0, #128
+ 392 0144 1B21     		movs	r1, #27
+ 393 0146 C022     		movs	r2, #192
+ 394 0148 FFF7FEFF 		bl	enc28j60_write_op
+ 395 014c 8020     		movs	r0, #128
+ 396 014e 1F21     		movs	r1, #31
+ 397 0150 0422     		movs	r2, #4
+ 398 0152 FFF7FEFF 		bl	enc28j60_write_op
+ 399 0156 1420     		movs	r0, #20
+ 400 0158 40F67651 		movw	r1, #3446
+ 401 015c 02B0     		add	sp, sp, #8
+ 402              		@ sp needed
+ 403 015e BDE81040 		pop	{r4, lr}
+ 404 0162 FFF7FEBF 		b	enc28j60_phy_write
+ 405              	.L34:
+ 406 0166 00BF     		.align	2
+ 407              	.L33:
+ 408 0168 B03C0400 		.word	277680
+ 409 016c 00000000 		.word	.LANCHOR1
+ 411              		.section	.text.enc28j60_tx,"ax",%progbits
+ 412              		.align	1
+ 413              		.global	enc28j60_tx
+ 414              		.thumb
+ 415              		.thumb_func
+ 417              	enc28j60_tx:
+ 418              		@ args = 0, pretend = 0, frame = 0
+ 419              		@ frame_needed = 0, uses_anonymous_args = 0
+ 420 0000 38B5     		push	{r3, r4, r5, lr}
+ 421 0002 0C46     		mov	r4, r1
+ 422 0004 0546     		mov	r5, r0
+ 423 0006 FF21     		movs	r1, #255
+ 424 0008 0220     		movs	r0, #2
+ 425 000a FFF7FEFF 		bl	enc28j60_write
+ 426 000e 0320     		movs	r0, #3
+ 427 0010 1921     		movs	r1, #25
+ 428 0012 FFF7FEFF 		bl	enc28j60_write
+ 429 0016 611E     		subs	r1, r4, #1
+ 430 0018 0620     		movs	r0, #6
+ 431 001a C9B2     		uxtb	r1, r1
+ 432 001c FFF7FEFF 		bl	enc28j60_write
+ 433 0020 04F5CF51 		add	r1, r4, #6624
+ 434 0024 1F31     		adds	r1, r1, #31
+ 435 0026 0720     		movs	r0, #7
+ 436 0028 C1F30721 		ubfx	r1, r1, #8, #8
+ 437 002c FFF7FEFF 		bl	enc28j60_write
+ 438 0030 0021     		movs	r1, #0
+ 439 0032 7A20     		movs	r0, #122
+ 440 0034 0A46     		mov	r2, r1
+ 441 0036 FFF7FEFF 		bl	enc28j60_write_op
+ 442 003a FFF7FEFF 		bl	enc28j60_cs_enable
+ 443 003e 7A20     		movs	r0, #122
+ 444              	.L39:
+ 445 0040 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+ 446 0044 24B1     		cbz	r4, .L40
+ 447 0046 013C     		subs	r4, r4, #1
+ 448 0048 A4B2     		uxth	r4, r4
+ 449 004a 15F8010B 		ldrb	r0, [r5], #1	@ zero_extendqisi2
+ 450 004e F7E7     		b	.L39
+ 451              	.L40:
+ 452 0050 FFF7FEFF 		bl	enc28j60_cs_disable
+ 453 0054 8020     		movs	r0, #128
+ 454 0056 1F21     		movs	r1, #31
+ 455 0058 0822     		movs	r2, #8
+ 456 005a FFF7FEFF 		bl	enc28j60_write_op
+ 457 005e 1C20     		movs	r0, #28
+ 458 0060 FFF7FEFF 		bl	enc28j60_read
+ 459 0064 8007     		lsls	r0, r0, #30
+ 460 0066 16D5     		bpl	.L35
+ 461 0068 1F20     		movs	r0, #31
+ 462 006a FFF7FEFF 		bl	enc28j60_set_bank
+ 463 006e 8020     		movs	r0, #128
+ 464 0070 0246     		mov	r2, r0
+ 465 0072 1F21     		movs	r1, #31
+ 466 0074 FFF7FEFF 		bl	enc28j60_write_op
+ 467 0078 1F21     		movs	r1, #31
+ 468 007a 8022     		movs	r2, #128
+ 469 007c A020     		movs	r0, #160
+ 470 007e FFF7FEFF 		bl	enc28j60_write_op
+ 471 0082 1C20     		movs	r0, #28
+ 472 0084 FFF7FEFF 		bl	enc28j60_set_bank
+ 473 0088 BDE83840 		pop	{r3, r4, r5, lr}
+ 474 008c A020     		movs	r0, #160
+ 475 008e 1C21     		movs	r1, #28
+ 476 0090 0222     		movs	r2, #2
+ 477 0092 FFF7FEBF 		b	enc28j60_write_op
+ 478              	.L35:
+ 479 0096 38BD     		pop	{r3, r4, r5, pc}
+ 481              		.section	.text.enc28j60_rx,"ax",%progbits
+ 482              		.align	1
+ 483              		.global	enc28j60_rx
+ 484              		.thumb
+ 485              		.thumb_func
+ 487              	enc28j60_rx:
+ 488              		@ args = 0, pretend = 0, frame = 0
+ 489              		@ frame_needed = 0, uses_anonymous_args = 0
+ 490 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 491 0004 0646     		mov	r6, r0
+ 492 0006 3920     		movs	r0, #57
+ 493 0008 8846     		mov	r8, r1
+ 494 000a FFF7FEFF 		bl	enc28j60_read
+ 495 000e 0028     		cmp	r0, #0
+ 496 0010 54D0     		beq	.L46
+ 497 0012 2C4C     		ldr	r4, .L49
+ 498 0014 0020     		movs	r0, #0
+ 499 0016 2178     		ldrb	r1, [r4]	@ zero_extendqisi2
+ 500 0018 FFF7FEFF 		bl	enc28j60_write
+ 501 001c 2188     		ldrh	r1, [r4]
+ 502 001e 0120     		movs	r0, #1
+ 503 0020 090A     		lsrs	r1, r1, #8
+ 504 0022 FFF7FEFF 		bl	enc28j60_write
+ 505 0026 0021     		movs	r1, #0
+ 506 0028 3A20     		movs	r0, #58
+ 507 002a FFF7FEFF 		bl	enc28j60_read_op
+ 508 002e 0021     		movs	r1, #0
+ 509 0030 0746     		mov	r7, r0
+ 510 0032 2080     		strh	r0, [r4]	@ movhi
+ 511 0034 3A20     		movs	r0, #58
+ 512 0036 FFF7FEFF 		bl	enc28j60_read_op
+ 513 003a 47EA0020 		orr	r0, r7, r0, lsl #8
+ 514 003e 2080     		strh	r0, [r4]	@ movhi
+ 515 0040 0021     		movs	r1, #0
+ 516 0042 3A20     		movs	r0, #58
+ 517 0044 FFF7FEFF 		bl	enc28j60_read_op
+ 518 0048 0021     		movs	r1, #0
+ 519 004a 0746     		mov	r7, r0
+ 520 004c 3A20     		movs	r0, #58
+ 521 004e FFF7FEFF 		bl	enc28j60_read_op
+ 522 0052 0021     		movs	r1, #0
+ 523 0054 8146     		mov	r9, r0
+ 524 0056 3A20     		movs	r0, #58
+ 525 0058 FFF7FEFF 		bl	enc28j60_read_op
+ 526 005c 0546     		mov	r5, r0
+ 527 005e 05F08005 		and	r5, r5, #128
+ 528 0062 3A20     		movs	r0, #58
+ 529 0064 0021     		movs	r1, #0
+ 530 0066 ADB2     		uxth	r5, r5
+ 531 0068 FFF7FEFF 		bl	enc28j60_read_op
+ 532 006c BDB1     		cbz	r5, .L43
+ 533 006e FFF7FEFF 		bl	enc28j60_cs_enable
+ 534 0072 3A20     		movs	r0, #58
+ 535 0074 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+ 536 0078 47EA0925 		orr	r5, r7, r9, lsl #8
+ 537 007c 043D     		subs	r5, r5, #4
+ 538 007e 4545     		cmp	r5, r8
+ 539 0080 28BF     		it	cs
+ 540 0082 4546     		movcs	r5, r8
+ 541 0084 7719     		adds	r7, r6, r5
+ 542 0086 BFB2     		uxth	r7, r7
+ 543              	.L44:
+ 544 0088 B3B2     		uxth	r3, r6
+ 545 008a 9F42     		cmp	r7, r3
+ 546 008c 05D0     		beq	.L48
+ 547 008e 0020     		movs	r0, #0
+ 548 0090 FFF7FEFF 		bl	enc28j60_spi_tx_rx_byte
+ 549 0094 06F8010B 		strb	r0, [r6], #1
+ 550 0098 F6E7     		b	.L44
+ 551              	.L48:
+ 552 009a FFF7FEFF 		bl	enc28j60_cs_disable
+ 553              	.L43:
+ 554 009e 2178     		ldrb	r1, [r4]	@ zero_extendqisi2
+ 555 00a0 0C20     		movs	r0, #12
+ 556 00a2 FFF7FEFF 		bl	enc28j60_write
+ 557 00a6 2188     		ldrh	r1, [r4]
+ 558 00a8 0D20     		movs	r0, #13
+ 559 00aa 090A     		lsrs	r1, r1, #8
+ 560 00ac FFF7FEFF 		bl	enc28j60_write
+ 561 00b0 8020     		movs	r0, #128
+ 562 00b2 1E21     		movs	r1, #30
+ 563 00b4 4022     		movs	r2, #64
+ 564 00b6 FFF7FEFF 		bl	enc28j60_write_op
+ 565 00ba 00E0     		b	.L42
+ 566              	.L46:
+ 567 00bc 0546     		mov	r5, r0
+ 568              	.L42:
+ 569 00be A8B2     		uxth	r0, r5
+ 570 00c0 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 571              	.L50:
+ 572              		.align	2
+ 573              	.L49:
+ 574 00c4 00000000 		.word	.LANCHOR1
+ 576              		.section	.text.enc28j60_linked,"ax",%progbits
+ 577              		.align	1
+ 578              		.global	enc28j60_linked
+ 579              		.thumb
+ 580              		.thumb_func
+ 582              	enc28j60_linked:
+ 583              		@ args = 0, pretend = 0, frame = 0
+ 584              		@ frame_needed = 0, uses_anonymous_args = 0
+ 585 0000 D420     		movs	r0, #212
+ 586 0002 1121     		movs	r1, #17
+ 587 0004 10B5     		push	{r4, lr}
+ 588 0006 FFF7FEFF 		bl	enc28j60_write
+ 589 000a D220     		movs	r0, #210
+ 590 000c 0121     		movs	r1, #1
+ 591 000e FFF7FEFF 		bl	enc28j60_write
+ 592              	.L52:
+ 593 0012 EA20     		movs	r0, #234
+ 594 0014 FFF7FEFF 		bl	enc28j60_read
+ 595 0018 10F00101 		ands	r1, r0, #1
+ 596 001c 01D0     		beq	.L54
+ 597              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 598 001e 00BF     		nop
+ 599              	@ 0 "" 2
+ 600              		.thumb
+ 601 0020 F7E7     		b	.L52
+ 602              	.L54:
+ 603 0022 D220     		movs	r0, #210
+ 604 0024 FFF7FEFF 		bl	enc28j60_write
+ 605 0028 D920     		movs	r0, #217
+ 606 002a FFF7FEFF 		bl	enc28j60_read
+ 607 002e 0446     		mov	r4, r0
+ 608 0030 D820     		movs	r0, #216
+ 609 0032 FFF7FEFF 		bl	enc28j60_read
+ 610 0036 40EA0420 		orr	r0, r0, r4, lsl #8
+ 611 003a C0F38020 		ubfx	r0, r0, #10, #1
+ 612 003e 10BD     		pop	{r4, pc}
+ 614              		.section	.bss.enc28j60_bank,"aw",%nobits
+ 615              		.set	.LANCHOR0,. + 0
+ 618              	enc28j60_bank:
+ 619 0000 00       		.space	1
+ 620              		.section	.bss.next_packet,"aw",%nobits
+ 621              		.align	1
+ 622              		.set	.LANCHOR1,. + 0
+ 625              	next_packet:
+ 626 0000 0000     		.space	2
+ 627              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 enc28j60_uip.c
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:16     .text.enc28j60_cs_disable:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:20     .text.enc28j60_cs_disable:00000000 enc28j60_cs_disable
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:30     .text.enc28j60_cs_disable:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:33     .text.enc28j60_cs_enable:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:37     .text.enc28j60_cs_enable:00000000 enc28j60_cs_enable
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:47     .text.enc28j60_cs_enable:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:50     .text.enc28j60_spi_tx_rx_byte:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:54     .text.enc28j60_spi_tx_rx_byte:00000000 enc28j60_spi_tx_rx_byte
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:63     .text.enc28j60_read_op:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:67     .text.enc28j60_read_op:00000000 enc28j60_read_op
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:92     .text.enc28j60_write_op:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:96     .text.enc28j60_write_op:00000000 enc28j60_write_op
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:113    .text.enc28j60_set_bank:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:117    .text.enc28j60_set_bank:00000000 enc28j60_set_bank
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:140    .text.enc28j60_set_bank:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:143    .text.enc28j60_read:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:147    .text.enc28j60_read:00000000 enc28j60_read
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:159    .text.enc28j60_write:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:163    .text.enc28j60_write:00000000 enc28j60_write
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:177    .text.enc28j60_phy_write:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:181    .text.enc28j60_phy_write:00000000 enc28j60_phy_write
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:210    .text.enc28j60_isr:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:215    .text.enc28j60_isr:00000000 enc28j60_isr
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:222    .text.enc28j60_port_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:227    .text.enc28j60_port_init:00000000 enc28j60_port_init
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:256    .text.enc28j60_port_init:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:259    .text.enc28j60_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:264    .text.enc28j60_init:00000000 enc28j60_init
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:408    .text.enc28j60_init:00000168 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:412    .text.enc28j60_tx:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:417    .text.enc28j60_tx:00000000 enc28j60_tx
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:482    .text.enc28j60_rx:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:487    .text.enc28j60_rx:00000000 enc28j60_rx
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:574    .text.enc28j60_rx:000000c4 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:577    .text.enc28j60_linked:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:582    .text.enc28j60_linked:00000000 enc28j60_linked
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:618    .bss.enc28j60_bank:00000000 enc28j60_bank
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:619    .bss.enc28j60_bank:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:621    .bss.next_packet:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccsJKKE2.s:625    .bss.next_packet:00000000 next_packet
+
+UNDEFINED SYMBOLS
+GPIO_SetBits
+GPIO_ResetBits
+spi_tx_rx_byte
+uip_chip_irq_rx
+extint_init
+spi_init
+RCC_APB2PeriphClockCmd
+GPIO_Init

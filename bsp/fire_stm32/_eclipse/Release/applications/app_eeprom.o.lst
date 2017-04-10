@@ -1,0 +1,191 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_eeprom.c"
+  15              		.section	.text.task_eeprom_test,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_eeprom_test:
+  21              		@ args = 0, pretend = 0, frame = 200
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 70B5     		push	{r4, r5, r6, lr}
+  24 0002 0020     		movs	r0, #0
+  25 0004 B2B0     		sub	sp, sp, #200
+  26 0006 2949     		ldr	r1, .L15
+  27 0008 FFF7FEFF 		bl	uart_printf
+  28 000c 0024     		movs	r4, #0
+  29              	.L3:
+  30 000e 04F13003 		add	r3, r4, #48
+  31 0012 0DF80430 		strb	r3, [sp, r4]
+  32 0016 0134     		adds	r4, r4, #1
+  33 0018 C82C     		cmp	r4, #200
+  34 001a F8D1     		bne	.L3
+  35 001c FFF7FEFF 		bl	delay_tick_get
+  36 0020 2246     		mov	r2, r4
+  37 0022 0021     		movs	r1, #0
+  38 0024 0546     		mov	r5, r0
+  39 0026 6846     		mov	r0, sp
+  40 0028 FFF7FEFF 		bl	eeprom_write
+  41 002c 0646     		mov	r6, r0
+  42 002e FFF7FEFF 		bl	delay_tick_get
+  43 0032 1F49     		ldr	r1, .L15+4
+  44 0034 451B     		subs	r5, r0, r5
+  45 0036 3246     		mov	r2, r6
+  46 0038 0020     		movs	r0, #0
+  47 003a FFF7FEFF 		bl	uart_printf
+  48 003e 2246     		mov	r2, r4
+  49 0040 2B46     		mov	r3, r5
+  50 0042 0020     		movs	r0, #0
+  51 0044 1B49     		ldr	r1, .L15+8
+  52 0046 0024     		movs	r4, #0
+  53 0048 FFF7FEFF 		bl	uart_printf
+  54 004c 2346     		mov	r3, r4
+  55              	.L5:
+  56 004e 0DF80430 		strb	r3, [sp, r4]
+  57 0052 0134     		adds	r4, r4, #1
+  58 0054 C82C     		cmp	r4, #200
+  59 0056 FAD1     		bne	.L5
+  60 0058 FFF7FEFF 		bl	delay_tick_get
+  61 005c 0021     		movs	r1, #0
+  62 005e 2246     		mov	r2, r4
+  63 0060 0546     		mov	r5, r0
+  64 0062 6846     		mov	r0, sp
+  65 0064 FFF7FEFF 		bl	eeprom_read
+  66 0068 0646     		mov	r6, r0
+  67 006a FFF7FEFF 		bl	delay_tick_get
+  68 006e 1249     		ldr	r1, .L15+12
+  69 0070 451B     		subs	r5, r0, r5
+  70 0072 3246     		mov	r2, r6
+  71 0074 0020     		movs	r0, #0
+  72 0076 FFF7FEFF 		bl	uart_printf
+  73 007a 2B46     		mov	r3, r5
+  74 007c 0020     		movs	r0, #0
+  75 007e 0F49     		ldr	r1, .L15+16
+  76 0080 2246     		mov	r2, r4
+  77 0082 FFF7FEFF 		bl	uart_printf
+  78 0086 3023     		movs	r3, #48
+  79              	.L8:
+  80 0088 00AA     		add	r2, sp, #0
+  81 008a 1A44     		add	r2, r2, r3
+  82 008c 12F8302C 		ldrb	r2, [r2, #-48]	@ zero_extendqisi2
+  83 0090 9A42     		cmp	r2, r3
+  84 0092 05D1     		bne	.L6
+  85 0094 0133     		adds	r3, r3, #1
+  86 0096 F82B     		cmp	r3, #248
+  87 0098 F6D1     		bne	.L8
+  88 009a 0020     		movs	r0, #0
+  89 009c 0849     		ldr	r1, .L15+20
+  90 009e 01E0     		b	.L13
+  91              	.L6:
+  92 00a0 0849     		ldr	r1, .L15+24
+  93 00a2 0020     		movs	r0, #0
+  94              	.L13:
+  95 00a4 FFF7FEFF 		bl	uart_printf
+  96 00a8 32B0     		add	sp, sp, #200
+  97              		@ sp needed
+  98 00aa 70BD     		pop	{r4, r5, r6, pc}
+  99              	.L16:
+ 100              		.align	2
+ 101              	.L15:
+ 102 00ac 00000000 		.word	.LC0
+ 103 00b0 1E000000 		.word	.LC1
+ 104 00b4 31000000 		.word	.LC2
+ 105 00b8 54000000 		.word	.LC3
+ 106 00bc 66000000 		.word	.LC4
+ 107 00c0 88000000 		.word	.LC5
+ 108 00c4 9A000000 		.word	.LC6
+ 110              		.section	.text.eeprom_start,"ax",%progbits
+ 111              		.align	1
+ 112              		.global	eeprom_start
+ 113              		.thumb
+ 114              		.thumb_func
+ 116              	eeprom_start:
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119 0000 07B5     		push	{r0, r1, r2, lr}
+ 120 0002 0020     		movs	r0, #0
+ 121 0004 FFF7FEFF 		bl	eeprom_init
+ 122 0008 0448     		ldr	r0, .L18
+ 123 000a 0022     		movs	r2, #0
+ 124 000c 0092     		str	r2, [sp]
+ 125 000e 0146     		mov	r1, r0
+ 126 0010 1346     		mov	r3, r2
+ 127 0012 FFF7FEFF 		bl	ezos_add
+ 128 0016 03B0     		add	sp, sp, #12
+ 129              		@ sp needed
+ 130 0018 5DF804FB 		ldr	pc, [sp], #4
+ 131              	.L19:
+ 132              		.align	2
+ 133              	.L18:
+ 134 001c 00000000 		.word	task_eeprom_test
+ 136              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 137              	.LC0:
+ 138 0000 0D0A0D0A 		.ascii	"\015\012\015\012===== eeprom test =====\015\012\000"
+ 138      3D3D3D3D 
+ 138      3D206565 
+ 138      70726F6D 
+ 138      20746573 
+ 139              	.LC1:
+ 140 001e 45657072 		.ascii	"Eeprom write: %u\015\012\000"
+ 140      6F6D2077 
+ 140      72697465 
+ 140      3A202575 
+ 140      0D0A00
+ 141              	.LC2:
+ 142 0031 45657072 		.ascii	"Eeprom write %u bytes used %u ms\015\012\000"
+ 142      6F6D2077 
+ 142      72697465 
+ 142      20257520 
+ 142      62797465 
+ 143              	.LC3:
+ 144 0054 45657072 		.ascii	"Eeprom read: %u\015\012\000"
+ 144      6F6D2072 
+ 144      6561643A 
+ 144      2025750D 
+ 144      0A00
+ 145              	.LC4:
+ 146 0066 45657072 		.ascii	"Eeprom read %u bytes used %u ms\015\012\000"
+ 146      6F6D2072 
+ 146      65616420 
+ 146      25752062 
+ 146      79746573 
+ 147              	.LC5:
+ 148 0088 45657072 		.ascii	"Eeprom cmp ok\015\012\015\012\000"
+ 148      6F6D2063 
+ 148      6D70206F 
+ 148      6B0D0A0D 
+ 148      0A00
+ 149              	.LC6:
+ 150 009a 45657072 		.ascii	"Eeprom cmp error\015\012\015\012\000"
+ 150      6F6D2063 
+ 150      6D702065 
+ 150      72726F72 
+ 150      0D0A0D0A 
+ 151              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_eeprom.c
+D:\Users\draapho\AppData\Local\Temp\cckzkkkj.s:16     .text.task_eeprom_test:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckzkkkj.s:20     .text.task_eeprom_test:00000000 task_eeprom_test
+D:\Users\draapho\AppData\Local\Temp\cckzkkkj.s:102    .text.task_eeprom_test:000000ac $d
+D:\Users\draapho\AppData\Local\Temp\cckzkkkj.s:111    .text.eeprom_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckzkkkj.s:116    .text.eeprom_start:00000000 eeprom_start
+D:\Users\draapho\AppData\Local\Temp\cckzkkkj.s:134    .text.eeprom_start:0000001c $d
+
+UNDEFINED SYMBOLS
+uart_printf
+delay_tick_get
+eeprom_write
+eeprom_read
+eeprom_init
+ezos_add

@@ -1,0 +1,651 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_sd.c"
+  15              		.section	.text.task_sd_blocks_test,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_sd_blocks_test:
+  21              		@ args = 0, pretend = 0, frame = 24
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  24 0002 4FF48060 		mov	r0, #1024
+  25 0006 87B0     		sub	sp, sp, #28
+  26 0008 FFF7FEFF 		bl	malloc
+  27 000c 0446     		mov	r4, r0
+  28 000e 0028     		cmp	r0, #0
+  29 0010 00F0BD80 		beq	.L2
+  30 0014 6449     		ldr	r1, .L40
+  31 0016 0020     		movs	r0, #0
+  32 0018 FFF7FEFF 		bl	uart_printf
+  33 001c FFF7FEFF 		bl	sdcard_init
+  34 0020 6249     		ldr	r1, .L40+4
+  35 0022 0246     		mov	r2, r0
+  36 0024 0020     		movs	r0, #0
+  37 0026 FFF7FEFF 		bl	uart_printf
+  38 002a 6846     		mov	r0, sp
+  39 002c FFF7FEFF 		bl	sdcard_get_info
+  40 0030 5F49     		ldr	r1, .L40+8
+  41 0032 0246     		mov	r2, r0
+  42 0034 0020     		movs	r0, #0
+  43 0036 FFF7FEFF 		bl	uart_printf
+  44 003a 0020     		movs	r0, #0
+  45 003c 5D49     		ldr	r1, .L40+12
+  46 003e 9DF80020 		ldrb	r2, [sp]	@ zero_extendqisi2
+  47 0042 FFF7FEFF 		bl	uart_printf
+  48 0046 0020     		movs	r0, #0
+  49 0048 5B49     		ldr	r1, .L40+16
+  50 004a 059A     		ldr	r2, [sp, #20]
+  51 004c FFF7FEFF 		bl	uart_printf
+  52 0050 0020     		movs	r0, #0
+  53 0052 5A49     		ldr	r1, .L40+20
+  54 0054 049A     		ldr	r2, [sp, #16]
+  55 0056 FFF7FEFF 		bl	uart_printf
+  56 005a 0023     		movs	r3, #0
+  57              	.L4:
+  58 005c E354     		strb	r3, [r4, r3]
+  59 005e 0133     		adds	r3, r3, #1
+  60 0060 B3F5806F 		cmp	r3, #1024
+  61 0064 FAD1     		bne	.L4
+  62 0066 FFF7FEFF 		bl	delay_tick_get
+  63 006a 0021     		movs	r1, #0
+  64 006c 0222     		movs	r2, #2
+  65 006e 0546     		mov	r5, r0
+  66 0070 2046     		mov	r0, r4
+  67 0072 FFF7FEFF 		bl	sdcard_write_blocks
+  68 0076 0646     		mov	r6, r0
+  69 0078 FFF7FEFF 		bl	delay_tick_get
+  70 007c 5049     		ldr	r1, .L40+24
+  71 007e 451B     		subs	r5, r0, r5
+  72 0080 3246     		mov	r2, r6
+  73 0082 0020     		movs	r0, #0
+  74 0084 FFF7FEFF 		bl	uart_printf
+  75 0088 0222     		movs	r2, #2
+  76 008a 2B46     		mov	r3, r5
+  77 008c 0020     		movs	r0, #0
+  78 008e 4D49     		ldr	r1, .L40+28
+  79 0090 FFF7FEFF 		bl	uart_printf
+  80 0094 0023     		movs	r3, #0
+  81 0096 1A46     		mov	r2, r3
+  82              	.L6:
+  83 0098 E254     		strb	r2, [r4, r3]
+  84 009a 0133     		adds	r3, r3, #1
+  85 009c B3F5806F 		cmp	r3, #1024
+  86 00a0 FAD1     		bne	.L6
+  87 00a2 FFF7FEFF 		bl	delay_tick_get
+  88 00a6 0021     		movs	r1, #0
+  89 00a8 0222     		movs	r2, #2
+  90 00aa 0546     		mov	r5, r0
+  91 00ac 2046     		mov	r0, r4
+  92 00ae FFF7FEFF 		bl	sdcard_read_blocks
+  93 00b2 0646     		mov	r6, r0
+  94 00b4 FFF7FEFF 		bl	delay_tick_get
+  95 00b8 4349     		ldr	r1, .L40+32
+  96 00ba 451B     		subs	r5, r0, r5
+  97 00bc 3246     		mov	r2, r6
+  98 00be 0020     		movs	r0, #0
+  99 00c0 FFF7FEFF 		bl	uart_printf
+ 100 00c4 2B46     		mov	r3, r5
+ 101 00c6 0020     		movs	r0, #0
+ 102 00c8 4049     		ldr	r1, .L40+36
+ 103 00ca 0222     		movs	r2, #2
+ 104 00cc FFF7FEFF 		bl	uart_printf
+ 105 00d0 0023     		movs	r3, #0
+ 106              	.L9:
+ 107 00d2 E15C     		ldrb	r1, [r4, r3]	@ zero_extendqisi2
+ 108 00d4 DAB2     		uxtb	r2, r3
+ 109 00d6 9142     		cmp	r1, r2
+ 110 00d8 06D1     		bne	.L7
+ 111 00da 0133     		adds	r3, r3, #1
+ 112 00dc B3F5806F 		cmp	r3, #1024
+ 113 00e0 F7D1     		bne	.L9
+ 114 00e2 0020     		movs	r0, #0
+ 115 00e4 3A49     		ldr	r1, .L40+40
+ 116 00e6 01E0     		b	.L36
+ 117              	.L7:
+ 118 00e8 3A49     		ldr	r1, .L40+44
+ 119 00ea 0020     		movs	r0, #0
+ 120              	.L36:
+ 121 00ec FFF7FEFF 		bl	uart_printf
+ 122 00f0 0023     		movs	r3, #0
+ 123              	.L11:
+ 124 00f2 E354     		strb	r3, [r4, r3]
+ 125 00f4 0133     		adds	r3, r3, #1
+ 126 00f6 B3F5806F 		cmp	r3, #1024
+ 127 00fa FAD1     		bne	.L11
+ 128 00fc FFF7FEFF 		bl	delay_tick_get
+ 129 0100 0025     		movs	r5, #0
+ 130 0102 0746     		mov	r7, r0
+ 131              	.L13:
+ 132 0104 2046     		mov	r0, r4
+ 133 0106 2946     		mov	r1, r5
+ 134 0108 0222     		movs	r2, #2
+ 135 010a FFF7FEFF 		bl	sdcard_write_blocks
+ 136 010e 0646     		mov	r6, r0
+ 137 0110 0028     		cmp	r0, #0
+ 138 0112 42D0     		beq	.L39
+ 139              	.L12:
+ 140 0114 FFF7FEFF 		bl	delay_tick_get
+ 141 0118 3246     		mov	r2, r6
+ 142 011a C71B     		subs	r7, r0, r7
+ 143 011c 2E49     		ldr	r1, .L40+48
+ 144 011e 0020     		movs	r0, #0
+ 145 0120 FFF7FEFF 		bl	uart_printf
+ 146 0124 0020     		movs	r0, #0
+ 147 0126 2D49     		ldr	r1, .L40+52
+ 148 0128 3A46     		mov	r2, r7
+ 149 012a FFF7FEFF 		bl	uart_printf
+ 150 012e FFF7FEFF 		bl	delay_tick_get
+ 151 0132 0025     		movs	r5, #0
+ 152 0134 0646     		mov	r6, r0
+ 153              	.L15:
+ 154 0136 2946     		mov	r1, r5
+ 155 0138 2046     		mov	r0, r4
+ 156 013a 0222     		movs	r2, #2
+ 157 013c 0135     		adds	r5, r5, #1
+ 158 013e FFF7FEFF 		bl	sdcard_read_blocks
+ 159 0142 642D     		cmp	r5, #100
+ 160 0144 F7D1     		bne	.L15
+ 161 0146 FFF7FEFF 		bl	delay_tick_get
+ 162 014a 2549     		ldr	r1, .L40+56
+ 163 014c 821B     		subs	r2, r0, r6
+ 164 014e 0020     		movs	r0, #0
+ 165 0150 FFF7FEFF 		bl	uart_printf
+ 166 0154 0023     		movs	r3, #0
+ 167 0156 1A46     		mov	r2, r3
+ 168              	.L17:
+ 169 0158 E254     		strb	r2, [r4, r3]
+ 170 015a 0133     		adds	r3, r3, #1
+ 171 015c B3F5806F 		cmp	r3, #1024
+ 172 0160 FAD1     		bne	.L17
+ 173 0162 0025     		movs	r5, #0
+ 174              	.L22:
+ 175 0164 2046     		mov	r0, r4
+ 176 0166 2946     		mov	r1, r5
+ 177 0168 0222     		movs	r2, #2
+ 178 016a FFF7FEFF 		bl	sdcard_read_blocks
+ 179 016e 0023     		movs	r3, #0
+ 180              	.L20:
+ 181 0170 E15C     		ldrb	r1, [r4, r3]	@ zero_extendqisi2
+ 182 0172 DAB2     		uxtb	r2, r3
+ 183 0174 9142     		cmp	r1, r2
+ 184 0176 14D1     		bne	.L18
+ 185 0178 0133     		adds	r3, r3, #1
+ 186 017a B3F5806F 		cmp	r3, #1024
+ 187 017e F7D1     		bne	.L20
+ 188 0180 78B9     		cbnz	r0, .L18
+ 189 0182 0135     		adds	r5, r5, #1
+ 190 0184 642D     		cmp	r5, #100
+ 191 0186 EDD1     		bne	.L22
+ 192 0188 1649     		ldr	r1, .L40+60
+ 193              	.L37:
+ 194 018a FFF7FEFF 		bl	uart_printf
+ 195              	.L2:
+ 196 018e 2046     		mov	r0, r4
+ 197 0190 07B0     		add	sp, sp, #28
+ 198              		@ sp needed
+ 199 0192 BDE8F040 		pop	{r4, r5, r6, r7, lr}
+ 200 0196 FFF7FEBF 		b	free
+ 201              	.L39:
+ 202 019a 0135     		adds	r5, r5, #1
+ 203 019c 642D     		cmp	r5, #100
+ 204 019e B1D1     		bne	.L13
+ 205 01a0 B8E7     		b	.L12
+ 206              	.L18:
+ 207 01a2 0020     		movs	r0, #0
+ 208 01a4 1049     		ldr	r1, .L40+64
+ 209 01a6 F0E7     		b	.L37
+ 210              	.L41:
+ 211              		.align	2
+ 212              	.L40:
+ 213 01a8 00000000 		.word	.LC0
+ 214 01ac 27000000 		.word	.LC1
+ 215 01b0 35000000 		.word	.LC2
+ 216 01b4 47000000 		.word	.LC3
+ 217 01b8 52000000 		.word	.LC4
+ 218 01bc 62000000 		.word	.LC5
+ 219 01c0 74000000 		.word	.LC6
+ 220 01c4 90000000 		.word	.LC7
+ 221 01c8 B0000000 		.word	.LC8
+ 222 01cc CB000000 		.word	.LC9
+ 223 01d0 A4010000 		.word	.LC16
+ 224 01d4 86010000 		.word	.LC15
+ 225 01d8 EA000000 		.word	.LC10
+ 226 01dc 04010000 		.word	.LC11
+ 227 01e0 25010000 		.word	.LC12
+ 228 01e4 45010000 		.word	.LC13
+ 229 01e8 64010000 		.word	.LC14
+ 231              		.section	.text.task_sd_block_test,"ax",%progbits
+ 232              		.align	1
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	task_sd_block_test:
+ 237              		@ args = 0, pretend = 0, frame = 24
+ 238              		@ frame_needed = 0, uses_anonymous_args = 0
+ 239 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 240 0002 4FF40070 		mov	r0, #512
+ 241 0006 87B0     		sub	sp, sp, #28
+ 242 0008 FFF7FEFF 		bl	malloc
+ 243 000c 0446     		mov	r4, r0
+ 244 000e 0028     		cmp	r0, #0
+ 245 0010 00F0BB80 		beq	.L43
+ 246 0014 6349     		ldr	r1, .L80
+ 247 0016 0020     		movs	r0, #0
+ 248 0018 FFF7FEFF 		bl	uart_printf
+ 249 001c FFF7FEFF 		bl	sdcard_init
+ 250 0020 6149     		ldr	r1, .L80+4
+ 251 0022 0246     		mov	r2, r0
+ 252 0024 0020     		movs	r0, #0
+ 253 0026 FFF7FEFF 		bl	uart_printf
+ 254 002a 6846     		mov	r0, sp
+ 255 002c FFF7FEFF 		bl	sdcard_get_info
+ 256 0030 5E49     		ldr	r1, .L80+8
+ 257 0032 0246     		mov	r2, r0
+ 258 0034 0020     		movs	r0, #0
+ 259 0036 FFF7FEFF 		bl	uart_printf
+ 260 003a 0020     		movs	r0, #0
+ 261 003c 5C49     		ldr	r1, .L80+12
+ 262 003e 9DF80020 		ldrb	r2, [sp]	@ zero_extendqisi2
+ 263 0042 FFF7FEFF 		bl	uart_printf
+ 264 0046 0020     		movs	r0, #0
+ 265 0048 5A49     		ldr	r1, .L80+16
+ 266 004a 059A     		ldr	r2, [sp, #20]
+ 267 004c FFF7FEFF 		bl	uart_printf
+ 268 0050 0020     		movs	r0, #0
+ 269 0052 5949     		ldr	r1, .L80+20
+ 270 0054 049A     		ldr	r2, [sp, #16]
+ 271 0056 FFF7FEFF 		bl	uart_printf
+ 272 005a 0023     		movs	r3, #0
+ 273              	.L45:
+ 274 005c E354     		strb	r3, [r4, r3]
+ 275 005e 0133     		adds	r3, r3, #1
+ 276 0060 B3F5007F 		cmp	r3, #512
+ 277 0064 FAD1     		bne	.L45
+ 278 0066 FFF7FEFF 		bl	delay_tick_get
+ 279 006a 0021     		movs	r1, #0
+ 280 006c 0122     		movs	r2, #1
+ 281 006e 0546     		mov	r5, r0
+ 282 0070 2046     		mov	r0, r4
+ 283 0072 FFF7FEFF 		bl	sdcard_write_blocks
+ 284 0076 0646     		mov	r6, r0
+ 285 0078 FFF7FEFF 		bl	delay_tick_get
+ 286 007c 4F49     		ldr	r1, .L80+24
+ 287 007e 451B     		subs	r5, r0, r5
+ 288 0080 3246     		mov	r2, r6
+ 289 0082 0020     		movs	r0, #0
+ 290 0084 FFF7FEFF 		bl	uart_printf
+ 291 0088 2A46     		mov	r2, r5
+ 292 008a 0020     		movs	r0, #0
+ 293 008c 4C49     		ldr	r1, .L80+28
+ 294 008e FFF7FEFF 		bl	uart_printf
+ 295 0092 0023     		movs	r3, #0
+ 296 0094 1A46     		mov	r2, r3
+ 297              	.L47:
+ 298 0096 E254     		strb	r2, [r4, r3]
+ 299 0098 0133     		adds	r3, r3, #1
+ 300 009a B3F5007F 		cmp	r3, #512
+ 301 009e FAD1     		bne	.L47
+ 302 00a0 FFF7FEFF 		bl	delay_tick_get
+ 303 00a4 0021     		movs	r1, #0
+ 304 00a6 0122     		movs	r2, #1
+ 305 00a8 0546     		mov	r5, r0
+ 306 00aa 2046     		mov	r0, r4
+ 307 00ac FFF7FEFF 		bl	sdcard_read_blocks
+ 308 00b0 0646     		mov	r6, r0
+ 309 00b2 FFF7FEFF 		bl	delay_tick_get
+ 310 00b6 4349     		ldr	r1, .L80+32
+ 311 00b8 451B     		subs	r5, r0, r5
+ 312 00ba 3246     		mov	r2, r6
+ 313 00bc 0020     		movs	r0, #0
+ 314 00be FFF7FEFF 		bl	uart_printf
+ 315 00c2 0020     		movs	r0, #0
+ 316 00c4 4049     		ldr	r1, .L80+36
+ 317 00c6 2A46     		mov	r2, r5
+ 318 00c8 FFF7FEFF 		bl	uart_printf
+ 319 00cc 0023     		movs	r3, #0
+ 320              	.L50:
+ 321 00ce E15C     		ldrb	r1, [r4, r3]	@ zero_extendqisi2
+ 322 00d0 DAB2     		uxtb	r2, r3
+ 323 00d2 9142     		cmp	r1, r2
+ 324 00d4 06D1     		bne	.L48
+ 325 00d6 0133     		adds	r3, r3, #1
+ 326 00d8 B3F5007F 		cmp	r3, #512
+ 327 00dc F7D1     		bne	.L50
+ 328 00de 0020     		movs	r0, #0
+ 329 00e0 3A49     		ldr	r1, .L80+40
+ 330 00e2 01E0     		b	.L77
+ 331              	.L48:
+ 332 00e4 3A49     		ldr	r1, .L80+44
+ 333 00e6 0020     		movs	r0, #0
+ 334              	.L77:
+ 335 00e8 FFF7FEFF 		bl	uart_printf
+ 336 00ec 0023     		movs	r3, #0
+ 337              	.L52:
+ 338 00ee E354     		strb	r3, [r4, r3]
+ 339 00f0 0133     		adds	r3, r3, #1
+ 340 00f2 B3F5007F 		cmp	r3, #512
+ 341 00f6 FAD1     		bne	.L52
+ 342 00f8 FFF7FEFF 		bl	delay_tick_get
+ 343 00fc 0025     		movs	r5, #0
+ 344 00fe 0746     		mov	r7, r0
+ 345              	.L54:
+ 346 0100 2046     		mov	r0, r4
+ 347 0102 2946     		mov	r1, r5
+ 348 0104 0122     		movs	r2, #1
+ 349 0106 FFF7FEFF 		bl	sdcard_write_blocks
+ 350 010a 0646     		mov	r6, r0
+ 351 010c 0028     		cmp	r0, #0
+ 352 010e 42D0     		beq	.L79
+ 353              	.L53:
+ 354 0110 FFF7FEFF 		bl	delay_tick_get
+ 355 0114 3246     		mov	r2, r6
+ 356 0116 C71B     		subs	r7, r0, r7
+ 357 0118 2E49     		ldr	r1, .L80+48
+ 358 011a 0020     		movs	r0, #0
+ 359 011c FFF7FEFF 		bl	uart_printf
+ 360 0120 0020     		movs	r0, #0
+ 361 0122 2D49     		ldr	r1, .L80+52
+ 362 0124 3A46     		mov	r2, r7
+ 363 0126 FFF7FEFF 		bl	uart_printf
+ 364 012a FFF7FEFF 		bl	delay_tick_get
+ 365 012e 0025     		movs	r5, #0
+ 366 0130 0646     		mov	r6, r0
+ 367              	.L56:
+ 368 0132 2946     		mov	r1, r5
+ 369 0134 2046     		mov	r0, r4
+ 370 0136 0122     		movs	r2, #1
+ 371 0138 0135     		adds	r5, r5, #1
+ 372 013a FFF7FEFF 		bl	sdcard_read_blocks
+ 373 013e C82D     		cmp	r5, #200
+ 374 0140 F7D1     		bne	.L56
+ 375 0142 FFF7FEFF 		bl	delay_tick_get
+ 376 0146 2549     		ldr	r1, .L80+56
+ 377 0148 821B     		subs	r2, r0, r6
+ 378 014a 0020     		movs	r0, #0
+ 379 014c FFF7FEFF 		bl	uart_printf
+ 380 0150 0023     		movs	r3, #0
+ 381 0152 1A46     		mov	r2, r3
+ 382              	.L58:
+ 383 0154 E254     		strb	r2, [r4, r3]
+ 384 0156 0133     		adds	r3, r3, #1
+ 385 0158 B3F5007F 		cmp	r3, #512
+ 386 015c FAD1     		bne	.L58
+ 387 015e 0025     		movs	r5, #0
+ 388              	.L63:
+ 389 0160 2046     		mov	r0, r4
+ 390 0162 2946     		mov	r1, r5
+ 391 0164 0122     		movs	r2, #1
+ 392 0166 FFF7FEFF 		bl	sdcard_read_blocks
+ 393 016a 0023     		movs	r3, #0
+ 394              	.L61:
+ 395 016c E15C     		ldrb	r1, [r4, r3]	@ zero_extendqisi2
+ 396 016e DAB2     		uxtb	r2, r3
+ 397 0170 9142     		cmp	r1, r2
+ 398 0172 14D1     		bne	.L59
+ 399 0174 0133     		adds	r3, r3, #1
+ 400 0176 B3F5007F 		cmp	r3, #512
+ 401 017a F7D1     		bne	.L61
+ 402 017c 78B9     		cbnz	r0, .L59
+ 403 017e 0135     		adds	r5, r5, #1
+ 404 0180 C82D     		cmp	r5, #200
+ 405 0182 EDD1     		bne	.L63
+ 406 0184 1649     		ldr	r1, .L80+60
+ 407              	.L78:
+ 408 0186 FFF7FEFF 		bl	uart_printf
+ 409              	.L43:
+ 410 018a 2046     		mov	r0, r4
+ 411 018c 07B0     		add	sp, sp, #28
+ 412              		@ sp needed
+ 413 018e BDE8F040 		pop	{r4, r5, r6, r7, lr}
+ 414 0192 FFF7FEBF 		b	free
+ 415              	.L79:
+ 416 0196 0135     		adds	r5, r5, #1
+ 417 0198 C82D     		cmp	r5, #200
+ 418 019a B1D1     		bne	.L54
+ 419 019c B8E7     		b	.L53
+ 420              	.L59:
+ 421 019e 0020     		movs	r0, #0
+ 422 01a0 1049     		ldr	r1, .L80+64
+ 423 01a2 F0E7     		b	.L78
+ 424              	.L81:
+ 425              		.align	2
+ 426              	.L80:
+ 427 01a4 BF010000 		.word	.LC17
+ 428 01a8 27000000 		.word	.LC1
+ 429 01ac 35000000 		.word	.LC2
+ 430 01b0 47000000 		.word	.LC3
+ 431 01b4 52000000 		.word	.LC4
+ 432 01b8 62000000 		.word	.LC5
+ 433 01bc E6010000 		.word	.LC18
+ 434 01c0 FB010000 		.word	.LC19
+ 435 01c4 19020000 		.word	.LC20
+ 436 01c8 2D020000 		.word	.LC21
+ 437 01cc A6020000 		.word	.LC25
+ 438 01d0 8D020000 		.word	.LC24
+ 439 01d4 EA000000 		.word	.LC10
+ 440 01d8 04010000 		.word	.LC11
+ 441 01dc 25010000 		.word	.LC12
+ 442 01e0 4A020000 		.word	.LC22
+ 443 01e4 6A020000 		.word	.LC23
+ 445              		.section	.text.sd_start,"ax",%progbits
+ 446              		.align	1
+ 447              		.global	sd_start
+ 448              		.thumb
+ 449              		.thumb_func
+ 451              	sd_start:
+ 452              		@ args = 0, pretend = 0, frame = 0
+ 453              		@ frame_needed = 0, uses_anonymous_args = 0
+ 454 0000 13B5     		push	{r0, r1, r4, lr}
+ 455 0002 FFF7FEFF 		bl	sdcard_port_init
+ 456 0006 0948     		ldr	r0, .L83
+ 457 0008 0024     		movs	r4, #0
+ 458 000a 2246     		mov	r2, r4
+ 459 000c 2346     		mov	r3, r4
+ 460 000e 0094     		str	r4, [sp]
+ 461 0010 0146     		mov	r1, r0
+ 462 0012 FFF7FEFF 		bl	ezos_add
+ 463 0016 0648     		ldr	r0, .L83+4
+ 464 0018 0123     		movs	r3, #1
+ 465 001a 0093     		str	r3, [sp]
+ 466 001c 0146     		mov	r1, r0
+ 467 001e 2246     		mov	r2, r4
+ 468 0020 2346     		mov	r3, r4
+ 469 0022 FFF7FEFF 		bl	ezos_add
+ 470 0026 02B0     		add	sp, sp, #8
+ 471              		@ sp needed
+ 472 0028 10BD     		pop	{r4, pc}
+ 473              	.L84:
+ 474 002a 00BF     		.align	2
+ 475              	.L83:
+ 476 002c 00000000 		.word	task_sd_block_test
+ 477 0030 00000000 		.word	task_sd_blocks_test
+ 479              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 480              	.LC0:
+ 481 0000 0D0A0D0A 		.ascii	"\015\012\015\012===== sd multi blocks test =====\015"
+ 481      3D3D3D3D 
+ 481      3D207364 
+ 481      206D756C 
+ 481      74692062 
+ 482 0025 0A00     		.ascii	"\012\000"
+ 483              	.LC1:
+ 484 0027 73642069 		.ascii	"sd init: %u\015\012\000"
+ 484      6E69743A 
+ 484      2025750D 
+ 484      0A00
+ 485              	.LC2:
+ 486 0035 73645F67 		.ascii	"sd_get_info: %u\015\012\000"
+ 486      65745F69 
+ 486      6E666F3A 
+ 486      2025750D 
+ 486      0A00
+ 487              	.LC3:
+ 488 0047 74797065 		.ascii	"type: %u\015\012\000"
+ 488      3A202575 
+ 488      0D0A00
+ 489              	.LC4:
+ 490 0052 63617061 		.ascii	"capacityH: %u\015\012\000"
+ 490      63697479 
+ 490      483A2025 
+ 490      750D0A00 
+ 491              	.LC5:
+ 492 0062 63617061 		.ascii	"capacityL: %u\015\012\015\012\000"
+ 492      63697479 
+ 492      4C3A2025 
+ 492      750D0A0D 
+ 492      0A00
+ 493              	.LC6:
+ 494 0074 7364206D 		.ascii	"sd multi blocks write: %u\015\012\000"
+ 494      756C7469 
+ 494      20626C6F 
+ 494      636B7320 
+ 494      77726974 
+ 495              	.LC7:
+ 496 0090 73642077 		.ascii	"sd write %u blocks used %u ms\015\012\000"
+ 496      72697465 
+ 496      20257520 
+ 496      626C6F63 
+ 496      6B732075 
+ 497              	.LC8:
+ 498 00b0 7364206D 		.ascii	"sd multi blocks read: %u\015\012\000"
+ 498      756C7469 
+ 498      20626C6F 
+ 498      636B7320 
+ 498      72656164 
+ 499              	.LC9:
+ 500 00cb 73642072 		.ascii	"sd read %u blocks used %u ms\015\012\000"
+ 500      65616420 
+ 500      25752062 
+ 500      6C6F636B 
+ 500      73207573 
+ 501              	.LC10:
+ 502 00ea 73642031 		.ascii	"sd 100K bytes write: %u\015\012\000"
+ 502      30304B20 
+ 502      62797465 
+ 502      73207772 
+ 502      6974653A 
+ 503              	.LC11:
+ 504 0104 73642077 		.ascii	"sd write 100K bytes used %u ms\015\012\000"
+ 504      72697465 
+ 504      20313030 
+ 504      4B206279 
+ 504      74657320 
+ 505              	.LC12:
+ 506 0125 73642072 		.ascii	"sd read 100K bytes used %u ms\015\012\000"
+ 506      65616420 
+ 506      3130304B 
+ 506      20627974 
+ 506      65732075 
+ 507              	.LC13:
+ 508 0145 7364206D 		.ascii	"sd multi cmp 100K bytes ok\015\012\015\012\000"
+ 508      756C7469 
+ 508      20636D70 
+ 508      20313030 
+ 508      4B206279 
+ 509              	.LC14:
+ 510 0164 7364206D 		.ascii	"sd multi cmp 100K bytes error\015\012\015\012\000"
+ 510      756C7469 
+ 510      20636D70 
+ 510      20313030 
+ 510      4B206279 
+ 511              	.LC15:
+ 512 0186 73642063 		.ascii	"sd cmp multi blocks error\015\012\015\012\000"
+ 512      6D70206D 
+ 512      756C7469 
+ 512      20626C6F 
+ 512      636B7320 
+ 513              	.LC16:
+ 514 01a4 73642063 		.ascii	"sd cmp multi blocks ok\015\012\015\012\000"
+ 514      6D70206D 
+ 514      756C7469 
+ 514      20626C6F 
+ 514      636B7320 
+ 515              	.LC17:
+ 516 01bf 0D0A0D0A 		.ascii	"\015\012\015\012===== sd single block test =====\015"
+ 516      3D3D3D3D 
+ 516      3D207364 
+ 516      2073696E 
+ 516      676C6520 
+ 517 01e4 0A00     		.ascii	"\012\000"
+ 518              	.LC18:
+ 519 01e6 73642062 		.ascii	"sd block write: %u\015\012\000"
+ 519      6C6F636B 
+ 519      20777269 
+ 519      74653A20 
+ 519      25750D0A 
+ 520              	.LC19:
+ 521 01fb 73642077 		.ascii	"sd write 1 block used %u ms\015\012\000"
+ 521      72697465 
+ 521      20312062 
+ 521      6C6F636B 
+ 521      20757365 
+ 522              	.LC20:
+ 523 0219 73642062 		.ascii	"sd block read: %u\015\012\000"
+ 523      6C6F636B 
+ 523      20726561 
+ 523      643A2025 
+ 523      750D0A00 
+ 524              	.LC21:
+ 525 022d 73642072 		.ascii	"sd read 1 block used %u ms\015\012\000"
+ 525      65616420 
+ 525      3120626C 
+ 525      6F636B20 
+ 525      75736564 
+ 526              	.LC22:
+ 527 024a 73642073 		.ascii	"sd single cmp 100K bytes ok\015\012\015\012\000"
+ 527      696E676C 
+ 527      6520636D 
+ 527      70203130 
+ 527      304B2062 
+ 528              	.LC23:
+ 529 026a 73642073 		.ascii	"sd single cmp 100K bytes error\015\012\015\012\000"
+ 529      696E676C 
+ 529      6520636D 
+ 529      70203130 
+ 529      304B2062 
+ 530              	.LC24:
+ 531 028d 73642063 		.ascii	"sd cmp 1 block error\015\012\015\012\000"
+ 531      6D702031 
+ 531      20626C6F 
+ 531      636B2065 
+ 531      72726F72 
+ 532              	.LC25:
+ 533 02a6 73642063 		.ascii	"sd cmp 1 block ok\015\012\015\012\000"
+ 533      6D702031 
+ 533      20626C6F 
+ 533      636B206F 
+ 533      6B0D0A0D 
+ 534              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_sd.c
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:16     .text.task_sd_blocks_test:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:20     .text.task_sd_blocks_test:00000000 task_sd_blocks_test
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:213    .text.task_sd_blocks_test:000001a8 $d
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:232    .text.task_sd_block_test:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:236    .text.task_sd_block_test:00000000 task_sd_block_test
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:427    .text.task_sd_block_test:000001a4 $d
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:446    .text.sd_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:451    .text.sd_start:00000000 sd_start
+D:\Users\draapho\AppData\Local\Temp\ccVS34Ya.s:476    .text.sd_start:0000002c $d
+
+UNDEFINED SYMBOLS
+malloc
+uart_printf
+sdcard_init
+sdcard_get_info
+delay_tick_get
+sdcard_write_blocks
+sdcard_read_blocks
+free
+sdcard_port_init
+ezos_add

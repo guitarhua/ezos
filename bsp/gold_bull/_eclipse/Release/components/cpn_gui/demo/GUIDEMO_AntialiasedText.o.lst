@@ -1,0 +1,417 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO_AntialiasedText.c"
+  15              		.section	.text._DrawSample.constprop.0,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	_DrawSample.constprop.0:
+  21              		@ args = 0, pretend = 0, frame = 72
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  24 0004 0246     		mov	r2, r0
+  25 0006 94B0     		sub	sp, sp, #80
+  26 0008 5168     		ldr	r1, [r2, #4]	@ unaligned
+  27 000a 0068     		ldr	r0, [r0]	@ unaligned
+  28 000c 02AB     		add	r3, sp, #8
+  29 000e 03C3     		stmia	r3!, {r0, r1}
+  30 0010 02A8     		add	r0, sp, #8
+  31 0012 FFF7FEFF 		bl	GUI_SetClipRect
+  32 0016 02A8     		add	r0, sp, #8
+  33 0018 4121     		movs	r1, #65
+  34 001a 0022     		movs	r2, #0
+  35 001c FFF7FEFF 		bl	GUI_MoveRect
+  36 0020 BDF90C30 		ldrsh	r3, [sp, #12]
+  37 0024 BDF90E20 		ldrsh	r2, [sp, #14]
+  38 0028 BDF90880 		ldrsh	r8, [sp, #8]
+  39 002c BDF90A70 		ldrsh	r7, [sp, #10]
+  40 0030 904D     		ldr	r5, .L5
+  41 0032 9844     		add	r8, r8, r3
+  42 0034 1744     		add	r7, r7, r2
+  43 0036 0223     		movs	r3, #2
+  44 0038 04AC     		add	r4, sp, #16
+  45 003a 98FBF3F8 		sdiv	r8, r8, r3
+  46 003e 97FBF3F7 		sdiv	r7, r7, r3
+  47 0042 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  48 0044 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  49 0046 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  50 0048 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  51 004a 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  52 004c 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  53 004e 95E80F00 		ldmia	r5, {r0, r1, r2, r3}
+  54 0052 4FEA8808 		lsl	r8, r8, #2
+  55 0056 84E80F00 		stmia	r4, {r0, r1, r2, r3}
+  56 005a BF00     		lsls	r7, r7, #2
+  57 005c 0024     		movs	r4, #0
+  58 005e 45F2E479 		movw	r9, #22500
+  59 0062 8C25     		movs	r5, #140
+  60              	.L3:
+  61 0064 09FB04F6 		mul	r6, r9, r4
+  62 0068 3046     		mov	r0, r6
+  63 006a FFF7FEFF 		bl	GUI__SinHQ
+  64 006e 8246     		mov	r10, r0
+  65 0070 3046     		mov	r0, r6
+  66 0072 FFF7FEFF 		bl	GUI__CosHQ
+  67 0076 14AA     		add	r2, sp, #80
+  68 0078 02EB8403 		add	r3, r2, r4, lsl #2
+  69 007c 0646     		mov	r6, r0
+  70 007e 53F8400C 		ldr	r0, [r3, #-64]
+  71 0082 FFF7FEFF 		bl	GUI_SetColor
+  72 0086 FFF7FEFF 		bl	GUI_AA_EnableHiRes
+  73 008a 0420     		movs	r0, #4
+  74 008c FFF7FEFF 		bl	GUI_AA_SetFactor
+  75 0090 05FB06F0 		mul	r0, r5, r6
+  76 0094 05FB0AF1 		mul	r1, r5, r10
+  77 0098 08EB1040 		add	r0, r8, r0, lsr #16
+  78 009c 07EB1141 		add	r1, r7, r1, lsr #16
+  79 00a0 8C22     		movs	r2, #140
+  80 00a2 0134     		adds	r4, r4, #1
+  81 00a4 FFF7FEFF 		bl	GUI_AA_FillCircle
+  82 00a8 FFF7FEFF 		bl	GUI_AA_DisableHiRes
+  83 00ac 102C     		cmp	r4, #16
+  84 00ae D9D1     		bne	.L3
+  85 00b0 6FF07F40 		mvn	r0, #-16777216
+  86 00b4 FFF7FEFF 		bl	GUI_SetColor
+  87 00b8 02A9     		add	r1, sp, #8
+  88 00ba 0123     		movs	r3, #1
+  89 00bc 6E48     		ldr	r0, .L5+4
+  90 00be 0E22     		movs	r2, #14
+  91 00c0 0024     		movs	r4, #0
+  92 00c2 FFF7FEFF 		bl	GUI_DispStringInRectWrap
+  93 00c6 6FF07F45 		mvn	r5, #-16777216
+  94 00ca 02A8     		add	r0, sp, #8
+  95 00cc 4121     		movs	r1, #65
+  96 00ce 0022     		movs	r2, #0
+  97 00d0 FFF7FEFF 		bl	GUI_MoveRect
+  98 00d4 BDF90A10 		ldrsh	r1, [sp, #10]
+  99 00d8 BDF90C20 		ldrsh	r2, [sp, #12]
+ 100 00dc BDF90800 		ldrsh	r0, [sp, #8]
+ 101 00e0 BDF90E30 		ldrsh	r3, [sp, #14]
+ 102 00e4 8DE83000 		stmia	sp, {r4, r5}
+ 103 00e8 FFF7FEFF 		bl	GUI_DrawGradientH
+ 104 00ec BDF80A30 		ldrh	r3, [sp, #10]
+ 105 00f0 FF20     		movs	r0, #255
+ 106 00f2 1F33     		adds	r3, r3, #31
+ 107 00f4 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 108 00f8 FFF7FEFF 		bl	GUI_SetColor
+ 109 00fc 02A9     		add	r1, sp, #8
+ 110 00fe 5F48     		ldr	r0, .L5+8
+ 111 0100 0E22     		movs	r2, #14
+ 112 0102 FFF7FEFF 		bl	GUI_DispStringInRect
+ 113 0106 2146     		mov	r1, r4
+ 114 0108 02A8     		add	r0, sp, #8
+ 115 010a 1F22     		movs	r2, #31
+ 116 010c FFF7FEFF 		bl	GUI_MoveRect
+ 117 0110 4FF47F40 		mov	r0, #65280
+ 118 0114 FFF7FEFF 		bl	GUI_SetColor
+ 119 0118 02A9     		add	r1, sp, #8
+ 120 011a 5848     		ldr	r0, .L5+8
+ 121 011c 0E22     		movs	r2, #14
+ 122 011e FFF7FEFF 		bl	GUI_DispStringInRect
+ 123 0122 2146     		mov	r1, r4
+ 124 0124 02A8     		add	r0, sp, #8
+ 125 0126 1F22     		movs	r2, #31
+ 126 0128 FFF7FEFF 		bl	GUI_MoveRect
+ 127 012c 4FF47F00 		mov	r0, #16711680
+ 128 0130 FFF7FEFF 		bl	GUI_SetColor
+ 129 0134 02A9     		add	r1, sp, #8
+ 130 0136 5148     		ldr	r0, .L5+8
+ 131 0138 0E22     		movs	r2, #14
+ 132 013a FFF7FEFF 		bl	GUI_DispStringInRect
+ 133 013e 02A8     		add	r0, sp, #8
+ 134 0140 2146     		mov	r1, r4
+ 135 0142 6FF03D02 		mvn	r2, #61
+ 136 0146 FFF7FEFF 		bl	GUI_MoveRect
+ 137 014a BDF80A30 		ldrh	r3, [sp, #10]
+ 138 014e 2246     		mov	r2, r4
+ 139 0150 4121     		movs	r1, #65
+ 140 0152 5D33     		adds	r3, r3, #93
+ 141 0154 02A8     		add	r0, sp, #8
+ 142 0156 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 143 015a FFF7FEFF 		bl	GUI_MoveRect
+ 144 015e BDF80A30 		ldrh	r3, [sp, #10]
+ 145 0162 FF20     		movs	r0, #255
+ 146 0164 1F33     		adds	r3, r3, #31
+ 147 0166 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 148 016a FFF7FEFF 		bl	GUI_SetBkColor
+ 149 016e FFF7FEFF 		bl	GUI_Clear
+ 150 0172 2146     		mov	r1, r4
+ 151 0174 1F22     		movs	r2, #31
+ 152 0176 02A8     		add	r0, sp, #8
+ 153 0178 FFF7FEFF 		bl	GUI_MoveRect
+ 154 017c 4FF47F40 		mov	r0, #65280
+ 155 0180 FFF7FEFF 		bl	GUI_SetBkColor
+ 156 0184 FFF7FEFF 		bl	GUI_Clear
+ 157 0188 2146     		mov	r1, r4
+ 158 018a 1F22     		movs	r2, #31
+ 159 018c 02A8     		add	r0, sp, #8
+ 160 018e FFF7FEFF 		bl	GUI_MoveRect
+ 161 0192 4FF47F00 		mov	r0, #16711680
+ 162 0196 FFF7FEFF 		bl	GUI_SetBkColor
+ 163 019a FFF7FEFF 		bl	GUI_Clear
+ 164 019e 2146     		mov	r1, r4
+ 165 01a0 02A8     		add	r0, sp, #8
+ 166 01a2 6FF03D02 		mvn	r2, #61
+ 167 01a6 FFF7FEFF 		bl	GUI_MoveRect
+ 168 01aa BDF80A30 		ldrh	r3, [sp, #10]
+ 169 01ae 2846     		mov	r0, r5
+ 170 01b0 5D33     		adds	r3, r3, #93
+ 171 01b2 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 172 01b6 FFF7FEFF 		bl	GUI_SetColor
+ 173 01ba 02A9     		add	r1, sp, #8
+ 174 01bc 0123     		movs	r3, #1
+ 175 01be 2E48     		ldr	r0, .L5+4
+ 176 01c0 0E22     		movs	r2, #14
+ 177 01c2 FFF7FEFF 		bl	GUI_DispStringInRectWrap
+ 178 01c6 02A8     		add	r0, sp, #8
+ 179 01c8 2246     		mov	r2, r4
+ 180 01ca 4121     		movs	r1, #65
+ 181 01cc FFF7FEFF 		bl	GUI_MoveRect
+ 182 01d0 BDF80A10 		ldrh	r1, [sp, #10]
+ 183 01d4 FF26     		movs	r6, #255
+ 184 01d6 01F11F03 		add	r3, r1, #31
+ 185 01da 9BB2     		uxth	r3, r3
+ 186 01dc ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 187 01e0 BDF90800 		ldrsh	r0, [sp, #8]
+ 188 01e4 BDF90C20 		ldrsh	r2, [sp, #12]
+ 189 01e8 0096     		str	r6, [sp]
+ 190 01ea 1BB2     		sxth	r3, r3
+ 191 01ec 0194     		str	r4, [sp, #4]
+ 192 01ee 09B2     		sxth	r1, r1
+ 193 01f0 FFF7FEFF 		bl	GUI_DrawGradientV
+ 194 01f4 4FF47F46 		mov	r6, #65280
+ 195 01f8 02A8     		add	r0, sp, #8
+ 196 01fa 2146     		mov	r1, r4
+ 197 01fc 1F22     		movs	r2, #31
+ 198 01fe FFF7FEFF 		bl	GUI_MoveRect
+ 199 0202 BDF90E30 		ldrsh	r3, [sp, #14]
+ 200 0206 BDF90800 		ldrsh	r0, [sp, #8]
+ 201 020a BDF90A10 		ldrsh	r1, [sp, #10]
+ 202 020e BDF90C20 		ldrsh	r2, [sp, #12]
+ 203 0212 0096     		str	r6, [sp]
+ 204 0214 0194     		str	r4, [sp, #4]
+ 205 0216 FFF7FEFF 		bl	GUI_DrawGradientV
+ 206 021a 4FF47F06 		mov	r6, #16711680
+ 207 021e 02A8     		add	r0, sp, #8
+ 208 0220 2146     		mov	r1, r4
+ 209 0222 1F22     		movs	r2, #31
+ 210 0224 FFF7FEFF 		bl	GUI_MoveRect
+ 211 0228 BDF90E30 		ldrsh	r3, [sp, #14]
+ 212 022c BDF90800 		ldrsh	r0, [sp, #8]
+ 213 0230 BDF90A10 		ldrsh	r1, [sp, #10]
+ 214 0234 BDF90C20 		ldrsh	r2, [sp, #12]
+ 215 0238 0096     		str	r6, [sp]
+ 216 023a 0194     		str	r4, [sp, #4]
+ 217 023c FFF7FEFF 		bl	GUI_DrawGradientV
+ 218 0240 2146     		mov	r1, r4
+ 219 0242 02A8     		add	r0, sp, #8
+ 220 0244 6FF03D02 		mvn	r2, #61
+ 221 0248 FFF7FEFF 		bl	GUI_MoveRect
+ 222 024c BDF80A30 		ldrh	r3, [sp, #10]
+ 223 0250 2846     		mov	r0, r5
+ 224 0252 5D33     		adds	r3, r3, #93
+ 225 0254 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 226 0258 FFF7FEFF 		bl	GUI_SetColor
+ 227 025c 02A9     		add	r1, sp, #8
+ 228 025e 0E22     		movs	r2, #14
+ 229 0260 0123     		movs	r3, #1
+ 230 0262 0548     		ldr	r0, .L5+4
+ 231 0264 FFF7FEFF 		bl	GUI_DispStringInRectWrap
+ 232 0268 2046     		mov	r0, r4
+ 233 026a FFF7FEFF 		bl	GUI_SetClipRect
+ 234 026e 14B0     		add	sp, sp, #80
+ 235              		@ sp needed
+ 236 0270 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 237              	.L6:
+ 238              		.align	2
+ 239              	.L5:
+ 240 0274 00000000 		.word	.LANCHOR0
+ 241 0278 00000000 		.word	.LC1
+ 242 027c 0C000000 		.word	.LC2
+ 244              		.section	.text.GUIDEMO_AntialiasedText,"ax",%progbits
+ 245              		.align	1
+ 246              		.global	GUIDEMO_AntialiasedText
+ 247              		.thumb
+ 248              		.thumb_func
+ 250              	GUIDEMO_AntialiasedText:
+ 251              		@ args = 0, pretend = 0, frame = 8
+ 252              		@ frame_needed = 0, uses_anonymous_args = 0
+ 253 0000 73B5     		push	{r0, r1, r4, r5, r6, lr}
+ 254 0002 2A49     		ldr	r1, .L8
+ 255 0004 2A48     		ldr	r0, .L8+4
+ 256 0006 FFF7FEFF 		bl	GUIDEMO_ShowIntro
+ 257 000a 0120     		movs	r0, #1
+ 258 000c FFF7FEFF 		bl	GUIDEMO_DrawBk
+ 259 0010 0120     		movs	r0, #1
+ 260 0012 FFF7FEFF 		bl	GUI_EnableAlpha
+ 261 0016 0646     		mov	r6, r0
+ 262 0018 2648     		ldr	r0, .L8+8
+ 263 001a FFF7FEFF 		bl	GUI_SetFont
+ 264 001e BE21     		movs	r1, #190
+ 265 0020 0C22     		movs	r2, #12
+ 266 0022 2548     		ldr	r0, .L8+12
+ 267 0024 FFF7FEFF 		bl	GUI_DispStringHCenterAt
+ 268 0028 244C     		ldr	r4, .L8+16
+ 269 002a 2B23     		movs	r3, #43
+ 270 002c ADF80230 		strh	r3, [sp, #2]	@ movhi
+ 271 0030 3B23     		movs	r3, #59
+ 272 0032 0025     		movs	r5, #0
+ 273 0034 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 274 0038 2046     		mov	r0, r4
+ 275 003a 8A23     		movs	r3, #138
+ 276 003c ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 277 0040 ADF80050 		strh	r5, [sp]	@ movhi
+ 278 0044 FFF7FEFF 		bl	GUI_SetFont
+ 279 0048 6FF07F40 		mvn	r0, #-16777216
+ 280 004c FFF7FEFF 		bl	GUI_SetColor
+ 281 0050 0123     		movs	r3, #1
+ 282 0052 6946     		mov	r1, sp
+ 283 0054 0E22     		movs	r2, #14
+ 284 0056 1A48     		ldr	r0, .L8+20
+ 285 0058 FFF7FEFF 		bl	GUI_DispStringInRectWrap
+ 286 005c 1948     		ldr	r0, .L8+24
+ 287 005e FFF7FEFF 		bl	GUI_SetFont
+ 288 0062 6846     		mov	r0, sp
+ 289 0064 FFF7FEFF 		bl	_DrawSample.constprop.0
+ 290 0068 2946     		mov	r1, r5
+ 291 006a 6522     		movs	r2, #101
+ 292 006c 6846     		mov	r0, sp
+ 293 006e FFF7FEFF 		bl	GUI_MoveRect
+ 294 0072 2046     		mov	r0, r4
+ 295 0074 FFF7FEFF 		bl	GUI_SetFont
+ 296 0078 6FF07F40 		mvn	r0, #-16777216
+ 297 007c FFF7FEFF 		bl	GUI_SetColor
+ 298 0080 6946     		mov	r1, sp
+ 299 0082 0E22     		movs	r2, #14
+ 300 0084 0123     		movs	r3, #1
+ 301 0086 1048     		ldr	r0, .L8+28
+ 302 0088 FFF7FEFF 		bl	GUI_DispStringInRectWrap
+ 303 008c 0F48     		ldr	r0, .L8+32
+ 304 008e FFF7FEFF 		bl	GUI_SetFont
+ 305 0092 6846     		mov	r0, sp
+ 306 0094 FFF7FEFF 		bl	_DrawSample.constprop.0
+ 307 0098 4FF47A60 		mov	r0, #4000
+ 308 009c FFF7FEFF 		bl	GUIDEMO_Wait
+ 309 00a0 3046     		mov	r0, r6
+ 310 00a2 FFF7FEFF 		bl	GUI_EnableAlpha
+ 311 00a6 02B0     		add	sp, sp, #8
+ 312              		@ sp needed
+ 313 00a8 70BD     		pop	{r4, r5, r6, pc}
+ 314              	.L9:
+ 315 00aa 00BF     		.align	2
+ 316              	.L8:
+ 317 00ac 21000000 		.word	.LC4
+ 318 00b0 10000000 		.word	.LC3
+ 319 00b4 00000000 		.word	GUI_FontRounded22
+ 320 00b8 53000000 		.word	.LC5
+ 321 00bc 00000000 		.word	GUI_Font13_ASCII
+ 322 00c0 6B000000 		.word	.LC6
+ 323 00c4 00000000 		.word	GUI_FontAA4_32
+ 324 00c8 85000000 		.word	.LC7
+ 325 00cc 00000000 		.word	GUI_FontAA2_32
+ 327              		.section	.rodata
+ 328              		.align	2
+ 329              		.set	.LANCHOR0,. + 0
+ 330              	.LC0:
+ 331 0000 38FF0FC0 		.word	-1072693448
+ 332 0004 8EFF00C0 		.word	-1073676402
+ 333 0008 EAFC00C0 		.word	-1073677078
+ 334 000c FFB400C0 		.word	-1073695489
+ 335 0010 FF4E00C0 		.word	-1073721601
+ 336 0014 FF0413C0 		.word	-1072495361
+ 337 0018 FF006EC0 		.word	-1066532609
+ 338 001c FF00D2C0 		.word	-1059979009
+ 339 0020 D200FFC0 		.word	-1057029934
+ 340 0024 6E00FFC0 		.word	-1057030034
+ 341 0028 1304FFC0 		.word	-1057029101
+ 342 002c 004EFFC0 		.word	-1057010176
+ 343 0030 00B4FFC0 		.word	-1056984064
+ 344 0034 00FCEAC0 		.word	-1058341888
+ 345 0038 00FF8EC0 		.word	-1064370432
+ 346 003c 0FFF38C0 		.word	-1070006513
+ 347              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 348              	.LC1:
+ 349 0000 4142430A 		.ascii	"ABC\012ABC\012ABC\000"
+ 349      4142430A 
+ 349      41424300 
+ 350              	.LC2:
+ 351 000c 41424300 		.ascii	"ABC\000"
+ 352              	.LC3:
+ 353 0010 416E7469 		.ascii	"Antialiased Text\000"
+ 353      616C6961 
+ 353      73656420 
+ 353      54657874 
+ 353      00
+ 354              	.LC4:
+ 355 0021 4F757470 		.ascii	"Output antialiased text\012on different backgrounds"
+ 355      75742061 
+ 355      6E746961 
+ 355      6C696173 
+ 355      65642074 
+ 356 0051 2E00     		.ascii	".\000"
+ 357              	.LC5:
+ 358 0053 416E7469 		.ascii	"Antialiased text sample\000"
+ 358      616C6961 
+ 358      73656420 
+ 358      74657874 
+ 358      2073616D 
+ 359              	.LC6:
+ 360 006b 416E7469 		.ascii	"Antialiased text\012 (4 bpp)\000"
+ 360      616C6961 
+ 360      73656420 
+ 360      74657874 
+ 360      0A202834 
+ 361              	.LC7:
+ 362 0085 416E7469 		.ascii	"Antialiased text\012 (2 bpp)\000"
+ 362      616C6961 
+ 362      73656420 
+ 362      74657874 
+ 362      0A202832 
+ 363              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO_AntialiasedText.c
+D:\Users\draapho\AppData\Local\Temp\ccAkAuu8.s:16     .text._DrawSample.constprop.0:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccAkAuu8.s:20     .text._DrawSample.constprop.0:00000000 _DrawSample.constprop.0
+D:\Users\draapho\AppData\Local\Temp\ccAkAuu8.s:240    .text._DrawSample.constprop.0:00000274 $d
+D:\Users\draapho\AppData\Local\Temp\ccAkAuu8.s:245    .text.GUIDEMO_AntialiasedText:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccAkAuu8.s:250    .text.GUIDEMO_AntialiasedText:00000000 GUIDEMO_AntialiasedText
+D:\Users\draapho\AppData\Local\Temp\ccAkAuu8.s:317    .text.GUIDEMO_AntialiasedText:000000ac $d
+D:\Users\draapho\AppData\Local\Temp\ccAkAuu8.s:328    .rodata:00000000 $d
+
+UNDEFINED SYMBOLS
+GUI_SetClipRect
+GUI_MoveRect
+GUI__SinHQ
+GUI__CosHQ
+GUI_SetColor
+GUI_AA_EnableHiRes
+GUI_AA_SetFactor
+GUI_AA_FillCircle
+GUI_AA_DisableHiRes
+GUI_DispStringInRectWrap
+GUI_DrawGradientH
+GUI_DispStringInRect
+GUI_SetBkColor
+GUI_Clear
+GUI_DrawGradientV
+GUIDEMO_ShowIntro
+GUIDEMO_DrawBk
+GUI_EnableAlpha
+GUI_SetFont
+GUI_DispStringHCenterAt
+GUIDEMO_Wait
+GUI_FontRounded22
+GUI_Font13_ASCII
+GUI_FontAA4_32
+GUI_FontAA2_32

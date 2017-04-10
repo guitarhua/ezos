@@ -1,0 +1,280 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_ctrlport.c"
+  15              		.section	.text.ctrlport_on,"ax",%progbits
+  16              		.align	1
+  17              		.global	ctrlport_on
+  18              		.thumb
+  19              		.thumb_func
+  21              	ctrlport_on:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 0328     		cmp	r0, #3
+  26 0002 03D9     		bls	.L2
+  27 0004 0848     		ldr	r0, .L8
+  28 0006 DA21     		movs	r1, #218
+  29 0008 FFF7FEBF 		b	assert_err
+  30              	.L2:
+  31 000c 0C22     		movs	r2, #12
+  32 000e 5043     		muls	r0, r2, r0
+  33 0010 064B     		ldr	r3, .L8+4
+  34 0012 1A18     		adds	r2, r3, r0
+  35 0014 917A     		ldrb	r1, [r2, #10]	@ zero_extendqisi2
+  36 0016 1289     		ldrh	r2, [r2, #8]
+  37 0018 11B9     		cbnz	r1, .L6
+  38 001a 1B58     		ldr	r3, [r3, r0]
+  39 001c 1A61     		str	r2, [r3, #16]
+  40 001e 7047     		bx	lr
+  41              	.L6:
+  42 0020 1B58     		ldr	r3, [r3, r0]
+  43 0022 5A61     		str	r2, [r3, #20]
+  44 0024 7047     		bx	lr
+  45              	.L9:
+  46 0026 00BF     		.align	2
+  47              	.L8:
+  48 0028 00000000 		.word	.LC0
+  49 002c 00000000 		.word	.LANCHOR0
+  51              		.section	.text.ctrlport_off,"ax",%progbits
+  52              		.align	1
+  53              		.global	ctrlport_off
+  54              		.thumb
+  55              		.thumb_func
+  57              	ctrlport_off:
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  61 0000 0328     		cmp	r0, #3
+  62 0002 03D9     		bls	.L11
+  63 0004 0848     		ldr	r0, .L16
+  64 0006 ED21     		movs	r1, #237
+  65 0008 FFF7FEBF 		b	assert_err
+  66              	.L11:
+  67 000c 0C22     		movs	r2, #12
+  68 000e 5043     		muls	r0, r2, r0
+  69 0010 064B     		ldr	r3, .L16+4
+  70 0012 1A18     		adds	r2, r3, r0
+  71 0014 917A     		ldrb	r1, [r2, #10]	@ zero_extendqisi2
+  72 0016 1289     		ldrh	r2, [r2, #8]
+  73 0018 11B9     		cbnz	r1, .L15
+  74 001a 1B58     		ldr	r3, [r3, r0]
+  75 001c 5A61     		str	r2, [r3, #20]
+  76 001e 7047     		bx	lr
+  77              	.L15:
+  78 0020 1B58     		ldr	r3, [r3, r0]
+  79 0022 1A61     		str	r2, [r3, #16]
+  80 0024 7047     		bx	lr
+  81              	.L17:
+  82 0026 00BF     		.align	2
+  83              	.L16:
+  84 0028 00000000 		.word	.LC0
+  85 002c 00000000 		.word	.LANCHOR0
+  87              		.section	.text.ctrlport_init,"ax",%progbits
+  88              		.align	1
+  89              		.global	ctrlport_init
+  90              		.thumb
+  91              		.thumb_func
+  93              	ctrlport_init:
+  94              		@ args = 0, pretend = 0, frame = 8
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96 0000 0328     		cmp	r0, #3
+  97 0002 F7B5     		push	{r0, r1, r2, r4, r5, r6, r7, lr}
+  98 0004 0446     		mov	r4, r0
+  99 0006 04D9     		bls	.L19
+ 100 0008 0F48     		ldr	r0, .L21
+ 101 000a C921     		movs	r1, #201
+ 102 000c FFF7FEFF 		bl	assert_err
+ 103 0010 17E0     		b	.L18
+ 104              	.L19:
+ 105 0012 0C25     		movs	r5, #12
+ 106 0014 4543     		muls	r5, r0, r5
+ 107 0016 0D4E     		ldr	r6, .L21+4
+ 108 0018 0121     		movs	r1, #1
+ 109 001a 7719     		adds	r7, r6, r5
+ 110 001c 7868     		ldr	r0, [r7, #4]
+ 111 001e FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 112 0022 3B89     		ldrh	r3, [r7, #8]
+ 113 0024 7059     		ldr	r0, [r6, r5]
+ 114 0026 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 115 002a 1023     		movs	r3, #16
+ 116 002c 8DF80730 		strb	r3, [sp, #7]
+ 117 0030 01A9     		add	r1, sp, #4
+ 118 0032 0223     		movs	r3, #2
+ 119 0034 8DF80630 		strb	r3, [sp, #6]
+ 120 0038 FFF7FEFF 		bl	GPIO_Init
+ 121 003c 2046     		mov	r0, r4
+ 122 003e FFF7FEFF 		bl	ctrlport_off
+ 123              	.L18:
+ 124 0042 03B0     		add	sp, sp, #12
+ 125              		@ sp needed
+ 126 0044 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 127              	.L22:
+ 128 0046 00BF     		.align	2
+ 129              	.L21:
+ 130 0048 00000000 		.word	.LC0
+ 131 004c 00000000 		.word	.LANCHOR0
+ 133              		.section	.text.ctrlport_init_all,"ax",%progbits
+ 134              		.align	1
+ 135              		.global	ctrlport_init_all
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	ctrlport_init_all:
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142 0000 08B5     		push	{r3, lr}
+ 143 0002 0020     		movs	r0, #0
+ 144 0004 FFF7FEFF 		bl	ctrlport_init
+ 145 0008 0120     		movs	r0, #1
+ 146 000a FFF7FEFF 		bl	ctrlport_init
+ 147 000e 0220     		movs	r0, #2
+ 148 0010 FFF7FEFF 		bl	ctrlport_init
+ 149 0014 BDE80840 		pop	{r3, lr}
+ 150 0018 0320     		movs	r0, #3
+ 151 001a FFF7FEBF 		b	ctrlport_init
+ 153              		.section	.text.ctrlport_toggle,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	ctrlport_toggle
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	ctrlport_toggle:
+ 160              		@ args = 0, pretend = 0, frame = 0
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162              		@ link register save eliminated.
+ 163 0000 0328     		cmp	r0, #3
+ 164 0002 04D9     		bls	.L25
+ 165 0004 0748     		ldr	r0, .L27
+ 166 0006 4FF48071 		mov	r1, #256
+ 167 000a FFF7FEBF 		b	assert_err
+ 168              	.L25:
+ 169 000e 0C22     		movs	r2, #12
+ 170 0010 5043     		muls	r0, r2, r0
+ 171 0012 054B     		ldr	r3, .L27+4
+ 172 0014 1918     		adds	r1, r3, r0
+ 173 0016 1B58     		ldr	r3, [r3, r0]
+ 174 0018 0989     		ldrh	r1, [r1, #8]
+ 175 001a DA68     		ldr	r2, [r3, #12]
+ 176 001c 4A40     		eors	r2, r2, r1
+ 177 001e DA60     		str	r2, [r3, #12]
+ 178 0020 7047     		bx	lr
+ 179              	.L28:
+ 180 0022 00BF     		.align	2
+ 181              	.L27:
+ 182 0024 00000000 		.word	.LC0
+ 183 0028 00000000 		.word	.LANCHOR0
+ 185              		.section	.text.ctrlport_get_status,"ax",%progbits
+ 186              		.align	1
+ 187              		.global	ctrlport_get_status
+ 188              		.thumb
+ 189              		.thumb_func
+ 191              	ctrlport_get_status:
+ 192              		@ args = 0, pretend = 0, frame = 0
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194 0000 0328     		cmp	r0, #3
+ 195 0002 08B5     		push	{r3, lr}
+ 196 0004 06D9     		bls	.L30
+ 197 0006 0E48     		ldr	r0, .L36
+ 198 0008 4FF48971 		mov	r1, #274
+ 199 000c FFF7FEFF 		bl	assert_err
+ 200 0010 0020     		movs	r0, #0
+ 201 0012 08BD     		pop	{r3, pc}
+ 202              	.L30:
+ 203 0014 0C22     		movs	r2, #12
+ 204 0016 5043     		muls	r0, r2, r0
+ 205 0018 0A4B     		ldr	r3, .L36+4
+ 206 001a 1A18     		adds	r2, r3, r0
+ 207 001c 917A     		ldrb	r1, [r2, #10]	@ zero_extendqisi2
+ 208 001e 1289     		ldrh	r2, [r2, #8]
+ 209 0020 31B9     		cbnz	r1, .L35
+ 210 0022 1B58     		ldr	r3, [r3, r0]
+ 211 0024 DB68     		ldr	r3, [r3, #12]
+ 212 0026 1A42     		tst	r2, r3
+ 213 0028 0CBF     		ite	eq
+ 214 002a 0020     		moveq	r0, #0
+ 215 002c 0120     		movne	r0, #1
+ 216 002e 08BD     		pop	{r3, pc}
+ 217              	.L35:
+ 218 0030 1B58     		ldr	r3, [r3, r0]
+ 219 0032 DB68     		ldr	r3, [r3, #12]
+ 220 0034 1A42     		tst	r2, r3
+ 221 0036 14BF     		ite	ne
+ 222 0038 0020     		movne	r0, #0
+ 223 003a 0120     		moveq	r0, #1
+ 224 003c 08BD     		pop	{r3, pc}
+ 225              	.L37:
+ 226 003e 00BF     		.align	2
+ 227              	.L36:
+ 228 0040 00000000 		.word	.LC0
+ 229 0044 00000000 		.word	.LANCHOR0
+ 231              		.section	.rodata.ctrlport_hw,"a",%progbits
+ 232              		.align	2
+ 233              		.set	.LANCHOR0,. + 0
+ 236              	ctrlport_hw:
+ 237 0000 00180140 		.word	1073813504
+ 238 0004 40000000 		.word	64
+ 239 0008 1000     		.short	16
+ 240 000a 01       		.byte	1
+ 241 000b 00       		.space	1
+ 242 000c 00180140 		.word	1073813504
+ 243 0010 40000000 		.word	64
+ 244 0014 0200     		.short	2
+ 245 0016 00       		.byte	0
+ 246 0017 00       		.space	1
+ 247 0018 00140140 		.word	1073812480
+ 248 001c 20000000 		.word	32
+ 249 0020 0020     		.short	8192
+ 250 0022 00       		.byte	0
+ 251 0023 00       		.space	1
+ 252 0024 00180140 		.word	1073813504
+ 253 0028 40000000 		.word	64
+ 254 002c 0200     		.short	2
+ 255 002e 01       		.byte	1
+ 256 002f 00       		.space	1
+ 257              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 258              	.LC0:
+ 259 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/dr"
+ 259      73657273 
+ 259      2F647261 
+ 259      6170686F 
+ 259      2F446573 
+ 260 0033 765F6374 		.ascii	"v_ctrlport.c\000"
+ 260      726C706F 
+ 260      72742E63 
+ 260      00
+ 261              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_ctrlport.c
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:16     .text.ctrlport_on:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:21     .text.ctrlport_on:00000000 ctrlport_on
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:48     .text.ctrlport_on:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:52     .text.ctrlport_off:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:57     .text.ctrlport_off:00000000 ctrlport_off
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:84     .text.ctrlport_off:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:88     .text.ctrlport_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:93     .text.ctrlport_init:00000000 ctrlport_init
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:130    .text.ctrlport_init:00000048 $d
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:134    .text.ctrlport_init_all:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:139    .text.ctrlport_init_all:00000000 ctrlport_init_all
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:154    .text.ctrlport_toggle:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:159    .text.ctrlport_toggle:00000000 ctrlport_toggle
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:182    .text.ctrlport_toggle:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:186    .text.ctrlport_get_status:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:191    .text.ctrlport_get_status:00000000 ctrlport_get_status
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:228    .text.ctrlport_get_status:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:232    .rodata.ctrlport_hw:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\cc99m2zT.s:236    .rodata.ctrlport_hw:00000000 ctrlport_hw
+
+UNDEFINED SYMBOLS
+assert_err
+RCC_APB2PeriphClockCmd
+GPIO_Init

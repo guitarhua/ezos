@@ -1,0 +1,248 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"touch_main.c"
+  15              		.section	.text.task_touch_scan,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_touch_scan:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 08B5     		push	{r3, lr}
+  24 0002 FFF7FEFF 		bl	GUI_TOUCH_Exec
+  25 0006 BDE80840 		pop	{r3, lr}
+  26 000a 0A20     		movs	r0, #10
+  27 000c FFF7FEBF 		b	ezos_delay
+  29              		.section	.text.tsc2046_read_adc,"ax",%progbits
+  30              		.align	1
+  31              		.thumb
+  32              		.thumb_func
+  34              	tsc2046_read_adc:
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37 0000 70B5     		push	{r4, r5, r6, lr}
+  38 0002 0001     		lsls	r0, r0, #4
+  39 0004 0C4C     		ldr	r4, .L3
+  40 0006 8025     		movs	r5, #128
+  41 0008 60F07F01 		orn	r1, r0, #127
+  42 000c 6561     		str	r5, [r4, #20]
+  43 000e 01F0F001 		and	r1, r1, #240
+  44 0012 0320     		movs	r0, #3
+  45 0014 FFF7FEFF 		bl	spi_tx_rx_byte
+  46 0018 0021     		movs	r1, #0
+  47 001a 0320     		movs	r0, #3
+  48 001c FFF7FEFF 		bl	spi_tx_rx_byte
+  49 0020 0002     		lsls	r0, r0, #8
+  50 0022 86B2     		uxth	r6, r0
+  51 0024 0021     		movs	r1, #0
+  52 0026 0320     		movs	r0, #3
+  53 0028 FFF7FEFF 		bl	spi_tx_rx_byte
+  54 002c 3044     		add	r0, r0, r6
+  55 002e 2561     		str	r5, [r4, #16]
+  56 0030 C0F3CC00 		ubfx	r0, r0, #3, #13
+  57 0034 70BD     		pop	{r4, r5, r6, pc}
+  58              	.L4:
+  59 0036 00BF     		.align	2
+  60              	.L3:
+  61 0038 000C0140 		.word	1073810432
+  63              		.section	.text.touch_start,"ax",%progbits
+  64              		.align	1
+  65              		.global	touch_start
+  66              		.thumb
+  67              		.thumb_func
+  69              	touch_start:
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72 0000 07B5     		push	{r0, r1, r2, lr}
+  73 0002 0648     		ldr	r0, .L6
+  74 0004 0A23     		movs	r3, #10
+  75 0006 0093     		str	r3, [sp]
+  76 0008 0146     		mov	r1, r0
+  77 000a 0022     		movs	r2, #0
+  78 000c 4FF47A73 		mov	r3, #1000
+  79 0010 FFF7FEFF 		bl	ezos_add
+  80 0014 03B0     		add	sp, sp, #12
+  81              		@ sp needed
+  82 0016 5DF804FB 		ldr	pc, [sp], #4
+  83              	.L7:
+  84 001a 00BF     		.align	2
+  85              	.L6:
+  86 001c 00000000 		.word	task_touch_scan
+  88              		.section	.text.touch_init,"ax",%progbits
+  89              		.align	1
+  90              		.global	touch_init
+  91              		.thumb
+  92              		.thumb_func
+  94              	touch_init:
+  95              		@ args = 0, pretend = 0, frame = 8
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+  98 0002 3822     		movs	r2, #56
+  99 0004 0320     		movs	r0, #3
+ 100 0006 8021     		movs	r1, #128
+ 101 0008 FFF7FEFF 		bl	spi_init
+ 102 000c 0B4C     		ldr	r4, .L9
+ 103 000e 0820     		movs	r0, #8
+ 104 0010 0121     		movs	r1, #1
+ 105 0012 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 106 0016 8025     		movs	r5, #128
+ 107 0018 02A9     		add	r1, sp, #8
+ 108 001a 1023     		movs	r3, #16
+ 109 001c 8DF80730 		strb	r3, [sp, #7]
+ 110 0020 21F8045D 		strh	r5, [r1, #-4]!	@ movhi
+ 111 0024 0323     		movs	r3, #3
+ 112 0026 2046     		mov	r0, r4
+ 113 0028 8DF80630 		strb	r3, [sp, #6]
+ 114 002c FFF7FEFF 		bl	GPIO_Init
+ 115 0030 2561     		str	r5, [r4, #16]
+ 116 0032 FFF7FEFF 		bl	touch_start
+ 117 0036 03B0     		add	sp, sp, #12
+ 118              		@ sp needed
+ 119 0038 30BD     		pop	{r4, r5, pc}
+ 120              	.L10:
+ 121 003a 00BF     		.align	2
+ 122              	.L9:
+ 123 003c 000C0140 		.word	1073810432
+ 125              		.section	.text.touch_stop,"ax",%progbits
+ 126              		.align	1
+ 127              		.global	touch_stop
+ 128              		.thumb
+ 129              		.thumb_func
+ 131              	touch_stop:
+ 132              		@ args = 0, pretend = 0, frame = 0
+ 133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 134              		@ link register save eliminated.
+ 135 0000 0148     		ldr	r0, .L12
+ 136 0002 FFF7FEBF 		b	ezos_delete
+ 137              	.L13:
+ 138 0006 00BF     		.align	2
+ 139              	.L12:
+ 140 0008 00000000 		.word	task_touch_scan
+ 142              		.section	.text.GUI_TOUCH_X_ActivateX,"ax",%progbits
+ 143              		.align	1
+ 144              		.global	GUI_TOUCH_X_ActivateX
+ 145              		.thumb
+ 146              		.thumb_func
+ 148              	GUI_TOUCH_X_ActivateX:
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151              		@ link register save eliminated.
+ 152 0000 7047     		bx	lr
+ 154              		.section	.text.GUI_TOUCH_X_ActivateY,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	GUI_TOUCH_X_ActivateY
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	GUI_TOUCH_X_ActivateY:
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164 0000 7047     		bx	lr
+ 166              		.section	.text.GUI_TOUCH_X_MeasureX,"ax",%progbits
+ 167              		.align	1
+ 168              		.global	GUI_TOUCH_X_MeasureX
+ 169              		.thumb
+ 170              		.thumb_func
+ 172              	GUI_TOUCH_X_MeasureX:
+ 173              		@ args = 0, pretend = 0, frame = 0
+ 174              		@ frame_needed = 0, uses_anonymous_args = 0
+ 175              		@ link register save eliminated.
+ 176 0000 0120     		movs	r0, #1
+ 177 0002 FFF7FEBF 		b	tsc2046_read_adc
+ 179              		.section	.text.GUI_TOUCH_X_MeasureY,"ax",%progbits
+ 180              		.align	1
+ 181              		.global	GUI_TOUCH_X_MeasureY
+ 182              		.thumb
+ 183              		.thumb_func
+ 185              	GUI_TOUCH_X_MeasureY:
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              		@ link register save eliminated.
+ 189 0000 0520     		movs	r0, #5
+ 190 0002 FFF7FEBF 		b	tsc2046_read_adc
+ 192              		.section	.text.touch_test_driver,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	touch_test_driver
+ 195              		.thumb
+ 196              		.thumb_func
+ 198              	touch_test_driver:
+ 199              		@ args = 0, pretend = 0, frame = 0
+ 200              		@ frame_needed = 0, uses_anonymous_args = 0
+ 201 0000 08B5     		push	{r3, lr}
+ 202 0002 FFF7FEFF 		bl	lcd_init
+ 203 0006 FFF7FEFF 		bl	touch_init
+ 204 000a FFF7FEFF 		bl	touch_stop
+ 205 000e FFF7FEFF 		bl	GUI_Init
+ 206 0012 4FF47F00 		mov	r0, #16711680
+ 207 0016 FFF7FEFF 		bl	GUI_SetBkColor
+ 208 001a FFF7FEFF 		bl	GUI_Clear
+ 209 001e 0A20     		movs	r0, #10
+ 210 0020 1421     		movs	r1, #20
+ 211 0022 FFF7FEFF 		bl	GUI_GotoXY
+ 212 0026 BDE80840 		pop	{r3, lr}
+ 213 002a 0148     		ldr	r0, .L19
+ 214 002c FFF7FEBF 		b	GUI_DispString
+ 215              	.L20:
+ 216              		.align	2
+ 217              	.L19:
+ 218 0030 00000000 		.word	.LC0
+ 220              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 221              	.LC0:
+ 222 0000 544F5543 		.ascii	"TOUCH TEST\000"
+ 222      48205445 
+ 222      535400
+ 223              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 touch_main.c
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:16     .text.task_touch_scan:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:20     .text.task_touch_scan:00000000 task_touch_scan
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:30     .text.tsc2046_read_adc:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:34     .text.tsc2046_read_adc:00000000 tsc2046_read_adc
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:61     .text.tsc2046_read_adc:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:64     .text.touch_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:69     .text.touch_start:00000000 touch_start
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:86     .text.touch_start:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:89     .text.touch_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:94     .text.touch_init:00000000 touch_init
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:123    .text.touch_init:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:126    .text.touch_stop:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:131    .text.touch_stop:00000000 touch_stop
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:140    .text.touch_stop:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:143    .text.GUI_TOUCH_X_ActivateX:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:148    .text.GUI_TOUCH_X_ActivateX:00000000 GUI_TOUCH_X_ActivateX
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:155    .text.GUI_TOUCH_X_ActivateY:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:160    .text.GUI_TOUCH_X_ActivateY:00000000 GUI_TOUCH_X_ActivateY
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:167    .text.GUI_TOUCH_X_MeasureX:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:172    .text.GUI_TOUCH_X_MeasureX:00000000 GUI_TOUCH_X_MeasureX
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:180    .text.GUI_TOUCH_X_MeasureY:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:185    .text.GUI_TOUCH_X_MeasureY:00000000 GUI_TOUCH_X_MeasureY
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:193    .text.touch_test_driver:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:198    .text.touch_test_driver:00000000 touch_test_driver
+D:\Users\draapho\AppData\Local\Temp\ccNZef5p.s:218    .text.touch_test_driver:00000030 $d
+
+UNDEFINED SYMBOLS
+GUI_TOUCH_Exec
+ezos_delay
+spi_tx_rx_byte
+ezos_add
+spi_init
+RCC_APB2PeriphClockCmd
+GPIO_Init
+ezos_delete
+lcd_init
+GUI_Init
+GUI_SetBkColor
+GUI_Clear
+GUI_GotoXY
+GUI_DispString

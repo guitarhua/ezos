@@ -1,0 +1,83 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"main.c"
+  15              		.section	.text.system_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	system_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	system_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  26 0002 72B6     		cpsid i
+  27              	@ 0 "" 2
+  28              		.thumb
+  29 0004 FFF7FEFF 		bl	assert_init
+  30 0008 FFF7FEFF 		bl	systick_init_1ms
+  31 000c FFF7FEFF 		bl	ezos_init
+  32 0010 0548     		ldr	r0, .L2
+  33 0012 FFF7FEFF 		bl	ezos_idle_hook_set
+  34 0016 FFF7FEFF 		bl	watchdog_init
+  35              	@ 1204 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  36 001a 62B6     		cpsie i
+  37              	@ 0 "" 2
+  38              		.thumb
+  39 001c BDE80840 		pop	{r3, lr}
+  40 0020 0248     		ldr	r0, .L2+4
+  41 0022 FFF7FEBF 		b	puts
+  42              	.L3:
+  43 0026 00BF     		.align	2
+  44              	.L2:
+  45 0028 00000000 		.word	iwatchdog_clear
+  46 002c 00000000 		.word	.LC0
+  48              		.section	.text.startup.main,"ax",%progbits
+  49              		.align	1
+  50              		.global	main
+  51              		.thumb
+  52              		.thumb_func
+  54              	main:
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57 0000 08B5     		push	{r3, lr}
+  58 0002 FFF7FEFF 		bl	system_init
+  59 0006 FFF7FEFF 		bl	gui_start
+  60 000a FFF7FEFF 		bl	ezos_schedule
+  61 000e 08BD     		pop	{r3, pc}
+  63              		.section	.rodata.str1.1,"aMS",%progbits,1
+  64              	.LC0:
+  65 0000 41737365 		.ascii	"Assert Mode\015\000"
+  65      7274204D 
+  65      6F64650D 
+  65      00
+  66              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+D:\Users\draapho\AppData\Local\Temp\ccYBFj0r.s:16     .text.system_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYBFj0r.s:21     .text.system_init:00000000 system_init
+D:\Users\draapho\AppData\Local\Temp\ccYBFj0r.s:45     .text.system_init:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccYBFj0r.s:49     .text.startup.main:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYBFj0r.s:54     .text.startup.main:00000000 main
+
+UNDEFINED SYMBOLS
+assert_init
+systick_init_1ms
+ezos_init
+ezos_idle_hook_set
+watchdog_init
+puts
+iwatchdog_clear
+gui_start
+ezos_schedule

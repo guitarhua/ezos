@@ -1,0 +1,65 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"crc16.c"
+  15              		.section	.text.crc16_add,"ax",%progbits
+  16              		.align	1
+  17              		.global	crc16_add
+  18              		.thumb
+  19              		.thumb_func
+  21              	crc16_add:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 4840     		eors	r0, r0, r1
+  26 0002 40BA     		rev16	r0, r0
+  27 0004 00F47F43 		and	r3, r0, #65280
+  28 0008 80EA0310 		eor	r0, r0, r3, lsl #4
+  29 000c 80B2     		uxth	r0, r0
+  30 000e 80EA1030 		eor	r0, r0, r0, lsr #12
+  31 0012 00F47F43 		and	r3, r0, #65280
+  32 0016 80EA5310 		eor	r0, r0, r3, lsr #5
+  33 001a 7047     		bx	lr
+  35              		.section	.text.crc16_data,"ax",%progbits
+  36              		.align	1
+  37              		.global	crc16_data
+  38              		.thumb
+  39              		.thumb_func
+  41              	crc16_data:
+  42              		@ args = 0, pretend = 0, frame = 0
+  43              		@ frame_needed = 0, uses_anonymous_args = 0
+  44 0000 70B5     		push	{r4, r5, r6, lr}
+  45 0002 0646     		mov	r6, r0
+  46 0004 0D46     		mov	r5, r1
+  47 0006 0024     		movs	r4, #0
+  48              	.L3:
+  49 0008 AC42     		cmp	r4, r5
+  50 000a 06DA     		bge	.L6
+  51 000c 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+  52 000e 1146     		mov	r1, r2
+  53 0010 FFF7FEFF 		bl	crc16_add
+  54 0014 0134     		adds	r4, r4, #1
+  55 0016 0246     		mov	r2, r0
+  56 0018 F6E7     		b	.L3
+  57              	.L6:
+  58 001a 1046     		mov	r0, r2
+  59 001c 70BD     		pop	{r4, r5, r6, pc}
+  61              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 crc16.c
+D:\Users\draapho\AppData\Local\Temp\ccekCPNr.s:16     .text.crc16_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccekCPNr.s:21     .text.crc16_add:00000000 crc16_add
+D:\Users\draapho\AppData\Local\Temp\ccekCPNr.s:36     .text.crc16_data:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccekCPNr.s:41     .text.crc16_data:00000000 crc16_data
+
+NO UNDEFINED SYMBOLS

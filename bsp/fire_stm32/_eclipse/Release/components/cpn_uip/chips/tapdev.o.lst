@@ -1,0 +1,103 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"tapdev.c"
+  15              		.section	.text.tapdev_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	tapdev_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	tapdev_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 FFF7FEFF 		bl	enc28j60_port_init
+  26 0006 054B     		ldr	r3, .L2
+  27 0008 1A79     		ldrb	r2, [r3, #4]	@ zero_extendqisi2
+  28 000a 5979     		ldrb	r1, [r3, #5]	@ zero_extendqisi2
+  29 000c 1868     		ldr	r0, [r3]	@ unaligned
+  30 000e 42EA0121 		orr	r1, r2, r1, lsl #8
+  31 0012 BDE80840 		pop	{r3, lr}
+  32 0016 FFF7FEBF 		b	enc28j60_init
+  33              	.L3:
+  34 001a 00BF     		.align	2
+  35              	.L2:
+  36 001c 00000000 		.word	uip_ethaddr
+  38              		.section	.text.tapdev_read,"ax",%progbits
+  39              		.align	1
+  40              		.global	tapdev_read
+  41              		.thumb
+  42              		.thumb_func
+  44              	tapdev_read:
+  45              		@ args = 0, pretend = 0, frame = 0
+  46              		@ frame_needed = 0, uses_anonymous_args = 0
+  47              		@ link register save eliminated.
+  48 0000 0248     		ldr	r0, .L5
+  49 0002 40F2DC51 		movw	r1, #1500
+  50 0006 FFF7FEBF 		b	enc28j60_rx
+  51              	.L6:
+  52 000a 00BF     		.align	2
+  53              	.L5:
+  54 000c 00000000 		.word	uip_aligned_buf
+  56              		.section	.text.tapdev_send,"ax",%progbits
+  57              		.align	1
+  58              		.global	tapdev_send
+  59              		.thumb
+  60              		.thumb_func
+  62              	tapdev_send:
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66 0000 024B     		ldr	r3, .L8
+  67 0002 0348     		ldr	r0, .L8+4
+  68 0004 1988     		ldrh	r1, [r3]
+  69 0006 FFF7FEBF 		b	enc28j60_tx
+  70              	.L9:
+  71 000a 00BF     		.align	2
+  72              	.L8:
+  73 000c 00000000 		.word	uip_len
+  74 0010 00000000 		.word	uip_aligned_buf
+  76              		.section	.text.tapdev_linked,"ax",%progbits
+  77              		.align	1
+  78              		.global	tapdev_linked
+  79              		.thumb
+  80              		.thumb_func
+  82              	tapdev_linked:
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              		@ link register save eliminated.
+  86 0000 FFF7FEBF 		b	enc28j60_linked
+  88              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tapdev.c
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:16     .text.tapdev_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:21     .text.tapdev_init:00000000 tapdev_init
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:36     .text.tapdev_init:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:39     .text.tapdev_read:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:44     .text.tapdev_read:00000000 tapdev_read
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:54     .text.tapdev_read:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:57     .text.tapdev_send:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:62     .text.tapdev_send:00000000 tapdev_send
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:73     .text.tapdev_send:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:77     .text.tapdev_linked:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjkzZRp.s:82     .text.tapdev_linked:00000000 tapdev_linked
+
+UNDEFINED SYMBOLS
+enc28j60_port_init
+enc28j60_init
+uip_ethaddr
+enc28j60_rx
+uip_aligned_buf
+enc28j60_tx
+uip_len
+enc28j60_linked

@@ -1,0 +1,831 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_spi.c"
+  15              		.section	.text.SPI_SCK_HIGH,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	SPI_SCK_HIGH:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23              		@ link register save eliminated.
+  24 0000 034B     		ldr	r3, .L2
+  25 0002 2C22     		movs	r2, #44
+  26 0004 02FB0030 		mla	r0, r2, r0, r3
+  27 0008 8369     		ldr	r3, [r0, #24]
+  28 000a 828C     		ldrh	r2, [r0, #36]
+  29 000c 1A61     		str	r2, [r3, #16]
+  30 000e 7047     		bx	lr
+  31              	.L3:
+  32              		.align	2
+  33              	.L2:
+  34 0010 00000000 		.word	.LANCHOR0
+  36              		.section	.text.SPI_SCK_LOW,"ax",%progbits
+  37              		.align	1
+  38              		.thumb
+  39              		.thumb_func
+  41              	SPI_SCK_LOW:
+  42              		@ args = 0, pretend = 0, frame = 0
+  43              		@ frame_needed = 0, uses_anonymous_args = 0
+  44              		@ link register save eliminated.
+  45 0000 034B     		ldr	r3, .L5
+  46 0002 2C22     		movs	r2, #44
+  47 0004 02FB0030 		mla	r0, r2, r0, r3
+  48 0008 8369     		ldr	r3, [r0, #24]
+  49 000a 828C     		ldrh	r2, [r0, #36]
+  50 000c 5A61     		str	r2, [r3, #20]
+  51 000e 7047     		bx	lr
+  52              	.L6:
+  53              		.align	2
+  54              	.L5:
+  55 0010 00000000 		.word	.LANCHOR0
+  57              		.section	.text.SPI_MOSI_HIGH,"ax",%progbits
+  58              		.align	1
+  59              		.thumb
+  60              		.thumb_func
+  62              	SPI_MOSI_HIGH:
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66 0000 034B     		ldr	r3, .L8
+  67 0002 2C22     		movs	r2, #44
+  68 0004 02FB0030 		mla	r0, r2, r0, r3
+  69 0008 036A     		ldr	r3, [r0, #32]
+  70 000a 028D     		ldrh	r2, [r0, #40]
+  71 000c 1A61     		str	r2, [r3, #16]
+  72 000e 7047     		bx	lr
+  73              	.L9:
+  74              		.align	2
+  75              	.L8:
+  76 0010 00000000 		.word	.LANCHOR0
+  78              		.section	.text.SPI_MOSI_LOW,"ax",%progbits
+  79              		.align	1
+  80              		.thumb
+  81              		.thumb_func
+  83              	SPI_MOSI_LOW:
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              		@ link register save eliminated.
+  87 0000 034B     		ldr	r3, .L11
+  88 0002 2C22     		movs	r2, #44
+  89 0004 02FB0030 		mla	r0, r2, r0, r3
+  90 0008 036A     		ldr	r3, [r0, #32]
+  91 000a 028D     		ldrh	r2, [r0, #40]
+  92 000c 5A61     		str	r2, [r3, #20]
+  93 000e 7047     		bx	lr
+  94              	.L12:
+  95              		.align	2
+  96              	.L11:
+  97 0010 00000000 		.word	.LANCHOR0
+  99              		.section	.text.SPI_MISO_LEVEL,"ax",%progbits
+ 100              		.align	1
+ 101              		.thumb
+ 102              		.thumb_func
+ 104              	SPI_MISO_LEVEL:
+ 105              		@ args = 0, pretend = 0, frame = 0
+ 106              		@ frame_needed = 0, uses_anonymous_args = 0
+ 107              		@ link register save eliminated.
+ 108 0000 044B     		ldr	r3, .L14
+ 109 0002 2C22     		movs	r2, #44
+ 110 0004 02FB0030 		mla	r0, r2, r0, r3
+ 111 0008 C269     		ldr	r2, [r0, #28]
+ 112 000a C08C     		ldrh	r0, [r0, #38]
+ 113 000c 9268     		ldr	r2, [r2, #8]
+ 114 000e 1040     		ands	r0, r0, r2
+ 115 0010 7047     		bx	lr
+ 116              	.L15:
+ 117 0012 00BF     		.align	2
+ 118              	.L14:
+ 119 0014 00000000 		.word	.LANCHOR0
+ 121              		.section	.text.spi_init,"ax",%progbits
+ 122              		.align	1
+ 123              		.global	spi_init
+ 124              		.thumb
+ 125              		.thumb_func
+ 127              	spi_init:
+ 128              		@ args = 0, pretend = 0, frame = 32
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 131 0004 1646     		mov	r6, r2
+ 132 0006 814A     		ldr	r2, .L46
+ 133 0008 2C23     		movs	r3, #44
+ 134 000a 03FB0023 		mla	r3, r3, r0, r2
+ 135 000e 0128     		cmp	r0, #1
+ 136 0010 89B0     		sub	sp, sp, #36
+ 137 0012 0446     		mov	r4, r0
+ 138 0014 0F46     		mov	r7, r1
+ 139 0016 9D68     		ldr	r5, [r3, #8]
+ 140 0018 9046     		mov	r8, r2
+ 141 001a 04D9     		bls	.L17
+ 142 001c 7C48     		ldr	r0, .L46+4
+ 143 001e 40F21311 		movw	r1, #275
+ 144 0022 FFF7FEFF 		bl	assert_err
+ 145              	.L17:
+ 146 0026 A7F18003 		sub	r3, r7, #128
+ 147 002a DBB2     		uxtb	r3, r3
+ 148 002c 072B     		cmp	r3, #7
+ 149 002e 04D9     		bls	.L18
+ 150 0030 7748     		ldr	r0, .L46+4
+ 151 0032 4FF48A71 		mov	r1, #276
+ 152 0036 FFF7FEFF 		bl	assert_err
+ 153              	.L18:
+ 154 003a 012C     		cmp	r4, #1
+ 155 003c 00F2E380 		bhi	.L16
+ 156 0040 07F00409 		and	r9, r7, #4
+ 157 0044 002D     		cmp	r5, #0
+ 158 0046 00F09680 		beq	.L20
+ 159 004a 26F01803 		bic	r3, r6, #24
+ 160 004e 9BB2     		uxth	r3, r3
+ 161 0050 33B1     		cbz	r3, .L21
+ 162 0052 202B     		cmp	r3, #32
+ 163 0054 04D0     		beq	.L21
+ 164 0056 6E48     		ldr	r0, .L46+4
+ 165 0058 4FF48D71 		mov	r1, #282
+ 166 005c FFF7FEFF 		bl	assert_err
+ 167              	.L21:
+ 168 0060 2C23     		movs	r3, #44
+ 169 0062 03FB0483 		mla	r3, r3, r4, r8
+ 170 0066 5868     		ldr	r0, [r3, #4]
+ 171 0068 D3F80CB0 		ldr	fp, [r3, #12]
+ 172 006c 1A69     		ldr	r2, [r3, #16]
+ 173 006e D3F814A0 		ldr	r10, [r3, #20]
+ 174 0072 48B1     		cbz	r0, .L22
+ 175 0074 0121     		movs	r1, #1
+ 176 0076 0192     		str	r2, [sp, #4]
+ 177 0078 FFF7FEFF 		bl	GPIO_PinRemapConfig
+ 178 007c 019A     		ldr	r2, [sp, #4]
+ 179 007e 4BEA020B 		orr	fp, fp, r2
+ 180 0082 4BF00100 		orr	r0, fp, #1
+ 181 0086 01E0     		b	.L44
+ 182              	.L22:
+ 183 0088 42EA0B00 		orr	r0, r2, fp
+ 184              	.L44:
+ 185 008c 40EA0A00 		orr	r0, r0, r10
+ 186 0090 0121     		movs	r1, #1
+ 187 0092 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 188 0096 2C23     		movs	r3, #44
+ 189 0098 6343     		muls	r3, r4, r3
+ 190 009a 58F80300 		ldr	r0, [r8, r3]
+ 191 009e 0121     		movs	r1, #1
+ 192 00a0 B0F5805F 		cmp	r0, #4096
+ 193 00a4 02D1     		bne	.L24
+ 194 00a6 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 195 00aa 01E0     		b	.L25
+ 196              	.L24:
+ 197 00ac FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 198              	.L25:
+ 199 00b0 0021     		movs	r1, #0
+ 200 00b2 2846     		mov	r0, r5
+ 201 00b4 FFF7FEFF 		bl	SPI_Cmd
+ 202 00b8 2846     		mov	r0, r5
+ 203 00ba FFF7FEFF 		bl	SPI_I2S_DeInit
+ 204 00be 1823     		movs	r3, #24
+ 205 00c0 8DF80B30 		strb	r3, [sp, #11]
+ 206 00c4 0323     		movs	r3, #3
+ 207 00c6 8DF80A30 		strb	r3, [sp, #10]
+ 208 00ca 2C23     		movs	r3, #44
+ 209 00cc 03FB0488 		mla	r8, r3, r4, r8
+ 210 00d0 B8F82430 		ldrh	r3, [r8, #36]
+ 211 00d4 08AC     		add	r4, sp, #32
+ 212 00d6 24F8183D 		strh	r3, [r4, #-24]!	@ movhi
+ 213 00da D8F81800 		ldr	r0, [r8, #24]
+ 214 00de 2146     		mov	r1, r4
+ 215 00e0 FFF7FEFF 		bl	GPIO_Init
+ 216 00e4 B8F82830 		ldrh	r3, [r8, #40]
+ 217 00e8 D8F82000 		ldr	r0, [r8, #32]
+ 218 00ec 2146     		mov	r1, r4
+ 219 00ee ADF80830 		strh	r3, [sp, #8]	@ movhi
+ 220 00f2 FFF7FEFF 		bl	GPIO_Init
+ 221 00f6 B8F82630 		ldrh	r3, [r8, #38]
+ 222 00fa D8F81C00 		ldr	r0, [r8, #28]
+ 223 00fe 2146     		mov	r1, r4
+ 224 0100 ADF80830 		strh	r3, [sp, #8]	@ movhi
+ 225 0104 FFF7FEFF 		bl	GPIO_Init
+ 226 0108 0023     		movs	r3, #0
+ 227 010a ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 228 010e ADF81030 		strh	r3, [sp, #16]	@ movhi
+ 229 0112 4FF40073 		mov	r3, #512
+ 230 0116 4FF48272 		mov	r2, #260
+ 231 011a ADF81630 		strh	r3, [sp, #22]	@ movhi
+ 232 011e 0723     		movs	r3, #7
+ 233 0120 ADF81C30 		strh	r3, [sp, #28]	@ movhi
+ 234 0124 ADF80E20 		strh	r2, [sp, #14]	@ movhi
+ 235 0128 ADF81860 		strh	r6, [sp, #24]	@ movhi
+ 236 012c 09F0FF03 		and	r3, r9, #255
+ 237 0130 B9F1000F 		cmp	r9, #0
+ 238 0134 00D0     		beq	.L26
+ 239 0136 0223     		movs	r3, #2
+ 240              	.L26:
+ 241 0138 ADF81230 		strh	r3, [sp, #18]	@ movhi
+ 242 013c 07F00203 		and	r3, r7, #2
+ 243 0140 03F0FF02 		and	r2, r3, #255
+ 244 0144 1BB1     		cbz	r3, .L28
+ 245 0146 0123     		movs	r3, #1
+ 246 0148 ADF81430 		strh	r3, [sp, #20]	@ movhi
+ 247 014c 01E0     		b	.L29
+ 248              	.L28:
+ 249 014e ADF81420 		strh	r2, [sp, #20]	@ movhi
+ 250              	.L29:
+ 251 0152 17F00107 		ands	r7, r7, #1
+ 252 0156 18BF     		it	ne
+ 253 0158 8023     		movne	r3, #128
+ 254 015a 2846     		mov	r0, r5
+ 255 015c 03A9     		add	r1, sp, #12
+ 256 015e 14BF     		ite	ne
+ 257 0160 ADF81A30 		strhne	r3, [sp, #26]	@ movhi
+ 258 0164 ADF81A70 		strheq	r7, [sp, #26]	@ movhi
+ 259 0168 FFF7FEFF 		bl	SPI_Init
+ 260 016c 2846     		mov	r0, r5
+ 261 016e 0121     		movs	r1, #1
+ 262 0170 FFF7FEFF 		bl	SPI_Cmd
+ 263 0174 47E0     		b	.L16
+ 264              	.L20:
+ 265 0176 B6F5FA7F 		cmp	r6, #500
+ 266 017a 04D9     		bls	.L33
+ 267 017c 2448     		ldr	r0, .L46+4
+ 268 017e 4FF4A871 		mov	r1, #336
+ 269 0182 FFF7FEFF 		bl	assert_err
+ 270              	.L33:
+ 271 0186 2C25     		movs	r5, #44
+ 272 0188 05FB0485 		mla	r5, r5, r4, r8
+ 273 018c EB68     		ldr	r3, [r5, #12]
+ 274 018e 2869     		ldr	r0, [r5, #16]
+ 275 0190 0121     		movs	r1, #1
+ 276 0192 1843     		orrs	r0, r0, r3
+ 277 0194 6B69     		ldr	r3, [r5, #20]
+ 278 0196 1843     		orrs	r0, r0, r3
+ 279 0198 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 280 019c 1023     		movs	r3, #16
+ 281 019e 8DF80F30 		strb	r3, [sp, #15]
+ 282 01a2 0323     		movs	r3, #3
+ 283 01a4 8DF80E30 		strb	r3, [sp, #14]
+ 284 01a8 AB8C     		ldrh	r3, [r5, #36]
+ 285 01aa A869     		ldr	r0, [r5, #24]
+ 286 01ac 03A9     		add	r1, sp, #12
+ 287 01ae ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 288 01b2 FFF7FEFF 		bl	GPIO_Init
+ 289 01b6 2B8D     		ldrh	r3, [r5, #40]
+ 290 01b8 286A     		ldr	r0, [r5, #32]
+ 291 01ba 03A9     		add	r1, sp, #12
+ 292 01bc ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 293 01c0 FFF7FEFF 		bl	GPIO_Init
+ 294 01c4 0423     		movs	r3, #4
+ 295 01c6 8DF80F30 		strb	r3, [sp, #15]
+ 296 01ca EB8C     		ldrh	r3, [r5, #38]
+ 297 01cc E869     		ldr	r0, [r5, #28]
+ 298 01ce 03A9     		add	r1, sp, #12
+ 299 01d0 ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 300 01d4 FFF7FEFF 		bl	GPIO_Init
+ 301 01d8 2046     		mov	r0, r4
+ 302 01da FFF7FEFF 		bl	SPI_MOSI_LOW
+ 303 01de 2046     		mov	r0, r4
+ 304 01e0 B9F1000F 		cmp	r9, #0
+ 305 01e4 02D0     		beq	.L34
+ 306 01e6 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 307 01ea 01E0     		b	.L35
+ 308              	.L34:
+ 309 01ec FFF7FEFF 		bl	SPI_SCK_LOW
+ 310              	.L35:
+ 311 01f0 084B     		ldr	r3, .L46+8
+ 312 01f2 03F82470 		strb	r7, [r3, r4, lsl #2]
+ 313 01f6 A400     		lsls	r4, r4, #2
+ 314 01f8 1C44     		add	r4, r4, r3
+ 315 01fa 1EB1     		cbz	r6, .L36
+ 316 01fc 4FF4FA73 		mov	r3, #500
+ 317 0200 93FBF6F6 		sdiv	r6, r3, r6
+ 318              	.L36:
+ 319 0204 6680     		strh	r6, [r4, #2]	@ movhi
+ 320              	.L16:
+ 321 0206 09B0     		add	sp, sp, #36
+ 322              		@ sp needed
+ 323 0208 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 324              	.L47:
+ 325              		.align	2
+ 326              	.L46:
+ 327 020c 00000000 		.word	.LANCHOR0
+ 328 0210 00000000 		.word	.LC0
+ 329 0214 00000000 		.word	.LANCHOR1
+ 331              		.section	.text.spi_deinit,"ax",%progbits
+ 332              		.align	1
+ 333              		.global	spi_deinit
+ 334              		.thumb
+ 335              		.thumb_func
+ 337              	spi_deinit:
+ 338              		@ args = 0, pretend = 0, frame = 8
+ 339              		@ frame_needed = 0, uses_anonymous_args = 0
+ 340 0000 0128     		cmp	r0, #1
+ 341 0002 F7B5     		push	{r0, r1, r2, r4, r5, r6, r7, lr}
+ 342 0004 0446     		mov	r4, r0
+ 343 0006 05D9     		bls	.L49
+ 344 0008 1E48     		ldr	r0, .L54
+ 345 000a 4FF4B471 		mov	r1, #360
+ 346 000e FFF7FEFF 		bl	assert_err
+ 347 0012 35E0     		b	.L48
+ 348              	.L49:
+ 349 0014 2C27     		movs	r7, #44
+ 350 0016 4743     		muls	r7, r0, r7
+ 351 0018 1B4D     		ldr	r5, .L54+4
+ 352 001a EB19     		adds	r3, r5, r7
+ 353 001c 9E68     		ldr	r6, [r3, #8]
+ 354 001e 86B1     		cbz	r6, .L52
+ 355 0020 0021     		movs	r1, #0
+ 356 0022 3046     		mov	r0, r6
+ 357 0024 FFF7FEFF 		bl	SPI_Cmd
+ 358 0028 3046     		mov	r0, r6
+ 359 002a FFF7FEFF 		bl	SPI_I2S_DeInit
+ 360 002e E859     		ldr	r0, [r5, r7]
+ 361 0030 0021     		movs	r1, #0
+ 362 0032 B0F5805F 		cmp	r0, #4096
+ 363 0036 02D1     		bne	.L51
+ 364 0038 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 365 003c 01E0     		b	.L52
+ 366              	.L51:
+ 367 003e FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 368              	.L52:
+ 369 0042 0423     		movs	r3, #4
+ 370 0044 8DF80730 		strb	r3, [sp, #7]
+ 371 0048 0223     		movs	r3, #2
+ 372 004a 8DF80630 		strb	r3, [sp, #6]
+ 373 004e 2C23     		movs	r3, #44
+ 374 0050 03FB0455 		mla	r5, r3, r4, r5
+ 375 0054 AB8C     		ldrh	r3, [r5, #36]
+ 376 0056 02AC     		add	r4, sp, #8
+ 377 0058 24F8043D 		strh	r3, [r4, #-4]!	@ movhi
+ 378 005c A869     		ldr	r0, [r5, #24]
+ 379 005e 2146     		mov	r1, r4
+ 380 0060 FFF7FEFF 		bl	GPIO_Init
+ 381 0064 2B8D     		ldrh	r3, [r5, #40]
+ 382 0066 286A     		ldr	r0, [r5, #32]
+ 383 0068 2146     		mov	r1, r4
+ 384 006a ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 385 006e FFF7FEFF 		bl	GPIO_Init
+ 386 0072 EB8C     		ldrh	r3, [r5, #38]
+ 387 0074 E869     		ldr	r0, [r5, #28]
+ 388 0076 2146     		mov	r1, r4
+ 389 0078 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 390 007c FFF7FEFF 		bl	GPIO_Init
+ 391              	.L48:
+ 392 0080 03B0     		add	sp, sp, #12
+ 393              		@ sp needed
+ 394 0082 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 395              	.L55:
+ 396              		.align	2
+ 397              	.L54:
+ 398 0084 00000000 		.word	.LC0
+ 399 0088 00000000 		.word	.LANCHOR0
+ 401              		.section	.text.spi_tx_rx_byte,"ax",%progbits
+ 402              		.align	1
+ 403              		.global	spi_tx_rx_byte
+ 404              		.thumb
+ 405              		.thumb_func
+ 407              	spi_tx_rx_byte:
+ 408              		@ args = 0, pretend = 0, frame = 0
+ 409              		@ frame_needed = 0, uses_anonymous_args = 0
+ 410 0000 B04B     		ldr	r3, .L159
+ 411 0002 2C22     		movs	r2, #44
+ 412 0004 02FB0033 		mla	r3, r2, r0, r3
+ 413 0008 0128     		cmp	r0, #1
+ 414 000a 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 415 000e 0446     		mov	r4, r0
+ 416 0010 0E46     		mov	r6, r1
+ 417 0012 9D68     		ldr	r5, [r3, #8]
+ 418 0014 07D9     		bls	.L57
+ 419 0016 AC48     		ldr	r0, .L159+4
+ 420 0018 40F28D11 		movw	r1, #397
+ 421 001c FFF7FEFF 		bl	assert_err
+ 422 0020 FF20     		movs	r0, #255
+ 423 0022 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 424              	.L57:
+ 425 0026 ADB1     		cbz	r5, .L158
+ 426              	.L60:
+ 427 0028 2846     		mov	r0, r5
+ 428 002a 0221     		movs	r1, #2
+ 429 002c FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+ 430 0030 0028     		cmp	r0, #0
+ 431 0032 F9D0     		beq	.L60
+ 432 0034 2846     		mov	r0, r5
+ 433 0036 3146     		mov	r1, r6
+ 434 0038 FFF7FEFF 		bl	SPI_I2S_SendData
+ 435              	.L62:
+ 436 003c 2846     		mov	r0, r5
+ 437 003e 0121     		movs	r1, #1
+ 438 0040 FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+ 439 0044 0028     		cmp	r0, #0
+ 440 0046 F9D0     		beq	.L62
+ 441 0048 2846     		mov	r0, r5
+ 442 004a FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 443 004e C0B2     		uxtb	r0, r0
+ 444 0050 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 445              	.L158:
+ 446 0054 9D4B     		ldr	r3, .L159+8
+ 447 0056 03EB8402 		add	r2, r3, r4, lsl #2
+ 448 005a 13F82430 		ldrb	r3, [r3, r4, lsl #2]	@ zero_extendqisi2
+ 449 005e 5788     		ldrh	r7, [r2, #2]
+ 450 0060 803B     		subs	r3, r3, #128
+ 451 0062 072B     		cmp	r3, #7
+ 452 0064 00F25D81 		bhi	.L107
+ 453 0068 DFE813F0 		tbh	[pc, r3, lsl #1]
+ 454              	.L65:
+ 455 006c AE00     		.2byte	(.L64-.L65)/2
+ 456 006e D800     		.2byte	(.L66-.L65)/2
+ 457 0070 0101     		.2byte	(.L67-.L65)/2
+ 458 0072 3201     		.2byte	(.L68-.L65)/2
+ 459 0074 0800     		.2byte	(.L69-.L65)/2
+ 460 0076 3200     		.2byte	(.L70-.L65)/2
+ 461 0078 5B00     		.2byte	(.L71-.L65)/2
+ 462 007a 8500     		.2byte	(.L72-.L65)/2
+ 463              	.L69:
+ 464 007c 2046     		mov	r0, r4
+ 465 007e FFF7FEFF 		bl	SPI_SCK_HIGH
+ 466 0082 4FF00808 		mov	r8, #8
+ 467 0086 0025     		movs	r5, #0
+ 468              	.L76:
+ 469 0088 3206     		lsls	r2, r6, #24
+ 470 008a 2046     		mov	r0, r4
+ 471 008c 02D5     		bpl	.L73
+ 472 008e FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 473 0092 01E0     		b	.L74
+ 474              	.L73:
+ 475 0094 FFF7FEFF 		bl	SPI_MOSI_LOW
+ 476              	.L74:
+ 477 0098 3846     		mov	r0, r7
+ 478 009a FFF7FEFF 		bl	delay_us
+ 479 009e 2046     		mov	r0, r4
+ 480 00a0 7600     		lsls	r6, r6, #1
+ 481 00a2 FFF7FEFF 		bl	SPI_SCK_LOW
+ 482 00a6 6D00     		lsls	r5, r5, #1
+ 483 00a8 2046     		mov	r0, r4
+ 484 00aa F6B2     		uxtb	r6, r6
+ 485 00ac EDB2     		uxtb	r5, r5
+ 486 00ae FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 487 00b2 08B1     		cbz	r0, .L75
+ 488 00b4 45F00105 		orr	r5, r5, #1
+ 489              	.L75:
+ 490 00b8 3846     		mov	r0, r7
+ 491 00ba FFF7FEFF 		bl	delay_us
+ 492 00be 08F1FF38 		add	r8, r8, #-1
+ 493 00c2 2046     		mov	r0, r4
+ 494 00c4 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 495 00c8 18F0FF08 		ands	r8, r8, #255
+ 496 00cc DCD1     		bne	.L76
+ 497 00ce 29E1     		b	.L63
+ 498              	.L70:
+ 499 00d0 2046     		mov	r0, r4
+ 500 00d2 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 501 00d6 4FF00808 		mov	r8, #8
+ 502 00da 0025     		movs	r5, #0
+ 503              	.L80:
+ 504 00dc F307     		lsls	r3, r6, #31
+ 505 00de 2046     		mov	r0, r4
+ 506 00e0 02D5     		bpl	.L77
+ 507 00e2 FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 508 00e6 01E0     		b	.L78
+ 509              	.L77:
+ 510 00e8 FFF7FEFF 		bl	SPI_MOSI_LOW
+ 511              	.L78:
+ 512 00ec 3846     		mov	r0, r7
+ 513 00ee FFF7FEFF 		bl	delay_us
+ 514 00f2 2046     		mov	r0, r4
+ 515 00f4 FFF7FEFF 		bl	SPI_SCK_LOW
+ 516 00f8 2046     		mov	r0, r4
+ 517 00fa 7608     		lsrs	r6, r6, #1
+ 518 00fc 6D08     		lsrs	r5, r5, #1
+ 519 00fe FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 520 0102 10B1     		cbz	r0, .L79
+ 521 0104 65F07F05 		orn	r5, r5, #127
+ 522 0108 EDB2     		uxtb	r5, r5
+ 523              	.L79:
+ 524 010a 3846     		mov	r0, r7
+ 525 010c FFF7FEFF 		bl	delay_us
+ 526 0110 08F1FF38 		add	r8, r8, #-1
+ 527 0114 2046     		mov	r0, r4
+ 528 0116 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 529 011a 18F0FF08 		ands	r8, r8, #255
+ 530 011e DDD1     		bne	.L80
+ 531 0120 00E1     		b	.L63
+ 532              	.L71:
+ 533 0122 2046     		mov	r0, r4
+ 534 0124 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 535 0128 4FF00808 		mov	r8, #8
+ 536 012c 0025     		movs	r5, #0
+ 537              	.L84:
+ 538 012e 2046     		mov	r0, r4
+ 539 0130 FFF7FEFF 		bl	SPI_SCK_LOW
+ 540 0134 3106     		lsls	r1, r6, #24
+ 541 0136 2046     		mov	r0, r4
+ 542 0138 02D5     		bpl	.L81
+ 543 013a FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 544 013e 01E0     		b	.L82
+ 545              	.L81:
+ 546 0140 FFF7FEFF 		bl	SPI_MOSI_LOW
+ 547              	.L82:
+ 548 0144 3846     		mov	r0, r7
+ 549 0146 FFF7FEFF 		bl	delay_us
+ 550 014a 2046     		mov	r0, r4
+ 551 014c 7600     		lsls	r6, r6, #1
+ 552 014e FFF7FEFF 		bl	SPI_SCK_HIGH
+ 553 0152 6D00     		lsls	r5, r5, #1
+ 554 0154 2046     		mov	r0, r4
+ 555 0156 F6B2     		uxtb	r6, r6
+ 556 0158 EDB2     		uxtb	r5, r5
+ 557 015a FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 558 015e 08B1     		cbz	r0, .L83
+ 559 0160 45F00105 		orr	r5, r5, #1
+ 560              	.L83:
+ 561 0164 3846     		mov	r0, r7
+ 562 0166 08F1FF38 		add	r8, r8, #-1
+ 563 016a FFF7FEFF 		bl	delay_us
+ 564 016e 18F0FF08 		ands	r8, r8, #255
+ 565 0172 DCD1     		bne	.L84
+ 566 0174 D6E0     		b	.L63
+ 567              	.L72:
+ 568 0176 2046     		mov	r0, r4
+ 569 0178 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 570 017c 4FF00808 		mov	r8, #8
+ 571 0180 0025     		movs	r5, #0
+ 572              	.L88:
+ 573 0182 2046     		mov	r0, r4
+ 574 0184 FFF7FEFF 		bl	SPI_SCK_LOW
+ 575 0188 F207     		lsls	r2, r6, #31
+ 576 018a 2046     		mov	r0, r4
+ 577 018c 02D5     		bpl	.L85
+ 578 018e FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 579 0192 01E0     		b	.L86
+ 580              	.L85:
+ 581 0194 FFF7FEFF 		bl	SPI_MOSI_LOW
+ 582              	.L86:
+ 583 0198 3846     		mov	r0, r7
+ 584 019a FFF7FEFF 		bl	delay_us
+ 585 019e 2046     		mov	r0, r4
+ 586 01a0 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 587 01a4 2046     		mov	r0, r4
+ 588 01a6 7608     		lsrs	r6, r6, #1
+ 589 01a8 6D08     		lsrs	r5, r5, #1
+ 590 01aa FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 591 01ae 10B1     		cbz	r0, .L87
+ 592 01b0 65F07F05 		orn	r5, r5, #127
+ 593 01b4 EDB2     		uxtb	r5, r5
+ 594              	.L87:
+ 595 01b6 3846     		mov	r0, r7
+ 596 01b8 08F1FF38 		add	r8, r8, #-1
+ 597 01bc FFF7FEFF 		bl	delay_us
+ 598 01c0 18F0FF08 		ands	r8, r8, #255
+ 599 01c4 DDD1     		bne	.L88
+ 600 01c6 ADE0     		b	.L63
+ 601              	.L64:
+ 602 01c8 2046     		mov	r0, r4
+ 603 01ca FFF7FEFF 		bl	SPI_SCK_LOW
+ 604 01ce 4FF00808 		mov	r8, #8
+ 605 01d2 0025     		movs	r5, #0
+ 606              	.L92:
+ 607 01d4 3306     		lsls	r3, r6, #24
+ 608 01d6 2046     		mov	r0, r4
+ 609 01d8 02D5     		bpl	.L89
+ 610 01da FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 611 01de 01E0     		b	.L90
+ 612              	.L89:
+ 613 01e0 FFF7FEFF 		bl	SPI_MOSI_LOW
+ 614              	.L90:
+ 615 01e4 3846     		mov	r0, r7
+ 616 01e6 FFF7FEFF 		bl	delay_us
+ 617 01ea 2046     		mov	r0, r4
+ 618 01ec 7600     		lsls	r6, r6, #1
+ 619 01ee FFF7FEFF 		bl	SPI_SCK_HIGH
+ 620 01f2 6D00     		lsls	r5, r5, #1
+ 621 01f4 2046     		mov	r0, r4
+ 622 01f6 F6B2     		uxtb	r6, r6
+ 623 01f8 EDB2     		uxtb	r5, r5
+ 624 01fa FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 625 01fe 08B1     		cbz	r0, .L91
+ 626 0200 45F00105 		orr	r5, r5, #1
+ 627              	.L91:
+ 628 0204 3846     		mov	r0, r7
+ 629 0206 FFF7FEFF 		bl	delay_us
+ 630 020a 08F1FF38 		add	r8, r8, #-1
+ 631 020e 2046     		mov	r0, r4
+ 632 0210 FFF7FEFF 		bl	SPI_SCK_LOW
+ 633 0214 18F0FF08 		ands	r8, r8, #255
+ 634 0218 DCD1     		bne	.L92
+ 635 021a 83E0     		b	.L63
+ 636              	.L66:
+ 637 021c 2046     		mov	r0, r4
+ 638 021e FFF7FEFF 		bl	SPI_SCK_LOW
+ 639 0222 4FF00808 		mov	r8, #8
+ 640 0226 0025     		movs	r5, #0
+ 641              	.L96:
+ 642 0228 F107     		lsls	r1, r6, #31
+ 643 022a 2046     		mov	r0, r4
+ 644 022c 02D5     		bpl	.L93
+ 645 022e FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 646 0232 01E0     		b	.L94
+ 647              	.L93:
+ 648 0234 FFF7FEFF 		bl	SPI_MOSI_LOW
+ 649              	.L94:
+ 650 0238 3846     		mov	r0, r7
+ 651 023a FFF7FEFF 		bl	delay_us
+ 652 023e 2046     		mov	r0, r4
+ 653 0240 FFF7FEFF 		bl	SPI_SCK_HIGH
+ 654 0244 2046     		mov	r0, r4
+ 655 0246 7608     		lsrs	r6, r6, #1
+ 656 0248 6D08     		lsrs	r5, r5, #1
+ 657 024a FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 658 024e 10B1     		cbz	r0, .L95
+ 659 0250 65F07F05 		orn	r5, r5, #127
+ 660 0254 EDB2     		uxtb	r5, r5
+ 661              	.L95:
+ 662 0256 3846     		mov	r0, r7
+ 663 0258 FFF7FEFF 		bl	delay_us
+ 664 025c 08F1FF38 		add	r8, r8, #-1
+ 665 0260 2046     		mov	r0, r4
+ 666 0262 FFF7FEFF 		bl	SPI_SCK_LOW
+ 667 0266 18F0FF08 		ands	r8, r8, #255
+ 668 026a DDD1     		bne	.L96
+ 669 026c 5AE0     		b	.L63
+ 670              	.L67:
+ 671 026e 2046     		mov	r0, r4
+ 672 0270 FFF7FEFF 		bl	SPI_SCK_LOW
+ 673 0274 4FF00808 		mov	r8, #8
+ 674 0278 0025     		movs	r5, #0
+ 675              	.L100:
+ 676 027a 2046     		mov	r0, r4
+ 677 027c FFF7FEFF 		bl	SPI_SCK_HIGH
+ 678 0280 3206     		lsls	r2, r6, #24
+ 679 0282 2046     		mov	r0, r4
+ 680 0284 02D5     		bpl	.L97
+ 681 0286 FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 682 028a 01E0     		b	.L98
+ 683              	.L97:
+ 684 028c FFF7FEFF 		bl	SPI_MOSI_LOW
+ 685              	.L98:
+ 686 0290 3846     		mov	r0, r7
+ 687 0292 FFF7FEFF 		bl	delay_us
+ 688 0296 2046     		mov	r0, r4
+ 689 0298 7600     		lsls	r6, r6, #1
+ 690 029a FFF7FEFF 		bl	SPI_SCK_LOW
+ 691 029e 6D00     		lsls	r5, r5, #1
+ 692 02a0 2046     		mov	r0, r4
+ 693 02a2 F6B2     		uxtb	r6, r6
+ 694 02a4 EDB2     		uxtb	r5, r5
+ 695 02a6 FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 696 02aa 08B1     		cbz	r0, .L99
+ 697 02ac 45F00105 		orr	r5, r5, #1
+ 698              	.L99:
+ 699 02b0 3846     		mov	r0, r7
+ 700 02b2 08F1FF38 		add	r8, r8, #-1
+ 701 02b6 FFF7FEFF 		bl	delay_us
+ 702 02ba 18F0FF08 		ands	r8, r8, #255
+ 703 02be DCD1     		bne	.L100
+ 704 02c0 30E0     		b	.L63
+ 705              	.L160:
+ 706 02c2 00BF     		.align	2
+ 707              	.L159:
+ 708 02c4 00000000 		.word	.LANCHOR0
+ 709 02c8 00000000 		.word	.LC0
+ 710 02cc 00000000 		.word	.LANCHOR1
+ 711              	.L68:
+ 712 02d0 2046     		mov	r0, r4
+ 713 02d2 FFF7FEFF 		bl	SPI_SCK_LOW
+ 714 02d6 4FF00808 		mov	r8, #8
+ 715 02da 0025     		movs	r5, #0
+ 716              	.L104:
+ 717 02dc 2046     		mov	r0, r4
+ 718 02de FFF7FEFF 		bl	SPI_SCK_HIGH
+ 719 02e2 F307     		lsls	r3, r6, #31
+ 720 02e4 2046     		mov	r0, r4
+ 721 02e6 02D5     		bpl	.L101
+ 722 02e8 FFF7FEFF 		bl	SPI_MOSI_HIGH
+ 723 02ec 01E0     		b	.L102
+ 724              	.L101:
+ 725 02ee FFF7FEFF 		bl	SPI_MOSI_LOW
+ 726              	.L102:
+ 727 02f2 3846     		mov	r0, r7
+ 728 02f4 FFF7FEFF 		bl	delay_us
+ 729 02f8 2046     		mov	r0, r4
+ 730 02fa FFF7FEFF 		bl	SPI_SCK_LOW
+ 731 02fe 2046     		mov	r0, r4
+ 732 0300 7608     		lsrs	r6, r6, #1
+ 733 0302 6D08     		lsrs	r5, r5, #1
+ 734 0304 FFF7FEFF 		bl	SPI_MISO_LEVEL
+ 735 0308 10B1     		cbz	r0, .L103
+ 736 030a 65F07F05 		orn	r5, r5, #127
+ 737 030e EDB2     		uxtb	r5, r5
+ 738              	.L103:
+ 739 0310 3846     		mov	r0, r7
+ 740 0312 08F1FF38 		add	r8, r8, #-1
+ 741 0316 FFF7FEFF 		bl	delay_us
+ 742 031a 18F0FF08 		ands	r8, r8, #255
+ 743 031e DDD1     		bne	.L104
+ 744 0320 00E0     		b	.L63
+ 745              	.L107:
+ 746 0322 0025     		movs	r5, #0
+ 747              	.L63:
+ 748 0324 3846     		mov	r0, r7
+ 749 0326 FFF7FEFF 		bl	delay_us
+ 750 032a 3846     		mov	r0, r7
+ 751 032c FFF7FEFF 		bl	delay_us
+ 752 0330 2846     		mov	r0, r5
+ 753 0332 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 755 0336 00BF     		.section	.bss.spi_para,"aw",%nobits
+ 756              		.align	1
+ 757              		.set	.LANCHOR1,. + 0
+ 760              	spi_para:
+ 761 0000 00000000 		.space	8
+ 761      00000000 
+ 762              		.section	.rodata.spi_hw,"a",%progbits
+ 763              		.align	2
+ 764              		.set	.LANCHOR0,. + 0
+ 767              	spi_hw:
+ 768 0000 00100000 		.word	4096
+ 769 0004 00000000 		.word	0
+ 770 0008 00300140 		.word	1073819648
+ 771 000c 04000000 		.word	4
+ 772 0010 04000000 		.word	4
+ 773 0014 04000000 		.word	4
+ 774 0018 00080140 		.word	1073809408
+ 775 001c 00080140 		.word	1073809408
+ 776 0020 00080140 		.word	1073809408
+ 777 0024 2000     		.short	32
+ 778 0026 4000     		.short	64
+ 779 0028 8000     		.short	128
+ 780 002a 0000     		.space	2
+ 781 002c 00000000 		.word	0
+ 782 0030 00000000 		.word	0
+ 783 0034 00000000 		.word	0
+ 784 0038 10000000 		.word	16
+ 785 003c 10000000 		.word	16
+ 786 0040 10000000 		.word	16
+ 787 0044 00100140 		.word	1073811456
+ 788 0048 00100140 		.word	1073811456
+ 789 004c 00100140 		.word	1073811456
+ 790 0050 0004     		.short	1024
+ 791 0052 0008     		.short	2048
+ 792 0054 0010     		.short	4096
+ 793 0056 0000     		.space	2
+ 794              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 795              	.LC0:
+ 796 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/dr"
+ 796      73657273 
+ 796      2F647261 
+ 796      6170686F 
+ 796      2F446573 
+ 797 0033 765F7370 		.ascii	"v_spi.c\000"
+ 797      692E6300 
+ 798              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_spi.c
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:16     .text.SPI_SCK_HIGH:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:20     .text.SPI_SCK_HIGH:00000000 SPI_SCK_HIGH
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:34     .text.SPI_SCK_HIGH:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:37     .text.SPI_SCK_LOW:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:41     .text.SPI_SCK_LOW:00000000 SPI_SCK_LOW
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:55     .text.SPI_SCK_LOW:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:58     .text.SPI_MOSI_HIGH:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:62     .text.SPI_MOSI_HIGH:00000000 SPI_MOSI_HIGH
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:76     .text.SPI_MOSI_HIGH:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:79     .text.SPI_MOSI_LOW:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:83     .text.SPI_MOSI_LOW:00000000 SPI_MOSI_LOW
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:97     .text.SPI_MOSI_LOW:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:100    .text.SPI_MISO_LEVEL:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:104    .text.SPI_MISO_LEVEL:00000000 SPI_MISO_LEVEL
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:119    .text.SPI_MISO_LEVEL:00000014 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:122    .text.spi_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:127    .text.spi_init:00000000 spi_init
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:327    .text.spi_init:0000020c $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:332    .text.spi_deinit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:337    .text.spi_deinit:00000000 spi_deinit
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:398    .text.spi_deinit:00000084 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:402    .text.spi_tx_rx_byte:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:407    .text.spi_tx_rx_byte:00000000 spi_tx_rx_byte
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:455    .text.spi_tx_rx_byte:0000006c $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:464    .text.spi_tx_rx_byte:0000007c $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:708    .text.spi_tx_rx_byte:000002c4 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:712    .text.spi_tx_rx_byte:000002d0 $t
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:756    .bss.spi_para:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:760    .bss.spi_para:00000000 spi_para
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:763    .rodata.spi_hw:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccxgOcAh.s:767    .rodata.spi_hw:00000000 spi_hw
+
+UNDEFINED SYMBOLS
+assert_err
+GPIO_PinRemapConfig
+RCC_APB2PeriphClockCmd
+RCC_APB1PeriphClockCmd
+SPI_Cmd
+SPI_I2S_DeInit
+GPIO_Init
+SPI_Init
+SPI_I2S_GetFlagStatus
+SPI_I2S_SendData
+SPI_I2S_ReceiveData
+delay_us

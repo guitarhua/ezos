@@ -1,0 +1,788 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"httpd.c"
+  15              		.section	.text.send_headers,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	send_headers:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 38B5     		push	{r3, r4, r5, lr}
+  24 0002 B0F85630 		ldrh	r3, [r0, #86]
+  25 0006 40F20112 		movw	r2, #257
+  26 000a 9342     		cmp	r3, r2
+  27 000c 0446     		mov	r4, r0
+  28 000e 07D0     		beq	.L3
+  29 0010 40F21511 		movw	r1, #277
+  30 0014 8B42     		cmp	r3, r1
+  31 0016 56D0     		beq	.L4
+  32 0018 002B     		cmp	r3, #0
+  33 001a 6AD1     		bne	.L25
+  34 001c A0F85620 		strh	r2, [r0, #86]	@ movhi
+  35              	.L3:
+  36 0020 256D     		ldr	r5, [r4, #80]
+  37 0022 2846     		mov	r0, r5
+  38 0024 FFF7FEFF 		bl	strlen
+  39 0028 42F21072 		movw	r2, #10000
+  40 002c 81B2     		uxth	r1, r0
+  41 002e 2846     		mov	r0, r5
+  42 0030 FFF7FEFF 		bl	socket_tx
+  43 0034 0228     		cmp	r0, #2
+  44 0036 0546     		mov	r5, r0
+  45 0038 01D1     		bne	.L6
+  46              	.L15:
+  47 003a 0220     		movs	r0, #2
+  48 003c 38BD     		pop	{r3, r4, r5, pc}
+  49              	.L6:
+  50 003e 2F48     		ldr	r0, .L28
+  51 0040 2146     		mov	r1, r4
+  52 0042 226D     		ldr	r2, [r4, #80]
+  53 0044 FFF7FEFF 		bl	printf
+  54 0048 002D     		cmp	r5, #0
+  55 004a 54D1     		bne	.L18
+  56 004c 04F13200 		add	r0, r4, #50
+  57 0050 2E21     		movs	r1, #46
+  58 0052 FFF7FEFF 		bl	strrchr
+  59 0056 0546     		mov	r5, r0
+  60 0058 08B9     		cbnz	r0, .L7
+  61 005a 294B     		ldr	r3, .L28+4
+  62 005c 2EE0     		b	.L26
+  63              	.L7:
+  64 005e 2948     		ldr	r0, .L28+8
+  65 0060 2946     		mov	r1, r5
+  66 0062 0522     		movs	r2, #5
+  67 0064 FFF7FEFF 		bl	strncmp
+  68 0068 28B1     		cbz	r0, .L9
+  69 006a 2748     		ldr	r0, .L28+12
+  70 006c 2946     		mov	r1, r5
+  71 006e 0622     		movs	r2, #6
+  72 0070 FFF7FEFF 		bl	strncmp
+  73 0074 08B9     		cbnz	r0, .L10
+  74              	.L9:
+  75 0076 254B     		ldr	r3, .L28+16
+  76 0078 20E0     		b	.L26
+  77              	.L10:
+  78 007a 2548     		ldr	r0, .L28+20
+  79 007c 2946     		mov	r1, r5
+  80 007e 0422     		movs	r2, #4
+  81 0080 FFF7FEFF 		bl	strncmp
+  82 0084 08B9     		cbnz	r0, .L11
+  83 0086 234B     		ldr	r3, .L28+24
+  84 0088 18E0     		b	.L26
+  85              	.L11:
+  86 008a 2348     		ldr	r0, .L28+28
+  87 008c 2946     		mov	r1, r5
+  88 008e 0422     		movs	r2, #4
+  89 0090 FFF7FEFF 		bl	strncmp
+  90 0094 08B9     		cbnz	r0, .L12
+  91 0096 214B     		ldr	r3, .L28+32
+  92 0098 10E0     		b	.L26
+  93              	.L12:
+  94 009a 2148     		ldr	r0, .L28+36
+  95 009c 2946     		mov	r1, r5
+  96 009e 0422     		movs	r2, #4
+  97 00a0 FFF7FEFF 		bl	strncmp
+  98 00a4 08B9     		cbnz	r0, .L13
+  99 00a6 1F4B     		ldr	r3, .L28+40
+ 100 00a8 08E0     		b	.L26
+ 101              	.L13:
+ 102 00aa 1F48     		ldr	r0, .L28+44
+ 103 00ac 2946     		mov	r1, r5
+ 104 00ae 0422     		movs	r2, #4
+ 105 00b0 FFF7FEFF 		bl	strncmp
+ 106 00b4 08B9     		cbnz	r0, .L14
+ 107 00b6 1D4B     		ldr	r3, .L28+48
+ 108 00b8 00E0     		b	.L26
+ 109              	.L14:
+ 110 00ba 1D4B     		ldr	r3, .L28+52
+ 111              	.L26:
+ 112 00bc 2365     		str	r3, [r4, #80]
+ 113 00be 40F21513 		movw	r3, #277
+ 114 00c2 A4F85630 		strh	r3, [r4, #86]	@ movhi
+ 115              	.L4:
+ 116 00c6 256D     		ldr	r5, [r4, #80]
+ 117 00c8 2846     		mov	r0, r5
+ 118 00ca FFF7FEFF 		bl	strlen
+ 119 00ce 42F21072 		movw	r2, #10000
+ 120 00d2 81B2     		uxth	r1, r0
+ 121 00d4 2846     		mov	r0, r5
+ 122 00d6 FFF7FEFF 		bl	socket_tx
+ 123 00da 0228     		cmp	r0, #2
+ 124 00dc 0546     		mov	r5, r0
+ 125 00de ACD0     		beq	.L15
+ 126 00e0 0648     		ldr	r0, .L28
+ 127 00e2 2146     		mov	r1, r4
+ 128 00e4 226D     		ldr	r2, [r4, #80]
+ 129 00e6 FFF7FEFF 		bl	printf
+ 130 00ea 25B9     		cbnz	r5, .L18
+ 131 00ec A4F85650 		strh	r5, [r4, #86]	@ movhi
+ 132 00f0 01E0     		b	.L18
+ 133              	.L25:
+ 134 00f2 0020     		movs	r0, #0
+ 135 00f4 38BD     		pop	{r3, r4, r5, pc}
+ 136              	.L18:
+ 137 00f6 2846     		mov	r0, r5
+ 138 00f8 38BD     		pop	{r3, r4, r5, pc}
+ 139              	.L29:
+ 140 00fa 00BF     		.align	2
+ 141              	.L28:
+ 142 00fc 00000000 		.word	.LC0
+ 143 0100 00000000 		.word	.LANCHOR0
+ 144 0104 00000000 		.word	.LANCHOR1
+ 145 0108 00000000 		.word	.LANCHOR2
+ 146 010c 00000000 		.word	.LANCHOR3
+ 147 0110 00000000 		.word	.LANCHOR4
+ 148 0114 00000000 		.word	.LANCHOR5
+ 149 0118 00000000 		.word	.LANCHOR6
+ 150 011c 00000000 		.word	.LANCHOR7
+ 151 0120 00000000 		.word	.LANCHOR8
+ 152 0124 00000000 		.word	.LANCHOR9
+ 153 0128 00000000 		.word	.LANCHOR10
+ 154 012c 00000000 		.word	.LANCHOR11
+ 155 0130 00000000 		.word	.LANCHOR12
+ 157              		.section	.text.socket_web_server,"ax",%progbits
+ 158              		.align	1
+ 159              		.thumb
+ 160              		.thumb_func
+ 162              	socket_web_server:
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 166 0004 0388     		ldrh	r3, [r0]
+ 167 0006 0546     		mov	r5, r0
+ 168 0008 0F46     		mov	r7, r1
+ 169 000a 0C68     		ldr	r4, [r1]
+ 170 000c 03B1     		cbz	r3, .L31
+ 171 000e 44B3     		cbz	r4, .L130
+ 172              	.L31:
+ 173 0010 FFF7FEFF 		bl	socket_closed
+ 174 0014 0428     		cmp	r0, #4
+ 175 0016 04D1     		bne	.L32
+ 176 0018 2146     		mov	r1, r4
+ 177 001a B948     		ldr	r0, .L135
+ 178 001c FFF7FEFF 		bl	printf
+ 179 0020 65E1     		b	.L131
+ 180              	.L32:
+ 181 0022 2B88     		ldrh	r3, [r5]
+ 182 0024 C52B     		cmp	r3, #197
+ 183 0026 00F03D81 		beq	.L40
+ 184 002a 07D8     		bhi	.L35
+ 185 002c A72B     		cmp	r3, #167
+ 186 002e 22D0     		beq	.L36
+ 187 0030 C22B     		cmp	r3, #194
+ 188 0032 70D0     		beq	.L37
+ 189 0034 002B     		cmp	r3, #0
+ 190 0036 40F06081 		bne	.L30
+ 191 003a 09E0     		b	.L133
+ 192              	.L35:
+ 193 003c DA2B     		cmp	r3, #218
+ 194 003e 00F09880 		beq	.L39
+ 195 0042 E02B     		cmp	r3, #224
+ 196 0044 00F02E81 		beq	.L40
+ 197 0048 D02B     		cmp	r3, #208
+ 198 004a 40F05681 		bne	.L30
+ 199 004e 74E0     		b	.L41
+ 200              	.L133:
+ 201 0050 AC48     		ldr	r0, .L135+4
+ 202 0052 FFF7FEFF 		bl	memb_alloc
+ 203 0056 0446     		mov	r4, r0
+ 204 0058 3860     		str	r0, [r7]
+ 205 005a 30B9     		cbnz	r0, .L42
+ 206 005c AA48     		ldr	r0, .L135+8
+ 207 005e FFF7FEFF 		bl	puts
+ 208              	.L130:
+ 209 0062 BDE8F843 		pop	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 210 0066 FFF7FEBF 		b	socket_close
+ 211              	.L42:
+ 212 006a A848     		ldr	r0, .L135+12
+ 213 006c 2146     		mov	r1, r4
+ 214 006e FFF7FEFF 		bl	printf
+ 215 0072 A723     		movs	r3, #167
+ 216 0074 2B80     		strh	r3, [r5]	@ movhi
+ 217              	.L36:
+ 218 0076 2046     		mov	r0, r4
+ 219 0078 3221     		movs	r1, #50
+ 220 007a 42F21072 		movw	r2, #10000
+ 221 007e FFF7FEFF 		bl	socket_rx
+ 222 0082 0228     		cmp	r0, #2
+ 223 0084 0646     		mov	r6, r0
+ 224 0086 00F03881 		beq	.L30
+ 225 008a FFF7FEFF 		bl	socket_len
+ 226 008e 0023     		movs	r3, #0
+ 227 0090 2044     		add	r0, r0, r4
+ 228 0092 00F8013C 		strb	r3, [r0, #-1]
+ 229 0096 2146     		mov	r1, r4
+ 230 0098 9D48     		ldr	r0, .L135+16
+ 231 009a 2246     		mov	r2, r4
+ 232 009c FFF7FEFF 		bl	printf
+ 233 00a0 012E     		cmp	r6, #1
+ 234 00a2 00F01E81 		beq	.L44
+ 235 00a6 FF2E     		cmp	r6, #255
+ 236 00a8 00F01B81 		beq	.L44
+ 237 00ac 2046     		mov	r0, r4
+ 238 00ae 9949     		ldr	r1, .L135+20
+ 239 00b0 0522     		movs	r2, #5
+ 240 00b2 FFF7FEFF 		bl	strncmp
+ 241 00b6 8046     		mov	r8, r0
+ 242 00b8 0028     		cmp	r0, #0
+ 243 00ba 40F01281 		bne	.L44
+ 244 00be 6379     		ldrb	r3, [r4, #5]	@ zero_extendqisi2
+ 245 00c0 04F13206 		add	r6, r4, #50
+ 246 00c4 202B     		cmp	r3, #32
+ 247 00c6 04D1     		bne	.L45
+ 248 00c8 3046     		mov	r0, r6
+ 249 00ca 9349     		ldr	r1, .L135+24
+ 250 00cc FFF7FEFF 		bl	strcpy
+ 251 00d0 0BE0     		b	.L46
+ 252              	.L45:
+ 253 00d2 601D     		adds	r0, r4, #5
+ 254 00d4 2021     		movs	r1, #32
+ 255 00d6 FFF7FEFF 		bl	strchr
+ 256 00da 08B1     		cbz	r0, .L47
+ 257 00dc 80F80080 		strb	r8, [r0]
+ 258              	.L47:
+ 259 00e0 3046     		mov	r0, r6
+ 260 00e2 211D     		adds	r1, r4, #4
+ 261 00e4 1422     		movs	r2, #20
+ 262 00e6 FFF7FEFF 		bl	strncpy
+ 263              	.L46:
+ 264 00ea 04F14809 		add	r9, r4, #72
+ 265 00ee 3046     		mov	r0, r6
+ 266 00f0 4946     		mov	r1, r9
+ 267 00f2 FFF7FEFF 		bl	httpd_fs_open
+ 268 00f6 8046     		mov	r8, r0
+ 269 00f8 C0B9     		cbnz	r0, .L48
+ 270 00fa 4946     		mov	r1, r9
+ 271 00fc 8748     		ldr	r0, .L135+28
+ 272 00fe FFF7FEFF 		bl	httpd_fs_open
+ 273 0102 3046     		mov	r0, r6
+ 274 0104 8549     		ldr	r1, .L135+28
+ 275 0106 FFF7FEFF 		bl	strcpy
+ 276 010a 854B     		ldr	r3, .L135+32
+ 277 010c A4F85680 		strh	r8, [r4, #86]	@ movhi
+ 278 0110 2365     		str	r3, [r4, #80]
+ 279 0112 C223     		movs	r3, #194
+ 280 0114 2B80     		strh	r3, [r5]	@ movhi
+ 281              	.L37:
+ 282 0116 2046     		mov	r0, r4
+ 283 0118 FFF7FEFF 		bl	send_headers
+ 284 011c 0228     		cmp	r0, #2
+ 285 011e 00F0EC80 		beq	.L30
+ 286 0122 0028     		cmp	r0, #0
+ 287 0124 40F0DD80 		bne	.L44
+ 288 0128 C523     		movs	r3, #197
+ 289 012a BAE0     		b	.L132
+ 290              	.L48:
+ 291 012c 0023     		movs	r3, #0
+ 292 012e A4F85630 		strh	r3, [r4, #86]	@ movhi
+ 293 0132 7C4B     		ldr	r3, .L135+36
+ 294 0134 2365     		str	r3, [r4, #80]
+ 295 0136 D023     		movs	r3, #208
+ 296 0138 2B80     		strh	r3, [r5]	@ movhi
+ 297              	.L41:
+ 298 013a 2046     		mov	r0, r4
+ 299 013c FFF7FEFF 		bl	send_headers
+ 300 0140 0228     		cmp	r0, #2
+ 301 0142 00F0DA80 		beq	.L30
+ 302 0146 0028     		cmp	r0, #0
+ 303 0148 40F0CB80 		bne	.L44
+ 304 014c 04F13200 		add	r0, r4, #50
+ 305 0150 2E21     		movs	r1, #46
+ 306 0152 FFF7FEFF 		bl	strchr
+ 307 0156 0028     		cmp	r0, #0
+ 308 0158 00F0A280 		beq	.L51
+ 309 015c 7249     		ldr	r1, .L135+40
+ 310 015e 0622     		movs	r2, #6
+ 311 0160 FFF7FEFF 		bl	strncmp
+ 312 0164 0028     		cmp	r0, #0
+ 313 0166 40F09B80 		bne	.L51
+ 314 016a DA23     		movs	r3, #218
+ 315 016c A4F85600 		strh	r0, [r4, #86]	@ movhi
+ 316 0170 2B80     		strh	r3, [r5]	@ movhi
+ 317              	.L39:
+ 318 0172 B4F85630 		ldrh	r3, [r4, #86]
+ 319 0176 40F22D12 		movw	r2, #301
+ 320 017a 9342     		cmp	r3, r2
+ 321 017c 50D0     		beq	.L52
+ 322 017e 01D8     		bhi	.L53
+ 323 0180 7BB3     		cbz	r3, .L54
+ 324 0182 A0E0     		b	.L50
+ 325              	.L53:
+ 326 0184 40F23512 		movw	r2, #309
+ 327 0188 9342     		cmp	r3, r2
+ 328 018a 0AD0     		beq	.L55
+ 329 018c 1632     		adds	r2, r2, #22
+ 330 018e 9342     		cmp	r3, r2
+ 331 0190 61D0     		beq	.L56
+ 332 0192 98E0     		b	.L50
+ 333              	.L59:
+ 334 0194 0023     		movs	r3, #0
+ 335 0196 A4F85A30 		strh	r3, [r4, #90]	@ movhi
+ 336 019a 40F23513 		movw	r3, #309
+ 337 019e A4F85630 		strh	r3, [r4, #86]	@ movhi
+ 338              	.L55:
+ 339 01a2 206D     		ldr	r0, [r4, #80]
+ 340 01a4 FFF7FEFF 		bl	httpd_cgi
+ 341 01a8 0346     		mov	r3, r0
+ 342 01aa 2046     		mov	r0, r4
+ 343 01ac 9847     		blx	r3
+ 344 01ae 0228     		cmp	r0, #2
+ 345 01b0 00F0A380 		beq	.L30
+ 346 01b4 5D4B     		ldr	r3, .L135+44
+ 347 01b6 5E48     		ldr	r0, .L135+48
+ 348 01b8 1A68     		ldr	r2, [r3]
+ 349 01ba 2146     		mov	r1, r4
+ 350              	.L126:
+ 351 01bc FFF7FEFF 		bl	printf
+ 352 01c0 266D     		ldr	r6, [r4, #80]
+ 353 01c2 0A21     		movs	r1, #10
+ 354 01c4 3046     		mov	r0, r6
+ 355 01c6 FFF7FEFF 		bl	strchr
+ 356 01ca B4F85420 		ldrh	r2, [r4, #84]
+ 357 01ce 0130     		adds	r0, r0, #1
+ 358 01d0 861B     		subs	r6, r0, r6
+ 359 01d2 961B     		subs	r6, r2, r6
+ 360 01d4 B6B2     		uxth	r6, r6
+ 361 01d6 A4F85460 		strh	r6, [r4, #84]	@ movhi
+ 362 01da 2065     		str	r0, [r4, #80]
+ 363 01dc A064     		str	r0, [r4, #72]
+ 364 01de A4F84C60 		strh	r6, [r4, #76]	@ movhi
+ 365              	.L54:
+ 366 01e2 B4F84C80 		ldrh	r8, [r4, #76]
+ 367 01e6 0FFA88F3 		sxth	r3, r8
+ 368 01ea 002B     		cmp	r3, #0
+ 369 01ec 54DD     		ble	.L134
+ 370 01ee A66C     		ldr	r6, [r4, #72]
+ 371 01f0 3178     		ldrb	r1, [r6]	@ zero_extendqisi2
+ 372 01f2 2529     		cmp	r1, #37
+ 373 01f4 4AD1     		bne	.L57
+ 374 01f6 7378     		ldrb	r3, [r6, #1]	@ zero_extendqisi2
+ 375 01f8 212B     		cmp	r3, #33
+ 376 01fa 1FD1     		bne	.L58
+ 377 01fc F31C     		adds	r3, r6, #3
+ 378 01fe A8F10308 		sub	r8, r8, #3
+ 379 0202 2365     		str	r3, [r4, #80]
+ 380 0204 A4F85480 		strh	r8, [r4, #84]	@ movhi
+ 381 0208 B378     		ldrb	r3, [r6, #2]	@ zero_extendqisi2
+ 382 020a 3A2B     		cmp	r3, #58
+ 383 020c C2D1     		bne	.L59
+ 384 020e 301D     		adds	r0, r6, #4
+ 385 0210 04F14801 		add	r1, r4, #72
+ 386 0214 FFF7FEFF 		bl	httpd_fs_open
+ 387 0218 40F22D13 		movw	r3, #301
+ 388 021c A4F85630 		strh	r3, [r4, #86]	@ movhi
+ 389              	.L52:
+ 390 0220 A06C     		ldr	r0, [r4, #72]
+ 391 0222 B4F84C10 		ldrh	r1, [r4, #76]
+ 392 0226 42F21072 		movw	r2, #10000
+ 393 022a FFF7FEFF 		bl	socket_tx
+ 394 022e 0228     		cmp	r0, #2
+ 395 0230 63D0     		beq	.L30
+ 396 0232 4048     		ldr	r0, .L135+52
+ 397 0234 2146     		mov	r1, r4
+ 398 0236 04F13202 		add	r2, r4, #50
+ 399 023a BFE7     		b	.L126
+ 400              	.L58:
+ 401 023c 701C     		adds	r0, r6, #1
+ 402              	.L127:
+ 403 023e FFF7FEFF 		bl	strchr
+ 404 0242 30B3     		cbz	r0, .L63
+ 405 0244 B042     		cmp	r0, r6
+ 406 0246 24D0     		beq	.L63
+ 407 0248 861B     		subs	r6, r0, r6
+ 408 024a A4F85460 		strh	r6, [r4, #84]	@ movhi
+ 409              	.L64:
+ 410 024e 40F24B13 		movw	r3, #331
+ 411 0252 A4F85630 		strh	r3, [r4, #86]	@ movhi
+ 412              	.L56:
+ 413 0256 A06C     		ldr	r0, [r4, #72]
+ 414 0258 B4F85410 		ldrh	r1, [r4, #84]
+ 415 025c 42F21072 		movw	r2, #10000
+ 416 0260 FFF7FEFF 		bl	socket_tx
+ 417 0264 0228     		cmp	r0, #2
+ 418 0266 48D0     		beq	.L30
+ 419 0268 2146     		mov	r1, r4
+ 420 026a 04F13202 		add	r2, r4, #50
+ 421 026e 3248     		ldr	r0, .L135+56
+ 422 0270 FFF7FEFF 		bl	printf
+ 423 0274 B4F85430 		ldrh	r3, [r4, #84]
+ 424 0278 A26C     		ldr	r2, [r4, #72]
+ 425 027a 19B2     		sxth	r1, r3
+ 426 027c 0A44     		add	r2, r2, r1
+ 427 027e A264     		str	r2, [r4, #72]
+ 428 0280 B4F84C20 		ldrh	r2, [r4, #76]
+ 429 0284 D31A     		subs	r3, r2, r3
+ 430 0286 A4F84C30 		strh	r3, [r4, #76]	@ movhi
+ 431 028a AAE7     		b	.L54
+ 432              	.L57:
+ 433 028c 3046     		mov	r0, r6
+ 434 028e 2521     		movs	r1, #37
+ 435 0290 D5E7     		b	.L127
+ 436              	.L63:
+ 437 0292 A4F85480 		strh	r8, [r4, #84]	@ movhi
+ 438 0296 DAE7     		b	.L64
+ 439              	.L134:
+ 440 0298 0023     		movs	r3, #0
+ 441 029a A4F85630 		strh	r3, [r4, #86]	@ movhi
+ 442 029e 12E0     		b	.L50
+ 443              	.L51:
+ 444 02a0 E023     		movs	r3, #224
+ 445              	.L132:
+ 446 02a2 2B80     		strh	r3, [r5]	@ movhi
+ 447              	.L40:
+ 448 02a4 A06C     		ldr	r0, [r4, #72]
+ 449 02a6 B4F84C10 		ldrh	r1, [r4, #76]
+ 450 02aa 42F21072 		movw	r2, #10000
+ 451 02ae FFF7FEFF 		bl	socket_tx
+ 452 02b2 0228     		cmp	r0, #2
+ 453 02b4 0646     		mov	r6, r0
+ 454 02b6 20D0     		beq	.L30
+ 455 02b8 1E48     		ldr	r0, .L135+52
+ 456 02ba 2146     		mov	r1, r4
+ 457 02bc 04F13202 		add	r2, r4, #50
+ 458 02c0 FFF7FEFF 		bl	printf
+ 459 02c4 6EB9     		cbnz	r6, .L44
+ 460              	.L50:
+ 461 02c6 2146     		mov	r1, r4
+ 462 02c8 1C48     		ldr	r0, .L135+60
+ 463 02ca FFF7FEFF 		bl	printf
+ 464 02ce FFF7FEFF 		bl	socket_close
+ 465 02d2 0C48     		ldr	r0, .L135+4
+ 466 02d4 3968     		ldr	r1, [r7]
+ 467 02d6 FFF7FEFF 		bl	memb_free
+ 468 02da 0023     		movs	r3, #0
+ 469 02dc 2B80     		strh	r3, [r5]	@ movhi
+ 470 02de BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 471              	.L44:
+ 472 02e2 2146     		mov	r1, r4
+ 473 02e4 1648     		ldr	r0, .L135+64
+ 474 02e6 FFF7FEFF 		bl	printf
+ 475 02ea FFF7FEFF 		bl	socket_close
+ 476              	.L131:
+ 477 02ee 3968     		ldr	r1, [r7]
+ 478 02f0 0448     		ldr	r0, .L135+4
+ 479 02f2 BDE8F843 		pop	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 480 02f6 FFF7FEBF 		b	memb_free
+ 481              	.L30:
+ 482 02fa BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 483              	.L136:
+ 484 02fe 00BF     		.align	2
+ 485              	.L135:
+ 486 0300 1A000000 		.word	.LC1
+ 487 0304 00000000 		.word	.LANCHOR13
+ 488 0308 41000000 		.word	.LC2
+ 489 030c 59000000 		.word	.LC3
+ 490 0310 71000000 		.word	.LC4
+ 491 0314 8D000000 		.word	.LC5
+ 492 0318 00000000 		.word	.LANCHOR14
+ 493 031c 00000000 		.word	.LANCHOR15
+ 494 0320 00000000 		.word	.LANCHOR16
+ 495 0324 00000000 		.word	.LANCHOR17
+ 496 0328 00000000 		.word	.LANCHOR2
+ 497 032c 00000000 		.word	uip_appdata
+ 498 0330 93000000 		.word	.LC6
+ 499 0334 00000000 		.word	.LC0
+ 500 0338 AD000000 		.word	.LC7
+ 501 033c C7000000 		.word	.LC8
+ 502 0340 DF000000 		.word	.LC9
+ 504              		.section	.text.example_web_server,"ax",%progbits
+ 505              		.align	1
+ 506              		.global	example_web_server
+ 507              		.thumb
+ 508              		.thumb_func
+ 510              	example_web_server:
+ 511              		@ args = 0, pretend = 0, frame = 0
+ 512              		@ frame_needed = 0, uses_anonymous_args = 0
+ 513 0000 10B5     		push	{r4, lr}
+ 514 0002 084C     		ldr	r4, .L138
+ 515 0004 0848     		ldr	r0, .L138+4
+ 516 0006 FFF7FEFF 		bl	memb_init
+ 517 000a FFF7FEFF 		bl	httpd_fs_init
+ 518 000e 2046     		mov	r0, r4
+ 519 0010 FFF7FEFF 		bl	tcp_server_delete
+ 520 0014 2046     		mov	r0, r4
+ 521 0016 0021     		movs	r1, #0
+ 522 0018 5022     		movs	r2, #80
+ 523 001a BDE81040 		pop	{r4, lr}
+ 524 001e FFF7FEBF 		b	tcp_server_add
+ 525              	.L139:
+ 526 0022 00BF     		.align	2
+ 527              	.L138:
+ 528 0024 00000000 		.word	socket_web_server
+ 529 0028 00000000 		.word	.LANCHOR13
+ 531              		.section	.rodata.http_html,"a",%progbits
+ 532              		.set	.LANCHOR1,. + 0
+ 535              	http_html:
+ 536 0000 2E68746D 		.ascii	".html\000"
+ 536      6C00
+ 537              		.section	.rodata.http_content_type_gif,"a",%progbits
+ 538              		.set	.LANCHOR9,. + 0
+ 541              	http_content_type_gif:
+ 542 0000 436F6E74 		.ascii	"Content-type: image/gif\015\012\015\012\000"
+ 542      656E742D 
+ 542      74797065 
+ 542      3A20696D 
+ 542      6167652F 
+ 543              		.section	.rodata.http_gif,"a",%progbits
+ 544              		.set	.LANCHOR8,. + 0
+ 547              	http_gif:
+ 548 0000 2E676966 		.ascii	".gif\000"
+ 548      00
+ 549              		.section	.rodata.http_content_type_png,"a",%progbits
+ 550              		.set	.LANCHOR7,. + 0
+ 553              	http_content_type_png:
+ 554 0000 436F6E74 		.ascii	"Content-type: image/png\015\012\015\012\000"
+ 554      656E742D 
+ 554      74797065 
+ 554      3A20696D 
+ 554      6167652F 
+ 555              		.section	.rodata.http_png,"a",%progbits
+ 556              		.set	.LANCHOR6,. + 0
+ 559              	http_png:
+ 560 0000 2E706E67 		.ascii	".png\000"
+ 560      00
+ 561              		.section	.rodata.http_shtml,"a",%progbits
+ 562              		.set	.LANCHOR2,. + 0
+ 565              	http_shtml:
+ 566 0000 2E736874 		.ascii	".shtml\000"
+ 566      6D6C00
+ 567              		.section	.bss.httpd_app_memb_count,"aw",%nobits
+ 570              	httpd_app_memb_count:
+ 571 0000 00000000 		.space	10
+ 571      00000000 
+ 571      0000
+ 572              		.section	.rodata.http_jpg,"a",%progbits
+ 573              		.set	.LANCHOR10,. + 0
+ 576              	http_jpg:
+ 577 0000 2E6A7067 		.ascii	".jpg\000"
+ 577      00
+ 578              		.section	.rodata.http_content_type_plain,"a",%progbits
+ 579              		.set	.LANCHOR12,. + 0
+ 582              	http_content_type_plain:
+ 583 0000 436F6E74 		.ascii	"Content-type: text/plain\015\012\015\012\000"
+ 583      656E742D 
+ 583      74797065 
+ 583      3A207465 
+ 583      78742F70 
+ 584              		.section	.data.httpd_app,"aw",%progbits
+ 585              		.align	2
+ 586              		.set	.LANCHOR13,. + 0
+ 589              	httpd_app:
+ 590 0000 6000     		.short	96
+ 591 0002 0A00     		.short	10
+ 592 0004 00000000 		.word	httpd_app_memb_count
+ 593 0008 00000000 		.word	httpd_app_memb_mem
+ 594              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 595              	.LC0:
+ 596 0000 20202077 		.ascii	"   web tx:     0x%x\015\012%s\015\012\000"
+ 596      65622074 
+ 596      783A2020 
+ 596      20202030 
+ 596      7825780D 
+ 597              	.LC1:
+ 598 001a 20202077 		.ascii	"   web was closed by client: 0x%x.\015\012\015\012\000"
+ 598      65622077 
+ 598      61732063 
+ 598      6C6F7365 
+ 598      64206279 
+ 599              	.LC2:
+ 600 0041 0D0A2D2D 		.ascii	"\015\012-- web memb error!\015\012\015\000"
+ 600      20776562 
+ 600      206D656D 
+ 600      62206572 
+ 600      726F7221 
+ 601              	.LC3:
+ 602 0059 0D0A2D2D 		.ascii	"\015\012-- web linked: 0x%x\015\012\000"
+ 602      20776562 
+ 602      206C696E 
+ 602      6B65643A 
+ 602      20307825 
+ 603              	.LC4:
+ 604 0071 20202077 		.ascii	"   web rx:     0x%x\015\012%s\015\012\015\012\000"
+ 604      65622072 
+ 604      783A2020 
+ 604      20202030 
+ 604      7825780D 
+ 605              	.LC5:
+ 606 008d 47455420 		.ascii	"GET /\000"
+ 606      2F00
+ 607              	.LC6:
+ 608 0093 20202077 		.ascii	"   web tx scr: 0x%x\015\012%s\015\012\000"
+ 608      65622074 
+ 608      78207363 
+ 608      723A2030 
+ 608      7825780D 
+ 609              	.LC7:
+ 610 00ad 20202077 		.ascii	"   web tx     0x%x:\015\012%s\015\012\000"
+ 610      65622074 
+ 610      78202020 
+ 610      20203078 
+ 610      25783A0D 
+ 611              	.LC8:
+ 612 00c7 20202077 		.ascii	"   web close:  0x%x\015\012\015\012\000"
+ 612      65622063 
+ 612      6C6F7365 
+ 612      3A202030 
+ 612      7825780D 
+ 613              	.LC9:
+ 614 00df 20202077 		.ascii	"   web exception: 0x%x\015\012\015\012\000"
+ 614      65622065 
+ 614      78636570 
+ 614      74696F6E 
+ 614      3A203078 
+ 615              		.section	.rodata.http_content_type_binary,"a",%progbits
+ 616              		.set	.LANCHOR0,. + 0
+ 619              	http_content_type_binary:
+ 620 0000 436F6E74 		.ascii	"Content-type: application/octet-stream\015\012\015\012"
+ 620      656E742D 
+ 620      74797065 
+ 620      3A206170 
+ 620      706C6963 
+ 621 002a 00       		.ascii	"\000"
+ 622              		.section	.bss.httpd_app_memb_mem,"aw",%nobits
+ 623              		.align	2
+ 626              	httpd_app_memb_mem:
+ 627 0000 00000000 		.space	960
+ 627      00000000 
+ 627      00000000 
+ 627      00000000 
+ 627      00000000 
+ 628              		.section	.rodata.http_content_type_jpg,"a",%progbits
+ 629              		.set	.LANCHOR11,. + 0
+ 632              	http_content_type_jpg:
+ 633 0000 436F6E74 		.ascii	"Content-type: image/jpeg\015\012\015\012\000"
+ 633      656E742D 
+ 633      74797065 
+ 633      3A20696D 
+ 633      6167652F 
+ 634              		.section	.rodata.http_content_type_html,"a",%progbits
+ 635              		.set	.LANCHOR3,. + 0
+ 638              	http_content_type_html:
+ 639 0000 436F6E74 		.ascii	"Content-type: text/html\015\012\015\012\000"
+ 639      656E742D 
+ 639      74797065 
+ 639      3A207465 
+ 639      78742F68 
+ 640              		.section	.rodata.http_header_404,"a",%progbits
+ 641              		.set	.LANCHOR16,. + 0
+ 644              	http_header_404:
+ 645 0000 48545450 		.ascii	"HTTP/1.0 404 Not found\015\012Server: uIP/1.0 http:"
+ 645      2F312E30 
+ 645      20343034 
+ 645      204E6F74 
+ 645      20666F75 
+ 646 002d 2F2F7777 		.ascii	"//www.sics.se/~adam/uip/\015\012Connection: close\015"
+ 646      772E7369 
+ 646      63732E73 
+ 646      652F7E61 
+ 646      64616D2F 
+ 647 0059 0A00     		.ascii	"\012\000"
+ 648              		.section	.rodata.http_404_html,"a",%progbits
+ 649              		.set	.LANCHOR15,. + 0
+ 652              	http_404_html:
+ 653 0000 2F343034 		.ascii	"/404.html\000"
+ 653      2E68746D 
+ 653      6C00
+ 654              		.section	.rodata.http_content_type_css,"a",%progbits
+ 655              		.set	.LANCHOR5,. + 0
+ 658              	http_content_type_css:
+ 659 0000 436F6E74 		.ascii	"Content-type: text/css\015\012\015\012\000"
+ 659      656E742D 
+ 659      74797065 
+ 659      3A207465 
+ 659      78742F63 
+ 660              		.section	.rodata.http_css,"a",%progbits
+ 661              		.set	.LANCHOR4,. + 0
+ 664              	http_css:
+ 665 0000 2E637373 		.ascii	".css\000"
+ 665      00
+ 666              		.section	.rodata.http_header_200,"a",%progbits
+ 667              		.set	.LANCHOR17,. + 0
+ 670              	http_header_200:
+ 671 0000 48545450 		.ascii	"HTTP/1.0 200 OK\015\012Server: uIP/1.0 http://www.s"
+ 671      2F312E30 
+ 671      20323030 
+ 671      204F4B0D 
+ 671      0A536572 
+ 672 002d 6963732E 		.ascii	"ics.se/~adam/uip/\015\012Connection: close\015\012\000"
+ 672      73652F7E 
+ 672      6164616D 
+ 672      2F756970 
+ 672      2F0D0A43 
+ 673              		.section	.rodata.http_index_html,"a",%progbits
+ 674              		.set	.LANCHOR14,. + 0
+ 677              	http_index_html:
+ 678 0000 2F696E64 		.ascii	"/index.html\000"
+ 678      65782E68 
+ 678      746D6C00 
+ 679              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 httpd.c
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:16     .text.send_headers:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:20     .text.send_headers:00000000 send_headers
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:142    .text.send_headers:000000fc $d
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:158    .text.socket_web_server:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:162    .text.socket_web_server:00000000 socket_web_server
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:486    .text.socket_web_server:00000300 $d
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:505    .text.example_web_server:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:510    .text.example_web_server:00000000 example_web_server
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:528    .text.example_web_server:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:535    .rodata.http_html:00000000 http_html
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:541    .rodata.http_content_type_gif:00000000 http_content_type_gif
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:547    .rodata.http_gif:00000000 http_gif
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:553    .rodata.http_content_type_png:00000000 http_content_type_png
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:559    .rodata.http_png:00000000 http_png
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:565    .rodata.http_shtml:00000000 http_shtml
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:570    .bss.httpd_app_memb_count:00000000 httpd_app_memb_count
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:571    .bss.httpd_app_memb_count:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:576    .rodata.http_jpg:00000000 http_jpg
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:582    .rodata.http_content_type_plain:00000000 http_content_type_plain
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:585    .data.httpd_app:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:589    .data.httpd_app:00000000 httpd_app
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:626    .bss.httpd_app_memb_mem:00000000 httpd_app_memb_mem
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:619    .rodata.http_content_type_binary:00000000 http_content_type_binary
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:623    .bss.httpd_app_memb_mem:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:632    .rodata.http_content_type_jpg:00000000 http_content_type_jpg
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:638    .rodata.http_content_type_html:00000000 http_content_type_html
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:644    .rodata.http_header_404:00000000 http_header_404
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:652    .rodata.http_404_html:00000000 http_404_html
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:658    .rodata.http_content_type_css:00000000 http_content_type_css
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:664    .rodata.http_css:00000000 http_css
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:670    .rodata.http_header_200:00000000 http_header_200
+D:\Users\draapho\AppData\Local\Temp\ccAAKwgf.s:677    .rodata.http_index_html:00000000 http_index_html
+
+UNDEFINED SYMBOLS
+strlen
+socket_tx
+printf
+strrchr
+strncmp
+socket_closed
+memb_alloc
+puts
+socket_close
+socket_rx
+socket_len
+strcpy
+strchr
+strncpy
+httpd_fs_open
+httpd_cgi
+memb_free
+uip_appdata
+memb_init
+httpd_fs_init
+tcp_server_delete
+tcp_server_add

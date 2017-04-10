@@ -1,0 +1,286 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"tcps.c"
+  15              		.section	.text.socket_tcp_server,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	socket_tcp_server:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  24 0002 0388     		ldrh	r3, [r0]
+  25 0004 0446     		mov	r4, r0
+  26 0006 0D46     		mov	r5, r1
+  27 0008 0BB1     		cbz	r3, .L2
+  28 000a 0B68     		ldr	r3, [r1]
+  29 000c F3B1     		cbz	r3, .L39
+  30              	.L2:
+  31 000e FFF7FEFF 		bl	socket_closed
+  32 0012 0428     		cmp	r0, #4
+  33 0014 00F08980 		beq	.L40
+  34 0018 2388     		ldrh	r3, [r4]
+  35 001a 032B     		cmp	r3, #3
+  36 001c 50D0     		beq	.L5
+  37 001e 03D8     		bhi	.L6
+  38 0020 012B     		cmp	r3, #1
+  39 0022 1FD0     		beq	.L7
+  40 0024 09D9     		bls	.L38
+  41 0026 2FE0     		b	.L45
+  42              	.L6:
+  43 0028 052B     		cmp	r3, #5
+  44 002a 78D0     		beq	.L10
+  45 002c 5ED3     		bcc	.L11
+  46 002e FF2B     		cmp	r3, #255
+  47 0030 79D1     		bne	.L4
+  48 0032 4148     		ldr	r0, .L46
+  49 0034 FFF7FEFF 		bl	puts
+  50 0038 75E0     		b	.L4
+  51              	.L38:
+  52 003a 4048     		ldr	r0, .L46+4
+  53 003c FFF7FEFF 		bl	memb_alloc
+  54 0040 0646     		mov	r6, r0
+  55 0042 2860     		str	r0, [r5]
+  56 0044 30B9     		cbnz	r0, .L13
+  57 0046 3E48     		ldr	r0, .L46+8
+  58 0048 FFF7FEFF 		bl	puts
+  59              	.L39:
+  60 004c BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+  61 0050 FFF7FEBF 		b	socket_close
+  62              	.L13:
+  63 0054 0130     		adds	r0, r0, #1
+  64 0056 3B49     		ldr	r1, .L46+12
+  65 0058 FFF7FEFF 		bl	strcpy
+  66 005c 0023     		movs	r3, #0
+  67 005e 3370     		strb	r3, [r6]
+  68 0060 0123     		movs	r3, #1
+  69 0062 5AE0     		b	.L41
+  70              	.L7:
+  71 0064 2D68     		ldr	r5, [r5]
+  72 0066 6E1C     		adds	r6, r5, #1
+  73 0068 3046     		mov	r0, r6
+  74 006a FFF7FEFF 		bl	strlen
+  75 006e 4FF0FF32 		mov	r2, #-1
+  76 0072 81B2     		uxth	r1, r0
+  77 0074 3046     		mov	r0, r6
+  78 0076 FFF7FEFF 		bl	socket_tx
+  79 007a 0228     		cmp	r0, #2
+  80 007c 5BD0     		beq	.L1
+  81 007e 0223     		movs	r3, #2
+  82 0080 0028     		cmp	r0, #0
+  83 0082 48D1     		bne	.L42
+  84 0084 2870     		strb	r0, [r5]
+  85 0086 48E0     		b	.L41
+  86              	.L45:
+  87 0088 2D68     		ldr	r5, [r5]
+  88 008a 1E21     		movs	r1, #30
+  89 008c 6E1C     		adds	r6, r5, #1
+  90 008e 3046     		mov	r0, r6
+  91 0090 0D22     		movs	r2, #13
+  92 0092 44F62063 		movw	r3, #20000
+  93 0096 FFF7FEFF 		bl	socket_rx_chr
+  94 009a 0228     		cmp	r0, #2
+  95 009c 4BD0     		beq	.L1
+  96 009e 08B1     		cbz	r0, .L18
+  97 00a0 0328     		cmp	r0, #3
+  98 00a2 06D1     		bne	.L19
+  99              	.L18:
+ 100 00a4 FFF7FEFF 		bl	socket_len
+ 101 00a8 0023     		movs	r3, #0
+ 102 00aa 2B54     		strb	r3, [r5, r0]
+ 103 00ac 2B70     		strb	r3, [r5]
+ 104 00ae 0323     		movs	r3, #3
+ 105 00b0 33E0     		b	.L41
+ 106              	.L19:
+ 107 00b2 3046     		mov	r0, r6
+ 108 00b4 2449     		ldr	r1, .L46+16
+ 109 00b6 FFF7FEFF 		bl	strcpy
+ 110 00ba 0123     		movs	r3, #1
+ 111 00bc 2B70     		strb	r3, [r5]
+ 112 00be 13E0     		b	.L43
+ 113              	.L5:
+ 114 00c0 2D68     		ldr	r5, [r5]
+ 115 00c2 6E1C     		adds	r6, r5, #1
+ 116 00c4 3046     		mov	r0, r6
+ 117 00c6 FFF7FEFF 		bl	strlen
+ 118 00ca 4FF0FF32 		mov	r2, #-1
+ 119 00ce 81B2     		uxth	r1, r0
+ 120 00d0 3046     		mov	r0, r6
+ 121 00d2 FFF7FEFF 		bl	socket_tx
+ 122 00d6 0228     		cmp	r0, #2
+ 123 00d8 0746     		mov	r7, r0
+ 124 00da 2CD0     		beq	.L1
+ 125 00dc D0B9     		cbnz	r0, .L21
+ 126 00de 3046     		mov	r0, r6
+ 127 00e0 1A49     		ldr	r1, .L46+20
+ 128 00e2 FFF7FEFF 		bl	strcpy
+ 129 00e6 2F70     		strb	r7, [r5]
+ 130              	.L43:
+ 131 00e8 0423     		movs	r3, #4
+ 132 00ea 16E0     		b	.L41
+ 133              	.L11:
+ 134 00ec 2D68     		ldr	r5, [r5]
+ 135 00ee 6E1C     		adds	r6, r5, #1
+ 136 00f0 3046     		mov	r0, r6
+ 137 00f2 FFF7FEFF 		bl	strlen
+ 138 00f6 4FF0FF32 		mov	r2, #-1
+ 139 00fa 81B2     		uxth	r1, r0
+ 140 00fc 3046     		mov	r0, r6
+ 141 00fe FFF7FEFF 		bl	socket_tx
+ 142 0102 0228     		cmp	r0, #2
+ 143 0104 17D0     		beq	.L1
+ 144 0106 28B9     		cbnz	r0, .L21
+ 145 0108 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 146 010a 0BB9     		cbnz	r3, .L22
+ 147 010c 0523     		movs	r3, #5
+ 148 010e 04E0     		b	.L41
+ 149              	.L22:
+ 150 0110 0623     		movs	r3, #6
+ 151 0112 02E0     		b	.L41
+ 152              	.L21:
+ 153 0114 0223     		movs	r3, #2
+ 154              	.L42:
+ 155 0116 2B70     		strb	r3, [r5]
+ 156 0118 FF23     		movs	r3, #255
+ 157              	.L41:
+ 158 011a 2380     		strh	r3, [r4]	@ movhi
+ 159 011c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 160              	.L10:
+ 161 011e BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 162 0122 FFF7FEBF 		b	socket_break
+ 163              	.L4:
+ 164 0126 FFF7FEFF 		bl	socket_close
+ 165              	.L40:
+ 166 012a 2968     		ldr	r1, [r5]
+ 167 012c 0348     		ldr	r0, .L46+4
+ 168 012e BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 169 0132 FFF7FEBF 		b	memb_free
+ 170              	.L1:
+ 171 0136 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 172              	.L47:
+ 173              		.align	2
+ 174              	.L46:
+ 175 0138 71000000 		.word	.LC4
+ 176 013c 00000000 		.word	.LANCHOR0
+ 177 0140 00000000 		.word	.LC0
+ 178 0144 1E000000 		.word	.LC1
+ 179 0148 32000000 		.word	.LC2
+ 180 014c 4F000000 		.word	.LC3
+ 182              		.section	.text.example_tcp_server,"ax",%progbits
+ 183              		.align	1
+ 184              		.global	example_tcp_server
+ 185              		.thumb
+ 186              		.thumb_func
+ 188              	example_tcp_server:
+ 189              		@ args = 0, pretend = 0, frame = 0
+ 190              		@ frame_needed = 0, uses_anonymous_args = 0
+ 191 0000 38B5     		push	{r3, r4, r5, lr}
+ 192 0002 074C     		ldr	r4, .L49
+ 193 0004 0546     		mov	r5, r0
+ 194 0006 0748     		ldr	r0, .L49+4
+ 195 0008 FFF7FEFF 		bl	memb_init
+ 196 000c 2046     		mov	r0, r4
+ 197 000e FFF7FEFF 		bl	tcp_server_delete
+ 198 0012 2046     		mov	r0, r4
+ 199 0014 2A46     		mov	r2, r5
+ 200 0016 0021     		movs	r1, #0
+ 201 0018 BDE83840 		pop	{r3, r4, r5, lr}
+ 202 001c FFF7FEBF 		b	tcp_server_add
+ 203              	.L50:
+ 204              		.align	2
+ 205              	.L49:
+ 206 0020 00000000 		.word	socket_tcp_server
+ 207 0024 00000000 		.word	.LANCHOR0
+ 209              		.section	.data.tcps_app,"aw",%progbits
+ 210              		.align	2
+ 211              		.set	.LANCHOR0,. + 0
+ 214              	tcps_app:
+ 215 0000 1F00     		.short	31
+ 216 0002 0A00     		.short	10
+ 217 0004 00000000 		.word	tcps_app_memb_count
+ 218 0008 00000000 		.word	tcps_app_memb_mem
+ 219              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 220              	.LC0:
+ 221 0000 74637020 		.ascii	"tcp server memb_alloc error!\015\000"
+ 221      73657276 
+ 221      6572206D 
+ 221      656D625F 
+ 221      616C6C6F 
+ 222              	.LC1:
+ 223 001e 48656C6C 		.ascii	"Hello, who are you?\000"
+ 223      6F2C2077 
+ 223      686F2061 
+ 223      72652079 
+ 223      6F753F00 
+ 224              	.LC2:
+ 225 0032 476F6F64 		.ascii	"Goodbye, indifference world!\000"
+ 225      6279652C 
+ 225      20696E64 
+ 225      69666665 
+ 225      72656E63 
+ 226              	.LC3:
+ 227 004f 53656520 		.ascii	"See you later! Please close it...\000"
+ 227      796F7520 
+ 227      6C617465 
+ 227      72212050 
+ 227      6C656173 
+ 228              	.LC4:
+ 229 0071 74637020 		.ascii	"tcp server tx_socket error!!!\015\000"
+ 229      73657276 
+ 229      65722074 
+ 229      785F736F 
+ 229      636B6574 
+ 230              		.section	.bss.tcps_app_memb_mem,"aw",%nobits
+ 233              	tcps_app_memb_mem:
+ 234 0000 00000000 		.space	310
+ 234      00000000 
+ 234      00000000 
+ 234      00000000 
+ 234      00000000 
+ 235              		.section	.bss.tcps_app_memb_count,"aw",%nobits
+ 238              	tcps_app_memb_count:
+ 239 0000 00000000 		.space	10
+ 239      00000000 
+ 239      0000
+ 240              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tcps.c
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:16     .text.socket_tcp_server:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:20     .text.socket_tcp_server:00000000 socket_tcp_server
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:175    .text.socket_tcp_server:00000138 $d
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:183    .text.example_tcp_server:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:188    .text.example_tcp_server:00000000 example_tcp_server
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:206    .text.example_tcp_server:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:210    .data.tcps_app:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:214    .data.tcps_app:00000000 tcps_app
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:238    .bss.tcps_app_memb_count:00000000 tcps_app_memb_count
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:233    .bss.tcps_app_memb_mem:00000000 tcps_app_memb_mem
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:234    .bss.tcps_app_memb_mem:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccx2pUlZ.s:239    .bss.tcps_app_memb_count:00000000 $d
+
+UNDEFINED SYMBOLS
+socket_closed
+puts
+memb_alloc
+socket_close
+strcpy
+strlen
+socket_tx
+socket_rx_chr
+socket_len
+socket_break
+memb_free
+memb_init
+tcp_server_delete
+tcp_server_add

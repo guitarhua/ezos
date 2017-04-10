@@ -1,0 +1,110 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_race_led.c"
+  15              		.section	.text.task_race_led,"ax",%progbits
+  16              		.align	1
+  17              		.global	task_race_led
+  18              		.thumb
+  19              		.thumb_func
+  21              	task_race_led:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 0388     		ldrh	r3, [r0]
+  25 0002 10B5     		push	{r4, lr}
+  26 0004 0446     		mov	r4, r0
+  27 0006 032B     		cmp	r3, #3
+  28 0008 1FD8     		bhi	.L2
+  29 000a DFE803F0 		tbb	[pc, r3]
+  30              	.L4:
+  31 000e 02       		.byte	(.L3-.L4)/2
+  32 000f 0F       		.byte	(.L5-.L4)/2
+  33 0010 14       		.byte	(.L6-.L4)/2
+  34 0011 19       		.byte	(.L7-.L4)/2
+  35              		.align	1
+  36              	.L3:
+  37 0012 0020     		movs	r0, #0
+  38 0014 FFF7FEFF 		bl	led_off
+  39 0018 0120     		movs	r0, #1
+  40 001a FFF7FEFF 		bl	led_off
+  41 001e 0220     		movs	r0, #2
+  42 0020 FFF7FEFF 		bl	led_off
+  43 0024 0320     		movs	r0, #3
+  44 0026 FFF7FEFF 		bl	led_off
+  45 002a 11E0     		b	.L8
+  46              	.L5:
+  47 002c 0020     		movs	r0, #0
+  48 002e FFF7FEFF 		bl	led_toggle_gradual
+  49 0032 0223     		movs	r3, #2
+  50 0034 0DE0     		b	.L9
+  51              	.L6:
+  52 0036 0120     		movs	r0, #1
+  53 0038 FFF7FEFF 		bl	led_toggle_gradual
+  54 003c 0323     		movs	r3, #3
+  55 003e 08E0     		b	.L9
+  56              	.L7:
+  57 0040 0220     		movs	r0, #2
+  58 0042 FFF7FEFF 		bl	led_toggle_gradual
+  59 0046 0423     		movs	r3, #4
+  60 0048 03E0     		b	.L9
+  61              	.L2:
+  62 004a 0320     		movs	r0, #3
+  63 004c FFF7FEFF 		bl	led_toggle_gradual
+  64              	.L8:
+  65 0050 0123     		movs	r3, #1
+  66              	.L9:
+  67 0052 2380     		strh	r3, [r4]	@ movhi
+  68 0054 4FF47A70 		mov	r0, #1000
+  69 0058 BDE81040 		pop	{r4, lr}
+  70 005c FFF7FEBF 		b	ezos_delay
+  72              		.section	.text.race_led_start,"ax",%progbits
+  73              		.align	1
+  74              		.global	race_led_start
+  75              		.thumb
+  76              		.thumb_func
+  78              	race_led_start:
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81 0000 07B5     		push	{r0, r1, r2, lr}
+  82 0002 FFF7FEFF 		bl	led_init_all
+  83 0006 0548     		ldr	r0, .L12
+  84 0008 0022     		movs	r2, #0
+  85 000a 0A23     		movs	r3, #10
+  86 000c 0093     		str	r3, [sp]
+  87 000e 0146     		mov	r1, r0
+  88 0010 1346     		mov	r3, r2
+  89 0012 FFF7FEFF 		bl	ezos_add
+  90 0016 03B0     		add	sp, sp, #12
+  91              		@ sp needed
+  92 0018 5DF804FB 		ldr	pc, [sp], #4
+  93              	.L13:
+  94              		.align	2
+  95              	.L12:
+  96 001c 00000000 		.word	task_race_led
+  98              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_race_led.c
+D:\Users\draapho\AppData\Local\Temp\cctdFRZ2.s:16     .text.task_race_led:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctdFRZ2.s:21     .text.task_race_led:00000000 task_race_led
+D:\Users\draapho\AppData\Local\Temp\cctdFRZ2.s:31     .text.task_race_led:0000000e $d
+D:\Users\draapho\AppData\Local\Temp\cctdFRZ2.s:35     .text.task_race_led:00000012 $t
+D:\Users\draapho\AppData\Local\Temp\cctdFRZ2.s:73     .text.race_led_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctdFRZ2.s:78     .text.race_led_start:00000000 race_led_start
+D:\Users\draapho\AppData\Local\Temp\cctdFRZ2.s:96     .text.race_led_start:0000001c $d
+
+UNDEFINED SYMBOLS
+led_off
+led_toggle_gradual
+ezos_delay
+led_init_all
+ezos_add

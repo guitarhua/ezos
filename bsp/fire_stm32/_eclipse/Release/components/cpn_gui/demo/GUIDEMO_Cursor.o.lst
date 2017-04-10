@@ -1,0 +1,313 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO_Cursor.c"
+  15              		.section	.text._ShowCursorType,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	_ShowCursorType:
+  21              		@ args = 0, pretend = 0, frame = 8
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 0023     		movs	r3, #0
+  24 0002 2DE9F74F 		push	{r0, r1, r2, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  25 0006 0546     		mov	r5, r0
+  26 0008 0C46     		mov	r4, r1
+  27 000a 1746     		mov	r7, r2
+  28 000c 9846     		mov	r8, r3
+  29 000e 1E46     		mov	r6, r3
+  30              	.L4:
+  31 0010 E958     		ldr	r1, [r5, r3]
+  32 0012 0833     		adds	r3, r3, #8
+  33 0014 0A68     		ldr	r2, [r1]
+  34 0016 5288     		ldrh	r2, [r2, #2]
+  35 0018 B242     		cmp	r2, r6
+  36 001a C4BF     		itt	gt
+  37 001c D1F80880 		ldrgt	r8, [r1, #8]
+  38 0020 1646     		movgt	r6, r2
+  39 0022 182B     		cmp	r3, #24
+  40 0024 F4D1     		bne	.L4
+  41 0026 2148     		ldr	r0, .L8
+  42 0028 FFF7FEFF 		bl	GUI_SetFont
+  43 002c 3A46     		mov	r2, r7
+  44 002e 2146     		mov	r1, r4
+  45 0030 A869     		ldr	r0, [r5, #24]
+  46 0032 FFF7FEFF 		bl	GUI_DispStringAt
+  47 0036 FFF7FEFF 		bl	GUI_GetFontDistY
+  48 003a 0130     		adds	r0, r0, #1
+  49 003c 0744     		add	r7, r7, r0
+  50 003e 1C48     		ldr	r0, .L8+4
+  51 0040 FFF7FEFF 		bl	GUI_SetFont
+  52 0044 0236     		adds	r6, r6, #2
+  53 0046 07EB080B 		add	fp, r7, r8
+  54 004a 3744     		add	r7, r7, r6
+  55 004c 04F1540A 		add	r10, r4, #84
+  56 0050 3EB2     		sxth	r6, r7
+  57              	.L6:
+  58 0052 2F68     		ldr	r7, [r5]
+  59 0054 95F80480 		ldrb	r8, [r5, #4]	@ zero_extendqisi2
+  60 0058 3B68     		ldr	r3, [r7]
+  61 005a BA68     		ldr	r2, [r7, #8]
+  62 005c B3F800C0 		ldrh	ip, [r3]
+  63 0060 C2EB0B02 		rsb	r2, r2, fp
+  64 0064 4046     		mov	r0, r8
+  65 0066 CDF800C0 		str	ip, [sp]
+  66 006a 0192     		str	r2, [sp, #4]
+  67 006c FFF7FEFF 		bl	GUI_GetCharDistX
+  68 0070 04F10509 		add	r9, r4, #5
+  69 0074 0346     		mov	r3, r0
+  70 0076 019A     		ldr	r2, [sp, #4]
+  71 0078 3868     		ldr	r0, [r7]
+  72 007a 4946     		mov	r1, r9
+  73 007c 0193     		str	r3, [sp, #4]
+  74 007e FFF7FEFF 		bl	GUI_DrawBitmap
+  75 0082 019B     		ldr	r3, [sp, #4]
+  76 0084 DDF800C0 		ldr	ip, [sp]
+  77 0088 4046     		mov	r0, r8
+  78 008a C3EB0C03 		rsb	r3, r3, ip
+  79 008e 09EB6301 		add	r1, r9, r3, asr #1
+  80 0092 09B2     		sxth	r1, r1
+  81 0094 3246     		mov	r2, r6
+  82 0096 1C34     		adds	r4, r4, #28
+  83 0098 FFF7FEFF 		bl	GUI_DispCharAt
+  84 009c 5445     		cmp	r4, r10
+  85 009e 05F10805 		add	r5, r5, #8
+  86 00a2 D6D1     		bne	.L6
+  87 00a4 03B0     		add	sp, sp, #12
+  88              		@ sp needed
+  89 00a6 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+  90              	.L9:
+  91 00aa 00BF     		.align	2
+  92              	.L8:
+  93 00ac 00000000 		.word	GUI_FontRounded16
+  94 00b0 00000000 		.word	GUI_Font13B_ASCII
+  96              		.global	__aeabi_i2d
+  97              		.global	__aeabi_ddiv
+  98              		.global	__aeabi_d2iz
+  99              		.section	.text.GUIDEMO_Cursor,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	GUIDEMO_Cursor
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	GUIDEMO_Cursor:
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108 0000 10B5     		push	{r4, lr}
+ 109 0002 2249     		ldr	r1, .L11
+ 110 0004 2248     		ldr	r0, .L11+4
+ 111 0006 FFF7FEFF 		bl	GUIDEMO_ShowIntro
+ 112 000a 0120     		movs	r0, #1
+ 113 000c FFF7FEFF 		bl	GUIDEMO_DrawBk
+ 114 0010 FFF7FEFF 		bl	GUI_CURSOR_Hide
+ 115 0014 FFF7FEFF 		bl	LCD_GetXSize
+ 116 0018 0446     		mov	r4, r0
+ 117 001a 0220     		movs	r0, #2
+ 118 001c FFF7FEFF 		bl	GUI_SetTextMode
+ 119 0020 1C48     		ldr	r0, .L11+8
+ 120 0022 FFF7FEFF 		bl	GUI_SetFont
+ 121 0026 6110     		asrs	r1, r4, #1
+ 122 0028 0C22     		movs	r2, #12
+ 123 002a 1B48     		ldr	r0, .L11+12
+ 124 002c FFF7FEFF 		bl	GUI_DispStringHCenterAt
+ 125 0030 2046     		mov	r0, r4
+ 126 0032 FFF7FEFF 		bl	__aeabi_i2d
+ 127 0036 194B     		ldr	r3, .L11+16
+ 128 0038 0022     		movs	r2, #0
+ 129 003a FFF7FEFF 		bl	__aeabi_ddiv
+ 130 003e FFF7FEFF 		bl	__aeabi_d2iz
+ 131 0042 0521     		movs	r1, #5
+ 132 0044 0446     		mov	r4, r0
+ 133 0046 4422     		movs	r2, #68
+ 134 0048 1548     		ldr	r0, .L11+20
+ 135 004a FFF7FEFF 		bl	_ShowCursorType
+ 136 004e 1548     		ldr	r0, .L11+24
+ 137 0050 0521     		movs	r1, #5
+ 138 0052 8F22     		movs	r2, #143
+ 139 0054 FFF7FEFF 		bl	_ShowCursorType
+ 140 0058 2146     		mov	r1, r4
+ 141 005a 1348     		ldr	r0, .L11+28
+ 142 005c 4422     		movs	r2, #68
+ 143 005e FFF7FEFF 		bl	_ShowCursorType
+ 144 0062 2146     		mov	r1, r4
+ 145 0064 8F22     		movs	r2, #143
+ 146 0066 1148     		ldr	r0, .L11+32
+ 147 0068 FFF7FEFF 		bl	_ShowCursorType
+ 148 006c 4FF47A60 		mov	r0, #4000
+ 149 0070 FFF7FEFF 		bl	GUIDEMO_Wait
+ 150 0074 FFF7FEFF 		bl	GUI_CURSOR_Show
+ 151 0078 0020     		movs	r0, #0
+ 152 007a 0146     		mov	r1, r0
+ 153 007c FFF7FEFF 		bl	GUI_CURSOR_SetPosition
+ 154 0080 BDE81040 		pop	{r4, lr}
+ 155 0084 0A48     		ldr	r0, .L11+36
+ 156 0086 FFF7FEBF 		b	GUI_CURSOR_Select
+ 157              	.L12:
+ 158 008a 00BF     		.align	2
+ 159              	.L11:
+ 160 008c 07000000 		.word	.LC1
+ 161 0090 00000000 		.word	.LC0
+ 162 0094 00000000 		.word	GUI_FontRounded22
+ 163 0098 28000000 		.word	.LC2
+ 164 009c 00000440 		.word	1074003968
+ 165 00a0 00000000 		.word	.LANCHOR0
+ 166 00a4 00000000 		.word	.LANCHOR1
+ 167 00a8 00000000 		.word	.LANCHOR2
+ 168 00ac 00000000 		.word	.LANCHOR3
+ 169 00b0 00000000 		.word	GUI_CursorArrowM
+ 171              		.section	.rodata._CursorCrossI,"a",%progbits
+ 172              		.align	2
+ 173              		.set	.LANCHOR3,. + 0
+ 176              	_CursorCrossI:
+ 177 0000 00000000 		.word	GUI_CursorCrossSI
+ 178 0004 53       		.byte	83
+ 179 0005 000000   		.space	3
+ 180 0008 00000000 		.word	GUI_CursorCrossMI
+ 181 000c 4D       		.byte	77
+ 182 000d 000000   		.space	3
+ 183 0010 00000000 		.word	GUI_CursorCrossLI
+ 184 0014 4C       		.byte	76
+ 185 0015 000000   		.space	3
+ 186 0018 3A000000 		.word	.LC3
+ 187              		.section	.rodata._CursorArrowI,"a",%progbits
+ 188              		.align	2
+ 189              		.set	.LANCHOR2,. + 0
+ 192              	_CursorArrowI:
+ 193 0000 00000000 		.word	GUI_CursorArrowSI
+ 194 0004 53       		.byte	83
+ 195 0005 000000   		.space	3
+ 196 0008 00000000 		.word	GUI_CursorArrowMI
+ 197 000c 4D       		.byte	77
+ 198 000d 000000   		.space	3
+ 199 0010 00000000 		.word	GUI_CursorArrowLI
+ 200 0014 4C       		.byte	76
+ 201 0015 000000   		.space	3
+ 202 0018 5F000000 		.word	.LC5
+ 203              		.section	.rodata._CursorArrow,"a",%progbits
+ 204              		.align	2
+ 205              		.set	.LANCHOR0,. + 0
+ 208              	_CursorArrow:
+ 209 0000 00000000 		.word	GUI_CursorArrowS
+ 210 0004 53       		.byte	83
+ 211 0005 000000   		.space	3
+ 212 0008 00000000 		.word	GUI_CursorArrowM
+ 213 000c 4D       		.byte	77
+ 214 000d 000000   		.space	3
+ 215 0010 00000000 		.word	GUI_CursorArrowL
+ 216 0014 4C       		.byte	76
+ 217 0015 000000   		.space	3
+ 218 0018 76000000 		.word	.LC6
+ 219              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 220              	.LC0:
+ 221 0000 43757273 		.ascii	"Cursor\000"
+ 221      6F7200
+ 222              	.LC1:
+ 223 0007 5354656D 		.ascii	"STemWin supports\012software cursor\000"
+ 223      57696E20 
+ 223      73757070 
+ 223      6F727473 
+ 223      0A736F66 
+ 224              	.LC2:
+ 225 0028 41766169 		.ascii	"Available cursors\000"
+ 225      6C61626C 
+ 225      65206375 
+ 225      72736F72 
+ 225      7300
+ 226              	.LC3:
+ 227 003a 696E7665 		.ascii	"inverted cross cursors\000"
+ 227      72746564 
+ 227      2063726F 
+ 227      73732063 
+ 227      7572736F 
+ 228              	.LC4:
+ 229 0051 63726F73 		.ascii	"cross cursors\000"
+ 229      73206375 
+ 229      72736F72 
+ 229      7300
+ 230              	.LC5:
+ 231 005f 696E7665 		.ascii	"inverted arrow cursors\000"
+ 231      72746564 
+ 231      20617272 
+ 231      6F772063 
+ 231      7572736F 
+ 232              	.LC6:
+ 233 0076 6172726F 		.ascii	"arrow cursors\000"
+ 233      77206375 
+ 233      72736F72 
+ 233      7300
+ 234              		.section	.rodata._CursorCross,"a",%progbits
+ 235              		.align	2
+ 236              		.set	.LANCHOR1,. + 0
+ 239              	_CursorCross:
+ 240 0000 00000000 		.word	GUI_CursorCrossS
+ 241 0004 53       		.byte	83
+ 242 0005 000000   		.space	3
+ 243 0008 00000000 		.word	GUI_CursorCrossM
+ 244 000c 4D       		.byte	77
+ 245 000d 000000   		.space	3
+ 246 0010 00000000 		.word	GUI_CursorCrossL
+ 247 0014 4C       		.byte	76
+ 248 0015 000000   		.space	3
+ 249 0018 51000000 		.word	.LC4
+ 250              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO_Cursor.c
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:16     .text._ShowCursorType:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:20     .text._ShowCursorType:00000000 _ShowCursorType
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:93     .text._ShowCursorType:000000ac $d
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:100    .text.GUIDEMO_Cursor:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:105    .text.GUIDEMO_Cursor:00000000 GUIDEMO_Cursor
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:160    .text.GUIDEMO_Cursor:0000008c $d
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:172    .rodata._CursorCrossI:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:176    .rodata._CursorCrossI:00000000 _CursorCrossI
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:188    .rodata._CursorArrowI:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:192    .rodata._CursorArrowI:00000000 _CursorArrowI
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:204    .rodata._CursorArrow:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:208    .rodata._CursorArrow:00000000 _CursorArrow
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:235    .rodata._CursorCross:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccRU4klt.s:239    .rodata._CursorCross:00000000 _CursorCross
+
+UNDEFINED SYMBOLS
+GUI_SetFont
+GUI_DispStringAt
+GUI_GetFontDistY
+GUI_GetCharDistX
+GUI_DrawBitmap
+GUI_DispCharAt
+GUI_FontRounded16
+GUI_Font13B_ASCII
+__aeabi_i2d
+__aeabi_ddiv
+__aeabi_d2iz
+GUIDEMO_ShowIntro
+GUIDEMO_DrawBk
+GUI_CURSOR_Hide
+LCD_GetXSize
+GUI_SetTextMode
+GUI_DispStringHCenterAt
+GUIDEMO_Wait
+GUI_CURSOR_Show
+GUI_CURSOR_SetPosition
+GUI_CURSOR_Select
+GUI_FontRounded22
+GUI_CursorArrowM
+GUI_CursorCrossSI
+GUI_CursorCrossMI
+GUI_CursorCrossLI
+GUI_CursorArrowSI
+GUI_CursorArrowMI
+GUI_CursorArrowLI
+GUI_CursorArrowS
+GUI_CursorArrowL
+GUI_CursorCrossS
+GUI_CursorCrossM
+GUI_CursorCrossL

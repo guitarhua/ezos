@@ -1,0 +1,440 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"dns.c"
+  15              		.section	.text.parse_name,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	parse_name:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23              		@ link register save eliminated.
+  24              	.L3:
+  25 0000 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  26 0002 421C     		adds	r2, r0, #1
+  27 0004 D018     		adds	r0, r2, r3
+  28 0006 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+  29 0008 002B     		cmp	r3, #0
+  30 000a F9D1     		bne	.L3
+  31 000c 0130     		adds	r0, r0, #1
+  32 000e 7047     		bx	lr
+  34              		.section	.text.socket_dns_client,"ax",%progbits
+  35              		.align	1
+  36              		.thumb
+  37              		.thumb_func
+  39              	socket_dns_client:
+  40              		@ args = 0, pretend = 0, frame = 0
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+  43 0004 0C78     		ldrb	r4, [r1]	@ zero_extendqisi2
+  44 0006 032C     		cmp	r4, #3
+  45 0008 00F2C580 		bhi	.L12
+  46 000c 2826     		movs	r6, #40
+  47 000e 06FB04F3 		mul	r3, r6, r4
+  48 0012 694D     		ldr	r5, .L45
+  49 0014 EB5C     		ldrb	r3, [r5, r3]	@ zero_extendqisi2
+  50 0016 013B     		subs	r3, r3, #1
+  51 0018 042B     		cmp	r3, #4
+  52 001a 00F2B980 		bhi	.L7
+  53 001e DFE803F0 		tbb	[pc, r3]
+  54              	.L9:
+  55 0022 03       		.byte	(.L8-.L9)/2
+  56 0023 0C       		.byte	(.L10-.L9)/2
+  57 0024 4F       		.byte	(.L11-.L9)/2
+  58 0025 BA       		.byte	(.L12-.L9)/2
+  59 0026 BA       		.byte	(.L12-.L9)/2
+  60 0027 00       		.align	1
+  61              	.L8:
+  62 0028 6643     		muls	r6, r4, r6
+  63 002a 4FF4FA72 		mov	r2, #500
+  64 002e AB19     		adds	r3, r5, r6
+  65 0030 5A80     		strh	r2, [r3, #2]	@ movhi
+  66 0032 0223     		movs	r3, #2
+  67 0034 AB55     		strb	r3, [r5, r6]
+  68 0036 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+  69              	.L10:
+  70 003a 604F     		ldr	r7, .L45+4
+  71 003c 0021     		movs	r1, #0
+  72 003e 3E68     		ldr	r6, [r7]
+  73 0040 0C22     		movs	r2, #12
+  74 0042 3046     		mov	r0, r6
+  75 0044 FFF7FEFF 		bl	memset
+  76 0048 2046     		mov	r0, r4
+  77 004a FFF7FEFF 		bl	uip_htons
+  78 004e 2822     		movs	r2, #40
+  79 0050 0123     		movs	r3, #1
+  80 0052 02FB0452 		mla	r2, r2, r4, r5
+  81 0056 B370     		strb	r3, [r6, #2]
+  82 0058 3968     		ldr	r1, [r7]
+  83 005a 4FF48073 		mov	r3, #256
+  84 005e 3080     		strh	r0, [r6]	@ movhi
+  85 0060 B380     		strh	r3, [r6, #4]	@ movhi
+  86 0062 0C31     		adds	r1, r1, #12
+  87 0064 0332     		adds	r2, r2, #3
+  88              	.L20:
+  89 0066 4E1C     		adds	r6, r1, #1
+  90 0068 0132     		adds	r2, r2, #1
+  91 006a 3346     		mov	r3, r6
+  92              	.L14:
+  93 006c 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+  94 006e C6EB030E 		rsb	lr, r6, r3
+  95 0072 2E28     		cmp	r0, #46
+  96 0074 5FFA8EFE 		uxtb	lr, lr
+  97 0078 05D1     		bne	.L15
+  98              	.L19:
+  99 007a 81F800E0 		strb	lr, [r1]
+ 100 007e 1178     		ldrb	r1, [r2]	@ zero_extendqisi2
+ 101 0080 39B1     		cbz	r1, .L44
+ 102 0082 1946     		mov	r1, r3
+ 103 0084 EFE7     		b	.L20
+ 104              	.L15:
+ 105 0086 0028     		cmp	r0, #0
+ 106 0088 F7D0     		beq	.L19
+ 107 008a 03F8010B 		strb	r0, [r3], #1
+ 108 008e 0132     		adds	r2, r2, #1
+ 109 0090 ECE7     		b	.L14
+ 110              	.L44:
+ 111 0092 0122     		movs	r2, #1
+ 112 0094 9A70     		strb	r2, [r3, #2]
+ 113 0096 1970     		strb	r1, [r3]
+ 114 0098 5970     		strb	r1, [r3, #1]
+ 115 009a D970     		strb	r1, [r3, #3]
+ 116 009c 3868     		ldr	r0, [r7]
+ 117 009e 1A71     		strb	r2, [r3, #4]
+ 118 00a0 0533     		adds	r3, r3, #5
+ 119 00a2 191A     		subs	r1, r3, r0
+ 120 00a4 89B2     		uxth	r1, r1
+ 121 00a6 41F28832 		movw	r2, #5000
+ 122 00aa FFF7FEFF 		bl	socket_tx
+ 123 00ae 0228     		cmp	r0, #2
+ 124 00b0 7FD0     		beq	.L5
+ 125 00b2 2823     		movs	r3, #40
+ 126 00b4 5C43     		muls	r4, r3, r4
+ 127 00b6 08B9     		cbnz	r0, .L22
+ 128 00b8 0323     		movs	r3, #3
+ 129 00ba 73E0     		b	.L42
+ 130              	.L22:
+ 131 00bc FF23     		movs	r3, #255
+ 132 00be 71E0     		b	.L42
+ 133              	.L11:
+ 134 00c0 6643     		muls	r6, r4, r6
+ 135 00c2 DFF8F890 		ldr	r9, .L45+4
+ 136 00c6 05EB0608 		add	r8, r5, r6
+ 137 00ca D9F80000 		ldr	r0, [r9]
+ 138 00ce 1A21     		movs	r1, #26
+ 139 00d0 B8F80220 		ldrh	r2, [r8, #2]
+ 140 00d4 FFF7FEFF 		bl	socket_rx
+ 141 00d8 0228     		cmp	r0, #2
+ 142 00da 374F     		ldr	r7, .L45
+ 143 00dc 4B46     		mov	r3, r9
+ 144 00de 68D0     		beq	.L5
+ 145 00e0 0128     		cmp	r0, #1
+ 146 00e2 09D1     		bne	.L24
+ 147 00e4 B8F80230 		ldrh	r3, [r8, #2]
+ 148 00e8 B3F57A6F 		cmp	r3, #4000
+ 149 00ec 4CD2     		bcs	.L27
+ 150 00ee 5B00     		lsls	r3, r3, #1
+ 151 00f0 A8F80230 		strh	r3, [r8, #2]	@ movhi
+ 152 00f4 0223     		movs	r3, #2
+ 153 00f6 48E0     		b	.L43
+ 154              	.L24:
+ 155 00f8 08B1     		cbz	r0, .L26
+ 156 00fa 0328     		cmp	r0, #3
+ 157 00fc 44D1     		bne	.L27
+ 158              	.L26:
+ 159 00fe 1E68     		ldr	r6, [r3]
+ 160 0100 3088     		ldrh	r0, [r6]
+ 161 0102 FFF7FEFF 		bl	uip_htons
+ 162 0106 C0B2     		uxtb	r0, r0
+ 163 0108 A042     		cmp	r0, r4
+ 164 010a 4ED1     		bne	.L28
+ 165 010c F778     		ldrb	r7, [r6, #3]	@ zero_extendqisi2
+ 166 010e 17F00F07 		ands	r7, r7, #15
+ 167 0112 44D1     		bne	.L29
+ 168 0114 F088     		ldrh	r0, [r6, #6]
+ 169 0116 FFF7FEFF 		bl	uip_htons
+ 170 011a 284B     		ldr	r3, .L45+4
+ 171 011c 5FFA80F8 		uxtb	r8, r0
+ 172 0120 1868     		ldr	r0, [r3]
+ 173 0122 0C30     		adds	r0, r0, #12
+ 174 0124 FFF7FEFF 		bl	parse_name
+ 175 0128 0430     		adds	r0, r0, #4
+ 176              	.L30:
+ 177 012a FBB2     		uxtb	r3, r7
+ 178 012c 9845     		cmp	r8, r3
+ 179 012e 36D0     		beq	.L29
+ 180 0130 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 181 0132 13F0C00F 		tst	r3, #192
+ 182 0136 01D0     		beq	.L31
+ 183 0138 861C     		adds	r6, r0, #2
+ 184 013a 02E0     		b	.L32
+ 185              	.L31:
+ 186 013c FFF7FEFF 		bl	parse_name
+ 187 0140 0646     		mov	r6, r0
+ 188              	.L32:
+ 189 0142 3388     		ldrh	r3, [r6]
+ 190 0144 3089     		ldrh	r0, [r6, #8]
+ 191 0146 B3F5807F 		cmp	r3, #256
+ 192 014a 17D1     		bne	.L33
+ 193 014c 7388     		ldrh	r3, [r6, #2]
+ 194 014e B3F5807F 		cmp	r3, #256
+ 195 0152 13D1     		bne	.L33
+ 196 0154 B0F5806F 		cmp	r0, #1024
+ 197 0158 10D1     		bne	.L33
+ 198 015a 2823     		movs	r3, #40
+ 199 015c 5C43     		muls	r4, r3, r4
+ 200 015e B27A     		ldrb	r2, [r6, #10]	@ zero_extendqisi2
+ 201 0160 2B19     		adds	r3, r5, r4
+ 202 0162 83F82420 		strb	r2, [r3, #36]
+ 203 0166 F27A     		ldrb	r2, [r6, #11]	@ zero_extendqisi2
+ 204 0168 83F82520 		strb	r2, [r3, #37]
+ 205 016c 327B     		ldrb	r2, [r6, #12]	@ zero_extendqisi2
+ 206 016e 83F82620 		strb	r2, [r3, #38]
+ 207 0172 727B     		ldrb	r2, [r6, #13]	@ zero_extendqisi2
+ 208 0174 83F82720 		strb	r2, [r3, #39]
+ 209 0178 0423     		movs	r3, #4
+ 210 017a 13E0     		b	.L42
+ 211              	.L33:
+ 212 017c FFF7FEFF 		bl	uip_htons
+ 213 0180 0A30     		adds	r0, r0, #10
+ 214 0182 3044     		add	r0, r0, r6
+ 215 0184 0137     		adds	r7, r7, #1
+ 216 0186 D0E7     		b	.L30
+ 217              	.L27:
+ 218 0188 FF23     		movs	r3, #255
+ 219              	.L43:
+ 220 018a BB55     		strb	r3, [r7, r6]
+ 221 018c BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 222              	.L7:
+ 223 0190 6643     		muls	r6, r4, r6
+ 224 0192 FF23     		movs	r3, #255
+ 225 0194 AB55     		strb	r3, [r5, r6]
+ 226              	.L12:
+ 227 0196 BDE8F843 		pop	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 228 019a FFF7FEBF 		b	socket_close
+ 229              	.L29:
+ 230 019e 2823     		movs	r3, #40
+ 231 01a0 5C43     		muls	r4, r3, r4
+ 232 01a2 0523     		movs	r3, #5
+ 233              	.L42:
+ 234 01a4 2B55     		strb	r3, [r5, r4]
+ 235 01a6 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 236              	.L28:
+ 237 01aa BDE8F843 		pop	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 238 01ae FFF7FEBF 		b	socket_break
+ 239              	.L5:
+ 240 01b2 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 241              	.L46:
+ 242 01b6 00BF     		.align	2
+ 243              	.L45:
+ 244 01b8 00000000 		.word	.LANCHOR0
+ 245 01bc 00000000 		.word	uip_appdata
+ 247              		.section	.text.dns_lookup,"ax",%progbits
+ 248              		.align	1
+ 249              		.global	dns_lookup
+ 250              		.thumb
+ 251              		.thumb_func
+ 253              	dns_lookup:
+ 254              		@ args = 0, pretend = 0, frame = 0
+ 255              		@ frame_needed = 0, uses_anonymous_args = 0
+ 256 0000 2DE9F341 		push	{r0, r1, r4, r5, r6, r7, r8, lr}
+ 257 0004 3D4C     		ldr	r4, .L79
+ 258 0006 DFF80881 		ldr	r8, .L79+20
+ 259 000a 0646     		mov	r6, r0
+ 260 000c 0F46     		mov	r7, r1
+ 261 000e 0025     		movs	r5, #0
+ 262              	.L56:
+ 263 0010 3046     		mov	r0, r6
+ 264 0012 2146     		mov	r1, r4
+ 265 0014 FFF7FEFF 		bl	strcmp
+ 266 0018 0346     		mov	r3, r0
+ 267 001a 28B1     		cbz	r0, .L48
+ 268              	.L55:
+ 269 001c 0135     		adds	r5, r5, #1
+ 270 001e 042D     		cmp	r5, #4
+ 271 0020 04F12804 		add	r4, r4, #40
+ 272 0024 F4D1     		bne	.L56
+ 273 0026 20E0     		b	.L78
+ 274              	.L48:
+ 275 0028 14F8042C 		ldrb	r2, [r4, #-4]	@ zero_extendqisi2
+ 276 002c 042A     		cmp	r2, #4
+ 277 002e 06D1     		bne	.L51
+ 278 0030 334A     		ldr	r2, .L79+4
+ 279 0032 2821     		movs	r1, #40
+ 280 0034 01FB0525 		mla	r5, r1, r5, r2
+ 281 0038 6A6A     		ldr	r2, [r5, #36]	@ unaligned
+ 282 003a 3A60     		str	r2, [r7]	@ unaligned
+ 283 003c 5BE0     		b	.L52
+ 284              	.L51:
+ 285 003e D8F80020 		ldr	r2, [r8]	@ unaligned
+ 286 0042 3A60     		str	r2, [r7]	@ unaligned
+ 287 0044 14F8042C 		ldrb	r2, [r4, #-4]	@ zero_extendqisi2
+ 288 0048 FF2A     		cmp	r2, #255
+ 289 004a 07D1     		bne	.L53
+ 290 004c 2C48     		ldr	r0, .L79+4
+ 291 004e 2822     		movs	r2, #40
+ 292 0050 02FB0500 		mla	r0, r2, r5, r0
+ 293 0054 1946     		mov	r1, r3
+ 294 0056 FFF7FEFF 		bl	memset
+ 295 005a 01E0     		b	.L64
+ 296              	.L53:
+ 297 005c 052A     		cmp	r2, #5
+ 298 005e 01D1     		bne	.L54
+ 299              	.L64:
+ 300 0060 0120     		movs	r0, #1
+ 301 0062 48E0     		b	.L52
+ 302              	.L54:
+ 303 0064 002A     		cmp	r2, #0
+ 304 0066 D9D0     		beq	.L55
+ 305 0068 44E0     		b	.L77
+ 306              	.L78:
+ 307 006a 2648     		ldr	r0, .L79+8
+ 308 006c FFF7FEFF 		bl	udp_get
+ 309 0070 0028     		cmp	r0, #0
+ 310 0072 3FD1     		bne	.L77
+ 311 0074 224B     		ldr	r3, .L79+4
+ 312 0076 0246     		mov	r2, r0
+ 313 0078 2821     		movs	r1, #40
+ 314              	.L60:
+ 315 007a 01FB02F0 		mul	r0, r1, r2
+ 316 007e C05C     		ldrb	r0, [r0, r3]	@ zero_extendqisi2
+ 317 0080 D4B2     		uxtb	r4, r2
+ 318 0082 0138     		subs	r0, r0, #1
+ 319 0084 C0B2     		uxtb	r0, r0
+ 320 0086 FD28     		cmp	r0, #253
+ 321 0088 1D4D     		ldr	r5, .L79+4
+ 322 008a 18D8     		bhi	.L58
+ 323 008c 0132     		adds	r2, r2, #1
+ 324 008e 042A     		cmp	r2, #4
+ 325 0090 F3D1     		bne	.L60
+ 326 0092 0022     		movs	r2, #0
+ 327 0094 2823     		movs	r3, #40
+ 328              	.L62:
+ 329 0096 03FB02F1 		mul	r1, r3, r2
+ 330 009a 695C     		ldrb	r1, [r5, r1]	@ zero_extendqisi2
+ 331 009c D4B2     		uxtb	r4, r2
+ 332 009e 0529     		cmp	r1, #5
+ 333 00a0 0DD0     		beq	.L58
+ 334 00a2 0132     		adds	r2, r2, #1
+ 335 00a4 042A     		cmp	r2, #4
+ 336 00a6 F6D1     		bne	.L62
+ 337 00a8 FFF7FEFF 		bl	rand
+ 338 00ac 164B     		ldr	r3, .L79+12
+ 339 00ae 0340     		ands	r3, r3, r0
+ 340 00b0 002B     		cmp	r3, #0
+ 341 00b2 03DA     		bge	.L63
+ 342 00b4 013B     		subs	r3, r3, #1
+ 343 00b6 63F00303 		orn	r3, r3, #3
+ 344 00ba 0133     		adds	r3, r3, #1
+ 345              	.L63:
+ 346 00bc DCB2     		uxtb	r4, r3
+ 347              	.L58:
+ 348 00be 4FF00008 		mov	r8, #0
+ 349 00c2 CDF80080 		str	r8, [sp]
+ 350 00c6 0F48     		ldr	r0, .L79+8
+ 351 00c8 2146     		mov	r1, r4
+ 352 00ca 104A     		ldr	r2, .L79+16
+ 353 00cc 3523     		movs	r3, #53
+ 354 00ce FFF7FEFF 		bl	udp_add
+ 355 00d2 0028     		cmp	r0, #0
+ 356 00d4 C4D0     		beq	.L64
+ 357 00d6 2823     		movs	r3, #40
+ 358 00d8 5C43     		muls	r4, r3, r4
+ 359 00da 0123     		movs	r3, #1
+ 360 00dc 2F19     		adds	r7, r5, r4
+ 361 00de 2B55     		strb	r3, [r5, r4]
+ 362 00e0 381D     		adds	r0, r7, #4
+ 363 00e2 A7F80280 		strh	r8, [r7, #2]	@ movhi
+ 364 00e6 3146     		mov	r1, r6
+ 365 00e8 1F22     		movs	r2, #31
+ 366 00ea FFF7FEFF 		bl	strncpy
+ 367 00ee 084B     		ldr	r3, .L79+20
+ 368 00f0 1B68     		ldr	r3, [r3]	@ unaligned
+ 369 00f2 7B62     		str	r3, [r7, #36]	@ unaligned
+ 370              	.L77:
+ 371 00f4 0220     		movs	r0, #2
+ 372              	.L52:
+ 373 00f6 02B0     		add	sp, sp, #8
+ 374              		@ sp needed
+ 375 00f8 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 376              	.L80:
+ 377              		.align	2
+ 378              	.L79:
+ 379 00fc 04000000 		.word	.LANCHOR0+4
+ 380 0100 00000000 		.word	.LANCHOR0
+ 381 0104 00000000 		.word	socket_dns_client
+ 382 0108 03000080 		.word	-2147483645
+ 383 010c 00000000 		.word	uip_dnsaddr
+ 384 0110 00000000 		.word	uip_all_zeroes_addr
+ 386              		.section	.text.dns_clear,"ax",%progbits
+ 387              		.align	1
+ 388              		.global	dns_clear
+ 389              		.thumb
+ 390              		.thumb_func
+ 392              	dns_clear:
+ 393              		@ args = 0, pretend = 0, frame = 0
+ 394              		@ frame_needed = 0, uses_anonymous_args = 0
+ 395              		@ link register save eliminated.
+ 396 0000 0248     		ldr	r0, .L82
+ 397 0002 0021     		movs	r1, #0
+ 398 0004 A022     		movs	r2, #160
+ 399 0006 FFF7FEBF 		b	memset
+ 400              	.L83:
+ 401 000a 00BF     		.align	2
+ 402              	.L82:
+ 403 000c 00000000 		.word	.LANCHOR0
+ 405              		.section	.bss.names,"aw",%nobits
+ 406              		.align	1
+ 407              		.set	.LANCHOR0,. + 0
+ 410              	names:
+ 411 0000 00000000 		.space	160
+ 411      00000000 
+ 411      00000000 
+ 411      00000000 
+ 411      00000000 
+ 412              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 dns.c
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:16     .text.parse_name:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:20     .text.parse_name:00000000 parse_name
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:35     .text.socket_dns_client:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:39     .text.socket_dns_client:00000000 socket_dns_client
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:55     .text.socket_dns_client:00000022 $d
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:244    .text.socket_dns_client:000001b8 $d
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:248    .text.dns_lookup:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:253    .text.dns_lookup:00000000 dns_lookup
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:379    .text.dns_lookup:000000fc $d
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:387    .text.dns_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:392    .text.dns_clear:00000000 dns_clear
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:403    .text.dns_clear:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:406    .bss.names:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:410    .bss.names:00000000 names
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:60     .text.socket_dns_client:00000027 $d
+D:\Users\draapho\AppData\Local\Temp\ccEfU5AP.s:60     .text.socket_dns_client:00000028 $t
+
+UNDEFINED SYMBOLS
+memset
+uip_htons
+socket_tx
+socket_rx
+socket_close
+socket_break
+uip_appdata
+strcmp
+udp_get
+rand
+udp_add
+strncpy
+uip_dnsaddr
+uip_all_zeroes_addr

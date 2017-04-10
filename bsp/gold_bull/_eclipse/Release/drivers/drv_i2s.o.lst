@@ -1,0 +1,467 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_i2s.c"
+  15              		.section	.text.i2s_tx_data,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	i2s_tx_data:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 70B5     		push	{r4, r5, r6, lr}
+  24 0002 144E     		ldr	r6, .L8
+  25 0004 0546     		mov	r5, r0
+  26              	.L3:
+  27 0006 FFF7FEFF 		bl	__get_PRIMASK
+  28 000a 0446     		mov	r4, r0
+  29              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  30 000c 72B6     		cpsid i
+  31              	@ 0 "" 2
+  32              		.thumb
+  33 000e 3388     		ldrh	r3, [r6]
+  34 0010 1049     		ldr	r1, .L8
+  35 0012 9BB2     		uxth	r3, r3
+  36 0014 FF2B     		cmp	r3, #255
+  37 0016 02D9     		bls	.L2
+  38 0018 FFF7FEFF 		bl	__set_PRIMASK
+  39 001c F3E7     		b	.L3
+  40              	.L2:
+  41 001e 0E4B     		ldr	r3, .L8+4
+  42 0020 0E48     		ldr	r0, .L8+8
+  43 0022 1A88     		ldrh	r2, [r3]
+  44 0024 20F81250 		strh	r5, [r0, r2, lsl #1]	@ movhi
+  45 0028 0888     		ldrh	r0, [r1]
+  46 002a 0132     		adds	r2, r2, #1
+  47 002c 92B2     		uxth	r2, r2
+  48 002e 80B2     		uxth	r0, r0
+  49 0030 FF2A     		cmp	r2, #255
+  50 0032 00F10100 		add	r0, r0, #1
+  51 0036 88BF     		it	hi
+  52 0038 0022     		movhi	r2, #0
+  53 003a 80B2     		uxth	r0, r0
+  54 003c 0880     		strh	r0, [r1]	@ movhi
+  55 003e 1A80     		strh	r2, [r3]	@ movhi
+  56 0040 0748     		ldr	r0, .L8+12
+  57 0042 7121     		movs	r1, #113
+  58 0044 0122     		movs	r2, #1
+  59 0046 FFF7FEFF 		bl	SPI_I2S_ITConfig
+  60 004a 2046     		mov	r0, r4
+  61 004c BDE87040 		pop	{r4, r5, r6, lr}
+  62 0050 FFF7FEBF 		b	__set_PRIMASK
+  63              	.L9:
+  64              		.align	2
+  65              	.L8:
+  66 0054 00000000 		.word	.LANCHOR0
+  67 0058 00000000 		.word	.LANCHOR1
+  68 005c 00000000 		.word	.LANCHOR2
+  69 0060 00380040 		.word	1073756160
+  71              		.section	.text.i2s_buf_clear,"ax",%progbits
+  72              		.align	1
+  73              		.global	i2s_buf_clear
+  74              		.thumb
+  75              		.thumb_func
+  77              	i2s_buf_clear:
+  78              		@ args = 0, pretend = 0, frame = 0
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80 0000 08B5     		push	{r3, lr}
+  81 0002 FFF7FEFF 		bl	__get_PRIMASK
+  82              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  83 0006 72B6     		cpsid i
+  84              	@ 0 "" 2
+  85              		.thumb
+  86 0008 054A     		ldr	r2, .L11
+  87 000a 0023     		movs	r3, #0
+  88 000c 1380     		strh	r3, [r2]	@ movhi
+  89 000e 054A     		ldr	r2, .L11+4
+  90 0010 1380     		strh	r3, [r2]	@ movhi
+  91 0012 054A     		ldr	r2, .L11+8
+  92 0014 1380     		strh	r3, [r2]	@ movhi
+  93 0016 BDE80840 		pop	{r3, lr}
+  94 001a FFF7FEBF 		b	__set_PRIMASK
+  95              	.L12:
+  96 001e 00BF     		.align	2
+  97              	.L11:
+  98 0020 00000000 		.word	.LANCHOR1
+  99 0024 00000000 		.word	.LANCHOR3
+ 100 0028 00000000 		.word	.LANCHOR0
+ 102              		.section	.text.i2s_init,"ax",%progbits
+ 103              		.align	1
+ 104              		.global	i2s_init
+ 105              		.thumb
+ 106              		.thumb_func
+ 108              	i2s_init:
+ 109              		@ args = 0, pretend = 0, frame = 24
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 112 0004 0446     		mov	r4, r0
+ 113 0006 86B0     		sub	sp, sp, #24
+ 114 0008 0F46     		mov	r7, r1
+ 115 000a 2E48     		ldr	r0, .L16
+ 116 000c 0021     		movs	r1, #0
+ 117 000e 9046     		mov	r8, r2
+ 118 0010 FFF7FEFF 		bl	I2S_Cmd
+ 119 0014 2B48     		ldr	r0, .L16
+ 120 0016 FFF7FEFF 		bl	SPI_I2S_DeInit
+ 121 001a 4FF48040 		mov	r0, #16384
+ 122 001e 0121     		movs	r1, #1
+ 123 0020 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 124 0024 0121     		movs	r1, #1
+ 125 0026 1920     		movs	r0, #25
+ 126 0028 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 127 002c 4FF4A060 		mov	r0, #1280
+ 128 0030 FFF7FEFF 		bl	NVIC_PriorityGroupConfig
+ 129 0034 0025     		movs	r5, #0
+ 130 0036 2423     		movs	r3, #36
+ 131 0038 0126     		movs	r6, #1
+ 132 003a 6846     		mov	r0, sp
+ 133 003c 8DF80030 		strb	r3, [sp]
+ 134 0040 8DF80150 		strb	r5, [sp, #1]
+ 135 0044 8DF80250 		strb	r5, [sp, #2]
+ 136 0048 8DF80360 		strb	r6, [sp, #3]
+ 137 004c FFF7FEFF 		bl	NVIC_Init
+ 138 0050 4FF43043 		mov	r3, #45056
+ 139 0054 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 140 0058 0323     		movs	r3, #3
+ 141 005a 8DF80630 		strb	r3, [sp, #6]
+ 142 005e 01A9     		add	r1, sp, #4
+ 143 0060 1823     		movs	r3, #24
+ 144 0062 1948     		ldr	r0, .L16+4
+ 145 0064 8DF80730 		strb	r3, [sp, #7]
+ 146 0068 FFF7FEFF 		bl	GPIO_Init
+ 147 006c 4023     		movs	r3, #64
+ 148 006e 01A9     		add	r1, sp, #4
+ 149 0070 1648     		ldr	r0, .L16+8
+ 150 0072 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 151 0076 FFF7FEFF 		bl	GPIO_Init
+ 152 007a 154B     		ldr	r3, .L16+12
+ 153 007c 02A9     		add	r1, sp, #8
+ 154 007e 83F80080 		strb	r8, [r3]
+ 155 0082 144B     		ldr	r3, .L16+16
+ 156 0084 0F48     		ldr	r0, .L16
+ 157 0086 1C80     		strh	r4, [r3]	@ movhi
+ 158 0088 4FF6FF73 		movw	r3, #65535
+ 159 008c 9C42     		cmp	r4, r3
+ 160 008e 08BF     		it	eq
+ 161 0090 2C46     		moveq	r4, r5
+ 162 0092 4FF40073 		mov	r3, #512
+ 163 0096 ADF80830 		strh	r3, [sp, #8]	@ movhi
+ 164 009a ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 165 009e ADF80A50 		strh	r5, [sp, #10]	@ movhi
+ 166 00a2 ADF80C40 		strh	r4, [sp, #12]	@ movhi
+ 167 00a6 0497     		str	r7, [sp, #16]
+ 168 00a8 ADF81450 		strh	r5, [sp, #20]	@ movhi
+ 169 00ac FFF7FEFF 		bl	I2S_Init
+ 170 00b0 FFF7FEFF 		bl	i2s_buf_clear
+ 171 00b4 0348     		ldr	r0, .L16
+ 172 00b6 3146     		mov	r1, r6
+ 173 00b8 FFF7FEFF 		bl	I2S_Cmd
+ 174 00bc 06B0     		add	sp, sp, #24
+ 175              		@ sp needed
+ 176 00be BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 177              	.L17:
+ 178 00c2 00BF     		.align	2
+ 179              	.L16:
+ 180 00c4 00380040 		.word	1073756160
+ 181 00c8 000C0140 		.word	1073810432
+ 182 00cc 00100140 		.word	1073811456
+ 183 00d0 00000000 		.word	.LANCHOR4
+ 184 00d4 00000000 		.word	.LANCHOR5
+ 186              		.section	.text.i2s_deinit,"ax",%progbits
+ 187              		.align	1
+ 188              		.global	i2s_deinit
+ 189              		.thumb
+ 190              		.thumb_func
+ 192              	i2s_deinit:
+ 193              		@ args = 0, pretend = 0, frame = 8
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195 0000 13B5     		push	{r0, r1, r4, lr}
+ 196 0002 1A4C     		ldr	r4, .L19
+ 197 0004 0021     		movs	r1, #0
+ 198 0006 2046     		mov	r0, r4
+ 199 0008 FFF7FEFF 		bl	I2S_Cmd
+ 200 000c 2046     		mov	r0, r4
+ 201 000e FFF7FEFF 		bl	SPI_I2S_DeInit
+ 202 0012 4FF48040 		mov	r0, #16384
+ 203 0016 0021     		movs	r1, #0
+ 204 0018 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 205 001c FFF7FEFF 		bl	i2s_buf_clear
+ 206 0020 0423     		movs	r3, #4
+ 207 0022 8DF80330 		strb	r3, [sp, #3]
+ 208 0026 0223     		movs	r3, #2
+ 209 0028 8DF80230 		strb	r3, [sp, #2]
+ 210 002c 6946     		mov	r1, sp
+ 211 002e 4FF43043 		mov	r3, #45056
+ 212 0032 02AC     		add	r4, sp, #8
+ 213 0034 0E48     		ldr	r0, .L19+4
+ 214 0036 24F8083D 		strh	r3, [r4, #-8]!	@ movhi
+ 215 003a FFF7FEFF 		bl	GPIO_Init
+ 216 003e 4023     		movs	r3, #64
+ 217 0040 6946     		mov	r1, sp
+ 218 0042 0C48     		ldr	r0, .L19+8
+ 219 0044 ADF80030 		strh	r3, [sp]	@ movhi
+ 220 0048 FFF7FEFF 		bl	GPIO_Init
+ 221 004c 2423     		movs	r3, #36
+ 222 004e 8DF80430 		strb	r3, [sp, #4]
+ 223 0052 0F23     		movs	r3, #15
+ 224 0054 8DF80530 		strb	r3, [sp, #5]
+ 225 0058 8DF80630 		strb	r3, [sp, #6]
+ 226 005c 01A8     		add	r0, sp, #4
+ 227 005e 0023     		movs	r3, #0
+ 228 0060 8DF80730 		strb	r3, [sp, #7]
+ 229 0064 FFF7FEFF 		bl	NVIC_Init
+ 230 0068 02B0     		add	sp, sp, #8
+ 231              		@ sp needed
+ 232 006a 10BD     		pop	{r4, pc}
+ 233              	.L20:
+ 234              		.align	2
+ 235              	.L19:
+ 236 006c 00380040 		.word	1073756160
+ 237 0070 000C0140 		.word	1073810432
+ 238 0074 00100140 		.word	1073811456
+ 240              		.section	.text.i2s_tx,"ax",%progbits
+ 241              		.align	1
+ 242              		.global	i2s_tx
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	i2s_tx:
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 250 0004 DFF8D880 		ldr	r8, .L35+4
+ 251 0008 344D     		ldr	r5, .L35
+ 252 000a 0F46     		mov	r7, r1
+ 253 000c 0024     		movs	r4, #0
+ 254 000e 4FF6FF79 		movw	r9, #65535
+ 255              	.L22:
+ 256 0012 BC42     		cmp	r4, r7
+ 257 0014 60D2     		bcs	.L34
+ 258 0016 B8F80020 		ldrh	r2, [r8]
+ 259 001a 4A45     		cmp	r2, r9
+ 260 001c 0CD1     		bne	.L23
+ 261 001e 0678     		ldrb	r6, [r0]	@ zero_extendqisi2
+ 262 0020 00F1010A 		add	r10, r0, #1
+ 263 0024 3046     		mov	r0, r6
+ 264 0026 FFF7FEFF 		bl	i2s_tx_data
+ 265 002a 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 266 002c 13B9     		cbnz	r3, .L24
+ 267 002e 3046     		mov	r0, r6
+ 268 0030 FFF7FEFF 		bl	i2s_tx_data
+ 269              	.L24:
+ 270 0034 0134     		adds	r4, r4, #1
+ 271 0036 10E0     		b	.L32
+ 272              	.L23:
+ 273 0038 012A     		cmp	r2, #1
+ 274 003a 11D8     		bhi	.L26
+ 275 003c 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 276 003e 4678     		ldrb	r6, [r0, #1]	@ zero_extendqisi2
+ 277 0040 00F1020A 		add	r10, r0, #2
+ 278 0044 43EA0626 		orr	r6, r3, r6, lsl #8
+ 279 0048 3046     		mov	r0, r6
+ 280 004a FFF7FEFF 		bl	i2s_tx_data
+ 281 004e 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 282 0050 13B9     		cbnz	r3, .L27
+ 283 0052 3046     		mov	r0, r6
+ 284 0054 FFF7FEFF 		bl	i2s_tx_data
+ 285              	.L27:
+ 286 0058 0234     		adds	r4, r4, #2
+ 287              	.L32:
+ 288 005a A4B2     		uxth	r4, r4
+ 289 005c 5046     		mov	r0, r10
+ 290 005e D8E7     		b	.L22
+ 291              	.L26:
+ 292 0060 032A     		cmp	r2, #3
+ 293 0062 19D1     		bne	.L28
+ 294 0064 4378     		ldrb	r3, [r0, #1]	@ zero_extendqisi2
+ 295 0066 90F802B0 		ldrb	fp, [r0, #2]	@ zero_extendqisi2
+ 296 006a 0646     		mov	r6, r0
+ 297 006c 16F803AB 		ldrb	r10, [r6], #3	@ zero_extendqisi2
+ 298 0070 43EA0B2B 		orr	fp, r3, fp, lsl #8
+ 299 0074 5846     		mov	r0, fp
+ 300 0076 4FEA0A2A 		lsl	r10, r10, #8
+ 301 007a FFF7FEFF 		bl	i2s_tx_data
+ 302 007e 5046     		mov	r0, r10
+ 303 0080 FFF7FEFF 		bl	i2s_tx_data
+ 304 0084 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 305 0086 2BB9     		cbnz	r3, .L29
+ 306 0088 5846     		mov	r0, fp
+ 307 008a FFF7FEFF 		bl	i2s_tx_data
+ 308 008e 5046     		mov	r0, r10
+ 309 0090 FFF7FEFF 		bl	i2s_tx_data
+ 310              	.L29:
+ 311 0094 0334     		adds	r4, r4, #3
+ 312 0096 1CE0     		b	.L33
+ 313              	.L28:
+ 314 0098 052A     		cmp	r2, #5
+ 315 009a BAD1     		bne	.L22
+ 316 009c 8378     		ldrb	r3, [r0, #2]	@ zero_extendqisi2
+ 317 009e 90F803B0 		ldrb	fp, [r0, #3]	@ zero_extendqisi2
+ 318 00a2 0646     		mov	r6, r0
+ 319 00a4 90F801A0 		ldrb	r10, [r0, #1]	@ zero_extendqisi2
+ 320 00a8 16F8042B 		ldrb	r2, [r6], #4	@ zero_extendqisi2
+ 321 00ac 43EA0B2B 		orr	fp, r3, fp, lsl #8
+ 322 00b0 42EA0A2A 		orr	r10, r2, r10, lsl #8
+ 323 00b4 5846     		mov	r0, fp
+ 324 00b6 FFF7FEFF 		bl	i2s_tx_data
+ 325 00ba 5046     		mov	r0, r10
+ 326 00bc FFF7FEFF 		bl	i2s_tx_data
+ 327 00c0 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 328 00c2 2BB9     		cbnz	r3, .L30
+ 329 00c4 5846     		mov	r0, fp
+ 330 00c6 FFF7FEFF 		bl	i2s_tx_data
+ 331 00ca 5046     		mov	r0, r10
+ 332 00cc FFF7FEFF 		bl	i2s_tx_data
+ 333              	.L30:
+ 334 00d0 0434     		adds	r4, r4, #4
+ 335              	.L33:
+ 336 00d2 A4B2     		uxth	r4, r4
+ 337 00d4 3046     		mov	r0, r6
+ 338 00d6 9CE7     		b	.L22
+ 339              	.L34:
+ 340 00d8 BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 341              	.L36:
+ 342              		.align	2
+ 343              	.L35:
+ 344 00dc 00000000 		.word	.LANCHOR4
+ 345 00e0 00000000 		.word	.LANCHOR5
+ 347              		.section	.text.SPI2_IRQHandler,"ax",%progbits
+ 348              		.align	1
+ 349              		.global	SPI2_IRQHandler
+ 350              		.thumb
+ 351              		.thumb_func
+ 353              	SPI2_IRQHandler:
+ 354              		@ args = 0, pretend = 0, frame = 0
+ 355              		@ frame_needed = 0, uses_anonymous_args = 0
+ 356 0000 10B5     		push	{r4, lr}
+ 357 0002 124C     		ldr	r4, .L43
+ 358 0004 7121     		movs	r1, #113
+ 359 0006 2046     		mov	r0, r4
+ 360 0008 FFF7FEFF 		bl	SPI_I2S_GetITStatus
+ 361 000c 0128     		cmp	r0, #1
+ 362 000e 1CD1     		bne	.L37
+ 363 0010 0F49     		ldr	r1, .L43+4
+ 364 0012 0A88     		ldrh	r2, [r1]
+ 365 0014 92B2     		uxth	r2, r2
+ 366 0016 92B1     		cbz	r2, .L39
+ 367 0018 0E4B     		ldr	r3, .L43+8
+ 368 001a 0F48     		ldr	r0, .L43+12
+ 369 001c 1A88     		ldrh	r2, [r3]
+ 370 001e 30F81200 		ldrh	r0, [r0, r2, lsl #1]
+ 371 0022 0132     		adds	r2, r2, #1
+ 372 0024 92B2     		uxth	r2, r2
+ 373 0026 80B2     		uxth	r0, r0
+ 374 0028 FF2A     		cmp	r2, #255
+ 375 002a A081     		strh	r0, [r4, #12]	@ movhi
+ 376 002c 88BF     		it	hi
+ 377 002e 0022     		movhi	r2, #0
+ 378 0030 1A80     		strh	r2, [r3]	@ movhi
+ 379 0032 0B88     		ldrh	r3, [r1]
+ 380 0034 9BB2     		uxth	r3, r3
+ 381 0036 013B     		subs	r3, r3, #1
+ 382 0038 9BB2     		uxth	r3, r3
+ 383 003a 0B80     		strh	r3, [r1]	@ movhi
+ 384 003c 10BD     		pop	{r4, pc}
+ 385              	.L39:
+ 386 003e 2046     		mov	r0, r4
+ 387 0040 7121     		movs	r1, #113
+ 388 0042 BDE81040 		pop	{r4, lr}
+ 389 0046 FFF7FEBF 		b	SPI_I2S_ITConfig
+ 390              	.L37:
+ 391 004a 10BD     		pop	{r4, pc}
+ 392              	.L44:
+ 393              		.align	2
+ 394              	.L43:
+ 395 004c 00380040 		.word	1073756160
+ 396 0050 00000000 		.word	.LANCHOR0
+ 397 0054 00000000 		.word	.LANCHOR3
+ 398 0058 00000000 		.word	.LANCHOR2
+ 400              		.section	.bss.tx_wr_index,"aw",%nobits
+ 401              		.align	1
+ 402              		.set	.LANCHOR1,. + 0
+ 405              	tx_wr_index:
+ 406 0000 0000     		.space	2
+ 407              		.section	.bss.tx_rd_index,"aw",%nobits
+ 408              		.align	1
+ 409              		.set	.LANCHOR3,. + 0
+ 412              	tx_rd_index:
+ 413 0000 0000     		.space	2
+ 414              		.section	.bss.tx_buffer,"aw",%nobits
+ 415              		.align	1
+ 416              		.set	.LANCHOR2,. + 0
+ 419              	tx_buffer:
+ 420 0000 00000000 		.space	512
+ 420      00000000 
+ 420      00000000 
+ 420      00000000 
+ 420      00000000 
+ 421              		.section	.bss.i2s_data_format,"aw",%nobits
+ 422              		.align	1
+ 423              		.set	.LANCHOR5,. + 0
+ 426              	i2s_data_format:
+ 427 0000 0000     		.space	2
+ 428              		.section	.bss.stereo_flag,"aw",%nobits
+ 429              		.set	.LANCHOR4,. + 0
+ 432              	stereo_flag:
+ 433 0000 00       		.space	1
+ 434              		.section	.bss.tx_counter,"aw",%nobits
+ 435              		.align	1
+ 436              		.set	.LANCHOR0,. + 0
+ 439              	tx_counter:
+ 440 0000 0000     		.space	2
+ 441              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_i2s.c
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:16     .text.i2s_tx_data:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:20     .text.i2s_tx_data:00000000 i2s_tx_data
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:66     .text.i2s_tx_data:00000054 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:72     .text.i2s_buf_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:77     .text.i2s_buf_clear:00000000 i2s_buf_clear
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:98     .text.i2s_buf_clear:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:103    .text.i2s_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:108    .text.i2s_init:00000000 i2s_init
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:180    .text.i2s_init:000000c4 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:187    .text.i2s_deinit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:192    .text.i2s_deinit:00000000 i2s_deinit
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:236    .text.i2s_deinit:0000006c $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:241    .text.i2s_tx:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:246    .text.i2s_tx:00000000 i2s_tx
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:344    .text.i2s_tx:000000dc $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:348    .text.SPI2_IRQHandler:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:353    .text.SPI2_IRQHandler:00000000 SPI2_IRQHandler
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:395    .text.SPI2_IRQHandler:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:401    .bss.tx_wr_index:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:405    .bss.tx_wr_index:00000000 tx_wr_index
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:408    .bss.tx_rd_index:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:412    .bss.tx_rd_index:00000000 tx_rd_index
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:415    .bss.tx_buffer:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:419    .bss.tx_buffer:00000000 tx_buffer
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:422    .bss.i2s_data_format:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:426    .bss.i2s_data_format:00000000 i2s_data_format
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:432    .bss.stereo_flag:00000000 stereo_flag
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:433    .bss.stereo_flag:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:435    .bss.tx_counter:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccI29iwr.s:439    .bss.tx_counter:00000000 tx_counter
+
+UNDEFINED SYMBOLS
+__get_PRIMASK
+__set_PRIMASK
+SPI_I2S_ITConfig
+I2S_Cmd
+SPI_I2S_DeInit
+RCC_APB1PeriphClockCmd
+RCC_APB2PeriphClockCmd
+NVIC_PriorityGroupConfig
+NVIC_Init
+GPIO_Init
+I2S_Init
+SPI_I2S_GetITStatus

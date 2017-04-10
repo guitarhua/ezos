@@ -1,0 +1,45 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_tone.c"
+  15              		.section	.text.tone_start,"ax",%progbits
+  16              		.align	1
+  17              		.global	tone_start
+  18              		.thumb
+  19              		.thumb_func
+  21              	tone_start:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 0020     		movs	r0, #0
+  26 0004 2421     		movs	r1, #36
+  27 0006 1422     		movs	r2, #20
+  28 0008 FFF7FEFF 		bl	timer_init
+  29 000c BDE80840 		pop	{r3, lr}
+  30 0010 0148     		ldr	r0, .L2
+  31 0012 FFF7FEBF 		b	tone_play
+  32              	.L3:
+  33 0016 00BF     		.align	2
+  34              	.L2:
+  35 0018 00000000 		.word	tone_test_same
+  37              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_tone.c
+D:\Users\draapho\AppData\Local\Temp\ccVcNf89.s:16     .text.tone_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVcNf89.s:21     .text.tone_start:00000000 tone_start
+D:\Users\draapho\AppData\Local\Temp\ccVcNf89.s:35     .text.tone_start:00000018 $d
+
+UNDEFINED SYMBOLS
+timer_init
+tone_play
+tone_test_same

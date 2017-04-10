@@ -1,0 +1,118 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUI_X.c"
+  15              		.section	.text.GUI_X_GetTime,"ax",%progbits
+  16              		.align	1
+  17              		.global	GUI_X_GetTime
+  18              		.thumb
+  19              		.thumb_func
+  21              	GUI_X_GetTime:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 FFF7FEBF 		b	delay_tick_get
+  27              		.section	.text.GUI_X_Delay,"ax",%progbits
+  28              		.align	1
+  29              		.global	GUI_X_Delay
+  30              		.thumb
+  31              		.thumb_func
+  33              	GUI_X_Delay:
+  34              		@ args = 0, pretend = 0, frame = 0
+  35              		@ frame_needed = 0, uses_anonymous_args = 0
+  36              		@ link register save eliminated.
+  37              	.L3:
+  38 0000 0028     		cmp	r0, #0
+  39 0002 05DD     		ble	.L2
+  40 0004 6423     		movs	r3, #100
+  41              	.L6:
+  42              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  43 0006 00BF     		nop
+  44              	@ 0 "" 2
+  45              		.thumb
+  46 0008 013B     		subs	r3, r3, #1
+  47 000a FCD1     		bne	.L6
+  48 000c 0138     		subs	r0, r0, #1
+  49 000e F7E7     		b	.L3
+  50              	.L2:
+  51 0010 7047     		bx	lr
+  53              		.section	.text.GUI_X_Init,"ax",%progbits
+  54              		.align	1
+  55              		.global	GUI_X_Init
+  56              		.thumb
+  57              		.thumb_func
+  59              	GUI_X_Init:
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62              		@ link register save eliminated.
+  63 0000 7047     		bx	lr
+  65              		.section	.text.GUI_X_ExecIdle,"ax",%progbits
+  66              		.align	1
+  67              		.global	GUI_X_ExecIdle
+  68              		.thumb
+  69              		.thumb_func
+  71              	GUI_X_ExecIdle:
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              		@ link register save eliminated.
+  75 0000 7047     		bx	lr
+  77              		.section	.text.GUI_X_Log,"ax",%progbits
+  78              		.align	1
+  79              		.global	GUI_X_Log
+  80              		.thumb
+  81              		.thumb_func
+  83              	GUI_X_Log:
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              		@ link register save eliminated.
+  87 0000 7047     		bx	lr
+  89              		.section	.text.GUI_X_Warn,"ax",%progbits
+  90              		.align	1
+  91              		.global	GUI_X_Warn
+  92              		.thumb
+  93              		.thumb_func
+  95              	GUI_X_Warn:
+  96              		@ args = 0, pretend = 0, frame = 0
+  97              		@ frame_needed = 0, uses_anonymous_args = 0
+  98              		@ link register save eliminated.
+  99 0000 7047     		bx	lr
+ 101              		.section	.text.GUI_X_ErrorOut,"ax",%progbits
+ 102              		.align	1
+ 103              		.global	GUI_X_ErrorOut
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	GUI_X_ErrorOut:
+ 108              		@ args = 0, pretend = 0, frame = 0
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 110              		@ link register save eliminated.
+ 111 0000 7047     		bx	lr
+ 113              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUI_X.c
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:16     .text.GUI_X_GetTime:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:21     .text.GUI_X_GetTime:00000000 GUI_X_GetTime
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:28     .text.GUI_X_Delay:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:33     .text.GUI_X_Delay:00000000 GUI_X_Delay
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:54     .text.GUI_X_Init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:59     .text.GUI_X_Init:00000000 GUI_X_Init
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:66     .text.GUI_X_ExecIdle:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:71     .text.GUI_X_ExecIdle:00000000 GUI_X_ExecIdle
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:78     .text.GUI_X_Log:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:83     .text.GUI_X_Log:00000000 GUI_X_Log
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:90     .text.GUI_X_Warn:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:95     .text.GUI_X_Warn:00000000 GUI_X_Warn
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:102    .text.GUI_X_ErrorOut:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccaxoCWP.s:107    .text.GUI_X_ErrorOut:00000000 GUI_X_ErrorOut
+
+UNDEFINED SYMBOLS
+delay_tick_get

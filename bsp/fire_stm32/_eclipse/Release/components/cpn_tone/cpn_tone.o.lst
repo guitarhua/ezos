@@ -1,0 +1,445 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"cpn_tone.c"
+  15              		.section	.text.task_tone_play,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_tone_play:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  24 0002 0388     		ldrh	r3, [r0]
+  25 0004 0546     		mov	r5, r0
+  26 0006 012B     		cmp	r3, #1
+  27 0008 0F46     		mov	r7, r1
+  28 000a 6E4E     		ldr	r6, .L41
+  29 000c 60D0     		beq	.L3
+  30 000e 4FF00004 		mov	r4, #0
+  31 0012 0DD3     		bcc	.L4
+  32 0014 022B     		cmp	r3, #2
+  33 0016 40F0CF80 		bne	.L40
+  34 001a 2046     		mov	r0, r4
+  35 001c 3480     		strh	r4, [r6]	@ movhi
+  36 001e FFF7FEFF 		bl	ctrlport_off
+  37 0022 0123     		movs	r3, #1
+  38 0024 2B80     		strh	r3, [r5]	@ movhi
+  39 0026 684B     		ldr	r3, .L41+4
+  40 0028 0A20     		movs	r0, #10
+  41 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  42 002c 5843     		muls	r0, r3, r0
+  43 002e BAE0     		b	.L37
+  44              	.L4:
+  45 0030 2046     		mov	r0, r4
+  46 0032 FFF7FEFF 		bl	ctrlport_init
+  47 0036 3A68     		ldr	r2, [r7]
+  48 0038 6448     		ldr	r0, .L41+8
+  49 003a 1346     		mov	r3, r2
+  50 003c 13F8021B 		ldrb	r1, [r3], #2	@ zero_extendqisi2
+  51 0040 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+  52 0042 0360     		str	r3, [r0]
+  53 0044 A2F10A03 		sub	r3, r2, #10
+  54 0048 3480     		strh	r4, [r6]	@ movhi
+  55 004a DBB2     		uxtb	r3, r3
+  56 004c 0C09     		lsrs	r4, r1, #4
+  57 004e 01F00F01 		and	r1, r1, #15
+  58 0052 0B29     		cmp	r1, #11
+  59 0054 88BF     		it	hi
+  60 0056 0021     		movhi	r1, #0
+  61 0058 F02B     		cmp	r3, #240
+  62 005a 5D4B     		ldr	r3, .L41+12
+  63 005c 88BF     		it	hi
+  64 005e 8022     		movhi	r2, #128
+  65 0060 1A70     		strb	r2, [r3]
+  66 0062 5C48     		ldr	r0, .L41+16
+  67 0064 5C4A     		ldr	r2, .L41+20
+  68 0066 0023     		movs	r3, #0
+  69 0068 0C26     		movs	r6, #12
+  70              	.L18:
+  71 006a 0B29     		cmp	r1, #11
+  72 006c 08D9     		bls	.L9
+  73 006e B1FBF6F7 		udiv	r7, r1, r6
+  74 0072 06FB1717 		mls	r7, r6, r7, r1
+  75 0076 FFB2     		uxtb	r7, r7
+  76 0078 30F81770 		ldrh	r7, [r0, r7, lsl #1]
+  77 007c 7F00     		lsls	r7, r7, #1
+  78 007e 01E0     		b	.L33
+  79              	.L9:
+  80 0080 30F81170 		ldrh	r7, [r0, r1, lsl #1]
+  81              	.L33:
+  82 0084 012C     		cmp	r4, #1
+  83 0086 D752     		strh	r7, [r2, r3]	@ movhi
+  84 0088 02D1     		bne	.L11
+  85 008a D75A     		ldrh	r7, [r2, r3]
+  86 008c FF08     		lsrs	r7, r7, #3
+  87 008e 17E0     		b	.L34
+  88              	.L11:
+  89 0090 022C     		cmp	r4, #2
+  90 0092 02D1     		bne	.L13
+  91 0094 D75A     		ldrh	r7, [r2, r3]
+  92 0096 BF08     		lsrs	r7, r7, #2
+  93 0098 12E0     		b	.L34
+  94              	.L13:
+  95 009a 032C     		cmp	r4, #3
+  96 009c 02D1     		bne	.L14
+  97 009e D75A     		ldrh	r7, [r2, r3]
+  98 00a0 7F08     		lsrs	r7, r7, #1
+  99 00a2 0DE0     		b	.L34
+ 100              	.L14:
+ 101 00a4 052C     		cmp	r4, #5
+ 102 00a6 02D1     		bne	.L15
+ 103 00a8 D75A     		ldrh	r7, [r2, r3]
+ 104 00aa 7F00     		lsls	r7, r7, #1
+ 105 00ac 08E0     		b	.L34
+ 106              	.L15:
+ 107 00ae 062C     		cmp	r4, #6
+ 108 00b0 02D1     		bne	.L16
+ 109 00b2 D75A     		ldrh	r7, [r2, r3]
+ 110 00b4 BF00     		lsls	r7, r7, #2
+ 111 00b6 03E0     		b	.L34
+ 112              	.L16:
+ 113 00b8 072C     		cmp	r4, #7
+ 114 00ba 02D1     		bne	.L12
+ 115 00bc D75A     		ldrh	r7, [r2, r3]
+ 116 00be FF00     		lsls	r7, r7, #3
+ 117              	.L34:
+ 118 00c0 D752     		strh	r7, [r2, r3]	@ movhi
+ 119              	.L12:
+ 120 00c2 0233     		adds	r3, r3, #2
+ 121 00c4 0131     		adds	r1, r1, #1
+ 122 00c6 182B     		cmp	r3, #24
+ 123 00c8 C9B2     		uxtb	r1, r1
+ 124 00ca CED1     		bne	.L18
+ 125 00cc 0123     		movs	r3, #1
+ 126 00ce 70E0     		b	.L38
+ 127              	.L3:
+ 128 00d0 3E48     		ldr	r0, .L41+8
+ 129 00d2 0168     		ldr	r1, [r0]
+ 130 00d4 0A46     		mov	r2, r1
+ 131 00d6 12F8023B 		ldrb	r3, [r2], #2	@ zero_extendqisi2
+ 132 00da 0260     		str	r2, [r0]
+ 133 00dc 4878     		ldrb	r0, [r1, #1]	@ zero_extendqisi2
+ 134 00de 002B     		cmp	r3, #0
+ 135 00e0 65D0     		beq	.L19
+ 136 00e2 0A22     		movs	r2, #10
+ 137 00e4 B3FBF2F1 		udiv	r1, r3, r2
+ 138 00e8 02FB1134 		mls	r4, r2, r1, r3
+ 139 00ec 013C     		subs	r4, r4, #1
+ 140 00ee E4B2     		uxtb	r4, r4
+ 141 00f0 062C     		cmp	r4, #6
+ 142 00f2 16D8     		bhi	.L29
+ 143 00f4 B1FBF2F7 		udiv	r7, r1, r2
+ 144 00f8 07FB1212 		mls	r2, r7, r2, r1
+ 145 00fc 3749     		ldr	r1, .L41+24
+ 146 00fe D2B2     		uxtb	r2, r2
+ 147 0100 095D     		ldrb	r1, [r1, r4]	@ zero_extendqisi2
+ 148 0102 6424     		movs	r4, #100
+ 149 0104 B3FBF4F3 		udiv	r3, r3, r4
+ 150 0108 0B44     		add	r3, r3, r1
+ 151 010a 3349     		ldr	r1, .L41+20
+ 152 010c 012A     		cmp	r2, #1
+ 153 010e 31F81330 		ldrh	r3, [r1, r3, lsl #1]
+ 154 0112 01D1     		bne	.L21
+ 155 0114 5B08     		lsrs	r3, r3, #1
+ 156 0116 06E0     		b	.L20
+ 157              	.L21:
+ 158 0118 032A     		cmp	r2, #3
+ 159 011a 04D1     		bne	.L20
+ 160 011c 5B00     		lsls	r3, r3, #1
+ 161 011e 9BB2     		uxth	r3, r3
+ 162 0120 01E0     		b	.L20
+ 163              	.L29:
+ 164 0122 4FF6FF73 		movw	r3, #65535
+ 165              	.L20:
+ 166 0126 0A22     		movs	r2, #10
+ 167 0128 B0FBF2F1 		udiv	r1, r0, r2
+ 168 012c 02FB1104 		mls	r4, r2, r1, r0
+ 169 0130 2B4F     		ldr	r7, .L41+28
+ 170 0132 E4B2     		uxtb	r4, r4
+ 171 0134 17F804C0 		ldrb	ip, [r7, r4]	@ zero_extendqisi2
+ 172 0138 B1FBF2F4 		udiv	r4, r1, r2
+ 173 013c 04FB1212 		mls	r2, r4, r2, r1
+ 174 0140 D4B2     		uxtb	r4, r2
+ 175 0142 234A     		ldr	r2, .L41+12
+ 176 0144 1778     		ldrb	r7, [r2]	@ zero_extendqisi2
+ 177 0146 6422     		movs	r2, #100
+ 178 0148 B7FBFCF1 		udiv	r1, r7, ip
+ 179 014c B0FBF2F0 		udiv	r0, r0, r2
+ 180 0150 4900     		lsls	r1, r1, #1
+ 181 0152 C9B2     		uxtb	r1, r1
+ 182 0154 0128     		cmp	r0, #1
+ 183 0156 234A     		ldr	r2, .L41+32
+ 184 0158 08BF     		it	eq
+ 185 015a 01EB5101 		addeq	r1, r1, r1, lsr #1
+ 186 015e BCF1030F 		cmp	ip, #3
+ 187 0162 1170     		strb	r1, [r2]
+ 188 0164 1849     		ldr	r1, .L41+4
+ 189 0166 02D8     		bhi	.L24
+ 190 0168 BF08     		lsrs	r7, r7, #2
+ 191 016a 0F70     		strb	r7, [r1]
+ 192 016c 04E0     		b	.L25
+ 193              	.L24:
+ 194 016e 1778     		ldrb	r7, [r2]	@ zero_extendqisi2
+ 195 0170 0320     		movs	r0, #3
+ 196 0172 B7FBF0F0 		udiv	r0, r7, r0
+ 197 0176 0870     		strb	r0, [r1]
+ 198              	.L25:
+ 199 0178 012C     		cmp	r4, #1
+ 200 017a 01D1     		bne	.L26
+ 201 017c 0020     		movs	r0, #0
+ 202 017e 03E0     		b	.L36
+ 203              	.L26:
+ 204 0180 022C     		cmp	r4, #2
+ 205 0182 02D1     		bne	.L27
+ 206 0184 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 207 0186 4008     		lsrs	r0, r0, #1
+ 208              	.L36:
+ 209 0188 0870     		strb	r0, [r1]
+ 210              	.L27:
+ 211 018a 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 212 018c 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 213 018e 411A     		subs	r1, r0, r1
+ 214 0190 C9B2     		uxtb	r1, r1
+ 215 0192 0A20     		movs	r0, #10
+ 216 0194 1170     		strb	r1, [r2]
+ 217 0196 4843     		muls	r0, r1, r0
+ 218 0198 4CF25032 		movw	r2, #50000
+ 219 019c 92FBF3F3 		sdiv	r3, r2, r3
+ 220 01a0 3380     		strh	r3, [r6]	@ movhi
+ 221 01a2 0223     		movs	r3, #2
+ 222 01a4 2B80     		strh	r3, [r5]	@ movhi
+ 223              	.L37:
+ 224 01a6 BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 225 01aa FFF7FEBF 		b	ezos_delay
+ 226              	.L19:
+ 227 01ae 3380     		strh	r3, [r6]	@ movhi
+ 228 01b0 FF23     		movs	r3, #255
+ 229              	.L38:
+ 230 01b2 2B80     		strh	r3, [r5]	@ movhi
+ 231 01b4 0A20     		movs	r0, #10
+ 232 01b6 F6E7     		b	.L37
+ 233              	.L40:
+ 234 01b8 3480     		strh	r4, [r6]	@ movhi
+ 235 01ba 2046     		mov	r0, r4
+ 236 01bc BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 237 01c0 FFF7FEBF 		b	ctrlport_off
+ 238              	.L42:
+ 239              		.align	2
+ 240              	.L41:
+ 241 01c4 00000000 		.word	.LANCHOR0
+ 242 01c8 00000000 		.word	.LANCHOR8
+ 243 01cc 00000000 		.word	.LANCHOR1
+ 244 01d0 00000000 		.word	.LANCHOR2
+ 245 01d4 00000000 		.word	.LANCHOR4
+ 246 01d8 00000000 		.word	.LANCHOR3
+ 247 01dc 00000000 		.word	.LANCHOR5
+ 248 01e0 00000000 		.word	.LANCHOR6
+ 249 01e4 00000000 		.word	.LANCHOR7
+ 251              		.section	.text.tone_play,"ax",%progbits
+ 252              		.align	1
+ 253              		.global	tone_play
+ 254              		.thumb
+ 255              		.thumb_func
+ 257              	tone_play:
+ 258              		@ args = 0, pretend = 0, frame = 0
+ 259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 260 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 261 0002 074C     		ldr	r4, .L44
+ 262 0004 0546     		mov	r5, r0
+ 263 0006 2046     		mov	r0, r4
+ 264 0008 FFF7FEFF 		bl	ezos_delete
+ 265 000c 0023     		movs	r3, #0
+ 266 000e 0093     		str	r3, [sp]
+ 267 0010 2046     		mov	r0, r4
+ 268 0012 2146     		mov	r1, r4
+ 269 0014 2A46     		mov	r2, r5
+ 270 0016 FFF7FEFF 		bl	ezos_add
+ 271 001a 03B0     		add	sp, sp, #12
+ 272              		@ sp needed
+ 273 001c 30BD     		pop	{r4, r5, pc}
+ 274              	.L45:
+ 275 001e 00BF     		.align	2
+ 276              	.L44:
+ 277 0020 00000000 		.word	task_tone_play
+ 279              		.section	.text.tone_stop,"ax",%progbits
+ 280              		.align	1
+ 281              		.global	tone_stop
+ 282              		.thumb
+ 283              		.thumb_func
+ 285              	tone_stop:
+ 286              		@ args = 0, pretend = 0, frame = 0
+ 287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288 0000 08B5     		push	{r3, lr}
+ 289 0002 054B     		ldr	r3, .L47
+ 290 0004 0020     		movs	r0, #0
+ 291 0006 1880     		strh	r0, [r3]	@ movhi
+ 292 0008 FFF7FEFF 		bl	ctrlport_off
+ 293 000c BDE80840 		pop	{r3, lr}
+ 294 0010 0248     		ldr	r0, .L47+4
+ 295 0012 FFF7FEBF 		b	ezos_delete
+ 296              	.L48:
+ 297 0016 00BF     		.align	2
+ 298              	.L47:
+ 299 0018 00000000 		.word	.LANCHOR0
+ 300 001c 00000000 		.word	task_tone_play
+ 302              		.section	.text.tone_scan_10us,"ax",%progbits
+ 303              		.align	1
+ 304              		.global	tone_scan_10us
+ 305              		.thumb
+ 306              		.thumb_func
+ 308              	tone_scan_10us:
+ 309              		@ args = 0, pretend = 0, frame = 0
+ 310              		@ frame_needed = 0, uses_anonymous_args = 0
+ 311 0000 094A     		ldr	r2, .L52
+ 312 0002 10B5     		push	{r4, lr}
+ 313 0004 1388     		ldrh	r3, [r2]
+ 314 0006 094C     		ldr	r4, .L52+4
+ 315 0008 9BB2     		uxth	r3, r3
+ 316 000a 5BB1     		cbz	r3, .L50
+ 317 000c 2388     		ldrh	r3, [r4]
+ 318 000e 1288     		ldrh	r2, [r2]
+ 319 0010 0133     		adds	r3, r3, #1
+ 320 0012 9BB2     		uxth	r3, r3
+ 321 0014 92B2     		uxth	r2, r2
+ 322 0016 9342     		cmp	r3, r2
+ 323 0018 2380     		strh	r3, [r4]	@ movhi
+ 324 001a 04D3     		bcc	.L49
+ 325 001c 0020     		movs	r0, #0
+ 326 001e FFF7FEFF 		bl	ctrlport_toggle
+ 327 0022 0023     		movs	r3, #0
+ 328              	.L50:
+ 329 0024 2380     		strh	r3, [r4]	@ movhi
+ 330              	.L49:
+ 331 0026 10BD     		pop	{r4, pc}
+ 332              	.L53:
+ 333              		.align	2
+ 334              	.L52:
+ 335 0028 00000000 		.word	.LANCHOR0
+ 336 002c 00000000 		.word	.LANCHOR9
+ 338              		.section	.bss.tone_freq.6251,"aw",%nobits
+ 339              		.align	1
+ 340              		.set	.LANCHOR3,. + 0
+ 343              	tone_freq.6251:
+ 344 0000 00000000 		.space	24
+ 344      00000000 
+ 344      00000000 
+ 344      00000000 
+ 344      00000000 
+ 345              		.section	.rodata.meter_demul.6247,"a",%progbits
+ 346              		.set	.LANCHOR6,. + 0
+ 349              	meter_demul.6247:
+ 350 0000 01       		.byte	1
+ 351 0001 02       		.byte	2
+ 352 0002 04       		.byte	4
+ 353 0003 08       		.byte	8
+ 354 0004 10       		.byte	16
+ 355 0005 20       		.byte	32
+ 356 0006 40       		.byte	64
+ 357 0007 04       		.byte	4
+ 358 0008 04       		.byte	4
+ 359 0009 04       		.byte	4
+ 360              		.section	.bss.note_timer.6277,"aw",%nobits
+ 361              		.align	1
+ 362              		.set	.LANCHOR9,. + 0
+ 365              	note_timer.6277:
+ 366 0000 0000     		.space	2
+ 367              		.section	.bss.counter_note.6253,"aw",%nobits
+ 368              		.set	.LANCHOR7,. + 0
+ 371              	counter_note.6253:
+ 372 0000 00       		.space	1
+ 373              		.section	.bss.meter_time.6252,"aw",%nobits
+ 374              		.set	.LANCHOR2,. + 0
+ 377              	meter_time.6252:
+ 378 0000 00       		.space	1
+ 379              		.section	.rodata.note_idx.6246,"a",%progbits
+ 380              		.set	.LANCHOR5,. + 0
+ 383              	note_idx.6246:
+ 384 0000 00       		.byte	0
+ 385 0001 02       		.byte	2
+ 386 0002 04       		.byte	4
+ 387 0003 05       		.byte	5
+ 388 0004 07       		.byte	7
+ 389 0005 09       		.byte	9
+ 390 0006 0B       		.byte	11
+ 391              		.section	.bss.ptone.6248,"aw",%nobits
+ 392              		.align	2
+ 393              		.set	.LANCHOR1,. + 0
+ 396              	ptone.6248:
+ 397 0000 00000000 		.space	4
+ 398              		.section	.bss.note_time,"aw",%nobits
+ 399              		.align	1
+ 400              		.set	.LANCHOR0,. + 0
+ 403              	note_time:
+ 404 0000 0000     		.space	2
+ 405              		.section	.bss.counter_space.6254,"aw",%nobits
+ 406              		.set	.LANCHOR8,. + 0
+ 409              	counter_space.6254:
+ 410 0000 00       		.space	1
+ 411              		.section	.rodata.base_freq.6245,"a",%progbits
+ 412              		.align	1
+ 413              		.set	.LANCHOR4,. + 0
+ 416              	base_freq.6245:
+ 417 0000 0601     		.short	262
+ 418 0002 1501     		.short	277
+ 419 0004 2601     		.short	294
+ 420 0006 3701     		.short	311
+ 421 0008 4A01     		.short	330
+ 422 000a 5D01     		.short	349
+ 423 000c 7201     		.short	370
+ 424 000e 8801     		.short	392
+ 425 0010 9F01     		.short	415
+ 426 0012 B801     		.short	440
+ 427 0014 D201     		.short	466
+ 428 0016 EE01     		.short	494
+ 429              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 cpn_tone.c
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:16     .text.task_tone_play:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:20     .text.task_tone_play:00000000 task_tone_play
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:241    .text.task_tone_play:000001c4 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:252    .text.tone_play:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:257    .text.tone_play:00000000 tone_play
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:277    .text.tone_play:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:280    .text.tone_stop:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:285    .text.tone_stop:00000000 tone_stop
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:299    .text.tone_stop:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:303    .text.tone_scan_10us:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:308    .text.tone_scan_10us:00000000 tone_scan_10us
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:335    .text.tone_scan_10us:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:339    .bss.tone_freq.6251:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:343    .bss.tone_freq.6251:00000000 tone_freq.6251
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:349    .rodata.meter_demul.6247:00000000 meter_demul.6247
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:361    .bss.note_timer.6277:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:365    .bss.note_timer.6277:00000000 note_timer.6277
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:371    .bss.counter_note.6253:00000000 counter_note.6253
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:372    .bss.counter_note.6253:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:377    .bss.meter_time.6252:00000000 meter_time.6252
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:378    .bss.meter_time.6252:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:383    .rodata.note_idx.6246:00000000 note_idx.6246
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:392    .bss.ptone.6248:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:396    .bss.ptone.6248:00000000 ptone.6248
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:399    .bss.note_time:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:403    .bss.note_time:00000000 note_time
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:409    .bss.counter_space.6254:00000000 counter_space.6254
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:410    .bss.counter_space.6254:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:412    .rodata.base_freq.6245:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccq0tqvc.s:416    .rodata.base_freq.6245:00000000 base_freq.6245
+
+UNDEFINED SYMBOLS
+ctrlport_off
+ctrlport_init
+ezos_delay
+ezos_delete
+ezos_add
+ctrlport_toggle

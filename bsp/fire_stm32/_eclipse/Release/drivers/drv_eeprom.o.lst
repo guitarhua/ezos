@@ -1,0 +1,285 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_eeprom.c"
+  15              		.section	.text.eeprom_write_page,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	eeprom_write_page:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 8B18     		adds	r3, r1, r2
+  24 0002 B3F5807F 		cmp	r3, #256
+  25 0006 70B5     		push	{r4, r5, r6, lr}
+  26 0008 0446     		mov	r4, r0
+  27 000a 0E46     		mov	r6, r1
+  28 000c 1546     		mov	r5, r2
+  29 000e 03D9     		bls	.L2
+  30 0010 1348     		ldr	r0, .L13
+  31 0012 A521     		movs	r1, #165
+  32 0014 FFF7FEFF 		bl	assert_err
+  33              	.L2:
+  34 0018 0020     		movs	r0, #0
+  35 001a FFF7FEFF 		bl	i2c_start
+  36 001e 114B     		ldr	r3, .L13+4
+  37 0020 0020     		movs	r0, #0
+  38 0022 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+  39 0024 41F0A001 		orr	r1, r1, #160
+  40 0028 FFF7FEFF 		bl	i2c_tx_addr_wr_slaver
+  41 002c 08B1     		cbz	r0, .L3
+  42              	.L6:
+  43 002e 0124     		movs	r4, #1
+  44 0030 0EE0     		b	.L4
+  45              	.L3:
+  46 0032 F1B2     		uxtb	r1, r6
+  47 0034 FFF7FEFF 		bl	i2c_tx_byte
+  48 0038 2544     		add	r5, r5, r4
+  49              	.L5:
+  50 003a AC42     		cmp	r4, r5
+  51 003c 07D0     		beq	.L12
+  52 003e 0020     		movs	r0, #0
+  53 0040 14F8011B 		ldrb	r1, [r4], #1	@ zero_extendqisi2
+  54 0044 FFF7FEFF 		bl	i2c_tx_byte
+  55 0048 0128     		cmp	r0, #1
+  56 004a F6D1     		bne	.L5
+  57 004c EFE7     		b	.L6
+  58              	.L12:
+  59 004e 0024     		movs	r4, #0
+  60              	.L4:
+  61 0050 0020     		movs	r0, #0
+  62 0052 FFF7FEFF 		bl	i2c_stop
+  63 0056 0A20     		movs	r0, #10
+  64 0058 FFF7FEFF 		bl	delay_ms
+  65 005c 2046     		mov	r0, r4
+  66 005e 70BD     		pop	{r4, r5, r6, pc}
+  67              	.L14:
+  68              		.align	2
+  69              	.L13:
+  70 0060 00000000 		.word	.LC0
+  71 0064 00000000 		.word	.LANCHOR0
+  73              		.section	.text.eeprom_set_chip_addr,"ax",%progbits
+  74              		.align	1
+  75              		.global	eeprom_set_chip_addr
+  76              		.thumb
+  77              		.thumb_func
+  79              	eeprom_set_chip_addr:
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		@ link register save eliminated.
+  83 0000 00F00700 		and	r0, r0, #7
+  84 0004 014B     		ldr	r3, .L16
+  85 0006 4000     		lsls	r0, r0, #1
+  86 0008 1870     		strb	r0, [r3]
+  87 000a 7047     		bx	lr
+  88              	.L17:
+  89              		.align	2
+  90              	.L16:
+  91 000c 00000000 		.word	.LANCHOR0
+  93              		.section	.text.eeprom_init,"ax",%progbits
+  94              		.align	1
+  95              		.global	eeprom_init
+  96              		.thumb
+  97              		.thumb_func
+  99              	eeprom_init:
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102 0000 10B5     		push	{r4, lr}
+ 103 0002 4FF4C871 		mov	r1, #400
+ 104 0006 0446     		mov	r4, r0
+ 105 0008 0020     		movs	r0, #0
+ 106 000a FFF7FEFF 		bl	i2c_init
+ 107 000e 2046     		mov	r0, r4
+ 108 0010 BDE81040 		pop	{r4, lr}
+ 109 0014 FFF7FEBF 		b	eeprom_set_chip_addr
+ 111              		.section	.text.eeprom_write,"ax",%progbits
+ 112              		.align	1
+ 113              		.global	eeprom_write
+ 114              		.thumb
+ 115              		.thumb_func
+ 117              	eeprom_write:
+ 118              		@ args = 0, pretend = 0, frame = 0
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 121 0002 8B18     		adds	r3, r1, r2
+ 122 0004 B3F5807F 		cmp	r3, #256
+ 123 0008 0746     		mov	r7, r0
+ 124 000a 0C46     		mov	r4, r1
+ 125 000c 1546     		mov	r5, r2
+ 126 000e 05D9     		bls	.L20
+ 127 0010 1848     		ldr	r0, .L36
+ 128 0012 D621     		movs	r1, #214
+ 129 0014 FFF7FEFF 		bl	assert_err
+ 130              	.L26:
+ 131 0018 0120     		movs	r0, #1
+ 132 001a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 133              	.L20:
+ 134 001c CE08     		lsrs	r6, r1, #3
+ 135 001e 03D0     		beq	.L34
+ 136 0020 0136     		adds	r6, r6, #1
+ 137 0022 F600     		lsls	r6, r6, #3
+ 138 0024 361B     		subs	r6, r6, r4
+ 139 0026 01E0     		b	.L22
+ 140              	.L34:
+ 141 0028 C4F10806 		rsb	r6, r4, #8
+ 142              	.L22:
+ 143 002c AE42     		cmp	r6, r5
+ 144 002e 3846     		mov	r0, r7
+ 145 0030 2146     		mov	r1, r4
+ 146 0032 16D2     		bcs	.L33
+ 147 0034 3246     		mov	r2, r6
+ 148 0036 FFF7FEFF 		bl	eeprom_write_page
+ 149 003a 0028     		cmp	r0, #0
+ 150 003c ECD1     		bne	.L26
+ 151 003e AD1B     		subs	r5, r5, r6
+ 152 0040 E41B     		subs	r4, r4, r7
+ 153 0042 3E44     		add	r6, r6, r7
+ 154              	.L25:
+ 155 0044 072D     		cmp	r5, #7
+ 156 0046 06EB0401 		add	r1, r6, r4
+ 157 004a 08D9     		bls	.L35
+ 158 004c 3046     		mov	r0, r6
+ 159 004e 0822     		movs	r2, #8
+ 160 0050 FFF7FEFF 		bl	eeprom_write_page
+ 161 0054 0028     		cmp	r0, #0
+ 162 0056 DFD1     		bne	.L26
+ 163 0058 0836     		adds	r6, r6, #8
+ 164 005a 083D     		subs	r5, r5, #8
+ 165 005c F2E7     		b	.L25
+ 166              	.L35:
+ 167 005e 3DB1     		cbz	r5, .L30
+ 168 0060 3046     		mov	r0, r6
+ 169              	.L33:
+ 170 0062 2A46     		mov	r2, r5
+ 171 0064 FFF7FEFF 		bl	eeprom_write_page
+ 172 0068 0030     		adds	r0, r0, #0
+ 173 006a 18BF     		it	ne
+ 174 006c 0120     		movne	r0, #1
+ 175 006e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 176              	.L30:
+ 177 0070 2846     		mov	r0, r5
+ 178 0072 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 179              	.L37:
+ 180              		.align	2
+ 181              	.L36:
+ 182 0074 00000000 		.word	.LC0
+ 184              		.section	.text.eeprom_read,"ax",%progbits
+ 185              		.align	1
+ 186              		.global	eeprom_read
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	eeprom_read:
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193 0000 8B18     		adds	r3, r1, r2
+ 194 0002 B3F5807F 		cmp	r3, #256
+ 195 0006 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 196 000a 0446     		mov	r4, r0
+ 197 000c 8846     		mov	r8, r1
+ 198 000e 1746     		mov	r7, r2
+ 199 0010 07D9     		bls	.L39
+ 200 0012 1D48     		ldr	r0, .L48
+ 201 0014 4FF48571 		mov	r1, #266
+ 202 0018 FFF7FEFF 		bl	assert_err
+ 203 001c 0120     		movs	r0, #1
+ 204 001e BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 205              	.L39:
+ 206 0022 1A4E     		ldr	r6, .L48+4
+ 207 0024 0020     		movs	r0, #0
+ 208 0026 FFF7FEFF 		bl	i2c_start
+ 209 002a 3178     		ldrb	r1, [r6]	@ zero_extendqisi2
+ 210 002c 0020     		movs	r0, #0
+ 211 002e 41F0A001 		orr	r1, r1, #160
+ 212 0032 FFF7FEFF 		bl	i2c_tx_addr_wr_slaver
+ 213 0036 0546     		mov	r5, r0
+ 214 0038 18BB     		cbnz	r0, .L46
+ 215 003a 5FFA88F1 		uxtb	r1, r8
+ 216 003e FFF7FEFF 		bl	i2c_tx_byte
+ 217 0042 2846     		mov	r0, r5
+ 218 0044 FFF7FEFF 		bl	i2c_start
+ 219 0048 3178     		ldrb	r1, [r6]	@ zero_extendqisi2
+ 220 004a 2846     		mov	r0, r5
+ 221 004c 41F0A001 		orr	r1, r1, #160
+ 222 0050 FFF7FEFF 		bl	i2c_tx_addr_rd_slaver
+ 223 0054 2744     		add	r7, r7, r4
+ 224              	.L41:
+ 225 0056 3B1B     		subs	r3, r7, r4
+ 226 0058 012B     		cmp	r3, #1
+ 227 005a 4FF00000 		mov	r0, #0
+ 228 005e 05D9     		bls	.L47
+ 229 0060 0146     		mov	r1, r0
+ 230 0062 FFF7FEFF 		bl	i2c_rx_byte
+ 231 0066 04F8010B 		strb	r0, [r4], #1
+ 232 006a F4E7     		b	.L41
+ 233              	.L47:
+ 234 006c 0121     		movs	r1, #1
+ 235 006e FFF7FEFF 		bl	i2c_rx_byte
+ 236 0072 2070     		strb	r0, [r4]
+ 237 0074 0024     		movs	r4, #0
+ 238              	.L44:
+ 239 0076 0020     		movs	r0, #0
+ 240 0078 FFF7FEFF 		bl	i2c_stop
+ 241 007c 2046     		mov	r0, r4
+ 242 007e BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 243              	.L46:
+ 244 0082 0124     		movs	r4, #1
+ 245 0084 F7E7     		b	.L44
+ 246              	.L49:
+ 247 0086 00BF     		.align	2
+ 248              	.L48:
+ 249 0088 00000000 		.word	.LC0
+ 250 008c 00000000 		.word	.LANCHOR0
+ 252              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 253              	.LC0:
+ 254 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/dr"
+ 254      73657273 
+ 254      2F647261 
+ 254      6170686F 
+ 254      2F446573 
+ 255 0033 765F6565 		.ascii	"v_eeprom.c\000"
+ 255      70726F6D 
+ 255      2E6300
+ 256              		.section	.bss.chip_addr_a2a1a0,"aw",%nobits
+ 257              		.set	.LANCHOR0,. + 0
+ 260              	chip_addr_a2a1a0:
+ 261 0000 00       		.space	1
+ 262              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_eeprom.c
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:16     .text.eeprom_write_page:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:20     .text.eeprom_write_page:00000000 eeprom_write_page
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:70     .text.eeprom_write_page:00000060 $d
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:74     .text.eeprom_set_chip_addr:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:79     .text.eeprom_set_chip_addr:00000000 eeprom_set_chip_addr
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:91     .text.eeprom_set_chip_addr:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:94     .text.eeprom_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:99     .text.eeprom_init:00000000 eeprom_init
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:112    .text.eeprom_write:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:117    .text.eeprom_write:00000000 eeprom_write
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:182    .text.eeprom_write:00000074 $d
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:185    .text.eeprom_read:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:190    .text.eeprom_read:00000000 eeprom_read
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:249    .text.eeprom_read:00000088 $d
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:260    .bss.chip_addr_a2a1a0:00000000 chip_addr_a2a1a0
+D:\Users\draapho\AppData\Local\Temp\ccxIQ9Ca.s:261    .bss.chip_addr_a2a1a0:00000000 $d
+
+UNDEFINED SYMBOLS
+assert_err
+i2c_start
+i2c_tx_addr_wr_slaver
+i2c_tx_byte
+i2c_stop
+delay_ms
+i2c_init
+i2c_tx_addr_rd_slaver
+i2c_rx_byte

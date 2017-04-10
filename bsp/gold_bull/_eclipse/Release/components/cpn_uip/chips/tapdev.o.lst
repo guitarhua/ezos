@@ -1,0 +1,101 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"tapdev.c"
+  15              		.section	.text.tapdev_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	tapdev_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	tapdev_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 034B     		ldr	r3, .L2
+  26 0002 1A79     		ldrb	r2, [r3, #4]	@ zero_extendqisi2
+  27 0004 5979     		ldrb	r1, [r3, #5]	@ zero_extendqisi2
+  28 0006 1868     		ldr	r0, [r3]	@ unaligned
+  29 0008 42EA0121 		orr	r1, r2, r1, lsl #8
+  30 000c FFF7FEBF 		b	stm32_eth_init
+  31              	.L3:
+  32              		.align	2
+  33              	.L2:
+  34 0010 00000000 		.word	uip_ethaddr
+  36              		.section	.text.tapdev_read,"ax",%progbits
+  37              		.align	1
+  38              		.global	tapdev_read
+  39              		.thumb
+  40              		.thumb_func
+  42              	tapdev_read:
+  43              		@ args = 0, pretend = 0, frame = 0
+  44              		@ frame_needed = 0, uses_anonymous_args = 0
+  45 0000 08B5     		push	{r3, lr}
+  46 0002 0248     		ldr	r0, .L5
+  47 0004 FFF7FEFF 		bl	ETH_HandleRxPkt
+  48 0008 80B2     		uxth	r0, r0
+  49 000a 08BD     		pop	{r3, pc}
+  50              	.L6:
+  51              		.align	2
+  52              	.L5:
+  53 000c 00000000 		.word	uip_aligned_buf
+  55              		.section	.text.tapdev_send,"ax",%progbits
+  56              		.align	1
+  57              		.global	tapdev_send
+  58              		.thumb
+  59              		.thumb_func
+  61              	tapdev_send:
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64              		@ link register save eliminated.
+  65 0000 024B     		ldr	r3, .L8
+  66 0002 0348     		ldr	r0, .L8+4
+  67 0004 1988     		ldrh	r1, [r3]
+  68 0006 FFF7FEBF 		b	ETH_HandleTxPkt
+  69              	.L9:
+  70 000a 00BF     		.align	2
+  71              	.L8:
+  72 000c 00000000 		.word	uip_len
+  73 0010 00000000 		.word	uip_aligned_buf
+  75              		.section	.text.tapdev_linked,"ax",%progbits
+  76              		.align	1
+  77              		.global	tapdev_linked
+  78              		.thumb
+  79              		.thumb_func
+  81              	tapdev_linked:
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84              		@ link register save eliminated.
+  85 0000 FFF7FEBF 		b	stm32_eth_linked
+  87              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tapdev.c
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:16     .text.tapdev_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:21     .text.tapdev_init:00000000 tapdev_init
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:34     .text.tapdev_init:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:37     .text.tapdev_read:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:42     .text.tapdev_read:00000000 tapdev_read
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:53     .text.tapdev_read:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:56     .text.tapdev_send:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:61     .text.tapdev_send:00000000 tapdev_send
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:72     .text.tapdev_send:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:76     .text.tapdev_linked:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqZ9vqy.s:81     .text.tapdev_linked:00000000 tapdev_linked
+
+UNDEFINED SYMBOLS
+stm32_eth_init
+uip_ethaddr
+ETH_HandleRxPkt
+uip_aligned_buf
+ETH_HandleTxPkt
+uip_len
+stm32_eth_linked

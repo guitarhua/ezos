@@ -1,0 +1,1024 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"socket.c"
+  15              		.section	.text.socket_continue,"ax",%progbits
+  16              		.align	1
+  17              		.global	socket_continue
+  18              		.thumb
+  19              		.thumb_func
+  21              	socket_continue:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 044B     		ldr	r3, .L5
+  26 0002 1B68     		ldr	r3, [r3]
+  27 0004 1BB1     		cbz	r3, .L3
+  28 0006 0020     		movs	r0, #0
+  29 0008 D860     		str	r0, [r3, #12]
+  30 000a 5876     		strb	r0, [r3, #25]
+  31 000c 7047     		bx	lr
+  32              	.L3:
+  33 000e FF20     		movs	r0, #255
+  34 0010 7047     		bx	lr
+  35              	.L6:
+  36 0012 00BF     		.align	2
+  37              	.L5:
+  38 0014 00000000 		.word	app_sock
+  40              		.section	.text.socket_break,"ax",%progbits
+  41              		.align	1
+  42              		.global	socket_break
+  43              		.thumb
+  44              		.thumb_func
+  46              	socket_break:
+  47              		@ args = 0, pretend = 0, frame = 0
+  48              		@ frame_needed = 0, uses_anonymous_args = 0
+  49              		@ link register save eliminated.
+  50 0000 044B     		ldr	r3, .L10
+  51 0002 1B68     		ldr	r3, [r3]
+  52 0004 23B1     		cbz	r3, .L9
+  53 0006 0020     		movs	r0, #0
+  54 0008 8122     		movs	r2, #129
+  55 000a D860     		str	r0, [r3, #12]
+  56 000c 5A76     		strb	r2, [r3, #25]
+  57 000e 7047     		bx	lr
+  58              	.L9:
+  59 0010 FF20     		movs	r0, #255
+  60 0012 7047     		bx	lr
+  61              	.L11:
+  62              		.align	2
+  63              	.L10:
+  64 0014 00000000 		.word	app_sock
+  66              		.section	.text.socket_delay,"ax",%progbits
+  67              		.align	1
+  68              		.global	socket_delay
+  69              		.thumb
+  70              		.thumb_func
+  72              	socket_delay:
+  73              		@ args = 0, pretend = 0, frame = 0
+  74              		@ frame_needed = 0, uses_anonymous_args = 0
+  75              		@ link register save eliminated.
+  76 0000 044B     		ldr	r3, .L15
+  77 0002 1B68     		ldr	r3, [r3]
+  78 0004 23B1     		cbz	r3, .L14
+  79 0006 8122     		movs	r2, #129
+  80 0008 D860     		str	r0, [r3, #12]
+  81 000a 5A76     		strb	r2, [r3, #25]
+  82 000c 0020     		movs	r0, #0
+  83 000e 7047     		bx	lr
+  84              	.L14:
+  85 0010 FF20     		movs	r0, #255
+  86 0012 7047     		bx	lr
+  87              	.L16:
+  88              		.align	2
+  89              	.L15:
+  90 0014 00000000 		.word	app_sock
+  92              		.section	.text.socket_close,"ax",%progbits
+  93              		.align	1
+  94              		.global	socket_close
+  95              		.thumb
+  96              		.thumb_func
+  98              	socket_close:
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101              		@ link register save eliminated.
+ 102 0000 124B     		ldr	r3, .L23
+ 103 0002 1B68     		ldr	r3, [r3]
+ 104 0004 03B3     		cbz	r3, .L22
+ 105 0006 1A7E     		ldrb	r2, [r3, #24]	@ zero_extendqisi2
+ 106 0008 511E     		subs	r1, r2, #1
+ 107 000a C9B2     		uxtb	r1, r1
+ 108 000c 0129     		cmp	r1, #1
+ 109 000e 05D8     		bhi	.L19
+ 110 0010 0F4A     		ldr	r2, .L23+4
+ 111 0012 0020     		movs	r0, #0
+ 112 0014 5A60     		str	r2, [r3, #4]
+ 113 0016 5876     		strb	r0, [r3, #25]
+ 114 0018 D882     		strh	r0, [r3, #22]	@ movhi
+ 115 001a 7047     		bx	lr
+ 116              	.L19:
+ 117 001c 032A     		cmp	r2, #3
+ 118 001e 0BD1     		bne	.L20
+ 119 0020 0C48     		ldr	r0, .L23+8
+ 120 0022 1968     		ldr	r1, [r3]
+ 121 0024 0068     		ldr	r0, [r0]	@ unaligned
+ 122 0026 0022     		movs	r2, #0
+ 123 0028 0860     		str	r0, [r1]	@ unaligned
+ 124 002a CA80     		strh	r2, [r1, #6]	@ movhi
+ 125 002c 8121     		movs	r1, #129
+ 126 002e DA60     		str	r2, [r3, #12]
+ 127 0030 5976     		strb	r1, [r3, #25]
+ 128 0032 DA82     		strh	r2, [r3, #22]	@ movhi
+ 129 0034 1046     		mov	r0, r2
+ 130 0036 7047     		bx	lr
+ 131              	.L20:
+ 132 0038 042A     		cmp	r2, #4
+ 133 003a 05D1     		bne	.L22
+ 134 003c 1A68     		ldr	r2, [r3]
+ 135 003e 0020     		movs	r0, #0
+ 136 0040 9080     		strh	r0, [r2, #4]	@ movhi
+ 137 0042 8822     		movs	r2, #136
+ 138 0044 5A76     		strb	r2, [r3, #25]
+ 139 0046 7047     		bx	lr
+ 140              	.L22:
+ 141 0048 FF20     		movs	r0, #255
+ 142 004a 7047     		bx	lr
+ 143              	.L24:
+ 144              		.align	2
+ 145              	.L23:
+ 146 004c 00000000 		.word	app_sock
+ 147 0050 00000000 		.word	socket_tcp_close
+ 148 0054 00000000 		.word	uip_all_zeroes_addr
+ 150              		.section	.text.socket_closed,"ax",%progbits
+ 151              		.align	1
+ 152              		.global	socket_closed
+ 153              		.thumb
+ 154              		.thumb_func
+ 156              	socket_closed:
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159 0000 164B     		ldr	r3, .L36
+ 160 0002 10B5     		push	{r4, lr}
+ 161 0004 1B68     		ldr	r3, [r3]
+ 162 0006 23B3     		cbz	r3, .L32
+ 163 0008 187E     		ldrb	r0, [r3, #24]	@ zero_extendqisi2
+ 164 000a 421E     		subs	r2, r0, #1
+ 165 000c D2B2     		uxtb	r2, r2
+ 166 000e 012A     		cmp	r2, #1
+ 167 0010 09D8     		bhi	.L27
+ 168 0012 134A     		ldr	r2, .L36+4
+ 169 0014 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 170 0016 12F03000 		ands	r0, r2, #48
+ 171 001a 01D1     		bne	.L28
+ 172 001c 1206     		lsls	r2, r2, #24
+ 173 001e 1BD5     		bpl	.L26
+ 174              	.L28:
+ 175 0020 8822     		movs	r2, #136
+ 176 0022 5A76     		strb	r2, [r3, #25]
+ 177 0024 09E0     		b	.L31
+ 178              	.L27:
+ 179 0026 0328     		cmp	r0, #3
+ 180 0028 0ED1     		bne	.L29
+ 181 002a 1B68     		ldr	r3, [r3]
+ 182 002c D888     		ldrh	r0, [r3, #6]
+ 183 002e 90B9     		cbnz	r0, .L34
+ 184 0030 0C4A     		ldr	r2, .L36+8
+ 185 0032 1C88     		ldrh	r4, [r3]
+ 186 0034 1188     		ldrh	r1, [r2]
+ 187 0036 8C42     		cmp	r4, r1
+ 188 0038 01D0     		beq	.L30
+ 189              	.L31:
+ 190 003a 0420     		movs	r0, #4
+ 191 003c 10BD     		pop	{r4, pc}
+ 192              	.L30:
+ 193 003e 5988     		ldrh	r1, [r3, #2]
+ 194 0040 5388     		ldrh	r3, [r2, #2]
+ 195 0042 9942     		cmp	r1, r3
+ 196 0044 F9D1     		bne	.L31
+ 197 0046 10BD     		pop	{r4, pc}
+ 198              	.L29:
+ 199 0048 0428     		cmp	r0, #4
+ 200 004a 14BF     		ite	ne
+ 201 004c FF20     		movne	r0, #255
+ 202 004e 0020     		moveq	r0, #0
+ 203 0050 10BD     		pop	{r4, pc}
+ 204              	.L32:
+ 205 0052 FF20     		movs	r0, #255
+ 206 0054 10BD     		pop	{r4, pc}
+ 207              	.L34:
+ 208 0056 0020     		movs	r0, #0
+ 209              	.L26:
+ 210 0058 10BD     		pop	{r4, pc}
+ 211              	.L37:
+ 212 005a 00BF     		.align	2
+ 213              	.L36:
+ 214 005c 00000000 		.word	app_sock
+ 215 0060 00000000 		.word	uip_flags
+ 216 0064 00000000 		.word	uip_all_zeroes_addr
+ 218              		.section	.text.socket_status_get,"ax",%progbits
+ 219              		.align	1
+ 220              		.global	socket_status_get
+ 221              		.thumb
+ 222              		.thumb_func
+ 224              	socket_status_get:
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227              		@ link register save eliminated.
+ 228 0000 034B     		ldr	r3, .L41
+ 229 0002 1B68     		ldr	r3, [r3]
+ 230 0004 0BB1     		cbz	r3, .L40
+ 231 0006 587E     		ldrb	r0, [r3, #25]	@ zero_extendqisi2
+ 232 0008 7047     		bx	lr
+ 233              	.L40:
+ 234 000a FF20     		movs	r0, #255
+ 235 000c 7047     		bx	lr
+ 236              	.L42:
+ 237 000e 00BF     		.align	2
+ 238              	.L41:
+ 239 0010 00000000 		.word	app_sock
+ 241              		.section	.text.socket_tx,"ax",%progbits
+ 242              		.align	1
+ 243              		.global	socket_tx
+ 244              		.thumb
+ 245              		.thumb_func
+ 247              	socket_tx:
+ 248              		@ args = 0, pretend = 0, frame = 0
+ 249              		@ frame_needed = 0, uses_anonymous_args = 0
+ 250 0000 70B5     		push	{r4, r5, r6, lr}
+ 251 0002 424C     		ldr	r4, .L85
+ 252 0004 2368     		ldr	r3, [r4]
+ 253 0006 002B     		cmp	r3, #0
+ 254 0008 7DD0     		beq	.L63
+ 255 000a 1D7E     		ldrb	r5, [r3, #24]	@ zero_extendqisi2
+ 256 000c 6E1E     		subs	r6, r5, #1
+ 257 000e F6B2     		uxtb	r6, r6
+ 258 0010 012E     		cmp	r6, #1
+ 259 0012 45D8     		bhi	.L45
+ 260 0014 5D7E     		ldrb	r5, [r3, #25]	@ zero_extendqisi2
+ 261 0016 823D     		subs	r5, r5, #130
+ 262 0018 012D     		cmp	r5, #1
+ 263 001a 04D9     		bls	.L47
+ 264 001c DA60     		str	r2, [r3, #12]
+ 265 001e 8222     		movs	r2, #130
+ 266 0020 1861     		str	r0, [r3, #16]
+ 267 0022 9982     		strh	r1, [r3, #20]	@ movhi
+ 268 0024 5A76     		strb	r2, [r3, #25]
+ 269              	.L47:
+ 270 0026 988A     		ldrh	r0, [r3, #20]
+ 271 0028 0028     		cmp	r0, #0
+ 272 002a 36D0     		beq	.L48
+ 273 002c 5A7E     		ldrb	r2, [r3, #25]	@ zero_extendqisi2
+ 274 002e 832A     		cmp	r2, #131
+ 275 0030 12D1     		bne	.L49
+ 276 0032 374A     		ldr	r2, .L85+4
+ 277 0034 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 278 0036 D507     		lsls	r5, r2, #31
+ 279 0038 0ED5     		bpl	.L49
+ 280 003a 364A     		ldr	r2, .L85+8
+ 281 003c 1268     		ldr	r2, [r2]
+ 282 003e 528A     		ldrh	r2, [r2, #18]
+ 283 0040 9042     		cmp	r0, r2
+ 284 0042 07D9     		bls	.L50
+ 285 0044 1969     		ldr	r1, [r3, #16]
+ 286 0046 801A     		subs	r0, r0, r2
+ 287 0048 0A44     		add	r2, r2, r1
+ 288 004a 1A61     		str	r2, [r3, #16]
+ 289 004c 8222     		movs	r2, #130
+ 290 004e 9882     		strh	r0, [r3, #20]	@ movhi
+ 291 0050 5A76     		strb	r2, [r3, #25]
+ 292 0052 01E0     		b	.L49
+ 293              	.L50:
+ 294 0054 0020     		movs	r0, #0
+ 295 0056 20E0     		b	.L48
+ 296              	.L49:
+ 297 0058 5A7E     		ldrb	r2, [r3, #25]	@ zero_extendqisi2
+ 298 005a 822A     		cmp	r2, #130
+ 299 005c 03D0     		beq	.L52
+ 300 005e 2C4A     		ldr	r2, .L85+4
+ 301 0060 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 302 0062 5007     		lsls	r0, r2, #29
+ 303 0064 0CD5     		bpl	.L53
+ 304              	.L52:
+ 305 0066 2B49     		ldr	r1, .L85+8
+ 306 0068 9A8A     		ldrh	r2, [r3, #20]
+ 307 006a 0968     		ldr	r1, [r1]
+ 308 006c 1869     		ldr	r0, [r3, #16]
+ 309 006e 498A     		ldrh	r1, [r1, #18]
+ 310 0070 8A42     		cmp	r2, r1
+ 311 0072 98BF     		it	ls
+ 312 0074 1146     		movls	r1, r2
+ 313 0076 FFF7FEFF 		bl	uip_send
+ 314 007a 2368     		ldr	r3, [r4]
+ 315 007c 8322     		movs	r2, #131
+ 316 007e 5A76     		strb	r2, [r3, #25]
+ 317              	.L53:
+ 318 0080 2368     		ldr	r3, [r4]
+ 319 0082 DA68     		ldr	r2, [r3, #12]
+ 320 0084 32B1     		cbz	r2, .L56
+ 321 0086 224A     		ldr	r2, .L85+4
+ 322 0088 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 323 008a 12F0300F 		tst	r2, #48
+ 324 008e 01D1     		bne	.L56
+ 325 0090 1106     		lsls	r1, r2, #24
+ 326 0092 36D5     		bpl	.L64
+ 327              	.L56:
+ 328 0094 0022     		movs	r2, #0
+ 329 0096 DA60     		str	r2, [r3, #12]
+ 330 0098 30E0     		b	.L84
+ 331              	.L48:
+ 332 009a D860     		str	r0, [r3, #12]
+ 333 009c 5876     		strb	r0, [r3, #25]
+ 334 009e 70BD     		pop	{r4, r5, r6, pc}
+ 335              	.L45:
+ 336 00a0 033D     		subs	r5, r5, #3
+ 337 00a2 EDB2     		uxtb	r5, r5
+ 338 00a4 012D     		cmp	r5, #1
+ 339 00a6 2ED8     		bhi	.L63
+ 340 00a8 5D7E     		ldrb	r5, [r3, #25]	@ zero_extendqisi2
+ 341 00aa 1E68     		ldr	r6, [r3]
+ 342 00ac 822D     		cmp	r5, #130
+ 343 00ae 04D0     		beq	.L58
+ 344 00b0 DA60     		str	r2, [r3, #12]
+ 345 00b2 8222     		movs	r2, #130
+ 346 00b4 1861     		str	r0, [r3, #16]
+ 347 00b6 9982     		strh	r1, [r3, #20]	@ movhi
+ 348 00b8 5A76     		strb	r2, [r3, #25]
+ 349              	.L58:
+ 350 00ba 998A     		ldrh	r1, [r3, #20]
+ 351 00bc 40F2B252 		movw	r2, #1458
+ 352 00c0 154D     		ldr	r5, .L85+12
+ 353 00c2 9142     		cmp	r1, r2
+ 354 00c4 38BF     		it	cc
+ 355 00c6 0A46     		movcc	r2, r1
+ 356 00c8 1448     		ldr	r0, .L85+16
+ 357 00ca 1969     		ldr	r1, [r3, #16]
+ 358 00cc 2A80     		strh	r2, [r5]	@ movhi
+ 359 00ce FFF7FEFF 		bl	memcpy
+ 360 00d2 3046     		mov	r0, r6
+ 361 00d4 FFF7FEFF 		bl	uip_arp_check
+ 362 00d8 68B1     		cbz	r0, .L59
+ 363 00da 2368     		ldr	r3, [r4]
+ 364 00dc 2A88     		ldrh	r2, [r5]
+ 365 00de 988A     		ldrh	r0, [r3, #20]
+ 366 00e0 1969     		ldr	r1, [r3, #16]
+ 367 00e2 801A     		subs	r0, r0, r2
+ 368 00e4 1144     		add	r1, r1, r2
+ 369 00e6 80B2     		uxth	r0, r0
+ 370 00e8 1961     		str	r1, [r3, #16]
+ 371 00ea 9882     		strh	r0, [r3, #20]	@ movhi
+ 372 00ec 18B9     		cbnz	r0, .L59
+ 373 00ee 8122     		movs	r2, #129
+ 374 00f0 D860     		str	r0, [r3, #12]
+ 375 00f2 5A76     		strb	r2, [r3, #25]
+ 376 00f4 70BD     		pop	{r4, r5, r6, pc}
+ 377              	.L59:
+ 378 00f6 2368     		ldr	r3, [r4]
+ 379 00f8 DA68     		ldr	r2, [r3, #12]
+ 380 00fa 12B9     		cbnz	r2, .L64
+ 381              	.L84:
+ 382 00fc 5A76     		strb	r2, [r3, #25]
+ 383 00fe 0120     		movs	r0, #1
+ 384 0100 70BD     		pop	{r4, r5, r6, pc}
+ 385              	.L64:
+ 386 0102 0220     		movs	r0, #2
+ 387 0104 70BD     		pop	{r4, r5, r6, pc}
+ 388              	.L63:
+ 389 0106 FF20     		movs	r0, #255
+ 390 0108 70BD     		pop	{r4, r5, r6, pc}
+ 391              	.L86:
+ 392 010a 00BF     		.align	2
+ 393              	.L85:
+ 394 010c 00000000 		.word	app_sock
+ 395 0110 00000000 		.word	uip_flags
+ 396 0114 00000000 		.word	uip_conn
+ 397 0118 00000000 		.word	uip_slen
+ 398 011c 2A000000 		.word	uip_aligned_buf+42
+ 400              		.section	.text.socket_rx,"ax",%progbits
+ 401              		.align	1
+ 402              		.global	socket_rx
+ 403              		.thumb
+ 404              		.thumb_func
+ 406              	socket_rx:
+ 407              		@ args = 0, pretend = 0, frame = 0
+ 408              		@ frame_needed = 0, uses_anonymous_args = 0
+ 409 0000 70B5     		push	{r4, r5, r6, lr}
+ 410 0002 0C46     		mov	r4, r1
+ 411 0004 2349     		ldr	r1, .L104
+ 412 0006 0B68     		ldr	r3, [r1]
+ 413 0008 0E46     		mov	r6, r1
+ 414 000a 002B     		cmp	r3, #0
+ 415 000c 3ED0     		beq	.L96
+ 416 000e 0028     		cmp	r0, #0
+ 417 0010 3CD0     		beq	.L96
+ 418 0012 597E     		ldrb	r1, [r3, #25]	@ zero_extendqisi2
+ 419 0014 8529     		cmp	r1, #133
+ 420 0016 05D0     		beq	.L90
+ 421 0018 0021     		movs	r1, #0
+ 422 001a DA60     		str	r2, [r3, #12]
+ 423 001c 8522     		movs	r2, #133
+ 424 001e 1861     		str	r0, [r3, #16]
+ 425 0020 9982     		strh	r1, [r3, #20]	@ movhi
+ 426 0022 5A76     		strb	r2, [r3, #25]
+ 427              	.L90:
+ 428 0024 1C4A     		ldr	r2, .L104+4
+ 429 0026 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 430 0028 9207     		lsls	r2, r2, #30
+ 431 002a 2AD5     		bpl	.L91
+ 432 002c 1869     		ldr	r0, [r3, #16]
+ 433 002e 1B4B     		ldr	r3, .L104+8
+ 434 0030 1B4D     		ldr	r5, .L104+12
+ 435 0032 1968     		ldr	r1, [r3]
+ 436 0034 8842     		cmp	r0, r1
+ 437 0036 05D0     		beq	.L92
+ 438 0038 2A88     		ldrh	r2, [r5]
+ 439 003a 9442     		cmp	r4, r2
+ 440 003c 38BF     		it	cc
+ 441 003e 2246     		movcc	r2, r4
+ 442 0040 FFF7FEFF 		bl	memcpy
+ 443              	.L92:
+ 444 0044 3368     		ldr	r3, [r6]
+ 445 0046 1A7E     		ldrb	r2, [r3, #24]	@ zero_extendqisi2
+ 446 0048 032A     		cmp	r2, #3
+ 447 004a 0BD1     		bne	.L93
+ 448 004c 154A     		ldr	r2, .L104+16
+ 449 004e 917F     		ldrb	r1, [r2, #30]	@ zero_extendqisi2
+ 450 0050 01F0E001 		and	r1, r1, #224
+ 451 0054 E029     		cmp	r1, #224
+ 452 0056 05D0     		beq	.L93
+ 453 0058 D2F81A00 		ldr	r0, [r2, #26]	@ unaligned
+ 454 005c 1968     		ldr	r1, [r3]
+ 455 005e 0860     		str	r0, [r1]	@ unaligned
+ 456 0060 528C     		ldrh	r2, [r2, #34]
+ 457 0062 CA80     		strh	r2, [r1, #6]	@ movhi
+ 458              	.L93:
+ 459 0064 2988     		ldrh	r1, [r5]
+ 460 0066 0020     		movs	r0, #0
+ 461 0068 A142     		cmp	r1, r4
+ 462 006a 4FF00602 		mov	r2, #6
+ 463 006e 04D9     		bls	.L94
+ 464 0070 D860     		str	r0, [r3, #12]
+ 465 0072 9C82     		strh	r4, [r3, #20]	@ movhi
+ 466 0074 5A76     		strb	r2, [r3, #25]
+ 467 0076 0320     		movs	r0, #3
+ 468 0078 70BD     		pop	{r4, r5, r6, pc}
+ 469              	.L94:
+ 470 007a 9982     		strh	r1, [r3, #20]	@ movhi
+ 471 007c D860     		str	r0, [r3, #12]
+ 472 007e 5A76     		strb	r2, [r3, #25]
+ 473 0080 70BD     		pop	{r4, r5, r6, pc}
+ 474              	.L91:
+ 475 0082 DA68     		ldr	r2, [r3, #12]
+ 476 0084 22B9     		cbnz	r2, .L97
+ 477 0086 5A76     		strb	r2, [r3, #25]
+ 478 0088 0120     		movs	r0, #1
+ 479 008a 70BD     		pop	{r4, r5, r6, pc}
+ 480              	.L96:
+ 481 008c FF20     		movs	r0, #255
+ 482 008e 70BD     		pop	{r4, r5, r6, pc}
+ 483              	.L97:
+ 484 0090 0220     		movs	r0, #2
+ 485 0092 70BD     		pop	{r4, r5, r6, pc}
+ 486              	.L105:
+ 487              		.align	2
+ 488              	.L104:
+ 489 0094 00000000 		.word	app_sock
+ 490 0098 00000000 		.word	uip_flags
+ 491 009c 00000000 		.word	uip_appdata
+ 492 00a0 00000000 		.word	uip_len
+ 493 00a4 00000000 		.word	uip_aligned_buf
+ 495              		.section	.text.socket_rx_ptr,"ax",%progbits
+ 496              		.align	1
+ 497              		.global	socket_rx_ptr
+ 498              		.thumb
+ 499              		.thumb_func
+ 501              	socket_rx_ptr:
+ 502              		@ args = 0, pretend = 0, frame = 0
+ 503              		@ frame_needed = 0, uses_anonymous_args = 0
+ 504 0000 1C4B     		ldr	r3, .L120
+ 505 0002 30B5     		push	{r4, r5, lr}
+ 506 0004 1C68     		ldr	r4, [r3]
+ 507 0006 002C     		cmp	r4, #0
+ 508 0008 30D0     		beq	.L112
+ 509 000a 1B4C     		ldr	r4, .L120+4
+ 510 000c 2568     		ldr	r5, [r4]
+ 511 000e 0560     		str	r5, [r0]
+ 512 0010 1B68     		ldr	r3, [r3]
+ 513 0012 0020     		movs	r0, #0
+ 514 0014 5D7E     		ldrb	r5, [r3, #25]	@ zero_extendqisi2
+ 515 0016 0880     		strh	r0, [r1]	@ movhi
+ 516 0018 852D     		cmp	r5, #133
+ 517 001a 05D0     		beq	.L109
+ 518 001c 2468     		ldr	r4, [r4]
+ 519 001e DA60     		str	r2, [r3, #12]
+ 520 0020 8522     		movs	r2, #133
+ 521 0022 1C61     		str	r4, [r3, #16]
+ 522 0024 9882     		strh	r0, [r3, #20]	@ movhi
+ 523 0026 5A76     		strb	r2, [r3, #25]
+ 524              	.L109:
+ 525 0028 144A     		ldr	r2, .L120+8
+ 526 002a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 527 002c 9007     		lsls	r0, r2, #30
+ 528 002e 18D5     		bpl	.L110
+ 529 0030 1A7E     		ldrb	r2, [r3, #24]	@ zero_extendqisi2
+ 530 0032 032A     		cmp	r2, #3
+ 531 0034 0BD1     		bne	.L111
+ 532 0036 124A     		ldr	r2, .L120+12
+ 533 0038 907F     		ldrb	r0, [r2, #30]	@ zero_extendqisi2
+ 534 003a 00F0E000 		and	r0, r0, #224
+ 535 003e E028     		cmp	r0, #224
+ 536 0040 05D0     		beq	.L111
+ 537 0042 D2F81A00 		ldr	r0, [r2, #26]	@ unaligned
+ 538 0046 1C68     		ldr	r4, [r3]
+ 539 0048 2060     		str	r0, [r4]	@ unaligned
+ 540 004a 528C     		ldrh	r2, [r2, #34]
+ 541 004c E280     		strh	r2, [r4, #6]	@ movhi
+ 542              	.L111:
+ 543 004e 0D4A     		ldr	r2, .L120+16
+ 544 0050 1088     		ldrh	r0, [r2]
+ 545 0052 0880     		strh	r0, [r1]	@ movhi
+ 546 0054 1288     		ldrh	r2, [r2]
+ 547 0056 0020     		movs	r0, #0
+ 548 0058 9A82     		strh	r2, [r3, #20]	@ movhi
+ 549 005a 0622     		movs	r2, #6
+ 550 005c D860     		str	r0, [r3, #12]
+ 551 005e 5A76     		strb	r2, [r3, #25]
+ 552 0060 30BD     		pop	{r4, r5, pc}
+ 553              	.L110:
+ 554 0062 DA68     		ldr	r2, [r3, #12]
+ 555 0064 22B9     		cbnz	r2, .L113
+ 556 0066 5A76     		strb	r2, [r3, #25]
+ 557 0068 0120     		movs	r0, #1
+ 558 006a 30BD     		pop	{r4, r5, pc}
+ 559              	.L112:
+ 560 006c FF20     		movs	r0, #255
+ 561 006e 30BD     		pop	{r4, r5, pc}
+ 562              	.L113:
+ 563 0070 0220     		movs	r0, #2
+ 564 0072 30BD     		pop	{r4, r5, pc}
+ 565              	.L121:
+ 566              		.align	2
+ 567              	.L120:
+ 568 0074 00000000 		.word	app_sock
+ 569 0078 00000000 		.word	uip_appdata
+ 570 007c 00000000 		.word	uip_flags
+ 571 0080 00000000 		.word	uip_aligned_buf
+ 572 0084 00000000 		.word	uip_len
+ 574              		.section	.text.socket_rx_len,"ax",%progbits
+ 575              		.align	1
+ 576              		.global	socket_rx_len
+ 577              		.thumb
+ 578              		.thumb_func
+ 580              	socket_rx_len:
+ 581              		@ args = 0, pretend = 0, frame = 0
+ 582              		@ frame_needed = 0, uses_anonymous_args = 0
+ 583 0000 70B5     		push	{r4, r5, r6, lr}
+ 584 0002 264E     		ldr	r6, .L141
+ 585 0004 0C46     		mov	r4, r1
+ 586 0006 3368     		ldr	r3, [r6]
+ 587 0008 002B     		cmp	r3, #0
+ 588 000a 42D0     		beq	.L130
+ 589 000c 0028     		cmp	r0, #0
+ 590 000e 40D0     		beq	.L130
+ 591 0010 597E     		ldrb	r1, [r3, #25]	@ zero_extendqisi2
+ 592 0012 8529     		cmp	r1, #133
+ 593 0014 05D0     		beq	.L125
+ 594 0016 0021     		movs	r1, #0
+ 595 0018 DA60     		str	r2, [r3, #12]
+ 596 001a 8522     		movs	r2, #133
+ 597 001c 1861     		str	r0, [r3, #16]
+ 598 001e 9982     		strh	r1, [r3, #20]	@ movhi
+ 599 0020 5A76     		strb	r2, [r3, #25]
+ 600              	.L125:
+ 601 0022 9D8A     		ldrh	r5, [r3, #20]
+ 602 0024 A542     		cmp	r5, r4
+ 603 0026 17D2     		bcs	.L126
+ 604 0028 1D4A     		ldr	r2, .L141+4
+ 605 002a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 606 002c 9207     		lsls	r2, r2, #30
+ 607 002e 13D5     		bpl	.L126
+ 608 0030 1C4A     		ldr	r2, .L141+8
+ 609 0032 651B     		subs	r5, r4, r5
+ 610 0034 1288     		ldrh	r2, [r2]
+ 611 0036 1869     		ldr	r0, [r3, #16]
+ 612 0038 ADB2     		uxth	r5, r5
+ 613 003a 1B4B     		ldr	r3, .L141+12
+ 614 003c 9542     		cmp	r5, r2
+ 615 003e 28BF     		it	cs
+ 616 0040 1546     		movcs	r5, r2
+ 617 0042 2A46     		mov	r2, r5
+ 618 0044 1968     		ldr	r1, [r3]
+ 619 0046 FFF7FEFF 		bl	memcpy
+ 620 004a 3368     		ldr	r3, [r6]
+ 621 004c 1A69     		ldr	r2, [r3, #16]
+ 622 004e 2A44     		add	r2, r2, r5
+ 623 0050 1A61     		str	r2, [r3, #16]
+ 624 0052 9A8A     		ldrh	r2, [r3, #20]
+ 625 0054 1544     		add	r5, r5, r2
+ 626 0056 9D82     		strh	r5, [r3, #20]	@ movhi
+ 627              	.L126:
+ 628 0058 3368     		ldr	r3, [r6]
+ 629 005a 9A8A     		ldrh	r2, [r3, #20]
+ 630 005c A242     		cmp	r2, r4
+ 631 005e 13D3     		bcc	.L127
+ 632 0060 1A7E     		ldrb	r2, [r3, #24]	@ zero_extendqisi2
+ 633 0062 032A     		cmp	r2, #3
+ 634 0064 0BD1     		bne	.L128
+ 635 0066 114A     		ldr	r2, .L141+16
+ 636 0068 917F     		ldrb	r1, [r2, #30]	@ zero_extendqisi2
+ 637 006a 01F0E001 		and	r1, r1, #224
+ 638 006e E029     		cmp	r1, #224
+ 639 0070 05D0     		beq	.L128
+ 640 0072 D2F81A00 		ldr	r0, [r2, #26]	@ unaligned
+ 641 0076 1968     		ldr	r1, [r3]
+ 642 0078 0860     		str	r0, [r1]	@ unaligned
+ 643 007a 528C     		ldrh	r2, [r2, #34]
+ 644 007c CA80     		strh	r2, [r1, #6]	@ movhi
+ 645              	.L128:
+ 646 007e 0020     		movs	r0, #0
+ 647 0080 0622     		movs	r2, #6
+ 648 0082 D860     		str	r0, [r3, #12]
+ 649 0084 5A76     		strb	r2, [r3, #25]
+ 650 0086 70BD     		pop	{r4, r5, r6, pc}
+ 651              	.L127:
+ 652 0088 DA68     		ldr	r2, [r3, #12]
+ 653 008a 22B9     		cbnz	r2, .L131
+ 654 008c 5A76     		strb	r2, [r3, #25]
+ 655 008e 0120     		movs	r0, #1
+ 656 0090 70BD     		pop	{r4, r5, r6, pc}
+ 657              	.L130:
+ 658 0092 FF20     		movs	r0, #255
+ 659 0094 70BD     		pop	{r4, r5, r6, pc}
+ 660              	.L131:
+ 661 0096 0220     		movs	r0, #2
+ 662 0098 70BD     		pop	{r4, r5, r6, pc}
+ 663              	.L142:
+ 664 009a 00BF     		.align	2
+ 665              	.L141:
+ 666 009c 00000000 		.word	app_sock
+ 667 00a0 00000000 		.word	uip_flags
+ 668 00a4 00000000 		.word	uip_len
+ 669 00a8 00000000 		.word	uip_appdata
+ 670 00ac 00000000 		.word	uip_aligned_buf
+ 672              		.section	.text.socket_rx_chr,"ax",%progbits
+ 673              		.align	1
+ 674              		.global	socket_rx_chr
+ 675              		.thumb
+ 676              		.thumb_func
+ 678              	socket_rx_chr:
+ 679              		@ args = 0, pretend = 0, frame = 0
+ 680              		@ frame_needed = 0, uses_anonymous_args = 0
+ 681 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 682 0004 3B4F     		ldr	r7, .L170
+ 683 0006 0E46     		mov	r6, r1
+ 684 0008 3C68     		ldr	r4, [r7]
+ 685 000a 9046     		mov	r8, r2
+ 686 000c 002C     		cmp	r4, #0
+ 687 000e 6BD0     		beq	.L155
+ 688 0010 0028     		cmp	r0, #0
+ 689 0012 69D0     		beq	.L155
+ 690 0014 627E     		ldrb	r2, [r4, #25]	@ zero_extendqisi2
+ 691 0016 852A     		cmp	r2, #133
+ 692 0018 05D0     		beq	.L146
+ 693 001a 0022     		movs	r2, #0
+ 694 001c E360     		str	r3, [r4, #12]
+ 695 001e 8523     		movs	r3, #133
+ 696 0020 2061     		str	r0, [r4, #16]
+ 697 0022 A282     		strh	r2, [r4, #20]	@ movhi
+ 698 0024 6376     		strb	r3, [r4, #25]
+ 699              	.L146:
+ 700 0026 A38A     		ldrh	r3, [r4, #20]
+ 701 0028 B342     		cmp	r3, r6
+ 702 002a 3DD2     		bcs	.L147
+ 703 002c 324A     		ldr	r2, .L170+4
+ 704 002e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 705 0030 9107     		lsls	r1, r2, #30
+ 706 0032 39D5     		bpl	.L147
+ 707 0034 314A     		ldr	r2, .L170+8
+ 708 0036 F31A     		subs	r3, r6, r3
+ 709 0038 1288     		ldrh	r2, [r2]
+ 710 003a 99B2     		uxth	r1, r3
+ 711 003c 2369     		ldr	r3, [r4, #16]
+ 712 003e 9142     		cmp	r1, r2
+ 713 0040 34BF     		ite	cc
+ 714 0042 0C46     		movcc	r4, r1
+ 715 0044 1446     		movcs	r4, r2
+ 716 0046 2E4A     		ldr	r2, .L170+12
+ 717 0048 1846     		mov	r0, r3
+ 718 004a 1168     		ldr	r1, [r2]
+ 719 004c 2246     		mov	r2, r4
+ 720 004e FFF7FEFF 		bl	memcpy
+ 721 0052 0125     		movs	r5, #1
+ 722 0054 0346     		mov	r3, r0
+ 723              	.L148:
+ 724 0056 A542     		cmp	r5, r4
+ 725 0058 1FD8     		bhi	.L169
+ 726 005a 13F8012B 		ldrb	r2, [r3], #1	@ zero_extendqisi2
+ 727 005e 4245     		cmp	r2, r8
+ 728 0060 18D1     		bne	.L149
+ 729 0062 3B68     		ldr	r3, [r7]
+ 730 0064 1A7E     		ldrb	r2, [r3, #24]	@ zero_extendqisi2
+ 731 0066 032A     		cmp	r2, #3
+ 732 0068 0BD1     		bne	.L150
+ 733 006a 264A     		ldr	r2, .L170+16
+ 734 006c 917F     		ldrb	r1, [r2, #30]	@ zero_extendqisi2
+ 735 006e 01F0E001 		and	r1, r1, #224
+ 736 0072 E029     		cmp	r1, #224
+ 737 0074 05D0     		beq	.L150
+ 738 0076 D2F81A00 		ldr	r0, [r2, #26]	@ unaligned
+ 739 007a 1968     		ldr	r1, [r3]
+ 740 007c 0860     		str	r0, [r1]	@ unaligned
+ 741 007e 528C     		ldrh	r2, [r2, #34]
+ 742 0080 CA80     		strh	r2, [r1, #6]	@ movhi
+ 743              	.L150:
+ 744 0082 9A8A     		ldrh	r2, [r3, #20]
+ 745 0084 0020     		movs	r0, #0
+ 746 0086 1544     		add	r5, r5, r2
+ 747 0088 0622     		movs	r2, #6
+ 748 008a 9D82     		strh	r5, [r3, #20]	@ movhi
+ 749 008c D860     		str	r0, [r3, #12]
+ 750 008e 5A76     		strb	r2, [r3, #25]
+ 751 0090 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 752              	.L149:
+ 753 0094 0135     		adds	r5, r5, #1
+ 754 0096 ADB2     		uxth	r5, r5
+ 755 0098 DDE7     		b	.L148
+ 756              	.L169:
+ 757 009a 3B68     		ldr	r3, [r7]
+ 758 009c 1A69     		ldr	r2, [r3, #16]
+ 759 009e 2244     		add	r2, r2, r4
+ 760 00a0 1A61     		str	r2, [r3, #16]
+ 761 00a2 9A8A     		ldrh	r2, [r3, #20]
+ 762 00a4 1444     		add	r4, r4, r2
+ 763 00a6 9C82     		strh	r4, [r3, #20]	@ movhi
+ 764              	.L147:
+ 765 00a8 3B68     		ldr	r3, [r7]
+ 766 00aa 9A8A     		ldrh	r2, [r3, #20]
+ 767 00ac B242     		cmp	r2, r6
+ 768 00ae 15D3     		bcc	.L152
+ 769 00b0 1A7E     		ldrb	r2, [r3, #24]	@ zero_extendqisi2
+ 770 00b2 032A     		cmp	r2, #3
+ 771 00b4 0BD1     		bne	.L153
+ 772 00b6 134A     		ldr	r2, .L170+16
+ 773 00b8 917F     		ldrb	r1, [r2, #30]	@ zero_extendqisi2
+ 774 00ba 01F0E001 		and	r1, r1, #224
+ 775 00be E029     		cmp	r1, #224
+ 776 00c0 05D0     		beq	.L153
+ 777 00c2 D2F81A00 		ldr	r0, [r2, #26]	@ unaligned
+ 778 00c6 1968     		ldr	r1, [r3]
+ 779 00c8 0860     		str	r0, [r1]	@ unaligned
+ 780 00ca 528C     		ldrh	r2, [r2, #34]
+ 781 00cc CA80     		strh	r2, [r1, #6]	@ movhi
+ 782              	.L153:
+ 783 00ce 0022     		movs	r2, #0
+ 784 00d0 DA60     		str	r2, [r3, #12]
+ 785 00d2 0622     		movs	r2, #6
+ 786 00d4 5A76     		strb	r2, [r3, #25]
+ 787 00d6 0320     		movs	r0, #3
+ 788 00d8 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 789              	.L152:
+ 790 00dc DA68     		ldr	r2, [r3, #12]
+ 791 00de 32B9     		cbnz	r2, .L156
+ 792 00e0 5A76     		strb	r2, [r3, #25]
+ 793 00e2 0120     		movs	r0, #1
+ 794 00e4 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 795              	.L155:
+ 796 00e8 FF20     		movs	r0, #255
+ 797 00ea BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 798              	.L156:
+ 799 00ee 0220     		movs	r0, #2
+ 800 00f0 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 801              	.L171:
+ 802              		.align	2
+ 803              	.L170:
+ 804 00f4 00000000 		.word	app_sock
+ 805 00f8 00000000 		.word	uip_flags
+ 806 00fc 00000000 		.word	uip_len
+ 807 0100 00000000 		.word	uip_appdata
+ 808 0104 00000000 		.word	uip_aligned_buf
+ 810              		.section	.text.socket_rx_str,"ax",%progbits
+ 811              		.align	1
+ 812              		.global	socket_rx_str
+ 813              		.thumb
+ 814              		.thumb_func
+ 816              	socket_rx_str:
+ 817              		@ args = 0, pretend = 0, frame = 16
+ 818              		@ frame_needed = 0, uses_anonymous_args = 0
+ 819 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 820 0004 9146     		mov	r9, r2
+ 821 0006 4D4A     		ldr	r2, .L199
+ 822 0008 85B0     		sub	sp, sp, #20
+ 823 000a 1468     		ldr	r4, [r2]
+ 824 000c 8446     		mov	ip, r0
+ 825 000e 0F46     		mov	r7, r1
+ 826 0010 9046     		mov	r8, r2
+ 827 0012 002C     		cmp	r4, #0
+ 828 0014 00F08C80 		beq	.L185
+ 829 0018 0028     		cmp	r0, #0
+ 830 001a 00F08980 		beq	.L185
+ 831 001e 627E     		ldrb	r2, [r4, #25]	@ zero_extendqisi2
+ 832 0020 852A     		cmp	r2, #133
+ 833 0022 05D0     		beq	.L175
+ 834 0024 0022     		movs	r2, #0
+ 835 0026 E360     		str	r3, [r4, #12]
+ 836 0028 8523     		movs	r3, #133
+ 837 002a 2061     		str	r0, [r4, #16]
+ 838 002c A282     		strh	r2, [r4, #20]	@ movhi
+ 839 002e 6376     		strb	r3, [r4, #25]
+ 840              	.L175:
+ 841 0030 A58A     		ldrh	r5, [r4, #20]
+ 842 0032 BD42     		cmp	r5, r7
+ 843 0034 5DD2     		bcs	.L176
+ 844 0036 424B     		ldr	r3, .L199+4
+ 845 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 846 003a 9807     		lsls	r0, r3, #30
+ 847 003c 59D5     		bpl	.L176
+ 848 003e 4846     		mov	r0, r9
+ 849 0040 CDF804C0 		str	ip, [sp, #4]
+ 850 0044 FFF7FEFF 		bl	strlen
+ 851 0048 3E4B     		ldr	r3, .L199+8
+ 852 004a 7D1B     		subs	r5, r7, r5
+ 853 004c 1B88     		ldrh	r3, [r3]
+ 854 004e ADB2     		uxth	r5, r5
+ 855 0050 9D42     		cmp	r5, r3
+ 856 0052 28BF     		it	cs
+ 857 0054 1D46     		movcs	r5, r3
+ 858 0056 3C4B     		ldr	r3, .L199+12
+ 859 0058 0646     		mov	r6, r0
+ 860 005a 1968     		ldr	r1, [r3]
+ 861 005c 2069     		ldr	r0, [r4, #16]
+ 862 005e 2A46     		mov	r2, r5
+ 863 0060 FFF7FEFF 		bl	memcpy
+ 864 0064 D8F80040 		ldr	r4, [r8]
+ 865 0068 F6B2     		uxtb	r6, r6
+ 866 006a B4F814A0 		ldrh	r10, [r4, #20]
+ 867 006e D4F810B0 		ldr	fp, [r4, #16]
+ 868 0072 0AEB0503 		add	r3, r10, r5
+ 869 0076 B342     		cmp	r3, r6
+ 870 0078 DDF804C0 		ldr	ip, [sp, #4]
+ 871 007c 34DB     		blt	.L177
+ 872 007e C6F10100 		rsb	r0, r6, #1
+ 873 0082 5844     		add	r0, r0, fp
+ 874 0084 6045     		cmp	r0, ip
+ 875 0086 38BF     		it	cc
+ 876 0088 6046     		movcc	r0, ip
+ 877 008a C0F10103 		rsb	r3, r0, #1
+ 878 008e 0393     		str	r3, [sp, #12]
+ 879              	.L178:
+ 880 0090 039B     		ldr	r3, [sp, #12]
+ 881 0092 0344     		add	r3, r3, r0
+ 882 0094 DBB2     		uxtb	r3, r3
+ 883 0096 AB42     		cmp	r3, r5
+ 884 0098 26D8     		bhi	.L177
+ 885 009a 00F1010C 		add	ip, r0, #1
+ 886 009e 4946     		mov	r1, r9
+ 887 00a0 3246     		mov	r2, r6
+ 888 00a2 0293     		str	r3, [sp, #8]
+ 889 00a4 CDF804C0 		str	ip, [sp, #4]
+ 890 00a8 FFF7FEFF 		bl	memcmp
+ 891 00ac 029B     		ldr	r3, [sp, #8]
+ 892 00ae DDF804C0 		ldr	ip, [sp, #4]
+ 893 00b2 B8B9     		cbnz	r0, .L179
+ 894 00b4 227E     		ldrb	r2, [r4, #24]	@ zero_extendqisi2
+ 895 00b6 032A     		cmp	r2, #3
+ 896 00b8 0BD1     		bne	.L180
+ 897 00ba 244A     		ldr	r2, .L199+16
+ 898 00bc 917F     		ldrb	r1, [r2, #30]	@ zero_extendqisi2
+ 899 00be 01F0E001 		and	r1, r1, #224
+ 900 00c2 E029     		cmp	r1, #224
+ 901 00c4 05D0     		beq	.L180
+ 902 00c6 D2F81A00 		ldr	r0, [r2, #26]	@ unaligned
+ 903 00ca 2168     		ldr	r1, [r4]
+ 904 00cc 0860     		str	r0, [r1]	@ unaligned
+ 905 00ce 528C     		ldrh	r2, [r2, #34]
+ 906 00d0 CA80     		strh	r2, [r1, #6]	@ movhi
+ 907              	.L180:
+ 908 00d2 A28A     		ldrh	r2, [r4, #20]
+ 909 00d4 0020     		movs	r0, #0
+ 910 00d6 1644     		add	r6, r6, r2
+ 911 00d8 3344     		add	r3, r3, r6
+ 912 00da A382     		strh	r3, [r4, #20]	@ movhi
+ 913 00dc 0623     		movs	r3, #6
+ 914 00de E060     		str	r0, [r4, #12]
+ 915 00e0 6376     		strb	r3, [r4, #25]
+ 916 00e2 28E0     		b	.L173
+ 917              	.L179:
+ 918 00e4 6046     		mov	r0, ip
+ 919 00e6 D3E7     		b	.L178
+ 920              	.L177:
+ 921 00e8 0BEB0503 		add	r3, fp, r5
+ 922 00ec 5544     		add	r5, r5, r10
+ 923 00ee 2361     		str	r3, [r4, #16]
+ 924 00f0 A582     		strh	r5, [r4, #20]	@ movhi
+ 925              	.L176:
+ 926 00f2 D8F80030 		ldr	r3, [r8]
+ 927 00f6 9A8A     		ldrh	r2, [r3, #20]
+ 928 00f8 BA42     		cmp	r2, r7
+ 929 00fa 14D3     		bcc	.L182
+ 930 00fc 1A7E     		ldrb	r2, [r3, #24]	@ zero_extendqisi2
+ 931 00fe 032A     		cmp	r2, #3
+ 932 0100 0BD1     		bne	.L183
+ 933 0102 124A     		ldr	r2, .L199+16
+ 934 0104 917F     		ldrb	r1, [r2, #30]	@ zero_extendqisi2
+ 935 0106 01F0E001 		and	r1, r1, #224
+ 936 010a E029     		cmp	r1, #224
+ 937 010c 05D0     		beq	.L183
+ 938 010e D2F81A00 		ldr	r0, [r2, #26]	@ unaligned
+ 939 0112 1968     		ldr	r1, [r3]
+ 940 0114 0860     		str	r0, [r1]	@ unaligned
+ 941 0116 528C     		ldrh	r2, [r2, #34]
+ 942 0118 CA80     		strh	r2, [r1, #6]	@ movhi
+ 943              	.L183:
+ 944 011a 0022     		movs	r2, #0
+ 945 011c DA60     		str	r2, [r3, #12]
+ 946 011e 0622     		movs	r2, #6
+ 947 0120 5A76     		strb	r2, [r3, #25]
+ 948 0122 0320     		movs	r0, #3
+ 949 0124 07E0     		b	.L173
+ 950              	.L182:
+ 951 0126 DA68     		ldr	r2, [r3, #12]
+ 952 0128 22B9     		cbnz	r2, .L186
+ 953 012a 5A76     		strb	r2, [r3, #25]
+ 954 012c 0120     		movs	r0, #1
+ 955 012e 02E0     		b	.L173
+ 956              	.L185:
+ 957 0130 FF20     		movs	r0, #255
+ 958 0132 00E0     		b	.L173
+ 959              	.L186:
+ 960 0134 0220     		movs	r0, #2
+ 961              	.L173:
+ 962 0136 05B0     		add	sp, sp, #20
+ 963              		@ sp needed
+ 964 0138 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 965              	.L200:
+ 966              		.align	2
+ 967              	.L199:
+ 968 013c 00000000 		.word	app_sock
+ 969 0140 00000000 		.word	uip_flags
+ 970 0144 00000000 		.word	uip_len
+ 971 0148 00000000 		.word	uip_appdata
+ 972 014c 00000000 		.word	uip_aligned_buf
+ 974              		.section	.text.socket_len,"ax",%progbits
+ 975              		.align	1
+ 976              		.global	socket_len
+ 977              		.thumb
+ 978              		.thumb_func
+ 980              	socket_len:
+ 981              		@ args = 0, pretend = 0, frame = 0
+ 982              		@ frame_needed = 0, uses_anonymous_args = 0
+ 983              		@ link register save eliminated.
+ 984 0000 014B     		ldr	r3, .L202
+ 985 0002 1B68     		ldr	r3, [r3]
+ 986 0004 988A     		ldrh	r0, [r3, #20]
+ 987 0006 7047     		bx	lr
+ 988              	.L203:
+ 989              		.align	2
+ 990              	.L202:
+ 991 0008 00000000 		.word	app_sock
+ 993              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 socket.c
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:16     .text.socket_continue:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:21     .text.socket_continue:00000000 socket_continue
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:38     .text.socket_continue:00000014 $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:41     .text.socket_break:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:46     .text.socket_break:00000000 socket_break
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:64     .text.socket_break:00000014 $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:67     .text.socket_delay:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:72     .text.socket_delay:00000000 socket_delay
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:90     .text.socket_delay:00000014 $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:93     .text.socket_close:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:98     .text.socket_close:00000000 socket_close
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:146    .text.socket_close:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:151    .text.socket_closed:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:156    .text.socket_closed:00000000 socket_closed
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:214    .text.socket_closed:0000005c $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:219    .text.socket_status_get:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:224    .text.socket_status_get:00000000 socket_status_get
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:239    .text.socket_status_get:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:242    .text.socket_tx:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:247    .text.socket_tx:00000000 socket_tx
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:394    .text.socket_tx:0000010c $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:401    .text.socket_rx:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:406    .text.socket_rx:00000000 socket_rx
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:489    .text.socket_rx:00000094 $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:496    .text.socket_rx_ptr:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:501    .text.socket_rx_ptr:00000000 socket_rx_ptr
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:568    .text.socket_rx_ptr:00000074 $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:575    .text.socket_rx_len:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:580    .text.socket_rx_len:00000000 socket_rx_len
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:666    .text.socket_rx_len:0000009c $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:673    .text.socket_rx_chr:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:678    .text.socket_rx_chr:00000000 socket_rx_chr
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:804    .text.socket_rx_chr:000000f4 $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:811    .text.socket_rx_str:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:816    .text.socket_rx_str:00000000 socket_rx_str
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:968    .text.socket_rx_str:0000013c $d
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:975    .text.socket_len:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:980    .text.socket_len:00000000 socket_len
+D:\Users\draapho\AppData\Local\Temp\ccnrA55X.s:991    .text.socket_len:00000008 $d
+
+UNDEFINED SYMBOLS
+app_sock
+socket_tcp_close
+uip_all_zeroes_addr
+uip_flags
+uip_send
+memcpy
+uip_arp_check
+uip_conn
+uip_slen
+uip_aligned_buf
+uip_appdata
+uip_len
+strlen
+memcmp

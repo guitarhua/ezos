@@ -1,0 +1,1296 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_spi.c"
+  15              		.section	.text.SPI_I2S_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	SPI_I2S_DeInit
+  18              		.thumb
+  19              		.thumb_func
+  21              	SPI_I2S_DeInit:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 184B     		ldr	r3, .L7
+  26 0004 9842     		cmp	r0, r3
+  27 0006 0DD0     		beq	.L2
+  28 0008 A3F57843 		sub	r3, r3, #63488
+  29 000c 9842     		cmp	r0, r3
+  30 000e 1DD0     		beq	.L3
+  31 0010 03F58063 		add	r3, r3, #1024
+  32 0014 9842     		cmp	r0, r3
+  33 0016 11D0     		beq	.L4
+  34 0018 BDE80840 		pop	{r3, lr}
+  35 001c 1248     		ldr	r0, .L7+4
+  36 001e 7A21     		movs	r1, #122
+  37 0020 FFF7FEBF 		b	assert_err
+  38              	.L2:
+  39 0024 4FF48050 		mov	r0, #4096
+  40 0028 0121     		movs	r1, #1
+  41 002a FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  42 002e BDE80840 		pop	{r3, lr}
+  43 0032 4FF48050 		mov	r0, #4096
+  44 0036 0021     		movs	r1, #0
+  45 0038 FFF7FEBF 		b	RCC_APB2PeriphResetCmd
+  46              	.L4:
+  47 003c 4FF40040 		mov	r0, #32768
+  48 0040 0121     		movs	r1, #1
+  49 0042 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  50 0046 4FF40040 		mov	r0, #32768
+  51 004a 06E0     		b	.L5
+  52              	.L3:
+  53 004c 4FF48040 		mov	r0, #16384
+  54 0050 0121     		movs	r1, #1
+  55 0052 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  56 0056 4FF48040 		mov	r0, #16384
+  57              	.L5:
+  58 005a 0021     		movs	r1, #0
+  59 005c BDE80840 		pop	{r3, lr}
+  60 0060 FFF7FEBF 		b	RCC_APB1PeriphResetCmd
+  61              	.L8:
+  62              		.align	2
+  63              	.L7:
+  64 0064 00300140 		.word	1073819648
+  65 0068 00000000 		.word	.LC0
+  67              		.section	.text.SPI_Init,"ax",%progbits
+  68              		.align	1
+  69              		.global	SPI_Init
+  70              		.thumb
+  71              		.thumb_func
+  73              	SPI_Init:
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76 0000 38B5     		push	{r3, r4, r5, lr}
+  77 0002 404B     		ldr	r3, .L50
+  78 0004 0546     		mov	r5, r0
+  79 0006 9842     		cmp	r0, r3
+  80 0008 0C46     		mov	r4, r1
+  81 000a 0BD0     		beq	.L10
+  82 000c A3F57843 		sub	r3, r3, #63488
+  83 0010 9842     		cmp	r0, r3
+  84 0012 07D0     		beq	.L10
+  85 0014 03F58063 		add	r3, r3, #1024
+  86 0018 9842     		cmp	r0, r3
+  87 001a 03D0     		beq	.L10
+  88 001c 3A48     		ldr	r0, .L50+4
+  89 001e A321     		movs	r1, #163
+  90 0020 FFF7FEFF 		bl	assert_err
+  91              	.L10:
+  92 0024 2388     		ldrh	r3, [r4]
+  93 0026 23F48062 		bic	r2, r3, #1024
+  94 002a 42B1     		cbz	r2, .L11
+  95 002c 23F48043 		bic	r3, r3, #16384
+  96 0030 B3F5004F 		cmp	r3, #32768
+  97 0034 03D0     		beq	.L11
+  98 0036 3448     		ldr	r0, .L50+4
+  99 0038 A621     		movs	r1, #166
+ 100 003a FFF7FEFF 		bl	assert_err
+ 101              	.L11:
+ 102 003e 6388     		ldrh	r3, [r4, #2]
+ 103 0040 B3F5827F 		cmp	r3, #260
+ 104 0044 04D0     		beq	.L12
+ 105 0046 1BB1     		cbz	r3, .L12
+ 106 0048 2F48     		ldr	r0, .L50+4
+ 107 004a A721     		movs	r1, #167
+ 108 004c FFF7FEFF 		bl	assert_err
+ 109              	.L12:
+ 110 0050 A388     		ldrh	r3, [r4, #4]
+ 111 0052 23F40063 		bic	r3, r3, #2048
+ 112 0056 9BB2     		uxth	r3, r3
+ 113 0058 1BB1     		cbz	r3, .L13
+ 114 005a 2B48     		ldr	r0, .L50+4
+ 115 005c A821     		movs	r1, #168
+ 116 005e FFF7FEFF 		bl	assert_err
+ 117              	.L13:
+ 118 0062 E388     		ldrh	r3, [r4, #6]
+ 119 0064 23F00203 		bic	r3, r3, #2
+ 120 0068 9BB2     		uxth	r3, r3
+ 121 006a 1BB1     		cbz	r3, .L14
+ 122 006c 2648     		ldr	r0, .L50+4
+ 123 006e A921     		movs	r1, #169
+ 124 0070 FFF7FEFF 		bl	assert_err
+ 125              	.L14:
+ 126 0074 2389     		ldrh	r3, [r4, #8]
+ 127 0076 012B     		cmp	r3, #1
+ 128 0078 03D9     		bls	.L15
+ 129 007a 2348     		ldr	r0, .L50+4
+ 130 007c AA21     		movs	r1, #170
+ 131 007e FFF7FEFF 		bl	assert_err
+ 132              	.L15:
+ 133 0082 6389     		ldrh	r3, [r4, #10]
+ 134 0084 23F40073 		bic	r3, r3, #512
+ 135 0088 9BB2     		uxth	r3, r3
+ 136 008a 1BB1     		cbz	r3, .L16
+ 137 008c 1E48     		ldr	r0, .L50+4
+ 138 008e AB21     		movs	r1, #171
+ 139 0090 FFF7FEFF 		bl	assert_err
+ 140              	.L16:
+ 141 0094 A389     		ldrh	r3, [r4, #12]
+ 142 0096 23F01803 		bic	r3, r3, #24
+ 143 009a 9BB2     		uxth	r3, r3
+ 144 009c 2BB1     		cbz	r3, .L17
+ 145 009e 202B     		cmp	r3, #32
+ 146 00a0 03D0     		beq	.L17
+ 147 00a2 1948     		ldr	r0, .L50+4
+ 148 00a4 AC21     		movs	r1, #172
+ 149 00a6 FFF7FEFF 		bl	assert_err
+ 150              	.L17:
+ 151 00aa E389     		ldrh	r3, [r4, #14]
+ 152 00ac 23F08003 		bic	r3, r3, #128
+ 153 00b0 9BB2     		uxth	r3, r3
+ 154 00b2 1BB1     		cbz	r3, .L18
+ 155 00b4 1448     		ldr	r0, .L50+4
+ 156 00b6 AD21     		movs	r1, #173
+ 157 00b8 FFF7FEFF 		bl	assert_err
+ 158              	.L18:
+ 159 00bc 238A     		ldrh	r3, [r4, #16]
+ 160 00be 1BB9     		cbnz	r3, .L19
+ 161 00c0 1148     		ldr	r0, .L50+4
+ 162 00c2 AE21     		movs	r1, #174
+ 163 00c4 FFF7FEFF 		bl	assert_err
+ 164              	.L19:
+ 165 00c8 6188     		ldrh	r1, [r4, #2]
+ 166 00ca 2388     		ldrh	r3, [r4]
+ 167 00cc 2A88     		ldrh	r2, [r5]
+ 168 00ce 0B43     		orrs	r3, r3, r1
+ 169 00d0 A188     		ldrh	r1, [r4, #4]
+ 170 00d2 02F44152 		and	r2, r2, #12352
+ 171 00d6 0B43     		orrs	r3, r3, r1
+ 172 00d8 E188     		ldrh	r1, [r4, #6]
+ 173 00da 0B43     		orrs	r3, r3, r1
+ 174 00dc 2189     		ldrh	r1, [r4, #8]
+ 175 00de 0B43     		orrs	r3, r3, r1
+ 176 00e0 6189     		ldrh	r1, [r4, #10]
+ 177 00e2 0B43     		orrs	r3, r3, r1
+ 178 00e4 A189     		ldrh	r1, [r4, #12]
+ 179 00e6 0B43     		orrs	r3, r3, r1
+ 180 00e8 E189     		ldrh	r1, [r4, #14]
+ 181 00ea 0B43     		orrs	r3, r3, r1
+ 182 00ec 1343     		orrs	r3, r3, r2
+ 183 00ee 9BB2     		uxth	r3, r3
+ 184 00f0 2B80     		strh	r3, [r5]	@ movhi
+ 185 00f2 AB8B     		ldrh	r3, [r5, #28]
+ 186 00f4 23F40063 		bic	r3, r3, #2048
+ 187 00f8 1B04     		lsls	r3, r3, #16
+ 188 00fa 1B0C     		lsrs	r3, r3, #16
+ 189 00fc AB83     		strh	r3, [r5, #28]	@ movhi
+ 190 00fe 238A     		ldrh	r3, [r4, #16]
+ 191 0100 2B82     		strh	r3, [r5, #16]	@ movhi
+ 192 0102 38BD     		pop	{r3, r4, r5, pc}
+ 193              	.L51:
+ 194              		.align	2
+ 195              	.L50:
+ 196 0104 00300140 		.word	1073819648
+ 197 0108 00000000 		.word	.LC0
+ 199              		.section	.text.I2S_Init,"ax",%progbits
+ 200              		.align	1
+ 201              		.global	I2S_Init
+ 202              		.thumb
+ 203              		.thumb_func
+ 205              	I2S_Init:
+ 206              		@ args = 0, pretend = 0, frame = 24
+ 207              		@ frame_needed = 0, uses_anonymous_args = 0
+ 208 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 209 0002 4C4B     		ldr	r3, .L93
+ 210 0004 87B0     		sub	sp, sp, #28
+ 211 0006 9842     		cmp	r0, r3
+ 212 0008 0546     		mov	r5, r0
+ 213 000a 0C46     		mov	r4, r1
+ 214 000c 07D0     		beq	.L53
+ 215 000e 03F58063 		add	r3, r3, #1024
+ 216 0012 9842     		cmp	r0, r3
+ 217 0014 03D0     		beq	.L53
+ 218 0016 4848     		ldr	r0, .L93+4
+ 219 0018 E321     		movs	r1, #227
+ 220 001a FFF7FEFF 		bl	assert_err
+ 221              	.L53:
+ 222 001e 2388     		ldrh	r3, [r4]
+ 223 0020 23F44073 		bic	r3, r3, #768
+ 224 0024 9BB2     		uxth	r3, r3
+ 225 0026 1BB1     		cbz	r3, .L54
+ 226 0028 4348     		ldr	r0, .L93+4
+ 227 002a E421     		movs	r1, #228
+ 228 002c FFF7FEFF 		bl	assert_err
+ 229              	.L54:
+ 230 0030 6388     		ldrh	r3, [r4, #2]
+ 231 0032 23F03002 		bic	r2, r3, #48
+ 232 0036 2AB1     		cbz	r2, .L55
+ 233 0038 B02B     		cmp	r3, #176
+ 234 003a 03D0     		beq	.L55
+ 235 003c 3E48     		ldr	r0, .L93+4
+ 236 003e E521     		movs	r1, #229
+ 237 0040 FFF7FEFF 		bl	assert_err
+ 238              	.L55:
+ 239 0044 A388     		ldrh	r3, [r4, #4]
+ 240 0046 012B     		cmp	r3, #1
+ 241 0048 07D9     		bls	.L56
+ 242 004a 032B     		cmp	r3, #3
+ 243 004c 05D0     		beq	.L56
+ 244 004e 052B     		cmp	r3, #5
+ 245 0050 03D0     		beq	.L56
+ 246 0052 3948     		ldr	r0, .L93+4
+ 247 0054 E621     		movs	r1, #230
+ 248 0056 FFF7FEFF 		bl	assert_err
+ 249              	.L56:
+ 250 005a E388     		ldrh	r3, [r4, #6]
+ 251 005c 23F40073 		bic	r3, r3, #512
+ 252 0060 9BB2     		uxth	r3, r3
+ 253 0062 1BB1     		cbz	r3, .L57
+ 254 0064 3448     		ldr	r0, .L93+4
+ 255 0066 E721     		movs	r1, #231
+ 256 0068 FFF7FEFF 		bl	assert_err
+ 257              	.L57:
+ 258 006c A368     		ldr	r3, [r4, #8]
+ 259 006e 334A     		ldr	r2, .L93+8
+ 260 0070 A3F5FA51 		sub	r1, r3, #8000
+ 261 0074 9142     		cmp	r1, r2
+ 262 0076 05D9     		bls	.L58
+ 263 0078 022B     		cmp	r3, #2
+ 264 007a 03D0     		beq	.L58
+ 265 007c 2E48     		ldr	r0, .L93+4
+ 266 007e E821     		movs	r1, #232
+ 267 0080 FFF7FEFF 		bl	assert_err
+ 268              	.L58:
+ 269 0084 A389     		ldrh	r3, [r4, #12]
+ 270 0086 23F00803 		bic	r3, r3, #8
+ 271 008a 9BB2     		uxth	r3, r3
+ 272 008c 1BB1     		cbz	r3, .L59
+ 273 008e 2A48     		ldr	r0, .L93+4
+ 274 0090 E921     		movs	r1, #233
+ 275 0092 FFF7FEFF 		bl	assert_err
+ 276              	.L59:
+ 277 0096 AB8B     		ldrh	r3, [r5, #28]
+ 278 0098 23F47B63 		bic	r3, r3, #4016
+ 279 009c 23F00F03 		bic	r3, r3, #15
+ 280 00a0 1B04     		lsls	r3, r3, #16
+ 281 00a2 1B0C     		lsrs	r3, r3, #16
+ 282 00a4 AB83     		strh	r3, [r5, #28]	@ movhi
+ 283 00a6 0223     		movs	r3, #2
+ 284 00a8 2B84     		strh	r3, [r5, #32]	@ movhi
+ 285 00aa A368     		ldr	r3, [r4, #8]
+ 286 00ac AE8B     		ldrh	r6, [r5, #28]
+ 287 00ae 022B     		cmp	r3, #2
+ 288 00b0 B6B2     		uxth	r6, r6
+ 289 00b2 23D0     		beq	.L65
+ 290 00b4 01A8     		add	r0, sp, #4
+ 291 00b6 A788     		ldrh	r7, [r4, #4]
+ 292 00b8 FFF7FEFF 		bl	RCC_GetClocksFreq
+ 293 00bc E388     		ldrh	r3, [r4, #6]
+ 294 00be 002F     		cmp	r7, #0
+ 295 00c0 14BF     		ite	ne
+ 296 00c2 0227     		movne	r7, #2
+ 297 00c4 0127     		moveq	r7, #1
+ 298 00c6 0199     		ldr	r1, [sp, #4]
+ 299 00c8 B3F5007F 		cmp	r3, #512
+ 300 00cc 18BF     		it	ne
+ 301 00ce 7F01     		lslne	r7, r7, #5
+ 302 00d0 4FF00A03 		mov	r3, #10
+ 303 00d4 0CBF     		ite	eq
+ 304 00d6 090A     		lsreq	r1, r1, #8
+ 305 00d8 B1FBF7F1 		udivne	r1, r1, r7
+ 306 00dc 4B43     		muls	r3, r1, r3
+ 307 00de A268     		ldr	r2, [r4, #8]
+ 308 00e0 B3FBF2F3 		udiv	r3, r3, r2
+ 309 00e4 0533     		adds	r3, r3, #5
+ 310 00e6 0A22     		movs	r2, #10
+ 311 00e8 9BB2     		uxth	r3, r3
+ 312 00ea B3FBF2F3 		udiv	r3, r3, r2
+ 313 00ee 03F00102 		and	r2, r3, #1
+ 314 00f2 1202     		lsls	r2, r2, #8
+ 315 00f4 C3F34F03 		ubfx	r3, r3, #1, #16
+ 316 00f8 92B2     		uxth	r2, r2
+ 317 00fa 00E0     		b	.L60
+ 318              	.L65:
+ 319 00fc 0022     		movs	r2, #0
+ 320              	.L60:
+ 321 00fe 991E     		subs	r1, r3, #2
+ 322 0100 89B2     		uxth	r1, r1
+ 323 0102 FE29     		cmp	r1, #254
+ 324 0104 28BF     		it	cs
+ 325 0106 0022     		movcs	r2, #0
+ 326 0108 E188     		ldrh	r1, [r4, #6]
+ 327 010a 28BF     		it	cs
+ 328 010c 0223     		movcs	r3, #2
+ 329 010e 1343     		orrs	r3, r3, r2
+ 330 0110 0B43     		orrs	r3, r3, r1
+ 331 0112 9BB2     		uxth	r3, r3
+ 332 0114 2B84     		strh	r3, [r5, #32]	@ movhi
+ 333 0116 2388     		ldrh	r3, [r4]
+ 334 0118 6288     		ldrh	r2, [r4, #2]
+ 335 011a 3343     		orrs	r3, r3, r6
+ 336 011c 43F40063 		orr	r3, r3, #2048
+ 337 0120 1343     		orrs	r3, r3, r2
+ 338 0122 A288     		ldrh	r2, [r4, #4]
+ 339 0124 1343     		orrs	r3, r3, r2
+ 340 0126 A289     		ldrh	r2, [r4, #12]
+ 341 0128 1343     		orrs	r3, r3, r2
+ 342 012a 9BB2     		uxth	r3, r3
+ 343 012c AB83     		strh	r3, [r5, #28]	@ movhi
+ 344 012e 07B0     		add	sp, sp, #28
+ 345              		@ sp needed
+ 346 0130 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 347              	.L94:
+ 348 0132 00BF     		.align	2
+ 349              	.L93:
+ 350 0134 00380040 		.word	1073756160
+ 351 0138 00000000 		.word	.LC0
+ 352 013c C0CE0200 		.word	184000
+ 354              		.section	.text.SPI_StructInit,"ax",%progbits
+ 355              		.align	1
+ 356              		.global	SPI_StructInit
+ 357              		.thumb
+ 358              		.thumb_func
+ 360              	SPI_StructInit:
+ 361              		@ args = 0, pretend = 0, frame = 0
+ 362              		@ frame_needed = 0, uses_anonymous_args = 0
+ 363              		@ link register save eliminated.
+ 364 0000 0023     		movs	r3, #0
+ 365 0002 0380     		strh	r3, [r0]	@ movhi
+ 366 0004 4380     		strh	r3, [r0, #2]	@ movhi
+ 367 0006 8380     		strh	r3, [r0, #4]	@ movhi
+ 368 0008 C380     		strh	r3, [r0, #6]	@ movhi
+ 369 000a 0381     		strh	r3, [r0, #8]	@ movhi
+ 370 000c 4381     		strh	r3, [r0, #10]	@ movhi
+ 371 000e 8381     		strh	r3, [r0, #12]	@ movhi
+ 372 0010 C381     		strh	r3, [r0, #14]	@ movhi
+ 373 0012 0723     		movs	r3, #7
+ 374 0014 0382     		strh	r3, [r0, #16]	@ movhi
+ 375 0016 7047     		bx	lr
+ 377              		.section	.text.I2S_StructInit,"ax",%progbits
+ 378              		.align	1
+ 379              		.global	I2S_StructInit
+ 380              		.thumb
+ 381              		.thumb_func
+ 383              	I2S_StructInit:
+ 384              		@ args = 0, pretend = 0, frame = 0
+ 385              		@ frame_needed = 0, uses_anonymous_args = 0
+ 386              		@ link register save eliminated.
+ 387 0000 0023     		movs	r3, #0
+ 388 0002 0222     		movs	r2, #2
+ 389 0004 0380     		strh	r3, [r0]	@ movhi
+ 390 0006 4380     		strh	r3, [r0, #2]	@ movhi
+ 391 0008 8380     		strh	r3, [r0, #4]	@ movhi
+ 392 000a C380     		strh	r3, [r0, #6]	@ movhi
+ 393 000c 8260     		str	r2, [r0, #8]
+ 394 000e 8381     		strh	r3, [r0, #12]	@ movhi
+ 395 0010 7047     		bx	lr
+ 397              		.section	.text.SPI_Cmd,"ax",%progbits
+ 398              		.align	1
+ 399              		.global	SPI_Cmd
+ 400              		.thumb
+ 401              		.thumb_func
+ 403              	SPI_Cmd:
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 0, uses_anonymous_args = 0
+ 406 0000 38B5     		push	{r3, r4, r5, lr}
+ 407 0002 134B     		ldr	r3, .L104
+ 408 0004 0446     		mov	r4, r0
+ 409 0006 9842     		cmp	r0, r3
+ 410 0008 0D46     		mov	r5, r1
+ 411 000a 0CD0     		beq	.L98
+ 412 000c A3F57843 		sub	r3, r3, #63488
+ 413 0010 9842     		cmp	r0, r3
+ 414 0012 08D0     		beq	.L98
+ 415 0014 03F58063 		add	r3, r3, #1024
+ 416 0018 9842     		cmp	r0, r3
+ 417 001a 04D0     		beq	.L98
+ 418 001c 0D48     		ldr	r0, .L104+4
+ 419 001e 4FF4D771 		mov	r1, #430
+ 420 0022 FFF7FEFF 		bl	assert_err
+ 421              	.L98:
+ 422 0026 012D     		cmp	r5, #1
+ 423 0028 05D9     		bls	.L99
+ 424 002a 0A48     		ldr	r0, .L104+4
+ 425 002c 40F2AF11 		movw	r1, #431
+ 426 0030 FFF7FEFF 		bl	assert_err
+ 427 0034 00E0     		b	.L100
+ 428              	.L99:
+ 429 0036 25B1     		cbz	r5, .L101
+ 430              	.L100:
+ 431 0038 2388     		ldrh	r3, [r4]
+ 432 003a 9BB2     		uxth	r3, r3
+ 433 003c 43F04003 		orr	r3, r3, #64
+ 434 0040 04E0     		b	.L103
+ 435              	.L101:
+ 436 0042 2388     		ldrh	r3, [r4]
+ 437 0044 23F04003 		bic	r3, r3, #64
+ 438 0048 1B04     		lsls	r3, r3, #16
+ 439 004a 1B0C     		lsrs	r3, r3, #16
+ 440              	.L103:
+ 441 004c 2380     		strh	r3, [r4]	@ movhi
+ 442 004e 38BD     		pop	{r3, r4, r5, pc}
+ 443              	.L105:
+ 444              		.align	2
+ 445              	.L104:
+ 446 0050 00300140 		.word	1073819648
+ 447 0054 00000000 		.word	.LC0
+ 449              		.section	.text.I2S_Cmd,"ax",%progbits
+ 450              		.align	1
+ 451              		.global	I2S_Cmd
+ 452              		.thumb
+ 453              		.thumb_func
+ 455              	I2S_Cmd:
+ 456              		@ args = 0, pretend = 0, frame = 0
+ 457              		@ frame_needed = 0, uses_anonymous_args = 0
+ 458 0000 38B5     		push	{r3, r4, r5, lr}
+ 459 0002 114B     		ldr	r3, .L113
+ 460 0004 0446     		mov	r4, r0
+ 461 0006 9842     		cmp	r0, r3
+ 462 0008 0D46     		mov	r5, r1
+ 463 000a 08D0     		beq	.L107
+ 464 000c 03F58063 		add	r3, r3, #1024
+ 465 0010 9842     		cmp	r0, r3
+ 466 0012 04D0     		beq	.L107
+ 467 0014 0D48     		ldr	r0, .L113+4
+ 468 0016 4FF4E371 		mov	r1, #454
+ 469 001a FFF7FEFF 		bl	assert_err
+ 470              	.L107:
+ 471 001e 012D     		cmp	r5, #1
+ 472 0020 05D9     		bls	.L108
+ 473 0022 0A48     		ldr	r0, .L113+4
+ 474 0024 40F2C711 		movw	r1, #455
+ 475 0028 FFF7FEFF 		bl	assert_err
+ 476 002c 00E0     		b	.L109
+ 477              	.L108:
+ 478 002e 25B1     		cbz	r5, .L110
+ 479              	.L109:
+ 480 0030 A38B     		ldrh	r3, [r4, #28]
+ 481 0032 9BB2     		uxth	r3, r3
+ 482 0034 43F48063 		orr	r3, r3, #1024
+ 483 0038 04E0     		b	.L112
+ 484              	.L110:
+ 485 003a A38B     		ldrh	r3, [r4, #28]
+ 486 003c 23F48063 		bic	r3, r3, #1024
+ 487 0040 1B04     		lsls	r3, r3, #16
+ 488 0042 1B0C     		lsrs	r3, r3, #16
+ 489              	.L112:
+ 490 0044 A383     		strh	r3, [r4, #28]	@ movhi
+ 491 0046 38BD     		pop	{r3, r4, r5, pc}
+ 492              	.L114:
+ 493              		.align	2
+ 494              	.L113:
+ 495 0048 00380040 		.word	1073756160
+ 496 004c 00000000 		.word	.LC0
+ 498              		.section	.text.SPI_I2S_ITConfig,"ax",%progbits
+ 499              		.align	1
+ 500              		.global	SPI_I2S_ITConfig
+ 501              		.thumb
+ 502              		.thumb_func
+ 504              	SPI_I2S_ITConfig:
+ 505              		@ args = 0, pretend = 0, frame = 0
+ 506              		@ frame_needed = 0, uses_anonymous_args = 0
+ 507 0000 194B     		ldr	r3, .L131
+ 508 0002 70B5     		push	{r4, r5, r6, lr}
+ 509 0004 9842     		cmp	r0, r3
+ 510 0006 0446     		mov	r4, r0
+ 511 0008 0D46     		mov	r5, r1
+ 512 000a 1646     		mov	r6, r2
+ 513 000c 0CD0     		beq	.L116
+ 514 000e A3F57843 		sub	r3, r3, #63488
+ 515 0012 9842     		cmp	r0, r3
+ 516 0014 08D0     		beq	.L116
+ 517 0016 03F58063 		add	r3, r3, #1024
+ 518 001a 9842     		cmp	r0, r3
+ 519 001c 04D0     		beq	.L116
+ 520 001e 1348     		ldr	r0, .L131+4
+ 521 0020 4FF4F371 		mov	r1, #486
+ 522 0024 FFF7FEFF 		bl	assert_err
+ 523              	.L116:
+ 524 0028 012E     		cmp	r6, #1
+ 525 002a 04D9     		bls	.L117
+ 526 002c 0F48     		ldr	r0, .L131+4
+ 527 002e 40F2E711 		movw	r1, #487
+ 528 0032 FFF7FEFF 		bl	assert_err
+ 529              	.L117:
+ 530 0036 712D     		cmp	r5, #113
+ 531 0038 08D0     		beq	.L118
+ 532 003a 602D     		cmp	r5, #96
+ 533 003c 06D0     		beq	.L118
+ 534 003e 502D     		cmp	r5, #80
+ 535 0040 04D0     		beq	.L118
+ 536 0042 0A48     		ldr	r0, .L131+4
+ 537 0044 4FF4F471 		mov	r1, #488
+ 538 0048 FFF7FEFF 		bl	assert_err
+ 539              	.L118:
+ 540 004c 0123     		movs	r3, #1
+ 541 004e 2D09     		lsrs	r5, r5, #4
+ 542 0050 03FA05F5 		lsl	r5, r3, r5
+ 543 0054 A388     		ldrh	r3, [r4, #4]
+ 544 0056 ADB2     		uxth	r5, r5
+ 545 0058 9BB2     		uxth	r3, r3
+ 546 005a 0EB1     		cbz	r6, .L119
+ 547 005c 1D43     		orrs	r5, r5, r3
+ 548 005e 01E0     		b	.L130
+ 549              	.L119:
+ 550 0060 23EA0505 		bic	r5, r3, r5
+ 551              	.L130:
+ 552 0064 A580     		strh	r5, [r4, #4]	@ movhi
+ 553 0066 70BD     		pop	{r4, r5, r6, pc}
+ 554              	.L132:
+ 555              		.align	2
+ 556              	.L131:
+ 557 0068 00300140 		.word	1073819648
+ 558 006c 00000000 		.word	.LC0
+ 560              		.section	.text.SPI_I2S_DMACmd,"ax",%progbits
+ 561              		.align	1
+ 562              		.global	SPI_I2S_DMACmd
+ 563              		.thumb
+ 564              		.thumb_func
+ 566              	SPI_I2S_DMACmd:
+ 567              		@ args = 0, pretend = 0, frame = 0
+ 568              		@ frame_needed = 0, uses_anonymous_args = 0
+ 569 0000 164B     		ldr	r3, .L141
+ 570 0002 70B5     		push	{r4, r5, r6, lr}
+ 571 0004 9842     		cmp	r0, r3
+ 572 0006 0446     		mov	r4, r0
+ 573 0008 0D46     		mov	r5, r1
+ 574 000a 1646     		mov	r6, r2
+ 575 000c 0CD0     		beq	.L134
+ 576 000e A3F57843 		sub	r3, r3, #63488
+ 577 0012 9842     		cmp	r0, r3
+ 578 0014 08D0     		beq	.L134
+ 579 0016 03F58063 		add	r3, r3, #1024
+ 580 001a 9842     		cmp	r0, r3
+ 581 001c 04D0     		beq	.L134
+ 582 001e 1048     		ldr	r0, .L141+4
+ 583 0020 4FF40371 		mov	r1, #524
+ 584 0024 FFF7FEFF 		bl	assert_err
+ 585              	.L134:
+ 586 0028 012E     		cmp	r6, #1
+ 587 002a 04D9     		bls	.L135
+ 588 002c 0C48     		ldr	r0, .L141+4
+ 589 002e 40F20D21 		movw	r1, #525
+ 590 0032 FFF7FEFF 		bl	assert_err
+ 591              	.L135:
+ 592 0036 25F00303 		bic	r3, r5, #3
+ 593 003a 03B9     		cbnz	r3, .L136
+ 594 003c 25B9     		cbnz	r5, .L137
+ 595              	.L136:
+ 596 003e 0848     		ldr	r0, .L141+4
+ 597 0040 40F20E21 		movw	r1, #526
+ 598 0044 FFF7FEFF 		bl	assert_err
+ 599              	.L137:
+ 600 0048 A388     		ldrh	r3, [r4, #4]
+ 601 004a 9BB2     		uxth	r3, r3
+ 602 004c 0EB1     		cbz	r6, .L138
+ 603 004e 1D43     		orrs	r5, r5, r3
+ 604 0050 01E0     		b	.L140
+ 605              	.L138:
+ 606 0052 23EA0505 		bic	r5, r3, r5
+ 607              	.L140:
+ 608 0056 A580     		strh	r5, [r4, #4]	@ movhi
+ 609 0058 70BD     		pop	{r4, r5, r6, pc}
+ 610              	.L142:
+ 611 005a 00BF     		.align	2
+ 612              	.L141:
+ 613 005c 00300140 		.word	1073819648
+ 614 0060 00000000 		.word	.LC0
+ 616              		.section	.text.SPI_I2S_SendData,"ax",%progbits
+ 617              		.align	1
+ 618              		.global	SPI_I2S_SendData
+ 619              		.thumb
+ 620              		.thumb_func
+ 622              	SPI_I2S_SendData:
+ 623              		@ args = 0, pretend = 0, frame = 0
+ 624              		@ frame_needed = 0, uses_anonymous_args = 0
+ 625 0000 38B5     		push	{r3, r4, r5, lr}
+ 626 0002 0A4B     		ldr	r3, .L145
+ 627 0004 0446     		mov	r4, r0
+ 628 0006 9842     		cmp	r0, r3
+ 629 0008 0D46     		mov	r5, r1
+ 630 000a 0CD0     		beq	.L144
+ 631 000c A3F57843 		sub	r3, r3, #63488
+ 632 0010 9842     		cmp	r0, r3
+ 633 0012 08D0     		beq	.L144
+ 634 0014 03F58063 		add	r3, r3, #1024
+ 635 0018 9842     		cmp	r0, r3
+ 636 001a 04D0     		beq	.L144
+ 637 001c 0448     		ldr	r0, .L145+4
+ 638 001e 40F22621 		movw	r1, #550
+ 639 0022 FFF7FEFF 		bl	assert_err
+ 640              	.L144:
+ 641 0026 A581     		strh	r5, [r4, #12]	@ movhi
+ 642 0028 38BD     		pop	{r3, r4, r5, pc}
+ 643              	.L146:
+ 644 002a 00BF     		.align	2
+ 645              	.L145:
+ 646 002c 00300140 		.word	1073819648
+ 647 0030 00000000 		.word	.LC0
+ 649              		.section	.text.SPI_I2S_ReceiveData,"ax",%progbits
+ 650              		.align	1
+ 651              		.global	SPI_I2S_ReceiveData
+ 652              		.thumb
+ 653              		.thumb_func
+ 655              	SPI_I2S_ReceiveData:
+ 656              		@ args = 0, pretend = 0, frame = 0
+ 657              		@ frame_needed = 0, uses_anonymous_args = 0
+ 658 0000 0A4B     		ldr	r3, .L149
+ 659 0002 10B5     		push	{r4, lr}
+ 660 0004 9842     		cmp	r0, r3
+ 661 0006 0446     		mov	r4, r0
+ 662 0008 0CD0     		beq	.L148
+ 663 000a A3F57843 		sub	r3, r3, #63488
+ 664 000e 9842     		cmp	r0, r3
+ 665 0010 08D0     		beq	.L148
+ 666 0012 03F58063 		add	r3, r3, #1024
+ 667 0016 9842     		cmp	r0, r3
+ 668 0018 04D0     		beq	.L148
+ 669 001a 0548     		ldr	r0, .L149+4
+ 670 001c 40F23621 		movw	r1, #566
+ 671 0020 FFF7FEFF 		bl	assert_err
+ 672              	.L148:
+ 673 0024 A089     		ldrh	r0, [r4, #12]
+ 674 0026 80B2     		uxth	r0, r0
+ 675 0028 10BD     		pop	{r4, pc}
+ 676              	.L150:
+ 677 002a 00BF     		.align	2
+ 678              	.L149:
+ 679 002c 00300140 		.word	1073819648
+ 680 0030 00000000 		.word	.LC0
+ 682              		.section	.text.SPI_NSSInternalSoftwareConfig,"ax",%progbits
+ 683              		.align	1
+ 684              		.global	SPI_NSSInternalSoftwareConfig
+ 685              		.thumb
+ 686              		.thumb_func
+ 688              	SPI_NSSInternalSoftwareConfig:
+ 689              		@ args = 0, pretend = 0, frame = 0
+ 690              		@ frame_needed = 0, uses_anonymous_args = 0
+ 691 0000 38B5     		push	{r3, r4, r5, lr}
+ 692 0002 154B     		ldr	r3, .L160
+ 693 0004 0446     		mov	r4, r0
+ 694 0006 9842     		cmp	r0, r3
+ 695 0008 0D46     		mov	r5, r1
+ 696 000a 0CD0     		beq	.L152
+ 697 000c A3F57843 		sub	r3, r3, #63488
+ 698 0010 9842     		cmp	r0, r3
+ 699 0012 08D0     		beq	.L152
+ 700 0014 03F58063 		add	r3, r3, #1024
+ 701 0018 9842     		cmp	r0, r3
+ 702 001a 04D0     		beq	.L152
+ 703 001c 0F48     		ldr	r0, .L160+4
+ 704 001e 4FF41271 		mov	r1, #584
+ 705 0022 FFF7FEFF 		bl	assert_err
+ 706              	.L152:
+ 707 0026 B5F5807F 		cmp	r5, #256
+ 708 002a 08D0     		beq	.L153
+ 709 002c 4FF6FF63 		movw	r3, #65279
+ 710 0030 9D42     		cmp	r5, r3
+ 711 0032 09D0     		beq	.L154
+ 712 0034 0948     		ldr	r0, .L160+4
+ 713 0036 40F24921 		movw	r1, #585
+ 714 003a FFF7FEFF 		bl	assert_err
+ 715              	.L153:
+ 716 003e 2388     		ldrh	r3, [r4]
+ 717 0040 9BB2     		uxth	r3, r3
+ 718 0042 43F48073 		orr	r3, r3, #256
+ 719 0046 04E0     		b	.L159
+ 720              	.L154:
+ 721 0048 2388     		ldrh	r3, [r4]
+ 722 004a 23F48073 		bic	r3, r3, #256
+ 723 004e 1B04     		lsls	r3, r3, #16
+ 724 0050 1B0C     		lsrs	r3, r3, #16
+ 725              	.L159:
+ 726 0052 2380     		strh	r3, [r4]	@ movhi
+ 727 0054 38BD     		pop	{r3, r4, r5, pc}
+ 728              	.L161:
+ 729 0056 00BF     		.align	2
+ 730              	.L160:
+ 731 0058 00300140 		.word	1073819648
+ 732 005c 00000000 		.word	.LC0
+ 734              		.section	.text.SPI_SSOutputCmd,"ax",%progbits
+ 735              		.align	1
+ 736              		.global	SPI_SSOutputCmd
+ 737              		.thumb
+ 738              		.thumb_func
+ 740              	SPI_SSOutputCmd:
+ 741              		@ args = 0, pretend = 0, frame = 0
+ 742              		@ frame_needed = 0, uses_anonymous_args = 0
+ 743 0000 38B5     		push	{r3, r4, r5, lr}
+ 744 0002 134B     		ldr	r3, .L169
+ 745 0004 0446     		mov	r4, r0
+ 746 0006 9842     		cmp	r0, r3
+ 747 0008 0D46     		mov	r5, r1
+ 748 000a 0CD0     		beq	.L163
+ 749 000c A3F57843 		sub	r3, r3, #63488
+ 750 0010 9842     		cmp	r0, r3
+ 751 0012 08D0     		beq	.L163
+ 752 0014 03F58063 		add	r3, r3, #1024
+ 753 0018 9842     		cmp	r0, r3
+ 754 001a 04D0     		beq	.L163
+ 755 001c 0D48     		ldr	r0, .L169+4
+ 756 001e 4FF41871 		mov	r1, #608
+ 757 0022 FFF7FEFF 		bl	assert_err
+ 758              	.L163:
+ 759 0026 012D     		cmp	r5, #1
+ 760 0028 05D9     		bls	.L164
+ 761 002a 0A48     		ldr	r0, .L169+4
+ 762 002c 40F26121 		movw	r1, #609
+ 763 0030 FFF7FEFF 		bl	assert_err
+ 764 0034 00E0     		b	.L165
+ 765              	.L164:
+ 766 0036 25B1     		cbz	r5, .L166
+ 767              	.L165:
+ 768 0038 A388     		ldrh	r3, [r4, #4]
+ 769 003a 9BB2     		uxth	r3, r3
+ 770 003c 43F00403 		orr	r3, r3, #4
+ 771 0040 04E0     		b	.L168
+ 772              	.L166:
+ 773 0042 A388     		ldrh	r3, [r4, #4]
+ 774 0044 23F00403 		bic	r3, r3, #4
+ 775 0048 1B04     		lsls	r3, r3, #16
+ 776 004a 1B0C     		lsrs	r3, r3, #16
+ 777              	.L168:
+ 778 004c A380     		strh	r3, [r4, #4]	@ movhi
+ 779 004e 38BD     		pop	{r3, r4, r5, pc}
+ 780              	.L170:
+ 781              		.align	2
+ 782              	.L169:
+ 783 0050 00300140 		.word	1073819648
+ 784 0054 00000000 		.word	.LC0
+ 786              		.section	.text.SPI_DataSizeConfig,"ax",%progbits
+ 787              		.align	1
+ 788              		.global	SPI_DataSizeConfig
+ 789              		.thumb
+ 790              		.thumb_func
+ 792              	SPI_DataSizeConfig:
+ 793              		@ args = 0, pretend = 0, frame = 0
+ 794              		@ frame_needed = 0, uses_anonymous_args = 0
+ 795 0000 38B5     		push	{r3, r4, r5, lr}
+ 796 0002 124B     		ldr	r3, .L177
+ 797 0004 0446     		mov	r4, r0
+ 798 0006 9842     		cmp	r0, r3
+ 799 0008 0D46     		mov	r5, r1
+ 800 000a 0CD0     		beq	.L172
+ 801 000c A3F57843 		sub	r3, r3, #63488
+ 802 0010 9842     		cmp	r0, r3
+ 803 0012 08D0     		beq	.L172
+ 804 0014 03F58063 		add	r3, r3, #1024
+ 805 0018 9842     		cmp	r0, r3
+ 806 001a 04D0     		beq	.L172
+ 807 001c 0C48     		ldr	r0, .L177+4
+ 808 001e 40F27A21 		movw	r1, #634
+ 809 0022 FFF7FEFF 		bl	assert_err
+ 810              	.L172:
+ 811 0026 25F40063 		bic	r3, r5, #2048
+ 812 002a 23B1     		cbz	r3, .L173
+ 813 002c 0848     		ldr	r0, .L177+4
+ 814 002e 40F27B21 		movw	r1, #635
+ 815 0032 FFF7FEFF 		bl	assert_err
+ 816              	.L173:
+ 817 0036 2388     		ldrh	r3, [r4]
+ 818 0038 23F40063 		bic	r3, r3, #2048
+ 819 003c 1B04     		lsls	r3, r3, #16
+ 820 003e 1B0C     		lsrs	r3, r3, #16
+ 821 0040 2380     		strh	r3, [r4]	@ movhi
+ 822 0042 2388     		ldrh	r3, [r4]
+ 823 0044 9BB2     		uxth	r3, r3
+ 824 0046 1D43     		orrs	r5, r5, r3
+ 825 0048 2580     		strh	r5, [r4]	@ movhi
+ 826 004a 38BD     		pop	{r3, r4, r5, pc}
+ 827              	.L178:
+ 828              		.align	2
+ 829              	.L177:
+ 830 004c 00300140 		.word	1073819648
+ 831 0050 00000000 		.word	.LC0
+ 833              		.section	.text.SPI_TransmitCRC,"ax",%progbits
+ 834              		.align	1
+ 835              		.global	SPI_TransmitCRC
+ 836              		.thumb
+ 837              		.thumb_func
+ 839              	SPI_TransmitCRC:
+ 840              		@ args = 0, pretend = 0, frame = 0
+ 841              		@ frame_needed = 0, uses_anonymous_args = 0
+ 842 0000 0B4B     		ldr	r3, .L181
+ 843 0002 10B5     		push	{r4, lr}
+ 844 0004 9842     		cmp	r0, r3
+ 845 0006 0446     		mov	r4, r0
+ 846 0008 0CD0     		beq	.L180
+ 847 000a A3F57843 		sub	r3, r3, #63488
+ 848 000e 9842     		cmp	r0, r3
+ 849 0010 08D0     		beq	.L180
+ 850 0012 03F58063 		add	r3, r3, #1024
+ 851 0016 9842     		cmp	r0, r3
+ 852 0018 04D0     		beq	.L180
+ 853 001a 0648     		ldr	r0, .L181+4
+ 854 001c 40F28A21 		movw	r1, #650
+ 855 0020 FFF7FEFF 		bl	assert_err
+ 856              	.L180:
+ 857 0024 2388     		ldrh	r3, [r4]
+ 858 0026 9BB2     		uxth	r3, r3
+ 859 0028 43F48053 		orr	r3, r3, #4096
+ 860 002c 2380     		strh	r3, [r4]	@ movhi
+ 861 002e 10BD     		pop	{r4, pc}
+ 862              	.L182:
+ 863              		.align	2
+ 864              	.L181:
+ 865 0030 00300140 		.word	1073819648
+ 866 0034 00000000 		.word	.LC0
+ 868              		.section	.text.SPI_CalculateCRC,"ax",%progbits
+ 869              		.align	1
+ 870              		.global	SPI_CalculateCRC
+ 871              		.thumb
+ 872              		.thumb_func
+ 874              	SPI_CalculateCRC:
+ 875              		@ args = 0, pretend = 0, frame = 0
+ 876              		@ frame_needed = 0, uses_anonymous_args = 0
+ 877 0000 38B5     		push	{r3, r4, r5, lr}
+ 878 0002 134B     		ldr	r3, .L190
+ 879 0004 0446     		mov	r4, r0
+ 880 0006 9842     		cmp	r0, r3
+ 881 0008 0D46     		mov	r5, r1
+ 882 000a 0CD0     		beq	.L184
+ 883 000c A3F57843 		sub	r3, r3, #63488
+ 884 0010 9842     		cmp	r0, r3
+ 885 0012 08D0     		beq	.L184
+ 886 0014 03F58063 		add	r3, r3, #1024
+ 887 0018 9842     		cmp	r0, r3
+ 888 001a 04D0     		beq	.L184
+ 889 001c 0D48     		ldr	r0, .L190+4
+ 890 001e 40F29A21 		movw	r1, #666
+ 891 0022 FFF7FEFF 		bl	assert_err
+ 892              	.L184:
+ 893 0026 012D     		cmp	r5, #1
+ 894 0028 05D9     		bls	.L185
+ 895 002a 0A48     		ldr	r0, .L190+4
+ 896 002c 40F29B21 		movw	r1, #667
+ 897 0030 FFF7FEFF 		bl	assert_err
+ 898 0034 00E0     		b	.L186
+ 899              	.L185:
+ 900 0036 25B1     		cbz	r5, .L187
+ 901              	.L186:
+ 902 0038 2388     		ldrh	r3, [r4]
+ 903 003a 9BB2     		uxth	r3, r3
+ 904 003c 43F40053 		orr	r3, r3, #8192
+ 905 0040 04E0     		b	.L189
+ 906              	.L187:
+ 907 0042 2388     		ldrh	r3, [r4]
+ 908 0044 23F40053 		bic	r3, r3, #8192
+ 909 0048 1B04     		lsls	r3, r3, #16
+ 910 004a 1B0C     		lsrs	r3, r3, #16
+ 911              	.L189:
+ 912 004c 2380     		strh	r3, [r4]	@ movhi
+ 913 004e 38BD     		pop	{r3, r4, r5, pc}
+ 914              	.L191:
+ 915              		.align	2
+ 916              	.L190:
+ 917 0050 00300140 		.word	1073819648
+ 918 0054 00000000 		.word	.LC0
+ 920              		.section	.text.SPI_GetCRC,"ax",%progbits
+ 921              		.align	1
+ 922              		.global	SPI_GetCRC
+ 923              		.thumb
+ 924              		.thumb_func
+ 926              	SPI_GetCRC:
+ 927              		@ args = 0, pretend = 0, frame = 0
+ 928              		@ frame_needed = 0, uses_anonymous_args = 0
+ 929 0000 38B5     		push	{r3, r4, r5, lr}
+ 930 0002 104B     		ldr	r3, .L199
+ 931 0004 0446     		mov	r4, r0
+ 932 0006 9842     		cmp	r0, r3
+ 933 0008 0D46     		mov	r5, r1
+ 934 000a 0CD0     		beq	.L193
+ 935 000c A3F57843 		sub	r3, r3, #63488
+ 936 0010 9842     		cmp	r0, r3
+ 937 0012 08D0     		beq	.L193
+ 938 0014 03F58063 		add	r3, r3, #1024
+ 939 0018 9842     		cmp	r0, r3
+ 940 001a 04D0     		beq	.L193
+ 941 001c 0A48     		ldr	r0, .L199+4
+ 942 001e 40F2B521 		movw	r1, #693
+ 943 0022 FFF7FEFF 		bl	assert_err
+ 944              	.L193:
+ 945 0026 012D     		cmp	r5, #1
+ 946 0028 05D9     		bls	.L194
+ 947 002a 0748     		ldr	r0, .L199+4
+ 948 002c 40F2B621 		movw	r1, #694
+ 949 0030 FFF7FEFF 		bl	assert_err
+ 950 0034 00E0     		b	.L195
+ 951              	.L194:
+ 952 0036 01D0     		beq	.L196
+ 953              	.L195:
+ 954 0038 208B     		ldrh	r0, [r4, #24]
+ 955 003a 00E0     		b	.L198
+ 956              	.L196:
+ 957 003c A08A     		ldrh	r0, [r4, #20]
+ 958              	.L198:
+ 959 003e 80B2     		uxth	r0, r0
+ 960 0040 38BD     		pop	{r3, r4, r5, pc}
+ 961              	.L200:
+ 962 0042 00BF     		.align	2
+ 963              	.L199:
+ 964 0044 00300140 		.word	1073819648
+ 965 0048 00000000 		.word	.LC0
+ 967              		.section	.text.SPI_GetCRCPolynomial,"ax",%progbits
+ 968              		.align	1
+ 969              		.global	SPI_GetCRCPolynomial
+ 970              		.thumb
+ 971              		.thumb_func
+ 973              	SPI_GetCRCPolynomial:
+ 974              		@ args = 0, pretend = 0, frame = 0
+ 975              		@ frame_needed = 0, uses_anonymous_args = 0
+ 976 0000 0A4B     		ldr	r3, .L203
+ 977 0002 10B5     		push	{r4, lr}
+ 978 0004 9842     		cmp	r0, r3
+ 979 0006 0446     		mov	r4, r0
+ 980 0008 0CD0     		beq	.L202
+ 981 000a A3F57843 		sub	r3, r3, #63488
+ 982 000e 9842     		cmp	r0, r3
+ 983 0010 08D0     		beq	.L202
+ 984 0012 03F58063 		add	r3, r3, #1024
+ 985 0016 9842     		cmp	r0, r3
+ 986 0018 04D0     		beq	.L202
+ 987 001a 0548     		ldr	r0, .L203+4
+ 988 001c 40F2CD21 		movw	r1, #717
+ 989 0020 FFF7FEFF 		bl	assert_err
+ 990              	.L202:
+ 991 0024 208A     		ldrh	r0, [r4, #16]
+ 992 0026 80B2     		uxth	r0, r0
+ 993 0028 10BD     		pop	{r4, pc}
+ 994              	.L204:
+ 995 002a 00BF     		.align	2
+ 996              	.L203:
+ 997 002c 00300140 		.word	1073819648
+ 998 0030 00000000 		.word	.LC0
+ 1000              		.section	.text.SPI_BiDirectionalLineConfig,"ax",%progbits
+ 1001              		.align	1
+ 1002              		.global	SPI_BiDirectionalLineConfig
+ 1003              		.thumb
+ 1004              		.thumb_func
+ 1006              	SPI_BiDirectionalLineConfig:
+ 1007              		@ args = 0, pretend = 0, frame = 0
+ 1008              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1009 0000 38B5     		push	{r3, r4, r5, lr}
+ 1010 0002 154B     		ldr	r3, .L211
+ 1011 0004 0446     		mov	r4, r0
+ 1012 0006 9842     		cmp	r0, r3
+ 1013 0008 0D46     		mov	r5, r1
+ 1014 000a 0CD0     		beq	.L206
+ 1015 000c A3F57843 		sub	r3, r3, #63488
+ 1016 0010 9842     		cmp	r0, r3
+ 1017 0012 08D0     		beq	.L206
+ 1018 0014 03F58063 		add	r3, r3, #1024
+ 1019 0018 9842     		cmp	r0, r3
+ 1020 001a 04D0     		beq	.L206
+ 1021 001c 0F48     		ldr	r0, .L211+4
+ 1022 001e 40F2DF21 		movw	r1, #735
+ 1023 0022 FFF7FEFF 		bl	assert_err
+ 1024              	.L206:
+ 1025 0026 4BF6FF73 		movw	r3, #49151
+ 1026 002a 9D42     		cmp	r5, r3
+ 1027 002c 07D0     		beq	.L207
+ 1028 002e B5F5804F 		cmp	r5, #16384
+ 1029 0032 0AD0     		beq	.L208
+ 1030 0034 0948     		ldr	r0, .L211+4
+ 1031 0036 4FF43871 		mov	r1, #736
+ 1032 003a FFF7FEFF 		bl	assert_err
+ 1033              	.L207:
+ 1034 003e 2388     		ldrh	r3, [r4]
+ 1035 0040 23F48043 		bic	r3, r3, #16384
+ 1036 0044 1B04     		lsls	r3, r3, #16
+ 1037 0046 1B0C     		lsrs	r3, r3, #16
+ 1038 0048 03E0     		b	.L210
+ 1039              	.L208:
+ 1040 004a 2388     		ldrh	r3, [r4]
+ 1041 004c 9BB2     		uxth	r3, r3
+ 1042 004e 43F48043 		orr	r3, r3, #16384
+ 1043              	.L210:
+ 1044 0052 2380     		strh	r3, [r4]	@ movhi
+ 1045 0054 38BD     		pop	{r3, r4, r5, pc}
+ 1046              	.L212:
+ 1047 0056 00BF     		.align	2
+ 1048              	.L211:
+ 1049 0058 00300140 		.word	1073819648
+ 1050 005c 00000000 		.word	.LC0
+ 1052              		.section	.text.SPI_I2S_GetFlagStatus,"ax",%progbits
+ 1053              		.align	1
+ 1054              		.global	SPI_I2S_GetFlagStatus
+ 1055              		.thumb
+ 1056              		.thumb_func
+ 1058              	SPI_I2S_GetFlagStatus:
+ 1059              		@ args = 0, pretend = 0, frame = 0
+ 1060              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1061 0000 38B5     		push	{r3, r4, r5, lr}
+ 1062 0002 164B     		ldr	r3, .L234
+ 1063 0004 0546     		mov	r5, r0
+ 1064 0006 9842     		cmp	r0, r3
+ 1065 0008 0C46     		mov	r4, r1
+ 1066 000a 0CD0     		beq	.L214
+ 1067 000c A3F57843 		sub	r3, r3, #63488
+ 1068 0010 9842     		cmp	r0, r3
+ 1069 0012 08D0     		beq	.L214
+ 1070 0014 03F58063 		add	r3, r3, #1024
+ 1071 0018 9842     		cmp	r0, r3
+ 1072 001a 04D0     		beq	.L214
+ 1073 001c 1048     		ldr	r0, .L234+4
+ 1074 001e 40F20231 		movw	r1, #770
+ 1075 0022 FFF7FEFF 		bl	assert_err
+ 1076              	.L214:
+ 1077 0026 802C     		cmp	r4, #128
+ 1078 0028 12D0     		beq	.L215
+ 1079 002a 402C     		cmp	r4, #64
+ 1080 002c 10D0     		beq	.L215
+ 1081 002e 202C     		cmp	r4, #32
+ 1082 0030 0ED0     		beq	.L215
+ 1083 0032 102C     		cmp	r4, #16
+ 1084 0034 0CD0     		beq	.L215
+ 1085 0036 082C     		cmp	r4, #8
+ 1086 0038 0AD0     		beq	.L215
+ 1087 003a 042C     		cmp	r4, #4
+ 1088 003c 08D0     		beq	.L215
+ 1089 003e 631E     		subs	r3, r4, #1
+ 1090 0040 9BB2     		uxth	r3, r3
+ 1091 0042 012B     		cmp	r3, #1
+ 1092 0044 04D9     		bls	.L215
+ 1093 0046 0648     		ldr	r0, .L234+4
+ 1094 0048 40F20331 		movw	r1, #771
+ 1095 004c FFF7FEFF 		bl	assert_err
+ 1096              	.L215:
+ 1097 0050 2B89     		ldrh	r3, [r5, #8]
+ 1098 0052 1C42     		tst	r4, r3
+ 1099 0054 0CBF     		ite	eq
+ 1100 0056 0020     		moveq	r0, #0
+ 1101 0058 0120     		movne	r0, #1
+ 1102 005a 38BD     		pop	{r3, r4, r5, pc}
+ 1103              	.L235:
+ 1104              		.align	2
+ 1105              	.L234:
+ 1106 005c 00300140 		.word	1073819648
+ 1107 0060 00000000 		.word	.LC0
+ 1109              		.section	.text.SPI_I2S_ClearFlag,"ax",%progbits
+ 1110              		.align	1
+ 1111              		.global	SPI_I2S_ClearFlag
+ 1112              		.thumb
+ 1113              		.thumb_func
+ 1115              	SPI_I2S_ClearFlag:
+ 1116              		@ args = 0, pretend = 0, frame = 0
+ 1117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1118 0000 38B5     		push	{r3, r4, r5, lr}
+ 1119 0002 0E4B     		ldr	r3, .L242
+ 1120 0004 0446     		mov	r4, r0
+ 1121 0006 9842     		cmp	r0, r3
+ 1122 0008 0D46     		mov	r5, r1
+ 1123 000a 0CD0     		beq	.L237
+ 1124 000c A3F57843 		sub	r3, r3, #63488
+ 1125 0010 9842     		cmp	r0, r3
+ 1126 0012 08D0     		beq	.L237
+ 1127 0014 03F58063 		add	r3, r3, #1024
+ 1128 0018 9842     		cmp	r0, r3
+ 1129 001a 04D0     		beq	.L237
+ 1130 001c 0848     		ldr	r0, .L242+4
+ 1131 001e 40F22731 		movw	r1, #807
+ 1132 0022 FFF7FEFF 		bl	assert_err
+ 1133              	.L237:
+ 1134 0026 102D     		cmp	r5, #16
+ 1135 0028 04D0     		beq	.L238
+ 1136 002a 0548     		ldr	r0, .L242+4
+ 1137 002c 4FF44A71 		mov	r1, #808
+ 1138 0030 FFF7FEFF 		bl	assert_err
+ 1139              	.L238:
+ 1140 0034 ED43     		mvns	r5, r5
+ 1141 0036 ADB2     		uxth	r5, r5
+ 1142 0038 2581     		strh	r5, [r4, #8]	@ movhi
+ 1143 003a 38BD     		pop	{r3, r4, r5, pc}
+ 1144              	.L243:
+ 1145              		.align	2
+ 1146              	.L242:
+ 1147 003c 00300140 		.word	1073819648
+ 1148 0040 00000000 		.word	.LC0
+ 1150              		.section	.text.SPI_I2S_GetITStatus,"ax",%progbits
+ 1151              		.align	1
+ 1152              		.global	SPI_I2S_GetITStatus
+ 1153              		.thumb
+ 1154              		.thumb_func
+ 1156              	SPI_I2S_GetITStatus:
+ 1157              		@ args = 0, pretend = 0, frame = 0
+ 1158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1159 0000 38B5     		push	{r3, r4, r5, lr}
+ 1160 0002 194B     		ldr	r3, .L255
+ 1161 0004 0546     		mov	r5, r0
+ 1162 0006 9842     		cmp	r0, r3
+ 1163 0008 0C46     		mov	r4, r1
+ 1164 000a 0CD0     		beq	.L245
+ 1165 000c A3F57843 		sub	r3, r3, #63488
+ 1166 0010 9842     		cmp	r0, r3
+ 1167 0012 08D0     		beq	.L245
+ 1168 0014 03F58063 		add	r3, r3, #1024
+ 1169 0018 9842     		cmp	r0, r3
+ 1170 001a 04D0     		beq	.L245
+ 1171 001c 1348     		ldr	r0, .L255+4
+ 1172 001e 40F24331 		movw	r1, #835
+ 1173 0022 FFF7FEFF 		bl	assert_err
+ 1174              	.L245:
+ 1175 0026 602C     		cmp	r4, #96
+ 1176 0028 0BD0     		beq	.L246
+ 1177 002a 712C     		cmp	r4, #113
+ 1178 002c 09D0     		beq	.L246
+ 1179 002e A4F15303 		sub	r3, r4, #83
+ 1180 0032 DBB2     		uxtb	r3, r3
+ 1181 0034 032B     		cmp	r3, #3
+ 1182 0036 04D9     		bls	.L246
+ 1183 0038 0C48     		ldr	r0, .L255+4
+ 1184 003a 4FF45171 		mov	r1, #836
+ 1185 003e FFF7FEFF 		bl	assert_err
+ 1186              	.L246:
+ 1187 0042 04F00F02 		and	r2, r4, #15
+ 1188 0046 0123     		movs	r3, #1
+ 1189 0048 03FA02F2 		lsl	r2, r3, r2
+ 1190 004c A988     		ldrh	r1, [r5, #4]
+ 1191 004e 2889     		ldrh	r0, [r5, #8]
+ 1192 0050 89B2     		uxth	r1, r1
+ 1193 0052 80B2     		uxth	r0, r0
+ 1194 0054 1040     		ands	r0, r0, r2
+ 1195 0056 05D0     		beq	.L247
+ 1196 0058 2409     		lsrs	r4, r4, #4
+ 1197 005a A340     		lsls	r3, r3, r4
+ 1198 005c 1942     		tst	r1, r3
+ 1199 005e 0CBF     		ite	eq
+ 1200 0060 0020     		moveq	r0, #0
+ 1201 0062 0120     		movne	r0, #1
+ 1202              	.L247:
+ 1203 0064 38BD     		pop	{r3, r4, r5, pc}
+ 1204              	.L256:
+ 1205 0066 00BF     		.align	2
+ 1206              	.L255:
+ 1207 0068 00300140 		.word	1073819648
+ 1208 006c 00000000 		.word	.LC0
+ 1210              		.section	.text.SPI_I2S_ClearITPendingBit,"ax",%progbits
+ 1211              		.align	1
+ 1212              		.global	SPI_I2S_ClearITPendingBit
+ 1213              		.thumb
+ 1214              		.thumb_func
+ 1216              	SPI_I2S_ClearITPendingBit:
+ 1217              		@ args = 0, pretend = 0, frame = 0
+ 1218              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1219 0000 38B5     		push	{r3, r4, r5, lr}
+ 1220 0002 114B     		ldr	r3, .L263
+ 1221 0004 0446     		mov	r4, r0
+ 1222 0006 9842     		cmp	r0, r3
+ 1223 0008 0D46     		mov	r5, r1
+ 1224 000a 0CD0     		beq	.L258
+ 1225 000c A3F57843 		sub	r3, r3, #63488
+ 1226 0010 9842     		cmp	r0, r3
+ 1227 0012 08D0     		beq	.L258
+ 1228 0014 03F58063 		add	r3, r3, #1024
+ 1229 0018 9842     		cmp	r0, r3
+ 1230 001a 04D0     		beq	.L258
+ 1231 001c 0B48     		ldr	r0, .L263+4
+ 1232 001e 40F27731 		movw	r1, #887
+ 1233 0022 FFF7FEFF 		bl	assert_err
+ 1234              	.L258:
+ 1235 0026 542D     		cmp	r5, #84
+ 1236 0028 04D0     		beq	.L259
+ 1237 002a 0848     		ldr	r0, .L263+4
+ 1238 002c 4FF45E71 		mov	r1, #888
+ 1239 0030 FFF7FEFF 		bl	assert_err
+ 1240              	.L259:
+ 1241 0034 05F00F05 		and	r5, r5, #15
+ 1242 0038 0123     		movs	r3, #1
+ 1243 003a 03FA05F5 		lsl	r5, r3, r5
+ 1244 003e ED43     		mvns	r5, r5
+ 1245 0040 ADB2     		uxth	r5, r5
+ 1246 0042 2581     		strh	r5, [r4, #8]	@ movhi
+ 1247 0044 38BD     		pop	{r3, r4, r5, pc}
+ 1248              	.L264:
+ 1249 0046 00BF     		.align	2
+ 1250              	.L263:
+ 1251 0048 00300140 		.word	1073819648
+ 1252 004c 00000000 		.word	.LC0
+ 1254              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 1255              	.LC0:
+ 1256 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 1256      73657273 
+ 1256      2F647261 
+ 1256      6170686F 
+ 1256      2F446573 
+ 1257 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_sp"
+ 1257      6965732F 
+ 1257      53544D33 
+ 1257      32463130 
+ 1257      785F5374 
+ 1258 0066 692E6300 		.ascii	"i.c\000"
+ 1259              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_spi.c
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:16     .text.SPI_I2S_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:21     .text.SPI_I2S_DeInit:00000000 SPI_I2S_DeInit
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:64     .text.SPI_I2S_DeInit:00000064 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:68     .text.SPI_Init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:73     .text.SPI_Init:00000000 SPI_Init
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:196    .text.SPI_Init:00000104 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:200    .text.I2S_Init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:205    .text.I2S_Init:00000000 I2S_Init
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:350    .text.I2S_Init:00000134 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:355    .text.SPI_StructInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:360    .text.SPI_StructInit:00000000 SPI_StructInit
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:378    .text.I2S_StructInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:383    .text.I2S_StructInit:00000000 I2S_StructInit
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:398    .text.SPI_Cmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:403    .text.SPI_Cmd:00000000 SPI_Cmd
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:446    .text.SPI_Cmd:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:450    .text.I2S_Cmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:455    .text.I2S_Cmd:00000000 I2S_Cmd
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:495    .text.I2S_Cmd:00000048 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:499    .text.SPI_I2S_ITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:504    .text.SPI_I2S_ITConfig:00000000 SPI_I2S_ITConfig
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:557    .text.SPI_I2S_ITConfig:00000068 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:561    .text.SPI_I2S_DMACmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:566    .text.SPI_I2S_DMACmd:00000000 SPI_I2S_DMACmd
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:613    .text.SPI_I2S_DMACmd:0000005c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:617    .text.SPI_I2S_SendData:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:622    .text.SPI_I2S_SendData:00000000 SPI_I2S_SendData
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:646    .text.SPI_I2S_SendData:0000002c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:650    .text.SPI_I2S_ReceiveData:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:655    .text.SPI_I2S_ReceiveData:00000000 SPI_I2S_ReceiveData
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:679    .text.SPI_I2S_ReceiveData:0000002c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:683    .text.SPI_NSSInternalSoftwareConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:688    .text.SPI_NSSInternalSoftwareConfig:00000000 SPI_NSSInternalSoftwareConfig
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:731    .text.SPI_NSSInternalSoftwareConfig:00000058 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:735    .text.SPI_SSOutputCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:740    .text.SPI_SSOutputCmd:00000000 SPI_SSOutputCmd
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:783    .text.SPI_SSOutputCmd:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:787    .text.SPI_DataSizeConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:792    .text.SPI_DataSizeConfig:00000000 SPI_DataSizeConfig
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:830    .text.SPI_DataSizeConfig:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:834    .text.SPI_TransmitCRC:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:839    .text.SPI_TransmitCRC:00000000 SPI_TransmitCRC
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:865    .text.SPI_TransmitCRC:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:869    .text.SPI_CalculateCRC:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:874    .text.SPI_CalculateCRC:00000000 SPI_CalculateCRC
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:917    .text.SPI_CalculateCRC:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:921    .text.SPI_GetCRC:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:926    .text.SPI_GetCRC:00000000 SPI_GetCRC
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:964    .text.SPI_GetCRC:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:968    .text.SPI_GetCRCPolynomial:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:973    .text.SPI_GetCRCPolynomial:00000000 SPI_GetCRCPolynomial
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:997    .text.SPI_GetCRCPolynomial:0000002c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1001   .text.SPI_BiDirectionalLineConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1006   .text.SPI_BiDirectionalLineConfig:00000000 SPI_BiDirectionalLineConfig
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1049   .text.SPI_BiDirectionalLineConfig:00000058 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1053   .text.SPI_I2S_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1058   .text.SPI_I2S_GetFlagStatus:00000000 SPI_I2S_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1106   .text.SPI_I2S_GetFlagStatus:0000005c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1110   .text.SPI_I2S_ClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1115   .text.SPI_I2S_ClearFlag:00000000 SPI_I2S_ClearFlag
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1147   .text.SPI_I2S_ClearFlag:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1151   .text.SPI_I2S_GetITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1156   .text.SPI_I2S_GetITStatus:00000000 SPI_I2S_GetITStatus
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1207   .text.SPI_I2S_GetITStatus:00000068 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1211   .text.SPI_I2S_ClearITPendingBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1216   .text.SPI_I2S_ClearITPendingBit:00000000 SPI_I2S_ClearITPendingBit
+D:\Users\draapho\AppData\Local\Temp\ccvcYdPQ.s:1251   .text.SPI_I2S_ClearITPendingBit:00000048 $d
+
+UNDEFINED SYMBOLS
+assert_err
+RCC_APB2PeriphResetCmd
+RCC_APB1PeriphResetCmd
+RCC_GetClocksFreq

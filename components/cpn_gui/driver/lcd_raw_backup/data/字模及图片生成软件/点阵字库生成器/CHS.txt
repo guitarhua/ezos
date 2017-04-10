@@ -1,0 +1,108 @@
+﻿!LanguageID=2052
+!LanguageName=中文(简体，中国)
+!TranslationAuthor=
+!TranslationAuthorEmail=
+!TranslationDefaultFont=MS Sans Serif,8,,0,clWindowText,DEFAULT_CHARSET
+TfrmAbout.!Font=新宋体,9,,0,clWindowText,ANSI_CHARSET
+TfrmAbout.ast1.Fonts.Item0.Font.Name=黑体
+TfrmAbout.ast1.Fonts.Item1.Font.Name=黑体
+TfrmAbout.ast1.Fonts.Item2.Font.Name=宋体
+TfrmAbout.ast1.Fonts.Item3.Font.Name=楷体_GB2312
+TfrmAbout.ast1.Fonts.Item4.Font.Name=楷体_GB2312
+TfrmAbout.ast1.Fonts.Item5.Font.Name=隶书
+TfrmAbout.ast1.Fonts.Item6.Font.Name=隶书
+TfrmAbout.ast1.Text.Font.Name=新宋体
+TfrmAbout.ast1.Text.Lines.Text=<Title1>点阵字库(字模)制作软件  <BR><BR><Title2>版权声明<BR><Text1><Left>      本软件为共享软件，软件提供了部分的免费<BR>  功能，允许免费用于共享、商业软件中更多说明<BR>  参见帮助文件如需要注册本软件或者发现错误请<BR>  与作者联系<BR><BR><Title2><Center>软件作者<BR><Text1>作者：易木雨<BR>Email：xiaoqionghui@163.com<BR>易木雨软件工作室<BR>Copyright 2005-2012<BR><BR><Title2>软件功能<BR><Text1><Left>      本软件的主要功能就是把windows用中使用的<BR>  矢量的ASCII码和汉字转换为点阵的英文点阵字库<BR>  和汉字点阵字库，可以随意使用您系统中所有可用<BR>  的字体， 并且可以从文档中提取各汉字生成自己<BR>  的小字库，非常适用于嵌入式系统、DOS编程以及<BR>  各种工业编程的汉字显示。<BR><BR><Title2><Center>使用说明<BR><Text1>软件的使用说明详见帮助文件<BR><BR><Title3><Left>      自2012年开始不再提供硬件码<BR>  注册方式，直接采用USB加密狗注册<BR>  方式进行注册。已经注册的用户可以<BR>  购买加密狗升级。<BR>
+TfrmAbout.Caption=关于本软件
+TfrmAbout.lbl1.Caption=1、手机淘宝购买，直接用手机淘宝客户端<BR>扫描下面的二维码即可购买。
+TfrmAbout.lbl2.Caption=2、点击进入淘宝购买
+TfrmAbout.lbl3.Caption=3、邮件咨询
+TfrmAbout.lbl3.URL=mailto:xiaoqionghui@163.com?subject=点阵字库问题咨询
+TfrmAbout.lbl4.Caption=4、QQ留言
+TfrmAbout.lbl4.URL=http://wpa.qq.com/msgrd?V=1&Uin=16472304&Site=点阵字库&Menu=yes
+TfrmAbout.lbl5.Caption=    购买前请先试用，除斜线外，无其他<BR>功能限制。谢谢！
+TfrmAbout.lbl6.Caption=问题反馈
+TfrmAbout.lbl6.URL=mailto:xiaoqionghui@163.com?subject=点阵字库问题反馈
+TfrmDzkTest.btn1.Caption=显示
+TfrmDzkTest.btn2.Caption=下一个
+TfrmDzkTest.Caption=字库测试
+TfrmDzkTest.cbb1.Items.Text= 1 高位在前<BR> 2 低位在前<BR>
+TfrmDzkTest.cbb1.Text= 1 高位在前
+TfrmDzkTest.cbbCodepage.Items.Text=936 中文(GB2312)<BR>936 中文繁(GB2312)<BR>936 中文(GBK)<BR>950 台湾(BIG5)<BR>932 日文(Shift-JIS)<BR>932 日文(Shift-JIS)半角<BR>949 韩文(HANGUL)<BR>949 韩文(EUC-KR)<BR>1250 ASCII<BR>874 泰文<BR>1250 中欧<BR>1251 西里尔文<BR>1252 拉丁文 1<BR>1253 希腊<BR>1254 土耳其<BR>1255 希伯来<BR>1256 阿拉伯<BR>1257 波罗的海<BR>1258 越南<BR>8859-1 拉丁文 I<BR>8859-2 中欧<BR>8859-3 拉丁文 3<BR>8859-4 波罗的海文<BR>8859-5 西里尔文<BR>8859-6 阿拉伯文<BR>8859-7 希腊文<BR>8859-8 希伯来文:视觉排序<BR>8859-8 希伯来文:逻辑排序<BR>8859-9 拉丁文 5<BR>8859-15 拉丁文 9<BR>21866 乌克兰语-KOI8-U<BR>866 OEM-俄文<BR>20297 法文<BR>860 葡萄牙文<BR>UNICODE<BR>
+TfrmDzkTest.cbbScanMode.Items.Text= 1 横向_先左右后上下 smROW_LRTB<BR> 2 横向_先左右后下上 smROW_LRBT<BR> 3 横向_先右左后上下 smROW_RLTB<BR> 4 横向_先右左后下上 smROW_RLBT<BR> 5 横向_先上下后左右 smROW_TBLR<BR> 6 横向_先上下后右左 smROW_TBRL<BR> 7 横向_先下上后左右 smROW_BTLR<BR> 8 横向_先下上后右左 smROW_BTRL<BR> 9 纵向_先上下后左右 smCOL_TBLR<BR>10 纵向_先上下后右左 smCOL_TBRL<BR>11 纵向_先下上后左右 smCOL_BTLR<BR>12 纵向_先下上后右左 smCOL_BTRL<BR>13 纵向_先左右后上下 smCOL_LRTB<BR>14 纵向_先左右后下上 smCOL_LRBT<BR>15 纵向_先右左后上下 smCOL_RLTB<BR>16 纵向_先右左后下上 smCOL_RLBT<BR>
+TfrmDzkTest.cbbScanMode.Text= 1 横向_先左右后上下 smROW_LRTB
+TfrmDzkTest.grpCodePage.!Font=宋体,9,,,clBlue,ANSI_CHARSET
+TfrmDzkTest.grpCodePage.Caption=第三步：编码选择
+TfrmDzkTest.grpScanMode.!Font=宋体,9,,,clBlue,ANSI_CHARSET
+TfrmDzkTest.grpScanMode.Caption=第一步：扫描模式
+TfrmDzkTest.grpSize.!Font=宋体,9,,,clBlue,ANSI_CHARSET
+TfrmDzkTest.grpSize.Caption=2、位置大小
+TfrmDzkTest.lbl1.Caption=宽
+TfrmDzkTest.lbl2.Caption=高
+TfrmDzkTest.lbl5.Caption=预览字符
+TfrmDzkTest.lbl6.Caption=扫描模式
+TfrmDzkTest.lbl7.Caption=存储方式
+TfrmLocate.!Font=新宋体,9,,0,clWindowText,ANSI_CHARSET
+TfrmLocate.btn1.Caption=关闭(&C)
+TfrmLocate.Caption=如何定位
+TfrmLocate.lbl1.Caption=　　GB2312编码总共分了94个区，编码从0xA1~0xFE，每个区又有94个位，编码从<BR><BR>0xA1~0xFE。比如我们常见的“啊”字，他的编码是B0A1，那么我们就可以根据这个<BR><BR>编码来计算出他所在字库的地址。“啊”字的区码为B0，位码位A1，那么他所在的<BR><BR>地址为（（B0-A1）×94+（A1－A1））×每个汉字的占用字节数。以12×12为例，<BR><BR>那么汉字“啊”所在的地址为（（B0-A1）×94+（A1－A1））×24= 33840（十六进制<BR><BR>表示为0x8430），那么从地址0x8430开始的24个字节就是汉字“啊”的点阵数据。
+TfrmLocate.lbl2.Caption=　　根据国标对GBK的定义，GBK编码范围是0x8140-0xFEFE，剔除xx7F一根线。所以<BR><BR>我们可以根据这些计算出我们每一个区有FE-40=BE即190个位。比如我们常见的“啊”<BR><BR>字，他的编码是B0A1，那么我们就可以根据这个编码来计算出他所在字库的地址。<BR><BR>“啊”字的区码为B0，位码位A0，那么他所在的地址为:<BR><BR>((0xB0-0x81)×190+（0xA1－0x41））×每个汉字的占用字节数<BR><BR>（由于剔除了0xXX7F一根线，所以如果此处小于7F要变为减去0x40）。<BR><BR>以12×12为例，那么汉字“啊”所在的地址为:<BR><BR>（（0xB0-0x81）×190+（0xA1－0x40））×24= 216624（十六进制表示为0x34E30），<BR><BR>那么从地址0x34E30开始的24个字节就是汉字“啊”的点阵数据。
+TfrmLocate.lbl3.Caption=　　Big5普及于中国的台湾、香港与澳门等繁体中文通行区，它一套双字节字符集，<BR><BR>使用了双八码储存方法，以两个字节来 BIG-5安放一个字。 第一个字节称为“高位字<BR><BR>节”，第二个字节称为“低位字节”。 “高位字节”使用了0xA1-0xF9，共89个区; “低位字<BR><BR>节”使用了0x40-0x7E，及0xA1-0xFE,共157个位。<BR><BR>字符的定位：定位一个字符aabb，其中aa为第一个字节，bb为第二个字节。<BR><BR>区的定位：qu=aa-0xA1<BR><BR>位的定位：if(bb<=0x7E)wei=bb-0x40;else wei=bb-0x62;<BR><BR>获取到qu和wei后，其实际偏移地址则为（qu*157+wei）*（单字符所占字节数）
+TfrmLocate.lbl4.Caption=　　Korean 949采用2个字节作为编码。高位字节使用：0x81-0xFE 共126个区；低位字<BR><BR>节使用：0x41-0x5A,0x61-0x7A,0x81-0xFE 共178个位；<BR><BR>字符的定位<BR><BR>定位一个字符aabb，其中aa为第一个字节，bb为第二个字节。<BR><BR>区的定位：qu=aa-0x81<BR><BR>位的定位：<BR><BR>if(bb<=0x5A)wei=bb-0x41;else if(bb<=0x7A)wei=bb-0x46;else wei=bb-0x4C;<BR><BR>获取到qu和wei后，其实际偏移地址则为（qu*178+wei）*（单字符所占字节数）
+TfrmLocate.lbl6.Caption=　　Shift-JIS的编码由两个字节组成，第一个字节我们仍按中文习惯称之为区码，其<BR><BR>编码范围是0x81-0x9f以及0xe0-0xfc，共60个区，第二个字节我们称之为位码，其编码<BR><BR>范围为0x40-0xfc，去除0x7f一条线，共188个位。<BR><BR>如果我们要定位一个字符aabb时，我们可以采用如下算法区码=aa，位码=bb；首先<BR><BR>定位区的位置，计算方式为：<BR><BR>if(aa<=0x9F)qu=aa-0x81;else qu=aa-0xC1;<BR><BR>然后确定位码位置，计算方式为：<BR><BR>if(bb<=0x7E)wei=bb-0x40;else wei=bb-0x41;<BR><BR>由于每个区占用188个字符，所以aabb所在位置为qu*188+wei,其具体字符所在文件中<BR><BR>的便宜位置则为(qu*188+wei) *(单个字符所占字节数)。
+TfrmLocate.lbl7.Caption=     Unicode目前普遍采用的是UCS-2,它用两个字节来编码一个字符。<BR><BR>采用该编码生成字库后，其定位方式如下：<BR><BR>如我们定位字符“一”，其unicode编码是0x4E00，则其字库起始地址为：<BR><BR>偏移地址 = 0x4E00×(字符所占字节数)。
+TfrmLocate.lbl8.Caption=     本字符集采用0x00-0xFF表示各种字符，根据codepage定义的不一样，从而显示<BR><BR>不一样。<BR><BR>其定位方式也比较简单，如我们需要定位字符“0”，其代码为0x30.则其偏移地址为：<BR><BR>偏移地址=0x30×字符所占字节数。
+TfrmLocate.lbl9.Caption=　　EUC-KR是EUC(Extended Unix Code)中韩文的标准，该编码包含了韩文最为常用的<BR><BR>8000多个字符，目前使用较为广泛。<BR><BR>EUC-KR用来储存韩国KSX1001字集(旧称KSC5601)的字符。此规格由KSX2901(旧称<BR><BR>KS C 5861)定义。　<BR><BR>由于该字符的定义范围类似于我国的GB2312，所以软件也简化为GB2312编码，在编程<BR><BR>使用该编码时，可以直接使用GB2312编码的函数进行替代。
+TfrmLocate.rztbshtTabSheet8.Caption=其他
+TfrmMain.!Font=宋体,9,,0,clWindowText,ANSI_CHARSET
+TfrmMain.btn1.Caption=常用
+TfrmMain.btn2.Caption=字库测试
+TfrmMain.btn3.Caption=关于(&A)
+TfrmMain.btn4.Caption=如何定位(&H)
+TfrmMain.btn5.Caption=图片转字库
+TfrmMain.btn6.Caption=小字库
+TfrmMain.btnCreate.Caption=创建(&C)
+TfrmMain.btnPXReset.Caption=复位(&R)
+TfrmMain.Caption=点阵字库(字模)生成器 V4.0 易木雨软件工作室
+TfrmMain.cbb1.Items.Text= 1 高位在前<BR> 2 低位在前<BR>
+TfrmMain.cbb1.Text= 1 高位在前
+TfrmMain.cbbCodepage.Items.Text=936 中文(GB2312)<BR>936 中文繁(GB2312)<BR>936 中文(GBK)<BR>950 台湾(BIG5)<BR>932 日文(Shift-JIS)<BR>932 日文(Shift-JIS)半角<BR>949 韩文(HANGUL)<BR>949 韩文(EUC-KR)<BR>1250 ASCII<BR>874 泰文<BR>1250 中欧<BR>1251 西里尔文<BR>1252 拉丁文 1<BR>1253 希腊<BR>1254 土耳其<BR>1255 希伯来<BR>1256 阿拉伯<BR>1257 波罗的海<BR>1258 越南<BR>8859-1 拉丁文 I<BR>8859-2 中欧<BR>8859-3 拉丁文 3<BR>8859-4 波罗的海文<BR>8859-5 西里尔文<BR>8859-6 阿拉伯文<BR>8859-7 希腊文<BR>8859-8 希伯来文:视觉排序<BR>8859-8 希伯来文:逻辑排序<BR>8859-9 拉丁文 5<BR>8859-15 拉丁文 9<BR>21866 乌克兰语-KOI8-U<BR>866 OEM-俄文<BR>20297 法文<BR>860 葡萄牙文<BR>UNICODE<BR>
+TfrmMain.cbbScanMode.Items.Text= 1 横向_先左右后上下 smROW_LRTB<BR> 2 横向_先左右后下上 smROW_LRBT<BR> 3 横向_先右左后上下 smROW_RLTB<BR> 4 横向_先右左后下上 smROW_RLBT<BR> 5 横向_先上下后左右 smROW_TBLR<BR> 6 横向_先上下后右左 smROW_TBRL<BR> 7 横向_先下上后左右 smROW_BTLR<BR> 8 横向_先下上后右左 smROW_BTRL<BR> 9 纵向_先上下后左右 smCOL_TBLR<BR>10 纵向_先上下后右左 smCOL_TBRL<BR>11 纵向_先下上后左右 smCOL_BTLR<BR>12 纵向_先下上后右左 smCOL_BTRL<BR>13 纵向_先左右后上下 smCOL_LRTB<BR>14 纵向_先左右后下上 smCOL_LRBT<BR>15 纵向_先右左后上下 smCOL_RLTB<BR>16 纵向_先右左后下上 smCOL_RLBT<BR>
+TfrmMain.cbbScanMode.Text= 1 横向_先左右后上下 smROW_LRTB
+TfrmMain.chkWH.Caption=等高等宽
+TfrmMain.dlgSave1.Title=保存为...
+TfrmMain.grp1.Caption=预览窗(双击显示大图)
+TfrmMain.grp5.Caption=其他工具
+TfrmMain.grp6.Caption=扫描模式预览
+TfrmMain.grp7.Caption=字节模式
+TfrmMain.grpCodePage.Caption=第一步:编码选择
+TfrmMain.grpCreate.Caption=第六步:创建字库
+TfrmMain.grpFileFormat.Caption=第四步:字库格式
+TfrmMain.grpFont.Caption=第二步:字体设置
+TfrmMain.grpScanMode.Caption=第五步:扫描模式
+TfrmMain.grpSize.Caption=第三步:位置大小
+TfrmMain.lbl1.Caption=宽
+TfrmMain.lbl2.Caption=高
+TfrmMain.lbl3.Caption=横向偏移
+TfrmMain.lbl4.Caption=纵向偏移
+TfrmMain.lbl5.Caption=预览字符
+TfrmMain.lbl6.Caption=扫描模式
+TfrmMain.lbl7.Caption=存储方式
+TfrmMain.lbl8.Caption=亲,如果前面都设置好了，<BR>就点这里创建吧！
+TfrmMain.rzmrqsts1.Caption=注意：未注册时，字库带斜线，无其他限制，欢迎试用，注册后斜线就消失啦！
+TfrmPIC2DZK.btn1.Caption=创建
+TfrmPIC2DZK.Caption=图像转字库文件
+TfrmPIC2DZK.cbb1.Items.Text= 1 高位在前<BR> 2 低位在前<BR>
+TfrmPIC2DZK.cbb1.Text= 1 高位在前
+TfrmPIC2DZK.cbbScanMode.Items.Text= 1 横向_先左右后上下 smROW_LRTB<BR> 2 横向_先左右后下上 smROW_LRBT<BR> 3 横向_先右左后上下 smROW_RLTB<BR> 4 横向_先右左后下上 smROW_RLBT<BR> 5 横向_先上下后左右 smROW_TBLR<BR> 6 横向_先上下后右左 smROW_TBRL<BR> 7 横向_先下上后左右 smROW_BTLR<BR> 8 横向_先下上后右左 smROW_BTRL<BR> 9 纵向_先上下后左右 smCOL_TBLR<BR>10 纵向_先上下后右左 smCOL_TBRL<BR>11 纵向_先下上后左右 smCOL_BTLR<BR>12 纵向_先下上后右左 smCOL_BTRL<BR>13 纵向_先左右后上下 smCOL_LRTB<BR>14 纵向_先左右后下上 smCOL_LRBT<BR>15 纵向_先右左后上下 smCOL_RLTB<BR>16 纵向_先右左后下上 smCOL_RLBT<BR>
+TfrmPIC2DZK.cbbScanMode.Text= 1 横向_先左右后上下 smROW_LRTB
+TfrmPIC2DZK.grpFileFormat.!Font=宋体,9,,,clBlue,ANSI_CHARSET
+TfrmPIC2DZK.grpFileFormat.!ItemFont=宋体,9,,,,ANSI_CHARSET
+TfrmPIC2DZK.grpFileFormat.Caption=第四步:字库格式
+TfrmPIC2DZK.grpFileFormat.Items.Text=DZK<BR>C<BR>ASM<BR>
+TfrmPIC2DZK.grpScanMode.!Font=宋体,9,,,clBlue,ANSI_CHARSET
+TfrmPIC2DZK.grpScanMode.Caption=扫描模式
+TfrmPIC2DZK.lbl1.Caption=二值化阀值：
+TfrmPIC2DZK.lbl6.Caption=扫描模式
+TfrmPIC2DZK.lbl7.Caption=存储方式
+TfrmPrev.Caption=预览窗

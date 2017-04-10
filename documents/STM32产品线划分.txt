@@ -1,0 +1,57 @@
+STM32低密度低价产品
+STM32 Low density Value Line devices
+芯片型号：     STM32F100x4    STM32F100x6
+Flash大小：    16 and 32 Kbytes
+启动文件：     Startup_stm32f10x_ld_vl.s
+               Startup_stm32f10x_hd_vl.s 兼容
+宏定义：       STM32F10X_LD_VL
+
+
+STM32低密度产品
+STM32 Low density devices
+芯片型号：     STM32F101x4    STM32F101x6
+               STM32F102x4    STM32F102x6
+               STM32F103x4    STM32F103x6
+Flash大小：    16 and 32 Kbytes
+启动文件：     Startup_stm32f10x_ld.s
+               Startup_stm32f10x_hd.s 兼容
+宏定义：       STM32F10X_LD
+
+
+STM32 中密度低价产品
+STM32 Medium density Value Line devices
+芯片型号：     STM32F100x8    STM32F100xB
+Flash大小：    64 and 128 Kbytes
+启动文件：     Startup_stm32f10x_md_vl.s
+               Startup_stm32f10x_hd_vl.s 兼容
+宏定义：       STM32F10X_MD_VL
+
+
+STM32 中密度产品
+STM32 Medium density devices
+芯片型号：     STM32F101x8    STM32F101xB
+               STM32F102x8    STM32F102xB
+               STM32F103x8    STM32F103xB
+Flash大小：    64 and 128 Kbytes
+启动文件：     Startup_stm32f10x_md.s
+               Startup_stm32f10x_hd.s 兼容
+宏定义：       STM32F10X_MD
+
+
+STM32 高密度产品
+STM32 High density devices
+芯片型号：     STM32F101xC    STM32F101xD    STM32F101xE
+               STM32F103xC    STM32F103xD    STM32F103xE
+Flash大小：    256 to 512 Kbytes
+启动文件：     Startup_stm32f10x_hd.s
+宏定义：       STM32F10X_HD
+
+
+STM32 互联型产品
+STM32 Connectivity line devices
+芯片型号：     STM32F105xx
+               STM32F107xx
+启动文件：     Startup_stm32f10x_cl.s
+宏定义：       STM32F10X_CL
+
+

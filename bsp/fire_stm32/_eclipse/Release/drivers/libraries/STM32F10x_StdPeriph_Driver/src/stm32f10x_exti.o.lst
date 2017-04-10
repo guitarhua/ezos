@@ -1,0 +1,411 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_exti.c"
+  15              		.section	.text.EXTI_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	EXTI_DeInit
+  18              		.thumb
+  19              		.thumb_func
+  21              	EXTI_DeInit:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 044B     		ldr	r3, .L2
+  26 0002 0022     		movs	r2, #0
+  27 0004 1A60     		str	r2, [r3]
+  28 0006 5A60     		str	r2, [r3, #4]
+  29 0008 9A60     		str	r2, [r3, #8]
+  30 000a DA60     		str	r2, [r3, #12]
+  31 000c 024A     		ldr	r2, .L2+4
+  32 000e 5A61     		str	r2, [r3, #20]
+  33 0010 7047     		bx	lr
+  34              	.L3:
+  35 0012 00BF     		.align	2
+  36              	.L2:
+  37 0014 00040140 		.word	1073808384
+  38 0018 FFFF0F00 		.word	1048575
+  40              		.section	.text.EXTI_Init,"ax",%progbits
+  41              		.align	1
+  42              		.global	EXTI_Init
+  43              		.thumb
+  44              		.thumb_func
+  46              	EXTI_Init:
+  47              		@ args = 0, pretend = 0, frame = 0
+  48              		@ frame_needed = 0, uses_anonymous_args = 0
+  49 0000 38B5     		push	{r3, r4, r5, lr}
+  50 0002 0379     		ldrb	r3, [r0, #4]	@ zero_extendqisi2
+  51 0004 0446     		mov	r4, r0
+  52 0006 13F0FB0F 		tst	r3, #251
+  53 000a 03D0     		beq	.L5
+  54 000c 2948     		ldr	r0, .L24
+  55 000e 6A21     		movs	r1, #106
+  56 0010 FFF7FEFF 		bl	assert_err
+  57              	.L5:
+  58 0014 6379     		ldrb	r3, [r4, #5]	@ zero_extendqisi2
+  59 0016 03F0FB02 		and	r2, r3, #251
+  60 001a 082A     		cmp	r2, #8
+  61 001c 05D0     		beq	.L6
+  62 001e 102B     		cmp	r3, #16
+  63 0020 03D0     		beq	.L6
+  64 0022 2448     		ldr	r0, .L24
+  65 0024 6B21     		movs	r1, #107
+  66 0026 FFF7FEFF 		bl	assert_err
+  67              	.L6:
+  68 002a 2268     		ldr	r2, [r4]
+  69 002c 130D     		lsrs	r3, r2, #20
+  70 002e 1B05     		lsls	r3, r3, #20
+  71 0030 03B9     		cbnz	r3, .L7
+  72 0032 1AB9     		cbnz	r2, .L8
+  73              	.L7:
+  74 0034 1F48     		ldr	r0, .L24
+  75 0036 6C21     		movs	r1, #108
+  76 0038 FFF7FEFF 		bl	assert_err
+  77              	.L8:
+  78 003c A379     		ldrb	r3, [r4, #6]	@ zero_extendqisi2
+  79 003e 012B     		cmp	r3, #1
+  80 0040 03D9     		bls	.L9
+  81 0042 1C48     		ldr	r0, .L24
+  82 0044 6D21     		movs	r1, #109
+  83 0046 FFF7FEFF 		bl	assert_err
+  84              	.L9:
+  85 004a A379     		ldrb	r3, [r4, #6]	@ zero_extendqisi2
+  86 004c 2179     		ldrb	r1, [r4, #4]	@ zero_extendqisi2
+  87 004e 2268     		ldr	r2, [r4]
+  88 0050 3BB3     		cbz	r3, .L10
+  89 0052 194B     		ldr	r3, .L24+4
+  90 0054 D043     		mvns	r0, r2
+  91 0056 1D68     		ldr	r5, [r3]
+  92 0058 01F18041 		add	r1, r1, #1073741824
+  93 005c 0540     		ands	r5, r5, r0
+  94 005e 1D60     		str	r5, [r3]
+  95 0060 5D68     		ldr	r5, [r3, #4]
+  96 0062 01F58231 		add	r1, r1, #66560
+  97 0066 2840     		ands	r0, r0, r5
+  98 0068 5860     		str	r0, [r3, #4]
+  99 006a 0868     		ldr	r0, [r1]
+ 100 006c 0243     		orrs	r2, r2, r0
+ 101 006e 0A60     		str	r2, [r1]
+ 102 0070 2268     		ldr	r2, [r4]
+ 103 0072 9868     		ldr	r0, [r3, #8]
+ 104 0074 D143     		mvns	r1, r2
+ 105 0076 0840     		ands	r0, r0, r1
+ 106 0078 9860     		str	r0, [r3, #8]
+ 107 007a D868     		ldr	r0, [r3, #12]
+ 108 007c 0140     		ands	r1, r1, r0
+ 109 007e D960     		str	r1, [r3, #12]
+ 110 0080 6179     		ldrb	r1, [r4, #5]	@ zero_extendqisi2
+ 111 0082 1029     		cmp	r1, #16
+ 112 0084 06D1     		bne	.L11
+ 113 0086 9968     		ldr	r1, [r3, #8]
+ 114 0088 1143     		orrs	r1, r1, r2
+ 115 008a 9960     		str	r1, [r3, #8]
+ 116 008c D968     		ldr	r1, [r3, #12]
+ 117 008e 0A43     		orrs	r2, r2, r1
+ 118 0090 DA60     		str	r2, [r3, #12]
+ 119 0092 38BD     		pop	{r3, r4, r5, pc}
+ 120              	.L11:
+ 121 0094 01F18043 		add	r3, r1, #1073741824
+ 122 0098 03F58233 		add	r3, r3, #66560
+ 123 009c 1968     		ldr	r1, [r3]
+ 124 009e 0A43     		orrs	r2, r2, r1
+ 125 00a0 06E0     		b	.L22
+ 126              	.L10:
+ 127 00a2 01F18043 		add	r3, r1, #1073741824
+ 128 00a6 03F58233 		add	r3, r3, #66560
+ 129 00aa 1968     		ldr	r1, [r3]
+ 130 00ac 21EA0202 		bic	r2, r1, r2
+ 131              	.L22:
+ 132 00b0 1A60     		str	r2, [r3]
+ 133 00b2 38BD     		pop	{r3, r4, r5, pc}
+ 134              	.L25:
+ 135              		.align	2
+ 136              	.L24:
+ 137 00b4 00000000 		.word	.LC0
+ 138 00b8 00040140 		.word	1073808384
+ 140              		.section	.text.EXTI_StructInit,"ax",%progbits
+ 141              		.align	1
+ 142              		.global	EXTI_StructInit
+ 143              		.thumb
+ 144              		.thumb_func
+ 146              	EXTI_StructInit:
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+ 150 0000 0023     		movs	r3, #0
+ 151 0002 0C22     		movs	r2, #12
+ 152 0004 0360     		str	r3, [r0]
+ 153 0006 0371     		strb	r3, [r0, #4]
+ 154 0008 4271     		strb	r2, [r0, #5]
+ 155 000a 8371     		strb	r3, [r0, #6]
+ 156 000c 7047     		bx	lr
+ 158              		.section	.text.EXTI_GenerateSWInterrupt,"ax",%progbits
+ 159              		.align	1
+ 160              		.global	EXTI_GenerateSWInterrupt
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	EXTI_GenerateSWInterrupt:
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167 0000 030D     		lsrs	r3, r0, #20
+ 168 0002 1B05     		lsls	r3, r3, #20
+ 169 0004 10B5     		push	{r4, lr}
+ 170 0006 0446     		mov	r4, r0
+ 171 0008 03B9     		cbnz	r3, .L28
+ 172 000a 18B9     		cbnz	r0, .L29
+ 173              	.L28:
+ 174 000c 0448     		ldr	r0, .L30
+ 175 000e AE21     		movs	r1, #174
+ 176 0010 FFF7FEFF 		bl	assert_err
+ 177              	.L29:
+ 178 0014 034B     		ldr	r3, .L30+4
+ 179 0016 1A69     		ldr	r2, [r3, #16]
+ 180 0018 1443     		orrs	r4, r4, r2
+ 181 001a 1C61     		str	r4, [r3, #16]
+ 182 001c 10BD     		pop	{r4, pc}
+ 183              	.L31:
+ 184 001e 00BF     		.align	2
+ 185              	.L30:
+ 186 0020 00000000 		.word	.LC0
+ 187 0024 00040140 		.word	1073808384
+ 189              		.section	.text.EXTI_GetFlagStatus,"ax",%progbits
+ 190              		.align	1
+ 191              		.global	EXTI_GetFlagStatus
+ 192              		.thumb
+ 193              		.thumb_func
+ 195              	EXTI_GetFlagStatus:
+ 196              		@ args = 0, pretend = 0, frame = 0
+ 197              		@ frame_needed = 0, uses_anonymous_args = 0
+ 198 0000 431E     		subs	r3, r0, #1
+ 199 0002 012B     		cmp	r3, #1
+ 200 0004 10B5     		push	{r4, lr}
+ 201 0006 0446     		mov	r4, r0
+ 202 0008 33D9     		bls	.L33
+ 203 000a 0428     		cmp	r0, #4
+ 204 000c 31D0     		beq	.L33
+ 205 000e 0828     		cmp	r0, #8
+ 206 0010 2FD0     		beq	.L33
+ 207 0012 1028     		cmp	r0, #16
+ 208 0014 2DD0     		beq	.L33
+ 209 0016 2028     		cmp	r0, #32
+ 210 0018 2BD0     		beq	.L33
+ 211 001a 4028     		cmp	r0, #64
+ 212 001c 29D0     		beq	.L33
+ 213 001e 8028     		cmp	r0, #128
+ 214 0020 27D0     		beq	.L33
+ 215 0022 B0F5807F 		cmp	r0, #256
+ 216 0026 24D0     		beq	.L33
+ 217 0028 B0F5007F 		cmp	r0, #512
+ 218 002c 21D0     		beq	.L33
+ 219 002e B0F5806F 		cmp	r0, #1024
+ 220 0032 1ED0     		beq	.L33
+ 221 0034 B0F5006F 		cmp	r0, #2048
+ 222 0038 1BD0     		beq	.L33
+ 223 003a B0F5805F 		cmp	r0, #4096
+ 224 003e 18D0     		beq	.L33
+ 225 0040 B0F5005F 		cmp	r0, #8192
+ 226 0044 15D0     		beq	.L33
+ 227 0046 B0F5804F 		cmp	r0, #16384
+ 228 004a 12D0     		beq	.L33
+ 229 004c B0F5004F 		cmp	r0, #32768
+ 230 0050 0FD0     		beq	.L33
+ 231 0052 B0F5803F 		cmp	r0, #65536
+ 232 0056 0CD0     		beq	.L33
+ 233 0058 B0F5003F 		cmp	r0, #131072
+ 234 005c 09D0     		beq	.L33
+ 235 005e B0F5802F 		cmp	r0, #262144
+ 236 0062 06D0     		beq	.L33
+ 237 0064 B0F5002F 		cmp	r0, #524288
+ 238 0068 03D0     		beq	.L33
+ 239 006a 0548     		ldr	r0, .L88
+ 240 006c BE21     		movs	r1, #190
+ 241 006e FFF7FEFF 		bl	assert_err
+ 242              	.L33:
+ 243 0072 044B     		ldr	r3, .L88+4
+ 244 0074 5B69     		ldr	r3, [r3, #20]
+ 245 0076 1C42     		tst	r4, r3
+ 246 0078 0CBF     		ite	eq
+ 247 007a 0020     		moveq	r0, #0
+ 248 007c 0120     		movne	r0, #1
+ 249 007e 10BD     		pop	{r4, pc}
+ 250              	.L89:
+ 251              		.align	2
+ 252              	.L88:
+ 253 0080 00000000 		.word	.LC0
+ 254 0084 00040140 		.word	1073808384
+ 256              		.section	.text.EXTI_ClearFlag,"ax",%progbits
+ 257              		.align	1
+ 258              		.global	EXTI_ClearFlag
+ 259              		.thumb
+ 260              		.thumb_func
+ 262              	EXTI_ClearFlag:
+ 263              		@ args = 0, pretend = 0, frame = 0
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265 0000 030D     		lsrs	r3, r0, #20
+ 266 0002 1B05     		lsls	r3, r3, #20
+ 267 0004 10B5     		push	{r4, lr}
+ 268 0006 0446     		mov	r4, r0
+ 269 0008 03B9     		cbnz	r3, .L91
+ 270 000a 18B9     		cbnz	r0, .L92
+ 271              	.L91:
+ 272 000c 0348     		ldr	r0, .L93
+ 273 000e D421     		movs	r1, #212
+ 274 0010 FFF7FEFF 		bl	assert_err
+ 275              	.L92:
+ 276 0014 024B     		ldr	r3, .L93+4
+ 277 0016 5C61     		str	r4, [r3, #20]
+ 278 0018 10BD     		pop	{r4, pc}
+ 279              	.L94:
+ 280 001a 00BF     		.align	2
+ 281              	.L93:
+ 282 001c 00000000 		.word	.LC0
+ 283 0020 00040140 		.word	1073808384
+ 285              		.section	.text.EXTI_GetITStatus,"ax",%progbits
+ 286              		.align	1
+ 287              		.global	EXTI_GetITStatus
+ 288              		.thumb
+ 289              		.thumb_func
+ 291              	EXTI_GetITStatus:
+ 292              		@ args = 0, pretend = 0, frame = 0
+ 293              		@ frame_needed = 0, uses_anonymous_args = 0
+ 294 0000 431E     		subs	r3, r0, #1
+ 295 0002 012B     		cmp	r3, #1
+ 296 0004 10B5     		push	{r4, lr}
+ 297 0006 0446     		mov	r4, r0
+ 298 0008 33D9     		bls	.L96
+ 299 000a 0428     		cmp	r0, #4
+ 300 000c 31D0     		beq	.L96
+ 301 000e 0828     		cmp	r0, #8
+ 302 0010 2FD0     		beq	.L96
+ 303 0012 1028     		cmp	r0, #16
+ 304 0014 2DD0     		beq	.L96
+ 305 0016 2028     		cmp	r0, #32
+ 306 0018 2BD0     		beq	.L96
+ 307 001a 4028     		cmp	r0, #64
+ 308 001c 29D0     		beq	.L96
+ 309 001e 8028     		cmp	r0, #128
+ 310 0020 27D0     		beq	.L96
+ 311 0022 B0F5807F 		cmp	r0, #256
+ 312 0026 24D0     		beq	.L96
+ 313 0028 B0F5007F 		cmp	r0, #512
+ 314 002c 21D0     		beq	.L96
+ 315 002e B0F5806F 		cmp	r0, #1024
+ 316 0032 1ED0     		beq	.L96
+ 317 0034 B0F5006F 		cmp	r0, #2048
+ 318 0038 1BD0     		beq	.L96
+ 319 003a B0F5805F 		cmp	r0, #4096
+ 320 003e 18D0     		beq	.L96
+ 321 0040 B0F5005F 		cmp	r0, #8192
+ 322 0044 15D0     		beq	.L96
+ 323 0046 B0F5804F 		cmp	r0, #16384
+ 324 004a 12D0     		beq	.L96
+ 325 004c B0F5004F 		cmp	r0, #32768
+ 326 0050 0FD0     		beq	.L96
+ 327 0052 B0F5803F 		cmp	r0, #65536
+ 328 0056 0CD0     		beq	.L96
+ 329 0058 B0F5003F 		cmp	r0, #131072
+ 330 005c 09D0     		beq	.L96
+ 331 005e B0F5802F 		cmp	r0, #262144
+ 332 0062 06D0     		beq	.L96
+ 333 0064 B0F5002F 		cmp	r0, #524288
+ 334 0068 03D0     		beq	.L96
+ 335 006a 0748     		ldr	r0, .L153
+ 336 006c E521     		movs	r1, #229
+ 337 006e FFF7FEFF 		bl	assert_err
+ 338              	.L96:
+ 339 0072 064B     		ldr	r3, .L153+4
+ 340 0074 1A68     		ldr	r2, [r3]
+ 341 0076 5869     		ldr	r0, [r3, #20]
+ 342 0078 2040     		ands	r0, r4, r0
+ 343 007a 03D0     		beq	.L97
+ 344 007c 1442     		tst	r4, r2
+ 345 007e 0CBF     		ite	eq
+ 346 0080 0020     		moveq	r0, #0
+ 347 0082 0120     		movne	r0, #1
+ 348              	.L97:
+ 349 0084 10BD     		pop	{r4, pc}
+ 350              	.L154:
+ 351 0086 00BF     		.align	2
+ 352              	.L153:
+ 353 0088 00000000 		.word	.LC0
+ 354 008c 00040140 		.word	1073808384
+ 356              		.section	.text.EXTI_ClearITPendingBit,"ax",%progbits
+ 357              		.align	1
+ 358              		.global	EXTI_ClearITPendingBit
+ 359              		.thumb
+ 360              		.thumb_func
+ 362              	EXTI_ClearITPendingBit:
+ 363              		@ args = 0, pretend = 0, frame = 0
+ 364              		@ frame_needed = 0, uses_anonymous_args = 0
+ 365 0000 030D     		lsrs	r3, r0, #20
+ 366 0002 1B05     		lsls	r3, r3, #20
+ 367 0004 10B5     		push	{r4, lr}
+ 368 0006 0446     		mov	r4, r0
+ 369 0008 03B9     		cbnz	r3, .L156
+ 370 000a 18B9     		cbnz	r0, .L157
+ 371              	.L156:
+ 372 000c 0348     		ldr	r0, .L158
+ 373 000e FC21     		movs	r1, #252
+ 374 0010 FFF7FEFF 		bl	assert_err
+ 375              	.L157:
+ 376 0014 024B     		ldr	r3, .L158+4
+ 377 0016 5C61     		str	r4, [r3, #20]
+ 378 0018 10BD     		pop	{r4, pc}
+ 379              	.L159:
+ 380 001a 00BF     		.align	2
+ 381              	.L158:
+ 382 001c 00000000 		.word	.LC0
+ 383 0020 00040140 		.word	1073808384
+ 385              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 386              	.LC0:
+ 387 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 387      73657273 
+ 387      2F647261 
+ 387      6170686F 
+ 387      2F446573 
+ 388 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_ex"
+ 388      6965732F 
+ 388      53544D33 
+ 388      32463130 
+ 388      785F5374 
+ 389 0066 74692E63 		.ascii	"ti.c\000"
+ 389      00
+ 390              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_exti.c
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:16     .text.EXTI_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:21     .text.EXTI_DeInit:00000000 EXTI_DeInit
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:37     .text.EXTI_DeInit:00000014 $d
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:41     .text.EXTI_Init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:46     .text.EXTI_Init:00000000 EXTI_Init
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:137    .text.EXTI_Init:000000b4 $d
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:141    .text.EXTI_StructInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:146    .text.EXTI_StructInit:00000000 EXTI_StructInit
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:159    .text.EXTI_GenerateSWInterrupt:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:164    .text.EXTI_GenerateSWInterrupt:00000000 EXTI_GenerateSWInterrupt
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:186    .text.EXTI_GenerateSWInterrupt:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:190    .text.EXTI_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:195    .text.EXTI_GetFlagStatus:00000000 EXTI_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:253    .text.EXTI_GetFlagStatus:00000080 $d
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:257    .text.EXTI_ClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:262    .text.EXTI_ClearFlag:00000000 EXTI_ClearFlag
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:282    .text.EXTI_ClearFlag:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:286    .text.EXTI_GetITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:291    .text.EXTI_GetITStatus:00000000 EXTI_GetITStatus
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:353    .text.EXTI_GetITStatus:00000088 $d
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:357    .text.EXTI_ClearITPendingBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:362    .text.EXTI_ClearITPendingBit:00000000 EXTI_ClearITPendingBit
+D:\Users\draapho\AppData\Local\Temp\cck3U1s5.s:382    .text.EXTI_ClearITPendingBit:0000001c $d
+
+UNDEFINED SYMBOLS
+assert_err

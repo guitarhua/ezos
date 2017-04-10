@@ -1,0 +1,216 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_rtc_time.c"
+  15              		.section	.text.rtc_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	rtc_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	rtc_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 0121     		movs	r1, #1
+  26 0004 4FF0C050 		mov	r0, #402653184
+  27 0008 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+  28 000c 0120     		movs	r0, #1
+  29 000e FFF7FEFF 		bl	PWR_BackupAccessCmd
+  30 0012 0420     		movs	r0, #4
+  31 0014 FFF7FEFF 		bl	BKP_ReadBackupRegister
+  32 0018 4AF2A553 		movw	r3, #42405
+  33 001c 9842     		cmp	r0, r3
+  34 001e 21D0     		beq	.L2
+  35 0020 FFF7FEFF 		bl	BKP_DeInit
+  36 0024 0120     		movs	r0, #1
+  37 0026 FFF7FEFF 		bl	RCC_LSEConfig
+  38              	.L4:
+  39 002a 4120     		movs	r0, #65
+  40 002c FFF7FEFF 		bl	RCC_GetFlagStatus
+  41 0030 0028     		cmp	r0, #0
+  42 0032 FAD0     		beq	.L4
+  43 0034 4FF48070 		mov	r0, #256
+  44 0038 FFF7FEFF 		bl	RCC_RTCCLKConfig
+  45 003c 0120     		movs	r0, #1
+  46 003e FFF7FEFF 		bl	RCC_RTCCLKCmd
+  47 0042 FFF7FEFF 		bl	RTC_WaitForSynchro
+  48 0046 FFF7FEFF 		bl	RTC_WaitForLastTask
+  49 004a 47F6FF70 		movw	r0, #32767
+  50 004e FFF7FEFF 		bl	RTC_SetPrescaler
+  51 0052 FFF7FEFF 		bl	RTC_WaitForLastTask
+  52 0056 0420     		movs	r0, #4
+  53 0058 4AF2A551 		movw	r1, #42405
+  54 005c FFF7FEFF 		bl	BKP_WriteBackupRegister
+  55 0060 0120     		movs	r0, #1
+  56 0062 08BD     		pop	{r3, pc}
+  57              	.L2:
+  58 0064 FFF7FEFF 		bl	RTC_WaitForSynchro
+  59 0068 0020     		movs	r0, #0
+  60 006a 08BD     		pop	{r3, pc}
+  62              		.section	.text.time_unix2calendar,"ax",%progbits
+  63              		.align	1
+  64              		.global	time_unix2calendar
+  65              		.thumb
+  66              		.thumb_func
+  68              	time_unix2calendar:
+  69              		@ args = 0, pretend = 0, frame = 8
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71 0000 73B5     		push	{r0, r1, r4, r5, r6, lr}
+  72 0002 0646     		mov	r6, r0
+  73 0004 02A8     		add	r0, sp, #8
+  74 0006 40F8041D 		str	r1, [r0, #-4]!
+  75 000a FFF7FEFF 		bl	localtime
+  76 000e 4369     		ldr	r3, [r0, #20]
+  77 0010 3446     		mov	r4, r6
+  78 0012 03F26C73 		addw	r3, r3, #1900
+  79 0016 4361     		str	r3, [r0, #20]
+  80 0018 0369     		ldr	r3, [r0, #16]
+  81 001a 0546     		mov	r5, r0
+  82 001c 0133     		adds	r3, r3, #1
+  83 001e 0361     		str	r3, [r0, #16]
+  84 0020 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  85 0022 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  86 0024 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  87 0026 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  88 0028 95E80700 		ldmia	r5, {r0, r1, r2}
+  89 002c 84E80700 		stmia	r4, {r0, r1, r2}
+  90 0030 3046     		mov	r0, r6
+  91 0032 02B0     		add	sp, sp, #8
+  92              		@ sp needed
+  93 0034 70BD     		pop	{r4, r5, r6, pc}
+  95              		.section	.text.time_calendar2unix,"ax",%progbits
+  96              		.align	1
+  97              		.global	time_calendar2unix
+  98              		.thumb
+  99              		.thumb_func
+ 101              	time_calendar2unix:
+ 102              		@ args = 44, pretend = 16, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104 0000 84B0     		sub	sp, sp, #16
+ 105 0002 10B5     		push	{r4, lr}
+ 106 0004 02AC     		add	r4, sp, #8
+ 107 0006 84E80F00 		stmia	r4, {r0, r1, r2, r3}
+ 108 000a 079B     		ldr	r3, [sp, #28]
+ 109 000c 2046     		mov	r0, r4
+ 110 000e A3F26C73 		subw	r3, r3, #1900
+ 111 0012 0793     		str	r3, [sp, #28]
+ 112 0014 069B     		ldr	r3, [sp, #24]
+ 113 0016 013B     		subs	r3, r3, #1
+ 114 0018 0693     		str	r3, [sp, #24]
+ 115 001a FFF7FEFF 		bl	mktime
+ 116 001e BDE81040 		pop	{r4, lr}
+ 117 0022 04B0     		add	sp, sp, #16
+ 118 0024 7047     		bx	lr
+ 120              		.section	.text.time_get_calendar,"ax",%progbits
+ 121              		.align	1
+ 122              		.global	time_get_calendar
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	time_get_calendar:
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129 0000 10B5     		push	{r4, lr}
+ 130 0002 0446     		mov	r4, r0
+ 131 0004 FFF7FEFF 		bl	RTC_GetCounter
+ 132 0008 0146     		mov	r1, r0
+ 133 000a 2046     		mov	r0, r4
+ 134 000c FFF7FEFF 		bl	time_unix2calendar
+ 135 0010 2046     		mov	r0, r4
+ 136 0012 10BD     		pop	{r4, pc}
+ 138              		.section	.text.time_get_unix,"ax",%progbits
+ 139              		.align	1
+ 140              		.global	time_get_unix
+ 141              		.thumb
+ 142              		.thumb_func
+ 144              	time_get_unix:
+ 145              		@ args = 0, pretend = 0, frame = 0
+ 146              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147              		@ link register save eliminated.
+ 148 0000 FFF7FEBF 		b	RTC_GetCounter
+ 150              		.section	.text.time_set_unix,"ax",%progbits
+ 151              		.align	1
+ 152              		.global	time_set_unix
+ 153              		.thumb
+ 154              		.thumb_func
+ 156              	time_set_unix:
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159 0000 10B5     		push	{r4, lr}
+ 160 0002 0446     		mov	r4, r0
+ 161 0004 FFF7FEFF 		bl	RTC_WaitForLastTask
+ 162 0008 2046     		mov	r0, r4
+ 163 000a FFF7FEFF 		bl	RTC_SetCounter
+ 164 000e BDE81040 		pop	{r4, lr}
+ 165 0012 FFF7FEBF 		b	RTC_WaitForLastTask
+ 167              		.section	.text.time_set_calendar,"ax",%progbits
+ 168              		.align	1
+ 169              		.global	time_set_calendar
+ 170              		.thumb
+ 171              		.thumb_func
+ 173              	time_set_calendar:
+ 174              		@ args = 44, pretend = 16, frame = 0
+ 175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 176 0000 84B0     		sub	sp, sp, #16
+ 177 0002 30B5     		push	{r4, r5, lr}
+ 178 0004 89B0     		sub	sp, sp, #36
+ 179 0006 0CAC     		add	r4, sp, #48
+ 180 0008 84E80F00 		stmia	r4, {r0, r1, r2, r3}
+ 181 000c 10AD     		add	r5, sp, #64
+ 182 000e 6C46     		mov	r4, sp
+ 183 0010 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 184 0012 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 185 0014 95E80700 		ldmia	r5, {r0, r1, r2}
+ 186 0018 84E80700 		stmia	r4, {r0, r1, r2}
+ 187 001c 0CAC     		add	r4, sp, #48
+ 188 001e 94E80F00 		ldmia	r4, {r0, r1, r2, r3}
+ 189 0022 FFF7FEFF 		bl	time_calendar2unix
+ 190 0026 09B0     		add	sp, sp, #36
+ 191              		@ sp needed
+ 192 0028 BDE83040 		pop	{r4, r5, lr}
+ 193 002c 04B0     		add	sp, sp, #16
+ 194 002e FFF7FEBF 		b	time_set_unix
+ 196              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_rtc_time.c
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:16     .text.rtc_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:21     .text.rtc_init:00000000 rtc_init
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:63     .text.time_unix2calendar:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:68     .text.time_unix2calendar:00000000 time_unix2calendar
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:96     .text.time_calendar2unix:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:101    .text.time_calendar2unix:00000000 time_calendar2unix
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:121    .text.time_get_calendar:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:126    .text.time_get_calendar:00000000 time_get_calendar
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:139    .text.time_get_unix:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:144    .text.time_get_unix:00000000 time_get_unix
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:151    .text.time_set_unix:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:156    .text.time_set_unix:00000000 time_set_unix
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:168    .text.time_set_calendar:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cctXjOEp.s:173    .text.time_set_calendar:00000000 time_set_calendar
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphClockCmd
+PWR_BackupAccessCmd
+BKP_ReadBackupRegister
+BKP_DeInit
+RCC_LSEConfig
+RCC_GetFlagStatus
+RCC_RTCCLKConfig
+RCC_RTCCLKCmd
+RTC_WaitForSynchro
+RTC_WaitForLastTask
+RTC_SetPrescaler
+BKP_WriteBackupRegister
+localtime
+mktime
+RTC_GetCounter
+RTC_SetCounter

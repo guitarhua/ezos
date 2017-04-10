@@ -1,0 +1,1578 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO.c"
+  15              		.section	.text._DrawBkCircle,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	_DrawBkCircle:
+  21              		@ args = 0, pretend = 0, frame = 8
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  24 0004 87B0     		sub	sp, sp, #28
+  25 0006 0590     		str	r0, [sp, #20]
+  26 0008 FFF7FEFF 		bl	LCD_GetXSize
+  27 000c 8046     		mov	r8, r0
+  28 000e FFF7FEFF 		bl	LCD_GetYSize
+  29 0012 0546     		mov	r5, r0
+  30 0014 FFF7FEFF 		bl	LCD_GetVYSize
+  31 0018 A842     		cmp	r0, r5
+  32 001a 0446     		mov	r4, r0
+  33 001c 09DD     		ble	.L2
+  34 001e 4FF40800 		mov	r0, #8912896
+  35 0022 FFF7FEFF 		bl	GUI_SetBkColor
+  36 0026 0020     		movs	r0, #0
+  37 0028 0146     		mov	r1, r0
+  38 002a 4246     		mov	r2, r8
+  39 002c 2346     		mov	r3, r4
+  40 002e FFF7FEFF 		bl	GUI_ClearRect
+  41              	.L2:
+  42 0032 3E4E     		ldr	r6, .L8
+  43 0034 D6F80090 		ldr	r9, [r6]
+  44 0038 B9F1000F 		cmp	r9, #0
+  45 003c 65D1     		bne	.L3
+  46 003e DFF8F8B0 		ldr	fp, .L8+12
+  47 0042 DFF8F8A0 		ldr	r10, .L8+16
+  48 0046 0127     		movs	r7, #1
+  49 0048 C922     		movs	r2, #201
+  50 004a 1346     		mov	r3, r2
+  51 004c 0097     		str	r7, [sp]
+  52 004e CDF804B0 		str	fp, [sp, #4]
+  53 0052 CDF808A0 		str	r10, [sp, #8]
+  54 0056 4946     		mov	r1, r9
+  55 0058 4846     		mov	r0, r9
+  56 005a FFF7FEFF 		bl	GUI_MEMDEV_CreateFixed
+  57 005e 0097     		str	r7, [sp]
+  58 0060 0446     		mov	r4, r0
+  59 0062 4946     		mov	r1, r9
+  60 0064 4246     		mov	r2, r8
+  61 0066 2B46     		mov	r3, r5
+  62 0068 4846     		mov	r0, r9
+  63 006a FFF7FEFF 		bl	GUI_MEMDEV_CreateEx
+  64 006e 3A46     		mov	r2, r7
+  65 0070 4946     		mov	r1, r9
+  66 0072 6423     		movs	r3, #100
+  67 0074 8DE88008 		stmia	sp, {r7, fp}
+  68 0078 3060     		str	r0, [r6]
+  69 007a CDF808A0 		str	r10, [sp, #8]
+  70 007e 4846     		mov	r0, r9
+  71 0080 FFF7FEFF 		bl	GUI_MEMDEV_CreateFixed
+  72 0084 0746     		mov	r7, r0
+  73 0086 2046     		mov	r0, r4
+  74 0088 FFF7FEFF 		bl	GUI_MEMDEV_Select
+  75 008c 8246     		mov	r10, r0
+  76 008e 4FF40800 		mov	r0, #8912896
+  77 0092 FFF7FEFF 		bl	GUI_SetBkColor
+  78 0096 FFF7FEFF 		bl	GUI_Clear
+  79 009a 3846     		mov	r0, r7
+  80 009c FFF7FEFF 		bl	GUI_MEMDEV_Select
+  81 00a0 234A     		ldr	r2, .L8+4
+  82 00a2 4FF40803 		mov	r3, #8912896
+  83 00a6 8DE80C00 		stmia	sp, {r2, r3}
+  84 00aa 4846     		mov	r0, r9
+  85 00ac 4946     		mov	r1, r9
+  86 00ae 4A46     		mov	r2, r9
+  87 00b0 6423     		movs	r3, #100
+  88 00b2 FFF7FEFF 		bl	GUI_DrawGradientV
+  89 00b6 3846     		mov	r0, r7
+  90 00b8 FFF7FEFF 		bl	GUI_MEMDEV_GetDataPtr
+  91 00bc 8346     		mov	fp, r0
+  92 00be 2046     		mov	r0, r4
+  93 00c0 FFF7FEFF 		bl	GUI_MEMDEV_Select
+  94              	.L5:
+  95 00c4 5BF82900 		ldr	r0, [fp, r9, lsl #2]
+  96 00c8 FFF7FEFF 		bl	GUI_SetColor
+  97 00cc 6420     		movs	r0, #100
+  98 00ce 4A46     		mov	r2, r9
+  99 00d0 0146     		mov	r1, r0
+ 100 00d2 09F10109 		add	r9, r9, #1
+ 101 00d6 FFF7FEFF 		bl	GUI_DrawCircle
+ 102 00da B9F1640F 		cmp	r9, #100
+ 103 00de F1D1     		bne	.L5
+ 104 00e0 3068     		ldr	r0, [r6]
+ 105 00e2 FFF7FEFF 		bl	GUI_MEMDEV_Select
+ 106 00e6 0021     		movs	r1, #0
+ 107 00e8 0291     		str	r1, [sp, #8]
+ 108 00ea 0A46     		mov	r2, r1
+ 109 00ec 2B46     		mov	r3, r5
+ 110 00ee 2046     		mov	r0, r4
+ 111 00f0 8DE82001 		stmia	sp, {r5, r8}
+ 112 00f4 FFF7FEFF 		bl	GUI_MEMDEV_DrawPerspectiveX
+ 113 00f8 2046     		mov	r0, r4
+ 114 00fa FFF7FEFF 		bl	GUI_MEMDEV_Delete
+ 115 00fe 3846     		mov	r0, r7
+ 116 0100 FFF7FEFF 		bl	GUI_MEMDEV_Delete
+ 117 0104 5046     		mov	r0, r10
+ 118 0106 FFF7FEFF 		bl	GUI_MEMDEV_Select
+ 119              	.L3:
+ 120 010a 3068     		ldr	r0, [r6]
+ 121 010c FFF7FEFF 		bl	GUI_MEMDEV_Write
+ 122 0110 059B     		ldr	r3, [sp, #20]
+ 123 0112 3BB1     		cbz	r3, .L1
+ 124 0114 0521     		movs	r1, #5
+ 125 0116 0748     		ldr	r0, .L8+8
+ 126 0118 0A46     		mov	r2, r1
+ 127 011a 07B0     		add	sp, sp, #28
+ 128              		@ sp needed
+ 129 011c BDE8F04F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 130 0120 FFF7FEBF 		b	GUI_DrawBitmap
+ 131              	.L1:
+ 132 0124 07B0     		add	sp, sp, #28
+ 133              		@ sp needed
+ 134 0126 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 135              	.L9:
+ 136 012a 00BF     		.align	2
+ 137              	.L8:
+ 138 012c 00000000 		.word	.LANCHOR0
+ 139 0130 5555FF00 		.word	16733525
+ 140 0134 00000000 		.word	bmSTLogo70x35
+ 141 0138 00000000 		.word	GUI_MEMDEV_DEVICE_32
+ 142 013c 00000000 		.word	LCD_API_ColorConv_8888
+ 144              		.section	.text._cbFrameWinControl,"ax",%progbits
+ 145              		.align	1
+ 146              		.thumb
+ 147              		.thumb_func
+ 149              	_cbFrameWinControl:
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152 0000 0368     		ldr	r3, [r0]
+ 153 0002 73B5     		push	{r0, r1, r4, r5, r6, lr}
+ 154 0004 0F2B     		cmp	r3, #15
+ 155 0006 0446     		mov	r4, r0
+ 156 0008 3CD0     		beq	.L12
+ 157 000a 09DC     		bgt	.L13
+ 158 000c 0E2B     		cmp	r3, #14
+ 159 000e 7FD1     		bne	.L11
+ 160 0010 FFF7FEFF 		bl	WM_GetDesktopWindow
+ 161 0014 2146     		mov	r1, r4
+ 162 0016 02B0     		add	sp, sp, #8
+ 163              		@ sp needed
+ 164 0018 BDE87040 		pop	{r4, r5, r6, lr}
+ 165 001c FFF7FEBF 		b	WM_SendMessage
+ 166              	.L13:
+ 167 0020 1D2B     		cmp	r3, #29
+ 168 0022 02D0     		beq	.L15
+ 169 0024 262B     		cmp	r3, #38
+ 170 0026 40D0     		beq	.L16
+ 171 0028 72E0     		b	.L11
+ 172              	.L15:
+ 173 002a 4FF40471 		mov	r1, #528
+ 174 002e 4068     		ldr	r0, [r0, #4]
+ 175 0030 FFF7FEFF 		bl	WM_GetDialogItem
+ 176 0034 0E21     		movs	r1, #14
+ 177 0036 0546     		mov	r5, r0
+ 178 0038 FFF7FEFF 		bl	PROGBAR_SetTextAlign
+ 179 003c 2846     		mov	r0, r5
+ 180 003e 3849     		ldr	r1, .L23
+ 181 0040 FFF7FEFF 		bl	PROGBAR_SetFont
+ 182 0044 6068     		ldr	r0, [r4, #4]
+ 183 0046 4FF40061 		mov	r1, #2048
+ 184 004a FFF7FEFF 		bl	WM_GetDialogItem
+ 185 004e 0021     		movs	r1, #0
+ 186 0050 FFF7FEFF 		bl	BUTTON_SetFocussable
+ 187 0054 6068     		ldr	r0, [r4, #4]
+ 188 0056 40F60101 		movw	r1, #2049
+ 189 005a FFF7FEFF 		bl	WM_GetDialogItem
+ 190 005e 0021     		movs	r1, #0
+ 191 0060 FFF7FEFF 		bl	BUTTON_SetFocussable
+ 192 0064 6068     		ldr	r0, [r4, #4]
+ 193 0066 4FF4B071 		mov	r1, #352
+ 194 006a FFF7FEFF 		bl	WM_GetDialogItem
+ 195 006e 2D49     		ldr	r1, .L23+4
+ 196 0070 0446     		mov	r4, r0
+ 197 0072 FFF7FEFF 		bl	TEXT_SetText
+ 198 0076 2C49     		ldr	r1, .L23+8
+ 199 0078 2046     		mov	r0, r4
+ 200 007a 02B0     		add	sp, sp, #8
+ 201              		@ sp needed
+ 202 007c BDE87040 		pop	{r4, r5, r6, lr}
+ 203 0080 FFF7FEBF 		b	TEXT_SetFont
+ 204              	.L12:
+ 205 0084 4068     		ldr	r0, [r0, #4]
+ 206 0086 FFF7FEFF 		bl	WM_GetWindowSizeX
+ 207 008a 0546     		mov	r5, r0
+ 208 008c 6068     		ldr	r0, [r4, #4]
+ 209 008e FFF7FEFF 		bl	WM_GetWindowSizeY
+ 210 0092 264A     		ldr	r2, .L23+12
+ 211 0094 431E     		subs	r3, r0, #1
+ 212 0096 6FF07F41 		mvn	r1, #-16777216
+ 213 009a 0020     		movs	r0, #0
+ 214 009c 8DE80600 		stmia	sp, {r1, r2}
+ 215 00a0 0146     		mov	r1, r0
+ 216 00a2 6A1E     		subs	r2, r5, #1
+ 217 00a4 FFF7FEFF 		bl	GUI_DrawGradientV
+ 218 00a8 38E0     		b	.L10
+ 219              	.L16:
+ 220 00aa 8068     		ldr	r0, [r0, #8]
+ 221 00ac FFF7FEFF 		bl	WM_GetId
+ 222 00b0 E368     		ldr	r3, [r4, #12]
+ 223 00b2 022B     		cmp	r3, #2
+ 224 00b4 32D1     		bne	.L10
+ 225 00b6 B0F5006F 		cmp	r0, #2048
+ 226 00ba 0ED0     		beq	.L19
+ 227 00bc 40F60103 		movw	r3, #2049
+ 228 00c0 9842     		cmp	r0, r3
+ 229 00c2 2BD1     		bne	.L10
+ 230 00c4 1A4B     		ldr	r3, .L23+16
+ 231 00c6 0122     		movs	r2, #1
+ 232 00c8 1A60     		str	r2, [r3]
+ 233 00ca 1A4A     		ldr	r2, .L23+20
+ 234 00cc 0023     		movs	r3, #0
+ 235 00ce 1360     		str	r3, [r2]
+ 236 00d0 194A     		ldr	r2, .L23+24
+ 237 00d2 1360     		str	r3, [r2]
+ 238 00d4 194A     		ldr	r2, .L23+28
+ 239 00d6 1360     		str	r3, [r2]
+ 240 00d8 20E0     		b	.L10
+ 241              	.L19:
+ 242 00da 164B     		ldr	r3, .L23+20
+ 243 00dc 164E     		ldr	r6, .L23+24
+ 244 00de 1A68     		ldr	r2, [r3]
+ 245 00e0 164D     		ldr	r5, .L23+28
+ 246 00e2 42B1     		cbz	r2, .L21
+ 247 00e4 0024     		movs	r4, #0
+ 248 00e6 1C60     		str	r4, [r3]
+ 249 00e8 FFF7FEFF 		bl	GUI_GetTime
+ 250 00ec 2B68     		ldr	r3, [r5]
+ 251 00ee C01A     		subs	r0, r0, r3
+ 252 00f0 3060     		str	r0, [r6]
+ 253 00f2 2046     		mov	r0, r4
+ 254 00f4 07E0     		b	.L22
+ 255              	.L21:
+ 256 00f6 0122     		movs	r2, #1
+ 257 00f8 1A60     		str	r2, [r3]
+ 258 00fa FFF7FEFF 		bl	GUI_GetTime
+ 259 00fe 3368     		ldr	r3, [r6]
+ 260 0100 C01A     		subs	r0, r0, r3
+ 261 0102 2860     		str	r0, [r5]
+ 262 0104 6068     		ldr	r0, [r4, #4]
+ 263              	.L22:
+ 264 0106 02B0     		add	sp, sp, #8
+ 265              		@ sp needed
+ 266 0108 BDE87040 		pop	{r4, r5, r6, lr}
+ 267 010c FFF7FEBF 		b	WM_MakeModal
+ 268              	.L11:
+ 269 0110 2046     		mov	r0, r4
+ 270 0112 02B0     		add	sp, sp, #8
+ 271              		@ sp needed
+ 272 0114 BDE87040 		pop	{r4, r5, r6, lr}
+ 273 0118 FFF7FEBF 		b	WM_DefaultProc
+ 274              	.L10:
+ 275 011c 02B0     		add	sp, sp, #8
+ 276              		@ sp needed
+ 277 011e 70BD     		pop	{r4, r5, r6, pc}
+ 278              	.L24:
+ 279              		.align	2
+ 280              	.L23:
+ 281 0120 00000000 		.word	GUI_FontD6x8
+ 282 0124 00000000 		.word	.LC0
+ 283 0128 00000000 		.word	GUI_Font8_ASCII
+ 284 012c C0CEDC00 		.word	14470848
+ 285 0130 00000000 		.word	.LANCHOR4
+ 286 0134 00000000 		.word	.LANCHOR1
+ 287 0138 00000000 		.word	.LANCHOR2
+ 288 013c 00000000 		.word	.LANCHOR3
+ 290              		.section	.text._DrawBkSimple,"ax",%progbits
+ 291              		.align	1
+ 292              		.thumb
+ 293              		.thumb_func
+ 295              	_DrawBkSimple:
+ 296              		@ args = 0, pretend = 0, frame = 0
+ 297              		@ frame_needed = 0, uses_anonymous_args = 0
+ 298 0000 10B5     		push	{r4, lr}
+ 299 0002 0446     		mov	r4, r0
+ 300 0004 4FF40800 		mov	r0, #8912896
+ 301 0008 FFF7FEFF 		bl	GUI_SetBkColor
+ 302 000c FFF7FEFF 		bl	GUI_Clear
+ 303 0010 34B1     		cbz	r4, .L25
+ 304 0012 0521     		movs	r1, #5
+ 305 0014 0348     		ldr	r0, .L27
+ 306 0016 0A46     		mov	r2, r1
+ 307 0018 BDE81040 		pop	{r4, lr}
+ 308 001c FFF7FEBF 		b	GUI_DrawBitmap
+ 309              	.L25:
+ 310 0020 10BD     		pop	{r4, pc}
+ 311              	.L28:
+ 312 0022 00BF     		.align	2
+ 313              	.L27:
+ 314 0024 00000000 		.word	bmSTLogo70x35
+ 316              		.section	.text._DrawBk,"ax",%progbits
+ 317              		.align	1
+ 318              		.thumb
+ 319              		.thumb_func
+ 321              	_DrawBk:
+ 322              		@ args = 0, pretend = 0, frame = 0
+ 323              		@ frame_needed = 0, uses_anonymous_args = 0
+ 324 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 325 0002 0446     		mov	r4, r0
+ 326 0004 FFF7FEFF 		bl	LCD_GetXSize
+ 327 0008 0546     		mov	r5, r0
+ 328 000a FFF7FEFF 		bl	LCD_GetYSize
+ 329 000e 0346     		mov	r3, r0
+ 330 0010 0A48     		ldr	r0, .L31
+ 331 0012 4FF40802 		mov	r2, #8912896
+ 332 0016 8DE80500 		stmia	sp, {r0, r2}
+ 333 001a 0020     		movs	r0, #0
+ 334 001c 0146     		mov	r1, r0
+ 335 001e 2A46     		mov	r2, r5
+ 336 0020 FFF7FEFF 		bl	GUI_DrawGradientV
+ 337 0024 3CB1     		cbz	r4, .L29
+ 338 0026 0521     		movs	r1, #5
+ 339 0028 0548     		ldr	r0, .L31+4
+ 340 002a 0A46     		mov	r2, r1
+ 341 002c 03B0     		add	sp, sp, #12
+ 342              		@ sp needed
+ 343 002e BDE83040 		pop	{r4, r5, lr}
+ 344 0032 FFF7FEBF 		b	GUI_DrawBitmap
+ 345              	.L29:
+ 346 0036 03B0     		add	sp, sp, #12
+ 347              		@ sp needed
+ 348 0038 30BD     		pop	{r4, r5, pc}
+ 349              	.L32:
+ 350 003a 00BF     		.align	2
+ 351              	.L31:
+ 352 003c 5555FF00 		.word	16733525
+ 353 0040 00000000 		.word	bmSTLogo70x35
+ 355              		.section	.text._FRAMEWIN_DrawSkinFlex,"ax",%progbits
+ 356              		.align	1
+ 357              		.thumb
+ 358              		.thumb_func
+ 360              	_FRAMEWIN_DrawSkinFlex:
+ 361              		@ args = 0, pretend = 0, frame = 0
+ 362              		@ frame_needed = 0, uses_anonymous_args = 0
+ 363 0000 38B5     		push	{r3, r4, r5, lr}
+ 364 0002 4468     		ldr	r4, [r0, #4]
+ 365 0004 0546     		mov	r5, r0
+ 366 0006 1CB1     		cbz	r4, .L39
+ 367 0008 BDE83840 		pop	{r3, r4, r5, lr}
+ 368 000c FFF7FEBF 		b	FRAMEWIN_DrawSkinFlex
+ 369              	.L39:
+ 370 0010 0068     		ldr	r0, [r0]
+ 371 0012 0E21     		movs	r1, #14
+ 372 0014 FFF7FEFF 		bl	FRAMEWIN_SetTextAlign
+ 373 0018 2868     		ldr	r0, [r5]
+ 374 001a 2146     		mov	r1, r4
+ 375 001c FFF7FEFF 		bl	FRAMEWIN_SetTextColor
+ 376 0020 2046     		mov	r0, r4
+ 377 0022 38BD     		pop	{r3, r4, r5, pc}
+ 379              		.section	.text._cbBk,"ax",%progbits
+ 380              		.align	1
+ 381              		.thumb
+ 382              		.thumb_func
+ 384              	_cbBk:
+ 385              		@ args = 0, pretend = 0, frame = 0
+ 386              		@ frame_needed = 0, uses_anonymous_args = 0
+ 387 0000 0268     		ldr	r2, [r0]
+ 388 0002 08B5     		push	{r3, lr}
+ 389 0004 0F2A     		cmp	r2, #15
+ 390 0006 04D0     		beq	.L42
+ 391 0008 1E2A     		cmp	r2, #30
+ 392 000a 08D0     		beq	.L43
+ 393 000c 0E2A     		cmp	r2, #14
+ 394 000e 13D1     		bne	.L50
+ 395 0010 08E0     		b	.L51
+ 396              	.L42:
+ 397 0012 0C4A     		ldr	r2, .L52
+ 398 0014 0C4B     		ldr	r3, .L52+4
+ 399 0016 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 400 0018 1B68     		ldr	r3, [r3]
+ 401 001a 9847     		blx	r3
+ 402 001c 08BD     		pop	{r3, pc}
+ 403              	.L43:
+ 404 001e 0022     		movs	r2, #0
+ 405 0020 C260     		str	r2, [r0, #12]
+ 406 0022 08BD     		pop	{r3, pc}
+ 407              	.L51:
+ 408 0024 C368     		ldr	r3, [r0, #12]
+ 409 0026 5A68     		ldr	r2, [r3, #4]
+ 410 0028 52B1     		cbz	r2, .L40
+ 411 002a 1B68     		ldr	r3, [r3]
+ 412 002c 6E2B     		cmp	r3, #110
+ 413 002e 07D1     		bne	.L40
+ 414 0030 064B     		ldr	r3, .L52+8
+ 415 0032 0122     		movs	r2, #1
+ 416 0034 1A60     		str	r2, [r3]
+ 417 0036 08BD     		pop	{r3, pc}
+ 418              	.L50:
+ 419 0038 BDE80840 		pop	{r3, lr}
+ 420 003c FFF7FEBF 		b	WM_DefaultProc
+ 421              	.L40:
+ 422 0040 08BD     		pop	{r3, pc}
+ 423              	.L53:
+ 424 0042 00BF     		.align	2
+ 425              	.L52:
+ 426 0044 00000000 		.word	.LANCHOR6
+ 427 0048 00000000 		.word	.LANCHOR5
+ 428 004c 00000000 		.word	.LANCHOR4
+ 430              		.section	.text._cbFrameWinInfo,"ax",%progbits
+ 431              		.align	1
+ 432              		.thumb
+ 433              		.thumb_func
+ 435              	_cbFrameWinInfo:
+ 436              		@ args = 0, pretend = 0, frame = 0
+ 437              		@ frame_needed = 0, uses_anonymous_args = 0
+ 438 0000 0368     		ldr	r3, [r0]
+ 439 0002 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 440 0004 0E2B     		cmp	r3, #14
+ 441 0006 0446     		mov	r4, r0
+ 442 0008 0ED0     		beq	.L56
+ 443 000a 0F2B     		cmp	r3, #15
+ 444 000c 14D0     		beq	.L57
+ 445 000e 012B     		cmp	r3, #1
+ 446 0010 25D1     		bne	.L60
+ 447 0012 FFF7FEFF 		bl	LCD_GetXSize
+ 448 0016 4123     		movs	r3, #65
+ 449 0018 4110     		asrs	r1, r0, #1
+ 450 001a 0093     		str	r3, [sp]
+ 451 001c 6068     		ldr	r0, [r4, #4]
+ 452 001e 0022     		movs	r2, #0
+ 453 0020 0B46     		mov	r3, r1
+ 454 0022 FFF7FEFF 		bl	WM_SetWindowPos
+ 455 0026 1FE0     		b	.L54
+ 456              	.L56:
+ 457 0028 FFF7FEFF 		bl	WM_GetDesktopWindow
+ 458 002c 2146     		mov	r1, r4
+ 459 002e 03B0     		add	sp, sp, #12
+ 460              		@ sp needed
+ 461 0030 BDE83040 		pop	{r4, r5, lr}
+ 462 0034 FFF7FEBF 		b	WM_SendMessage
+ 463              	.L57:
+ 464 0038 4068     		ldr	r0, [r0, #4]
+ 465 003a FFF7FEFF 		bl	WM_GetWindowSizeX
+ 466 003e 0546     		mov	r5, r0
+ 467 0040 6068     		ldr	r0, [r4, #4]
+ 468 0042 FFF7FEFF 		bl	WM_GetWindowSizeY
+ 469 0046 094C     		ldr	r4, .L61
+ 470 0048 431E     		subs	r3, r0, #1
+ 471 004a 6FF07F42 		mvn	r2, #-16777216
+ 472 004e 0020     		movs	r0, #0
+ 473 0050 8DE81400 		stmia	sp, {r2, r4}
+ 474 0054 0146     		mov	r1, r0
+ 475 0056 6A1E     		subs	r2, r5, #1
+ 476 0058 FFF7FEFF 		bl	GUI_DrawGradientV
+ 477 005c 04E0     		b	.L54
+ 478              	.L60:
+ 479 005e 03B0     		add	sp, sp, #12
+ 480              		@ sp needed
+ 481 0060 BDE83040 		pop	{r4, r5, lr}
+ 482 0064 FFF7FEBF 		b	WM_DefaultProc
+ 483              	.L54:
+ 484 0068 03B0     		add	sp, sp, #12
+ 485              		@ sp needed
+ 486 006a 30BD     		pop	{r4, r5, pc}
+ 487              	.L62:
+ 488              		.align	2
+ 489              	.L61:
+ 490 006c C0CEDC00 		.word	14470848
+ 492              		.section	.text.GUIDEMO_SetDrawLogo,"ax",%progbits
+ 493              		.align	1
+ 494              		.global	GUIDEMO_SetDrawLogo
+ 495              		.thumb
+ 496              		.thumb_func
+ 498              	GUIDEMO_SetDrawLogo:
+ 499              		@ args = 0, pretend = 0, frame = 0
+ 500              		@ frame_needed = 0, uses_anonymous_args = 0
+ 501              		@ link register save eliminated.
+ 502 0000 0030     		adds	r0, r0, #0
+ 503 0002 024B     		ldr	r3, .L64
+ 504 0004 18BF     		it	ne
+ 505 0006 0120     		movne	r0, #1
+ 506 0008 1870     		strb	r0, [r3]
+ 507 000a 7047     		bx	lr
+ 508              	.L65:
+ 509              		.align	2
+ 510              	.L64:
+ 511 000c 00000000 		.word	.LANCHOR6
+ 513              		.section	.text.GUIDEMO_AddIntToString,"ax",%progbits
+ 514              		.align	1
+ 515              		.global	GUIDEMO_AddIntToString
+ 516              		.thumb
+ 517              		.thumb_func
+ 519              	GUIDEMO_AddIntToString:
+ 520              		@ args = 0, pretend = 0, frame = 0
+ 521              		@ frame_needed = 0, uses_anonymous_args = 0
+ 522 0000 70B5     		push	{r4, r5, r6, lr}
+ 523 0002 0023     		movs	r3, #0
+ 524              	.L67:
+ 525 0004 C25C     		ldrb	r2, [r0, r3]	@ zero_extendqisi2
+ 526 0006 0AB1     		cbz	r2, .L74
+ 527 0008 0133     		adds	r3, r3, #1
+ 528 000a FBE7     		b	.L67
+ 529              	.L74:
+ 530 000c 0124     		movs	r4, #1
+ 531 000e 2246     		mov	r2, r4
+ 532 0010 0A26     		movs	r6, #10
+ 533              	.L69:
+ 534 0012 B1FBF4F5 		udiv	r5, r1, r4
+ 535 0016 092D     		cmp	r5, #9
+ 536 0018 02D9     		bls	.L75
+ 537 001a 7443     		muls	r4, r6, r4
+ 538 001c 0132     		adds	r2, r2, #1
+ 539 001e F8E7     		b	.L69
+ 540              	.L75:
+ 541 0020 8418     		adds	r4, r0, r2
+ 542 0022 0025     		movs	r5, #0
+ 543 0024 E554     		strb	r5, [r4, r3]
+ 544 0026 013A     		subs	r2, r2, #1
+ 545 0028 0344     		add	r3, r3, r0
+ 546 002a 0A25     		movs	r5, #10
+ 547              	.L72:
+ 548 002c B1FBF5F4 		udiv	r4, r1, r5
+ 549 0030 05FB1411 		mls	r1, r5, r4, r1
+ 550 0034 3031     		adds	r1, r1, #48
+ 551 0036 9954     		strb	r1, [r3, r2]
+ 552 0038 12F1FF32 		adds	r2, r2, #-1
+ 553 003c 2146     		mov	r1, r4
+ 554 003e F5D2     		bcs	.L72
+ 555 0040 70BD     		pop	{r4, r5, r6, pc}
+ 557              		.section	.text.GUIDEMO_AddStringToString,"ax",%progbits
+ 558              		.align	1
+ 559              		.global	GUIDEMO_AddStringToString
+ 560              		.thumb
+ 561              		.thumb_func
+ 563              	GUIDEMO_AddStringToString:
+ 564              		@ args = 0, pretend = 0, frame = 0
+ 565              		@ frame_needed = 0, uses_anonymous_args = 0
+ 566              		@ link register save eliminated.
+ 567 0000 0023     		movs	r3, #0
+ 568              	.L77:
+ 569 0002 C25C     		ldrb	r2, [r0, r3]	@ zero_extendqisi2
+ 570 0004 0AB1     		cbz	r2, .L81
+ 571 0006 0133     		adds	r3, r3, #1
+ 572 0008 FBE7     		b	.L77
+ 573              	.L81:
+ 574 000a C91A     		subs	r1, r1, r3
+ 575              	.L79:
+ 576 000c CA5C     		ldrb	r2, [r1, r3]	@ zero_extendqisi2
+ 577 000e C254     		strb	r2, [r0, r3]
+ 578 0010 0AB1     		cbz	r2, .L82
+ 579 0012 0133     		adds	r3, r3, #1
+ 580 0014 FAE7     		b	.L79
+ 581              	.L82:
+ 582 0016 7047     		bx	lr
+ 584              		.section	.text.GUIDEMO_CheckCancel,"ax",%progbits
+ 585              		.align	1
+ 586              		.global	GUIDEMO_CheckCancel
+ 587              		.thumb
+ 588              		.thumb_func
+ 590              	GUIDEMO_CheckCancel:
+ 591              		@ args = 0, pretend = 0, frame = 0
+ 592              		@ frame_needed = 0, uses_anonymous_args = 0
+ 593 0000 10B5     		push	{r4, lr}
+ 594 0002 084C     		ldr	r4, .L89
+ 595              	.L84:
+ 596 0004 2368     		ldr	r3, [r4]
+ 597 0006 012B     		cmp	r3, #1
+ 598 0008 03D1     		bne	.L88
+ 599 000a 0A20     		movs	r0, #10
+ 600 000c FFF7FEFF 		bl	GUI_Delay
+ 601 0010 F8E7     		b	.L84
+ 602              	.L88:
+ 603 0012 054A     		ldr	r2, .L89+4
+ 604 0014 0023     		movs	r3, #0
+ 605 0016 1068     		ldr	r0, [r2]
+ 606 0018 0128     		cmp	r0, #1
+ 607 001a 0CBF     		ite	eq
+ 608 001c 1360     		streq	r3, [r2]
+ 609 001e 1846     		movne	r0, r3
+ 610 0020 10BD     		pop	{r4, pc}
+ 611              	.L90:
+ 612 0022 00BF     		.align	2
+ 613              	.L89:
+ 614 0024 00000000 		.word	.LANCHOR1
+ 615 0028 00000000 		.word	.LANCHOR4
+ 617              		.section	.text._cbEffect,"ax",%progbits
+ 618              		.align	1
+ 619              		.thumb
+ 620              		.thumb_func
+ 622              	_cbEffect:
+ 623              		@ args = 0, pretend = 0, frame = 16
+ 624              		@ frame_needed = 0, uses_anonymous_args = 0
+ 625 0000 7FB5     		push	{r0, r1, r2, r3, r4, r5, r6, lr}
+ 626 0002 0D46     		mov	r5, r1
+ 627 0004 0C68     		ldr	r4, [r1]
+ 628 0006 FFF7FEFF 		bl	GUI_Exec
+ 629 000a 01A8     		add	r0, sp, #4
+ 630 000c FFF7FEFF 		bl	GUI_PID_GetState
+ 631 0010 9DF80C30 		ldrb	r3, [sp, #12]	@ zero_extendqisi2
+ 632 0014 1BB1     		cbz	r3, .L92
+ 633 0016 0123     		movs	r3, #1
+ 634 0018 2B60     		str	r3, [r5]
+ 635 001a 0020     		movs	r0, #0
+ 636 001c 09E0     		b	.L93
+ 637              	.L92:
+ 638 001e 012C     		cmp	r4, #1
+ 639 0020 054E     		ldr	r6, .L95
+ 640 0022 03D1     		bne	.L94
+ 641 0024 2B60     		str	r3, [r5]
+ 642 0026 3460     		str	r4, [r6]
+ 643 0028 2046     		mov	r0, r4
+ 644 002a 02E0     		b	.L93
+ 645              	.L94:
+ 646 002c FFF7FEFF 		bl	GUIDEMO_CheckCancel
+ 647 0030 3060     		str	r0, [r6]
+ 648              	.L93:
+ 649 0032 04B0     		add	sp, sp, #16
+ 650              		@ sp needed
+ 651 0034 70BD     		pop	{r4, r5, r6, pc}
+ 652              	.L96:
+ 653 0036 00BF     		.align	2
+ 654              	.L95:
+ 655 0038 00000000 		.word	.LANCHOR4
+ 657              		.section	.text.GUIDEMO_ClearText,"ax",%progbits
+ 658              		.align	1
+ 659              		.global	GUIDEMO_ClearText
+ 660              		.thumb
+ 661              		.thumb_func
+ 663              	GUIDEMO_ClearText:
+ 664              		@ args = 0, pretend = 0, frame = 0
+ 665              		@ frame_needed = 0, uses_anonymous_args = 0
+ 666              		@ link register save eliminated.
+ 667 0000 0023     		movs	r3, #0
+ 668 0002 0370     		strb	r3, [r0]
+ 669 0004 7047     		bx	lr
+ 671              		.section	.text.GUIDEMO_DrawBk,"ax",%progbits
+ 672              		.align	1
+ 673              		.global	GUIDEMO_DrawBk
+ 674              		.thumb
+ 675              		.thumb_func
+ 677              	GUIDEMO_DrawBk:
+ 678              		@ args = 0, pretend = 0, frame = 0
+ 679              		@ frame_needed = 0, uses_anonymous_args = 0
+ 680 0000 08B5     		push	{r3, lr}
+ 681 0002 024B     		ldr	r3, .L99
+ 682 0004 1B68     		ldr	r3, [r3]
+ 683 0006 9847     		blx	r3
+ 684 0008 08BD     		pop	{r3, pc}
+ 685              	.L100:
+ 686 000a 00BF     		.align	2
+ 687              	.L99:
+ 688 000c 00000000 		.word	.LANCHOR5
+ 690              		.section	.text.GUIDEMO_GetConfFlag,"ax",%progbits
+ 691              		.align	1
+ 692              		.global	GUIDEMO_GetConfFlag
+ 693              		.thumb
+ 694              		.thumb_func
+ 696              	GUIDEMO_GetConfFlag:
+ 697              		@ args = 0, pretend = 0, frame = 0
+ 698              		@ frame_needed = 0, uses_anonymous_args = 0
+ 699              		@ link register save eliminated.
+ 700 0000 034B     		ldr	r3, .L102
+ 701 0002 1B89     		ldrh	r3, [r3, #8]
+ 702 0004 1842     		tst	r0, r3
+ 703 0006 0CBF     		ite	eq
+ 704 0008 0020     		moveq	r0, #0
+ 705 000a 0120     		movne	r0, #1
+ 706 000c 7047     		bx	lr
+ 707              	.L103:
+ 708 000e 00BF     		.align	2
+ 709              	.L102:
+ 710 0010 00000000 		.word	.LANCHOR7
+ 712              		.section	.text.GUIDEMO_GetTime,"ax",%progbits
+ 713              		.align	1
+ 714              		.global	GUIDEMO_GetTime
+ 715              		.thumb
+ 716              		.thumb_func
+ 718              	GUIDEMO_GetTime:
+ 719              		@ args = 0, pretend = 0, frame = 0
+ 720              		@ frame_needed = 0, uses_anonymous_args = 0
+ 721 0000 08B5     		push	{r3, lr}
+ 722 0002 064B     		ldr	r3, .L107
+ 723 0004 1B68     		ldr	r3, [r3]
+ 724 0006 13B1     		cbz	r3, .L105
+ 725 0008 054B     		ldr	r3, .L107+4
+ 726 000a 1868     		ldr	r0, [r3]
+ 727 000c 08BD     		pop	{r3, pc}
+ 728              	.L105:
+ 729 000e FFF7FEFF 		bl	GUI_GetTime
+ 730 0012 044B     		ldr	r3, .L107+8
+ 731 0014 1B68     		ldr	r3, [r3]
+ 732 0016 C01A     		subs	r0, r0, r3
+ 733 0018 08BD     		pop	{r3, pc}
+ 734              	.L108:
+ 735 001a 00BF     		.align	2
+ 736              	.L107:
+ 737 001c 00000000 		.word	.LANCHOR1
+ 738 0020 00000000 		.word	.LANCHOR3
+ 739 0024 00000000 		.word	.LANCHOR2
+ 741              		.section	.text.GUIDEMO_Delay,"ax",%progbits
+ 742              		.align	1
+ 743              		.global	GUIDEMO_Delay
+ 744              		.thumb
+ 745              		.thumb_func
+ 747              	GUIDEMO_Delay:
+ 748              		@ args = 0, pretend = 0, frame = 0
+ 749              		@ frame_needed = 0, uses_anonymous_args = 0
+ 750 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 751 0004 1E4E     		ldr	r6, .L115
+ 752 0006 0446     		mov	r4, r0
+ 753 0008 4FF40471 		mov	r1, #528
+ 754 000c 3068     		ldr	r0, [r6]
+ 755 000e FFF7FEFF 		bl	WM_GetDialogItem
+ 756 0012 642C     		cmp	r4, #100
+ 757 0014 0546     		mov	r5, r0
+ 758 0016 06DD     		ble	.L110
+ 759 0018 4FF40471 		mov	r1, #528
+ 760 001c 3068     		ldr	r0, [r6]
+ 761 001e FFF7FEFF 		bl	WM_GetDialogItem
+ 762 0022 FFF7FEFF 		bl	WM_ShowWindow
+ 763              	.L110:
+ 764 0026 2846     		mov	r0, r5
+ 765 0028 0021     		movs	r1, #0
+ 766 002a FFF7FEFF 		bl	PROGBAR_SetValue
+ 767 002e 2846     		mov	r0, r5
+ 768 0030 0021     		movs	r1, #0
+ 769 0032 2246     		mov	r2, r4
+ 770 0034 FFF7FEFF 		bl	PROGBAR_SetMinMax
+ 771 0038 FFF7FEFF 		bl	GUI_GetTime
+ 772 003c 8046     		mov	r8, r0
+ 773              	.L113:
+ 774 003e FFF7FEFF 		bl	GUIDEMO_GetTime
+ 775 0042 642C     		cmp	r4, #100
+ 776 0044 C8EB0007 		rsb	r7, r8, r0
+ 777 0048 03DD     		ble	.L111
+ 778 004a 2846     		mov	r0, r5
+ 779 004c 3946     		mov	r1, r7
+ 780 004e FFF7FEFF 		bl	PROGBAR_SetValue
+ 781              	.L111:
+ 782 0052 0520     		movs	r0, #5
+ 783 0054 FFF7FEFF 		bl	GUI_Delay
+ 784 0058 FFF7FEFF 		bl	GUIDEMO_CheckCancel
+ 785 005c A742     		cmp	r7, r4
+ 786 005e 01D2     		bcs	.L112
+ 787 0060 0028     		cmp	r0, #0
+ 788 0062 ECD0     		beq	.L113
+ 789              	.L112:
+ 790 0064 642C     		cmp	r4, #100
+ 791 0066 06DD     		ble	.L114
+ 792 0068 4FF40471 		mov	r1, #528
+ 793 006c 3068     		ldr	r0, [r6]
+ 794 006e FFF7FEFF 		bl	WM_GetDialogItem
+ 795 0072 FFF7FEFF 		bl	WM_HideWindow
+ 796              	.L114:
+ 797 0076 BDE8F041 		pop	{r4, r5, r6, r7, r8, lr}
+ 798 007a FFF7FEBF 		b	GUI_Exec
+ 799              	.L116:
+ 800 007e 00BF     		.align	2
+ 801              	.L115:
+ 802 0080 00000000 		.word	.LANCHOR8
+ 804              		.section	.text.GUIDEMO_HideControlWin,"ax",%progbits
+ 805              		.align	1
+ 806              		.global	GUIDEMO_HideControlWin
+ 807              		.thumb
+ 808              		.thumb_func
+ 810              	GUIDEMO_HideControlWin:
+ 811              		@ args = 0, pretend = 0, frame = 0
+ 812              		@ frame_needed = 0, uses_anonymous_args = 0
+ 813 0000 08B5     		push	{r3, lr}
+ 814 0002 054B     		ldr	r3, .L118
+ 815 0004 1868     		ldr	r0, [r3]
+ 816 0006 FFF7FEFF 		bl	WM_HideWindow
+ 817 000a FFF7FEFF 		bl	WM_GetDesktopWindow
+ 818 000e BDE80840 		pop	{r3, lr}
+ 819 0012 FFF7FEBF 		b	WM_ValidateWindow
+ 820              	.L119:
+ 821 0016 00BF     		.align	2
+ 822              	.L118:
+ 823 0018 00000000 		.word	.LANCHOR8
+ 825              		.section	.text.GUIDEMO_HideInfoWin,"ax",%progbits
+ 826              		.align	1
+ 827              		.global	GUIDEMO_HideInfoWin
+ 828              		.thumb
+ 829              		.thumb_func
+ 831              	GUIDEMO_HideInfoWin:
+ 832              		@ args = 0, pretend = 0, frame = 0
+ 833              		@ frame_needed = 0, uses_anonymous_args = 0
+ 834 0000 08B5     		push	{r3, lr}
+ 835 0002 054B     		ldr	r3, .L121
+ 836 0004 1868     		ldr	r0, [r3]
+ 837 0006 FFF7FEFF 		bl	WM_HideWindow
+ 838 000a FFF7FEFF 		bl	WM_GetDesktopWindow
+ 839 000e BDE80840 		pop	{r3, lr}
+ 840 0012 FFF7FEBF 		b	WM_ValidateWindow
+ 841              	.L122:
+ 842 0016 00BF     		.align	2
+ 843              	.L121:
+ 844 0018 00000000 		.word	.LANCHOR9
+ 846              		.section	.text.GUIDEMO_ShowControlWin,"ax",%progbits
+ 847              		.align	1
+ 848              		.global	GUIDEMO_ShowControlWin
+ 849              		.thumb
+ 850              		.thumb_func
+ 852              	GUIDEMO_ShowControlWin:
+ 853              		@ args = 0, pretend = 0, frame = 0
+ 854              		@ frame_needed = 0, uses_anonymous_args = 0
+ 855 0000 08B5     		push	{r3, lr}
+ 856 0002 044B     		ldr	r3, .L124
+ 857 0004 1868     		ldr	r0, [r3]
+ 858 0006 FFF7FEFF 		bl	WM_ShowWindow
+ 859 000a BDE80840 		pop	{r3, lr}
+ 860 000e FFF7FEBF 		b	GUI_Exec
+ 861              	.L125:
+ 862 0012 00BF     		.align	2
+ 863              	.L124:
+ 864 0014 00000000 		.word	.LANCHOR8
+ 866              		.section	.text.GUIDEMO_ShowInfo,"ax",%progbits
+ 867              		.align	1
+ 868              		.global	GUIDEMO_ShowInfo
+ 869              		.thumb
+ 870              		.thumb_func
+ 872              	GUIDEMO_ShowInfo:
+ 873              		@ args = 0, pretend = 0, frame = 0
+ 874              		@ frame_needed = 0, uses_anonymous_args = 0
+ 875 0000 38B5     		push	{r3, r4, r5, lr}
+ 876 0002 084C     		ldr	r4, .L128
+ 877 0004 0546     		mov	r5, r0
+ 878 0006 2068     		ldr	r0, [r4]
+ 879 0008 FFF7FEFF 		bl	WM_IsVisible
+ 880 000c 48B1     		cbz	r0, .L126
+ 881 000e 2068     		ldr	r0, [r4]
+ 882 0010 4FF4B071 		mov	r1, #352
+ 883 0014 FFF7FEFF 		bl	WM_GetDialogItem
+ 884 0018 2946     		mov	r1, r5
+ 885 001a BDE83840 		pop	{r3, r4, r5, lr}
+ 886 001e FFF7FEBF 		b	TEXT_SetText
+ 887              	.L126:
+ 888 0022 38BD     		pop	{r3, r4, r5, pc}
+ 889              	.L129:
+ 890              		.align	2
+ 891              	.L128:
+ 892 0024 00000000 		.word	.LANCHOR9
+ 894              		.section	.text.GUIDEMO_ShowInfoWin,"ax",%progbits
+ 895              		.align	1
+ 896              		.global	GUIDEMO_ShowInfoWin
+ 897              		.thumb
+ 898              		.thumb_func
+ 900              	GUIDEMO_ShowInfoWin:
+ 901              		@ args = 0, pretend = 0, frame = 0
+ 902              		@ frame_needed = 0, uses_anonymous_args = 0
+ 903              		@ link register save eliminated.
+ 904 0000 014B     		ldr	r3, .L131
+ 905 0002 1868     		ldr	r0, [r3]
+ 906 0004 FFF7FEBF 		b	WM_ShowWindow
+ 907              	.L132:
+ 908              		.align	2
+ 909              	.L131:
+ 910 0008 00000000 		.word	.LANCHOR9
+ 912              		.section	.text.GUIDEMO_UpdateControlText,"ax",%progbits
+ 913              		.align	1
+ 914              		.global	GUIDEMO_UpdateControlText
+ 915              		.thumb
+ 916              		.thumb_func
+ 918              	GUIDEMO_UpdateControlText:
+ 919              		@ args = 0, pretend = 0, frame = 24
+ 920              		@ frame_needed = 0, uses_anonymous_args = 0
+ 921 0000 10B5     		push	{r4, lr}
+ 922 0002 86B0     		sub	sp, sp, #24
+ 923 0004 1422     		movs	r2, #20
+ 924 0006 01A8     		add	r0, sp, #4
+ 925 0008 0021     		movs	r1, #0
+ 926 000a FFF7FEFF 		bl	memset
+ 927 000e 154B     		ldr	r3, .L134
+ 928 0010 4FF4B071 		mov	r1, #352
+ 929 0014 1868     		ldr	r0, [r3]
+ 930 0016 FFF7FEFF 		bl	WM_GetDialogItem
+ 931 001a 1349     		ldr	r1, .L134+4
+ 932 001c 0446     		mov	r4, r0
+ 933 001e 01A8     		add	r0, sp, #4
+ 934 0020 FFF7FEFF 		bl	GUIDEMO_AddStringToString
+ 935 0024 114B     		ldr	r3, .L134+8
+ 936 0026 01A8     		add	r0, sp, #4
+ 937 0028 1968     		ldr	r1, [r3]
+ 938 002a 0131     		adds	r1, r1, #1
+ 939 002c FFF7FEFF 		bl	GUIDEMO_AddIntToString
+ 940 0030 01A8     		add	r0, sp, #4
+ 941 0032 0F49     		ldr	r1, .L134+12
+ 942 0034 FFF7FEFF 		bl	GUIDEMO_AddStringToString
+ 943 0038 0E4B     		ldr	r3, .L134+16
+ 944 003a 01A8     		add	r0, sp, #4
+ 945 003c 1968     		ldr	r1, [r3]
+ 946 003e FFF7FEFF 		bl	GUIDEMO_AddIntToString
+ 947 0042 01A8     		add	r0, sp, #4
+ 948 0044 0C49     		ldr	r1, .L134+20
+ 949 0046 FFF7FEFF 		bl	GUIDEMO_AddStringToString
+ 950 004a 0C4B     		ldr	r3, .L134+24
+ 951 004c 01A8     		add	r0, sp, #4
+ 952 004e 5968     		ldr	r1, [r3, #4]
+ 953 0050 0139     		subs	r1, r1, #1
+ 954 0052 FFF7FEFF 		bl	GUIDEMO_AddIntToString
+ 955 0056 2046     		mov	r0, r4
+ 956 0058 01A9     		add	r1, sp, #4
+ 957 005a FFF7FEFF 		bl	TEXT_SetText
+ 958 005e 06B0     		add	sp, sp, #24
+ 959              		@ sp needed
+ 960 0060 10BD     		pop	{r4, pc}
+ 961              	.L135:
+ 962 0062 00BF     		.align	2
+ 963              	.L134:
+ 964 0064 00000000 		.word	.LANCHOR8
+ 965 0068 06000000 		.word	.LC1
+ 966 006c 00000000 		.word	.LANCHOR10
+ 967 0070 0C000000 		.word	.LC2
+ 968 0074 00000000 		.word	.LANCHOR11
+ 969 0078 0E000000 		.word	.LC3
+ 970 007c 00000000 		.word	.LANCHOR7
+ 972              		.section	.text.GUIDEMO_NotifyStartNext,"ax",%progbits
+ 973              		.align	1
+ 974              		.global	GUIDEMO_NotifyStartNext
+ 975              		.thumb
+ 976              		.thumb_func
+ 978              	GUIDEMO_NotifyStartNext:
+ 979              		@ args = 0, pretend = 0, frame = 0
+ 980              		@ frame_needed = 0, uses_anonymous_args = 0
+ 981              		@ link register save eliminated.
+ 982 0000 064B     		ldr	r3, .L137
+ 983 0002 1A68     		ldr	r2, [r3]
+ 984 0004 0132     		adds	r2, r2, #1
+ 985 0006 1A60     		str	r2, [r3]
+ 986 0008 054A     		ldr	r2, .L137+4
+ 987 000a 0023     		movs	r3, #0
+ 988 000c 1360     		str	r3, [r2]
+ 989 000e 054A     		ldr	r2, .L137+8
+ 990 0010 1360     		str	r3, [r2]
+ 991 0012 054A     		ldr	r2, .L137+12
+ 992 0014 1360     		str	r3, [r2]
+ 993 0016 FFF7FEBF 		b	GUIDEMO_UpdateControlText
+ 994              	.L138:
+ 995 001a 00BF     		.align	2
+ 996              	.L137:
+ 997 001c 00000000 		.word	.LANCHOR11
+ 998 0020 00000000 		.word	.LANCHOR1
+ 999 0024 00000000 		.word	.LANCHOR2
+ 1000 0028 00000000 		.word	.LANCHOR3
+ 1002              		.section	.text.GUIDEMO_Wait,"ax",%progbits
+ 1003              		.align	1
+ 1004              		.global	GUIDEMO_Wait
+ 1005              		.thumb
+ 1006              		.thumb_func
+ 1008              	GUIDEMO_Wait:
+ 1009              		@ args = 0, pretend = 0, frame = 0
+ 1010              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1011 0000 08B5     		push	{r3, lr}
+ 1012 0002 FFF7FEFF 		bl	GUIDEMO_Delay
+ 1013 0006 BDE80840 		pop	{r3, lr}
+ 1014 000a FFF7FEBF 		b	GUIDEMO_NotifyStartNext
+ 1016              		.section	.text.GUIDEMO_ShowIntro,"ax",%progbits
+ 1017              		.align	1
+ 1018              		.global	GUIDEMO_ShowIntro
+ 1019              		.thumb
+ 1020              		.thumb_func
+ 1022              	GUIDEMO_ShowIntro:
+ 1023              		@ args = 0, pretend = 0, frame = 0
+ 1024              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1025 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 1026 0002 0C46     		mov	r4, r1
+ 1027 0004 0746     		mov	r7, r0
+ 1028 0006 FFF7FEFF 		bl	LCD_GetXSize
+ 1029 000a 0546     		mov	r5, r0
+ 1030 000c FFF7FEFF 		bl	LCD_GetYSize
+ 1031 0010 0646     		mov	r6, r0
+ 1032 0012 FFF7FEFF 		bl	GUIDEMO_HideInfoWin
+ 1033 0016 FFF7FEFF 		bl	GUIDEMO_ShowControlWin
+ 1034 001a FFF7FEFF 		bl	GUI_Exec
+ 1035 001e 0120     		movs	r0, #1
+ 1036 0020 FFF7FEFF 		bl	GUIDEMO_DrawBk
+ 1037 0024 6FF07F40 		mvn	r0, #-16777216
+ 1038 0028 FFF7FEFF 		bl	GUI_SetColor
+ 1039 002c 0220     		movs	r0, #2
+ 1040 002e FFF7FEFF 		bl	GUI_SetTextMode
+ 1041 0032 6D10     		asrs	r5, r5, #1
+ 1042 0034 0F48     		ldr	r0, .L144
+ 1043 0036 FFF7FEFF 		bl	GUI_SetFont
+ 1044 003a 2946     		mov	r1, r5
+ 1045 003c 3C22     		movs	r2, #60
+ 1046 003e 3846     		mov	r0, r7
+ 1047 0040 FFF7FEFF 		bl	GUI_DispStringHCenterAt
+ 1048 0044 0C48     		ldr	r0, .L144+4
+ 1049 0046 FFF7FEFF 		bl	GUI_SetFont
+ 1050 004a FFF7FEFF 		bl	GUI_GetFontDistY
+ 1051 004e C0EB6602 		rsb	r2, r0, r6, asr #1
+ 1052 0052 2946     		mov	r1, r5
+ 1053 0054 2046     		mov	r0, r4
+ 1054 0056 0A32     		adds	r2, r2, #10
+ 1055 0058 FFF7FEFF 		bl	GUI_DispStringHCenterAt
+ 1056 005c 0023     		movs	r3, #0
+ 1057              	.L141:
+ 1058 005e E25C     		ldrb	r2, [r4, r3]	@ zero_extendqisi2
+ 1059 0060 0AB1     		cbz	r2, .L143
+ 1060 0062 0133     		adds	r3, r3, #1
+ 1061 0064 FBE7     		b	.L141
+ 1062              	.L143:
+ 1063 0066 5020     		movs	r0, #80
+ 1064 0068 5843     		muls	r0, r3, r0
+ 1065 006a BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 1066 006e FFF7FEBF 		b	GUIDEMO_Wait
+ 1067              	.L145:
+ 1068 0072 00BF     		.align	2
+ 1069              	.L144:
+ 1070 0074 00000000 		.word	GUI_FontRounded22
+ 1071 0078 00000000 		.word	GUI_Font16_ASCII
+ 1073              		.section	.text.MainTask,"ax",%progbits
+ 1074              		.align	1
+ 1075              		.global	MainTask
+ 1076              		.thumb
+ 1077              		.thumb_func
+ 1079              	MainTask:
+ 1080              		@ args = 0, pretend = 0, frame = 56
+ 1081              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1082 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 1083 0004 0420     		movs	r0, #4
+ 1084 0006 91B0     		sub	sp, sp, #68
+ 1085 0008 FFF7FEFF 		bl	WM_SetCreateFlags
+ 1086 000c FFF7FEFF 		bl	GUI_Init
+ 1087 0010 5E49     		ldr	r1, .L158
+ 1088 0012 5F48     		ldr	r0, .L158+4
+ 1089 0014 FFF7FEFF 		bl	GUI_MEMDEV_SetAnimationCallback
+ 1090 0018 FFF7FEFF 		bl	WM_GetDesktopWindow
+ 1091 001c 5D49     		ldr	r1, .L158+8
+ 1092 001e FFF7FEFF 		bl	WM_SetCallback
+ 1093 0022 0024     		movs	r4, #0
+ 1094 0024 FFF7FEFF 		bl	BUTTON_SetReactOnLevel
+ 1095 0028 05A8     		add	r0, sp, #20
+ 1096 002a 0021     		movs	r1, #0
+ 1097 002c FFF7FEFF 		bl	FRAMEWIN_GetSkinFlexProps
+ 1098 0030 2146     		mov	r1, r4
+ 1099 0032 05A8     		add	r0, sp, #20
+ 1100 0034 0A94     		str	r4, [sp, #40]
+ 1101 0036 FFF7FEFF 		bl	FRAMEWIN_SetSkinFlexProps
+ 1102 003a 05A8     		add	r0, sp, #20
+ 1103 003c 0121     		movs	r1, #1
+ 1104 003e FFF7FEFF 		bl	FRAMEWIN_GetSkinFlexProps
+ 1105 0042 0121     		movs	r1, #1
+ 1106 0044 05A8     		add	r0, sp, #20
+ 1107 0046 0A94     		str	r4, [sp, #40]
+ 1108 0048 FFF7FEFF 		bl	FRAMEWIN_SetSkinFlexProps
+ 1109 004c 5248     		ldr	r0, .L158+12
+ 1110 004e FFF7FEFF 		bl	FRAMEWIN_SetDefaultSkin
+ 1111 0052 5248     		ldr	r0, .L158+16
+ 1112 0054 FFF7FEFF 		bl	PROGBAR_SetDefaultSkin
+ 1113 0058 5148     		ldr	r0, .L158+20
+ 1114 005a FFF7FEFF 		bl	BUTTON_SetDefaultSkin
+ 1115 005e 5148     		ldr	r0, .L158+24
+ 1116 0060 FFF7FEFF 		bl	SCROLLBAR_SetDefaultSkin
+ 1117 0064 5048     		ldr	r0, .L158+28
+ 1118 0066 FFF7FEFF 		bl	SLIDER_SetDefaultSkin
+ 1119 006a 504F     		ldr	r7, .L158+32
+ 1120 006c 5048     		ldr	r0, .L158+36
+ 1121 006e FFF7FEFF 		bl	HEADER_SetDefaultSkin
+ 1122 0072 0220     		movs	r0, #2
+ 1123 0074 FFF7FEFF 		bl	GUI_SetTextMode
+ 1124 0078 3846     		mov	r0, r7
+ 1125 007a FFF7FEFF 		bl	GUIDEMO_Config
+ 1126 007e FFF7FEFF 		bl	LCD_GetBitsPerPixel
+ 1127 0082 0F28     		cmp	r0, #15
+ 1128 0084 4B4C     		ldr	r4, .L158+40
+ 1129 0086 0ADD     		ble	.L147
+ 1130 0088 3B89     		ldrh	r3, [r7, #8]
+ 1131 008a 5D07     		lsls	r5, r3, #29
+ 1132 008c 07D5     		bpl	.L147
+ 1133 008e FFF7FEFF 		bl	GUI_ALLOC_GetNumFreeBytes
+ 1134 0092 B0F5001F 		cmp	r0, #2097152
+ 1135 0096 CCBF     		ite	gt
+ 1136 0098 474B     		ldrgt	r3, .L158+44
+ 1137 009a 484B     		ldrle	r3, .L158+48
+ 1138 009c 00E0     		b	.L156
+ 1139              	.L147:
+ 1140 009e 484B     		ldr	r3, .L158+52
+ 1141              	.L156:
+ 1142 00a0 2360     		str	r3, [r4]
+ 1143 00a2 484D     		ldr	r5, .L158+56
+ 1144 00a4 484B     		ldr	r3, .L158+60
+ 1145 00a6 0122     		movs	r2, #1
+ 1146 00a8 DFF84091 		ldr	r9, .L158+96
+ 1147 00ac 1A70     		strb	r2, [r3]
+ 1148 00ae A846     		mov	r8, r5
+ 1149              	.L152:
+ 1150 00b0 FFF7FEFF 		bl	WM_GetDesktopWindow
+ 1151 00b4 FFF7FEFF 		bl	WM_SelectWindow
+ 1152 00b8 FFF7FEFF 		bl	GUI_Clear
+ 1153 00bc FFF7FEFF 		bl	GUI_CURSOR_Show
+ 1154 00c0 FFF7FEFF 		bl	LCD_GetXSize
+ 1155 00c4 0446     		mov	r4, r0
+ 1156 00c6 FFF7FEFF 		bl	LCD_GetYSize
+ 1157 00ca 0646     		mov	r6, r0
+ 1158 00cc FFF7FEFF 		bl	WM_GetDesktopWindow
+ 1159 00d0 3D3E     		subs	r6, r6, #61
+ 1160 00d2 A4F15002 		sub	r2, r4, #80
+ 1161 00d6 0346     		mov	r3, r0
+ 1162 00d8 0521     		movs	r1, #5
+ 1163 00da 0092     		str	r2, [sp]
+ 1164 00dc 0196     		str	r6, [sp, #4]
+ 1165 00de 3B4A     		ldr	r2, .L158+64
+ 1166 00e0 3B48     		ldr	r0, .L158+68
+ 1167 00e2 FFF7FEFF 		bl	GUI_CreateDialogBox
+ 1168 00e6 2860     		str	r0, [r5]
+ 1169 00e8 FFF7FEFF 		bl	WM_GetDesktopWindow
+ 1170 00ec 6410     		asrs	r4, r4, #1
+ 1171 00ee 013C     		subs	r4, r4, #1
+ 1172 00f0 0094     		str	r4, [sp]
+ 1173 00f2 0024     		movs	r4, #0
+ 1174 00f4 0346     		mov	r3, r0
+ 1175 00f6 0221     		movs	r1, #2
+ 1176 00f8 364A     		ldr	r2, .L158+72
+ 1177 00fa 0194     		str	r4, [sp, #4]
+ 1178 00fc 3648     		ldr	r0, .L158+76
+ 1179 00fe FFF7FEFF 		bl	GUI_CreateDialogBox
+ 1180 0102 C9F80000 		str	r0, [r9]
+ 1181 0106 FFF7FEFF 		bl	WM_HideWindow
+ 1182 010a 2868     		ldr	r0, [r5]
+ 1183 010c FFF7FEFF 		bl	WM_InvalidateWindow
+ 1184 0110 FFF7FEFF 		bl	WM_GetDesktopWindow
+ 1185 0114 FFF7FEFF 		bl	WM_DisableMemdev
+ 1186 0118 FFF7FEFF 		bl	GUI_Exec
+ 1187 011c FFF7FEFF 		bl	WM_GetDesktopWindow
+ 1188 0120 FFF7FEFF 		bl	WM_EnableMemdev
+ 1189 0124 FFF7FEFF 		bl	GUIDEMO_Intro
+ 1190 0128 2C49     		ldr	r1, .L158+80
+ 1191 012a DFF880A0 		ldr	r10, .L158+32
+ 1192 012e DFF8C0B0 		ldr	fp, .L158+100
+ 1193 0132 0C60     		str	r4, [r1]
+ 1194 0134 0E46     		mov	r6, r1
+ 1195              	.L150:
+ 1196 0136 0A68     		ldr	r2, [r1]
+ 1197 0138 3B68     		ldr	r3, [r7]
+ 1198 013a 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 1199 013e C3B1     		cbz	r3, .L157
+ 1200 0140 274B     		ldr	r3, .L158+84
+ 1201 0142 0024     		movs	r4, #0
+ 1202 0144 1C60     		str	r4, [r3]
+ 1203 0146 274B     		ldr	r3, .L158+88
+ 1204 0148 CBF80040 		str	r4, [fp]
+ 1205 014c 1C60     		str	r4, [r3]
+ 1206 014e 0391     		str	r1, [sp, #12]
+ 1207 0150 FFF7FEFF 		bl	GUIDEMO_UpdateControlText
+ 1208 0154 3268     		ldr	r2, [r6]
+ 1209 0156 DAF80030 		ldr	r3, [r10]
+ 1210 015a 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 1211 015e 9847     		blx	r3
+ 1212 0160 214B     		ldr	r3, .L158+92
+ 1213 0162 0399     		ldr	r1, [sp, #12]
+ 1214 0164 1C60     		str	r4, [r3]
+ 1215 0166 094B     		ldr	r3, .L158
+ 1216 0168 1C60     		str	r4, [r3]
+ 1217 016a 3368     		ldr	r3, [r6]
+ 1218 016c 0133     		adds	r3, r3, #1
+ 1219 016e 3360     		str	r3, [r6]
+ 1220 0170 E1E7     		b	.L150
+ 1221              	.L157:
+ 1222 0172 1A4A     		ldr	r2, .L158+80
+ 1223 0174 D8F80000 		ldr	r0, [r8]
+ 1224 0178 1360     		str	r3, [r2]
+ 1225 017a FFF7FEFF 		bl	WM_DeleteWindow
+ 1226 017e 1B4B     		ldr	r3, .L158+96
+ 1227 0180 1868     		ldr	r0, [r3]
+ 1228 0182 FFF7FEFF 		bl	WM_DeleteWindow
+ 1229 0186 FFF7FEFF 		bl	GUI_CURSOR_Hide
+ 1230 018a 91E7     		b	.L152
+ 1231              	.L159:
+ 1232              		.align	2
+ 1233              	.L158:
+ 1234 018c 00000000 		.word	.LANCHOR12
+ 1235 0190 00000000 		.word	_cbEffect
+ 1236 0194 00000000 		.word	_cbBk
+ 1237 0198 00000000 		.word	_FRAMEWIN_DrawSkinFlex
+ 1238 019c 00000000 		.word	PROGBAR_DrawSkinFlex
+ 1239 01a0 00000000 		.word	BUTTON_DrawSkinFlex
+ 1240 01a4 00000000 		.word	SCROLLBAR_DrawSkinFlex
+ 1241 01a8 00000000 		.word	SLIDER_DrawSkinFlex
+ 1242 01ac 00000000 		.word	.LANCHOR7
+ 1243 01b0 00000000 		.word	HEADER_DrawSkinFlex
+ 1244 01b4 00000000 		.word	.LANCHOR5
+ 1245 01b8 00000000 		.word	_DrawBkCircle
+ 1246 01bc 00000000 		.word	_DrawBk
+ 1247 01c0 00000000 		.word	_DrawBkSimple
+ 1248 01c4 00000000 		.word	.LANCHOR8
+ 1249 01c8 00000000 		.word	.LANCHOR6
+ 1250 01cc 00000000 		.word	_cbFrameWinControl
+ 1251 01d0 00000000 		.word	.LANCHOR13
+ 1252 01d4 00000000 		.word	_cbFrameWinInfo
+ 1253 01d8 00000000 		.word	.LANCHOR14
+ 1254 01dc 00000000 		.word	.LANCHOR10
+ 1255 01e0 00000000 		.word	.LANCHOR2
+ 1256 01e4 00000000 		.word	.LANCHOR3
+ 1257 01e8 00000000 		.word	.LANCHOR11
+ 1258 01ec 00000000 		.word	.LANCHOR9
+ 1259 01f0 00000000 		.word	.LANCHOR1
+ 1261              		.section	.rodata._aFrameWinInfo,"a",%progbits
+ 1262              		.align	2
+ 1263              		.set	.LANCHOR14,. + 0
+ 1266              	_aFrameWinInfo:
+ 1267 0000 00000000 		.word	FRAMEWIN_CreateIndirect
+ 1268 0004 10000000 		.word	.LC4
+ 1269 0008 0000     		.short	0
+ 1270 000a 0000     		.short	0
+ 1271 000c 0000     		.short	0
+ 1272 000e 0000     		.short	0
+ 1273 0010 0000     		.short	0
+ 1274 0012 0000     		.short	0
+ 1275 0014 00000000 		.word	0
+ 1276 0018 00000000 		.space	4
+ 1277 001c 00000000 		.word	TEXT_CreateIndirect
+ 1278 0020 1D000000 		.word	.LC5
+ 1279 0024 6001     		.short	352
+ 1280 0026 0300     		.short	3
+ 1281 0028 0300     		.short	3
+ 1282 002a 0000     		.short	0
+ 1283 002c 0000     		.short	0
+ 1284 002e 0000     		.short	0
+ 1285 0030 00000000 		.word	0
+ 1286 0034 00000000 		.space	4
+ 1287              		.section	.bss._hDialogInfo,"aw",%nobits
+ 1288              		.align	2
+ 1289              		.set	.LANCHOR9,. + 0
+ 1292              	_hDialogInfo:
+ 1293 0000 00000000 		.space	4
+ 1294              		.section	.bss._hDialogControl,"aw",%nobits
+ 1295              		.align	2
+ 1296              		.set	.LANCHOR8,. + 0
+ 1299              	_hDialogControl:
+ 1300 0000 00000000 		.space	4
+ 1301              		.section	.bss._Next,"aw",%nobits
+ 1302              		.align	2
+ 1303              		.set	.LANCHOR4,. + 0
+ 1306              	_Next:
+ 1307 0000 00000000 		.space	4
+ 1308              		.section	.bss._iDemoMinor,"aw",%nobits
+ 1309              		.align	2
+ 1310              		.set	.LANCHOR11,. + 0
+ 1313              	_iDemoMinor:
+ 1314 0000 00000000 		.space	4
+ 1315              		.section	.bss.hMemStretch.13408,"aw",%nobits
+ 1316              		.align	2
+ 1317              		.set	.LANCHOR0,. + 0
+ 1320              	hMemStretch.13408:
+ 1321 0000 00000000 		.space	4
+ 1322              		.section	.bss._pfDrawBk,"aw",%nobits
+ 1323              		.align	2
+ 1324              		.set	.LANCHOR5,. + 0
+ 1327              	_pfDrawBk:
+ 1328 0000 00000000 		.space	4
+ 1329              		.section	.bss._iDemo,"aw",%nobits
+ 1330              		.align	2
+ 1331              		.set	.LANCHOR10,. + 0
+ 1334              	_iDemo:
+ 1335 0000 00000000 		.space	4
+ 1336              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 1337              	.LC0:
+ 1338 0000 496E7472 		.ascii	"Intro\000"
+ 1338      6F00
+ 1339              	.LC1:
+ 1340 0006 44656D6F 		.ascii	"Demo \000"
+ 1340      2000
+ 1341              	.LC2:
+ 1342 000c 2E00     		.ascii	".\000"
+ 1343              	.LC3:
+ 1344 000e 2F00     		.ascii	"/\000"
+ 1345              	.LC4:
+ 1346 0010 5354656D 		.ascii	"STemWin Demo\000"
+ 1346      57696E20 
+ 1346      44656D6F 
+ 1346      00
+ 1347              	.LC5:
+ 1348 001d 00       		.ascii	"\000"
+ 1349              	.LC6:
+ 1350 001e 436F6E74 		.ascii	"Control\000"
+ 1350      726F6C00 
+ 1351              	.LC7:
+ 1352 0026 48616C74 		.ascii	"Halt\000"
+ 1352      00
+ 1353              	.LC8:
+ 1354 002b 4E657874 		.ascii	"Next\000"
+ 1354      00
+ 1355              		.section	.bss._GUIDemoConfig,"aw",%nobits
+ 1356              		.align	2
+ 1357              		.set	.LANCHOR7,. + 0
+ 1360              	_GUIDemoConfig:
+ 1361 0000 00000000 		.space	12
+ 1361      00000000 
+ 1361      00000000 
+ 1362              		.section	.bss._HaltTime,"aw",%nobits
+ 1363              		.align	2
+ 1364              		.set	.LANCHOR2,. + 0
+ 1367              	_HaltTime:
+ 1368 0000 00000000 		.space	4
+ 1369              		.section	.bss._DrawLogo,"aw",%nobits
+ 1370              		.set	.LANCHOR6,. + 0
+ 1373              	_DrawLogo:
+ 1374 0000 00       		.space	1
+ 1375              		.section	.bss._HaltTimeStart,"aw",%nobits
+ 1376              		.align	2
+ 1377              		.set	.LANCHOR3,. + 0
+ 1380              	_HaltTimeStart:
+ 1381 0000 00000000 		.space	4
+ 1382              		.section	.rodata._aFrameWinControl,"a",%progbits
+ 1383              		.align	2
+ 1384              		.set	.LANCHOR13,. + 0
+ 1387              	_aFrameWinControl:
+ 1388 0000 00000000 		.word	FRAMEWIN_CreateIndirect
+ 1389 0004 1E000000 		.word	.LC6
+ 1390 0008 0000     		.short	0
+ 1391 000a 0000     		.short	0
+ 1392 000c 0000     		.short	0
+ 1393 000e 5000     		.short	80
+ 1394 0010 3D00     		.short	61
+ 1395 0012 0000     		.short	0
+ 1396 0014 00000000 		.word	0
+ 1397 0018 00000000 		.space	4
+ 1398 001c 00000000 		.word	BUTTON_CreateIndirect
+ 1399 0020 26000000 		.word	.LC7
+ 1400 0024 0008     		.short	2048
+ 1401 0026 0200     		.short	2
+ 1402 0028 1800     		.short	24
+ 1403 002a 2000     		.short	32
+ 1404 002c 1400     		.short	20
+ 1405 002e 0000     		.short	0
+ 1406 0030 00000000 		.word	0
+ 1407 0034 00000000 		.space	4
+ 1408 0038 00000000 		.word	BUTTON_CreateIndirect
+ 1409 003c 2B000000 		.word	.LC8
+ 1410 0040 0108     		.short	2049
+ 1411 0042 2400     		.short	36
+ 1412 0044 1800     		.short	24
+ 1413 0046 2000     		.short	32
+ 1414 0048 1400     		.short	20
+ 1415 004a 0000     		.short	0
+ 1416 004c 00000000 		.word	0
+ 1417 0050 00000000 		.space	4
+ 1418 0054 00000000 		.word	PROGBAR_CreateIndirect
+ 1419 0058 00000000 		.word	0
+ 1420 005c 1002     		.short	528
+ 1421 005e 0200     		.short	2
+ 1422 0060 0B00     		.short	11
+ 1423 0062 4200     		.short	66
+ 1424 0064 0C00     		.short	12
+ 1425 0066 0000     		.short	0
+ 1426 0068 00000000 		.word	0
+ 1427 006c 00000000 		.space	4
+ 1428 0070 00000000 		.word	TEXT_CreateIndirect
+ 1429 0074 00000000 		.word	0
+ 1430 0078 6001     		.short	352
+ 1431 007a 0200     		.short	2
+ 1432 007c 0200     		.short	2
+ 1433 007e 4500     		.short	69
+ 1434 0080 0700     		.short	7
+ 1435 0082 0000     		.short	0
+ 1436 0084 00000000 		.word	0
+ 1437 0088 00000000 		.space	4
+ 1438              		.section	.bss._Pressed,"aw",%nobits
+ 1439              		.align	2
+ 1440              		.set	.LANCHOR12,. + 0
+ 1443              	_Pressed:
+ 1444 0000 00000000 		.space	4
+ 1445              		.section	.bss._Halt,"aw",%nobits
+ 1446              		.align	2
+ 1447              		.set	.LANCHOR1,. + 0
+ 1450              	_Halt:
+ 1451 0000 00000000 		.space	4
+ 1452              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO.c
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:16     .text._DrawBkCircle:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:20     .text._DrawBkCircle:00000000 _DrawBkCircle
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:138    .text._DrawBkCircle:0000012c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:145    .text._cbFrameWinControl:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:149    .text._cbFrameWinControl:00000000 _cbFrameWinControl
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:281    .text._cbFrameWinControl:00000120 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:291    .text._DrawBkSimple:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:295    .text._DrawBkSimple:00000000 _DrawBkSimple
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:314    .text._DrawBkSimple:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:317    .text._DrawBk:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:321    .text._DrawBk:00000000 _DrawBk
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:352    .text._DrawBk:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:356    .text._FRAMEWIN_DrawSkinFlex:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:360    .text._FRAMEWIN_DrawSkinFlex:00000000 _FRAMEWIN_DrawSkinFlex
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:380    .text._cbBk:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:384    .text._cbBk:00000000 _cbBk
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:426    .text._cbBk:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:431    .text._cbFrameWinInfo:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:435    .text._cbFrameWinInfo:00000000 _cbFrameWinInfo
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:490    .text._cbFrameWinInfo:0000006c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:493    .text.GUIDEMO_SetDrawLogo:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:498    .text.GUIDEMO_SetDrawLogo:00000000 GUIDEMO_SetDrawLogo
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:511    .text.GUIDEMO_SetDrawLogo:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:514    .text.GUIDEMO_AddIntToString:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:519    .text.GUIDEMO_AddIntToString:00000000 GUIDEMO_AddIntToString
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:558    .text.GUIDEMO_AddStringToString:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:563    .text.GUIDEMO_AddStringToString:00000000 GUIDEMO_AddStringToString
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:585    .text.GUIDEMO_CheckCancel:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:590    .text.GUIDEMO_CheckCancel:00000000 GUIDEMO_CheckCancel
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:614    .text.GUIDEMO_CheckCancel:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:618    .text._cbEffect:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:622    .text._cbEffect:00000000 _cbEffect
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:655    .text._cbEffect:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:658    .text.GUIDEMO_ClearText:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:663    .text.GUIDEMO_ClearText:00000000 GUIDEMO_ClearText
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:672    .text.GUIDEMO_DrawBk:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:677    .text.GUIDEMO_DrawBk:00000000 GUIDEMO_DrawBk
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:688    .text.GUIDEMO_DrawBk:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:691    .text.GUIDEMO_GetConfFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:696    .text.GUIDEMO_GetConfFlag:00000000 GUIDEMO_GetConfFlag
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:710    .text.GUIDEMO_GetConfFlag:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:713    .text.GUIDEMO_GetTime:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:718    .text.GUIDEMO_GetTime:00000000 GUIDEMO_GetTime
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:737    .text.GUIDEMO_GetTime:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:742    .text.GUIDEMO_Delay:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:747    .text.GUIDEMO_Delay:00000000 GUIDEMO_Delay
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:802    .text.GUIDEMO_Delay:00000080 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:805    .text.GUIDEMO_HideControlWin:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:810    .text.GUIDEMO_HideControlWin:00000000 GUIDEMO_HideControlWin
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:823    .text.GUIDEMO_HideControlWin:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:826    .text.GUIDEMO_HideInfoWin:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:831    .text.GUIDEMO_HideInfoWin:00000000 GUIDEMO_HideInfoWin
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:844    .text.GUIDEMO_HideInfoWin:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:847    .text.GUIDEMO_ShowControlWin:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:852    .text.GUIDEMO_ShowControlWin:00000000 GUIDEMO_ShowControlWin
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:864    .text.GUIDEMO_ShowControlWin:00000014 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:867    .text.GUIDEMO_ShowInfo:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:872    .text.GUIDEMO_ShowInfo:00000000 GUIDEMO_ShowInfo
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:892    .text.GUIDEMO_ShowInfo:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:895    .text.GUIDEMO_ShowInfoWin:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:900    .text.GUIDEMO_ShowInfoWin:00000000 GUIDEMO_ShowInfoWin
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:910    .text.GUIDEMO_ShowInfoWin:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:913    .text.GUIDEMO_UpdateControlText:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:918    .text.GUIDEMO_UpdateControlText:00000000 GUIDEMO_UpdateControlText
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:964    .text.GUIDEMO_UpdateControlText:00000064 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:973    .text.GUIDEMO_NotifyStartNext:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:978    .text.GUIDEMO_NotifyStartNext:00000000 GUIDEMO_NotifyStartNext
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:997    .text.GUIDEMO_NotifyStartNext:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1003   .text.GUIDEMO_Wait:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1008   .text.GUIDEMO_Wait:00000000 GUIDEMO_Wait
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1017   .text.GUIDEMO_ShowIntro:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1022   .text.GUIDEMO_ShowIntro:00000000 GUIDEMO_ShowIntro
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1070   .text.GUIDEMO_ShowIntro:00000074 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1074   .text.MainTask:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1079   .text.MainTask:00000000 MainTask
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1234   .text.MainTask:0000018c $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1262   .rodata._aFrameWinInfo:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1266   .rodata._aFrameWinInfo:00000000 _aFrameWinInfo
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1288   .bss._hDialogInfo:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1292   .bss._hDialogInfo:00000000 _hDialogInfo
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1295   .bss._hDialogControl:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1299   .bss._hDialogControl:00000000 _hDialogControl
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1302   .bss._Next:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1306   .bss._Next:00000000 _Next
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1309   .bss._iDemoMinor:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1313   .bss._iDemoMinor:00000000 _iDemoMinor
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1316   .bss.hMemStretch.13408:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1320   .bss.hMemStretch.13408:00000000 hMemStretch.13408
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1323   .bss._pfDrawBk:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1327   .bss._pfDrawBk:00000000 _pfDrawBk
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1330   .bss._iDemo:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1334   .bss._iDemo:00000000 _iDemo
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1356   .bss._GUIDemoConfig:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1360   .bss._GUIDemoConfig:00000000 _GUIDemoConfig
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1363   .bss._HaltTime:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1367   .bss._HaltTime:00000000 _HaltTime
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1373   .bss._DrawLogo:00000000 _DrawLogo
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1374   .bss._DrawLogo:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1376   .bss._HaltTimeStart:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1380   .bss._HaltTimeStart:00000000 _HaltTimeStart
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1383   .rodata._aFrameWinControl:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1387   .rodata._aFrameWinControl:00000000 _aFrameWinControl
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1439   .bss._Pressed:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1443   .bss._Pressed:00000000 _Pressed
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1446   .bss._Halt:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccjKulrC.s:1450   .bss._Halt:00000000 _Halt
+
+UNDEFINED SYMBOLS
+LCD_GetXSize
+LCD_GetYSize
+LCD_GetVYSize
+GUI_SetBkColor
+GUI_ClearRect
+GUI_MEMDEV_CreateFixed
+GUI_MEMDEV_CreateEx
+GUI_MEMDEV_Select
+GUI_Clear
+GUI_DrawGradientV
+GUI_MEMDEV_GetDataPtr
+GUI_SetColor
+GUI_DrawCircle
+GUI_MEMDEV_DrawPerspectiveX
+GUI_MEMDEV_Delete
+GUI_MEMDEV_Write
+GUI_DrawBitmap
+bmSTLogo70x35
+GUI_MEMDEV_DEVICE_32
+LCD_API_ColorConv_8888
+WM_GetDesktopWindow
+WM_SendMessage
+WM_GetDialogItem
+PROGBAR_SetTextAlign
+PROGBAR_SetFont
+BUTTON_SetFocussable
+TEXT_SetText
+TEXT_SetFont
+WM_GetWindowSizeX
+WM_GetWindowSizeY
+WM_GetId
+GUI_GetTime
+WM_MakeModal
+WM_DefaultProc
+GUI_FontD6x8
+GUI_Font8_ASCII
+FRAMEWIN_DrawSkinFlex
+FRAMEWIN_SetTextAlign
+FRAMEWIN_SetTextColor
+WM_SetWindowPos
+GUI_Delay
+GUI_Exec
+GUI_PID_GetState
+WM_ShowWindow
+PROGBAR_SetValue
+PROGBAR_SetMinMax
+WM_HideWindow
+WM_ValidateWindow
+WM_IsVisible
+memset
+GUI_SetTextMode
+GUI_SetFont
+GUI_DispStringHCenterAt
+GUI_GetFontDistY
+GUI_FontRounded22
+GUI_Font16_ASCII
+WM_SetCreateFlags
+GUI_Init
+GUI_MEMDEV_SetAnimationCallback
+WM_SetCallback
+BUTTON_SetReactOnLevel
+FRAMEWIN_GetSkinFlexProps
+FRAMEWIN_SetSkinFlexProps
+FRAMEWIN_SetDefaultSkin
+PROGBAR_SetDefaultSkin
+BUTTON_SetDefaultSkin
+SCROLLBAR_SetDefaultSkin
+SLIDER_SetDefaultSkin
+HEADER_SetDefaultSkin
+GUIDEMO_Config
+LCD_GetBitsPerPixel
+GUI_ALLOC_GetNumFreeBytes
+WM_SelectWindow
+GUI_CURSOR_Show
+GUI_CreateDialogBox
+WM_InvalidateWindow
+WM_DisableMemdev
+WM_EnableMemdev
+GUIDEMO_Intro
+WM_DeleteWindow
+GUI_CURSOR_Hide
+PROGBAR_DrawSkinFlex
+BUTTON_DrawSkinFlex
+SCROLLBAR_DrawSkinFlex
+SLIDER_DrawSkinFlex
+HEADER_DrawSkinFlex
+FRAMEWIN_CreateIndirect
+TEXT_CreateIndirect
+BUTTON_CreateIndirect
+PROGBAR_CreateIndirect

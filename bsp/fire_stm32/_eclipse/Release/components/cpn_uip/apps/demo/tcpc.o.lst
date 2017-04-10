@@ -1,0 +1,212 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"tcpc.c"
+  15              		.section	.text.socket_tcp_client,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	socket_tcp_client:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 38B5     		push	{r3, r4, r5, lr}
+  24 0002 0446     		mov	r4, r0
+  25 0004 FFF7FEFF 		bl	socket_closed
+  26 0008 0428     		cmp	r0, #4
+  27 000a 67D0     		beq	.L1
+  28 000c 2388     		ldrh	r3, [r4]
+  29 000e 022B     		cmp	r3, #2
+  30 0010 23D0     		beq	.L5
+  31 0012 03D8     		bhi	.L6
+  32 0014 5BB1     		cbz	r3, .L7
+  33 0016 012B     		cmp	r3, #1
+  34 0018 0FD0     		beq	.L8
+  35 001a 5BE0     		b	.L4
+  36              	.L6:
+  37 001c 042B     		cmp	r3, #4
+  38 001e 47D0     		beq	.L9
+  39 0020 33D3     		bcc	.L10
+  40 0022 FF2B     		cmp	r3, #255
+  41 0024 56D1     		bne	.L4
+  42 0026 2E48     		ldr	r0, .L34
+  43 0028 FFF7FEFF 		bl	puts
+  44 002c 52E0     		b	.L4
+  45              	.L7:
+  46 002e 2D48     		ldr	r0, .L34+4
+  47 0030 2D49     		ldr	r1, .L34+8
+  48 0032 FFF7FEFF 		bl	strcpy
+  49 0036 0123     		movs	r3, #1
+  50 0038 4AE0     		b	.L31
+  51              	.L8:
+  52 003a 2A48     		ldr	r0, .L34+4
+  53 003c FFF7FEFF 		bl	strlen
+  54 0040 4FF0FF32 		mov	r2, #-1
+  55 0044 81B2     		uxth	r1, r0
+  56 0046 2748     		ldr	r0, .L34+4
+  57 0048 FFF7FEFF 		bl	socket_tx
+  58 004c 0228     		cmp	r0, #2
+  59 004e 45D0     		beq	.L1
+  60 0050 08B9     		cbnz	r0, .L13
+  61 0052 0223     		movs	r3, #2
+  62 0054 3CE0     		b	.L31
+  63              	.L13:
+  64 0056 FF23     		movs	r3, #255
+  65 0058 3AE0     		b	.L31
+  66              	.L5:
+  67 005a 2248     		ldr	r0, .L34+4
+  68 005c 1E21     		movs	r1, #30
+  69 005e 0D22     		movs	r2, #13
+  70 0060 44F62063 		movw	r3, #20000
+  71 0064 FFF7FEFF 		bl	socket_rx_chr
+  72 0068 0228     		cmp	r0, #2
+  73 006a 1E4D     		ldr	r5, .L34+4
+  74 006c 36D0     		beq	.L1
+  75 006e 08B1     		cbz	r0, .L14
+  76 0070 0328     		cmp	r0, #3
+  77 0072 07D1     		bne	.L15
+  78              	.L14:
+  79 0074 FFF7FEFF 		bl	socket_len
+  80 0078 0023     		movs	r3, #0
+  81 007a 2844     		add	r0, r0, r5
+  82 007c 00F8013C 		strb	r3, [r0, #-1]
+  83 0080 0323     		movs	r3, #3
+  84 0082 25E0     		b	.L31
+  85              	.L15:
+  86 0084 2846     		mov	r0, r5
+  87 0086 1949     		ldr	r1, .L34+12
+  88 0088 0EE0     		b	.L32
+  89              	.L10:
+  90 008a 1648     		ldr	r0, .L34+4
+  91 008c FFF7FEFF 		bl	strlen
+  92 0090 4FF0FF32 		mov	r2, #-1
+  93 0094 81B2     		uxth	r1, r0
+  94 0096 1348     		ldr	r0, .L34+4
+  95 0098 FFF7FEFF 		bl	socket_tx
+  96 009c 0228     		cmp	r0, #2
+  97 009e 1DD0     		beq	.L1
+  98 00a0 0028     		cmp	r0, #0
+  99 00a2 D8D1     		bne	.L13
+ 100 00a4 0F48     		ldr	r0, .L34+4
+ 101 00a6 1249     		ldr	r1, .L34+16
+ 102              	.L32:
+ 103 00a8 FFF7FEFF 		bl	strcpy
+ 104 00ac 0423     		movs	r3, #4
+ 105 00ae 0FE0     		b	.L31
+ 106              	.L9:
+ 107 00b0 0C48     		ldr	r0, .L34+4
+ 108 00b2 FFF7FEFF 		bl	strlen
+ 109 00b6 4FF0FF32 		mov	r2, #-1
+ 110 00ba 81B2     		uxth	r1, r0
+ 111 00bc 0948     		ldr	r0, .L34+4
+ 112 00be FFF7FEFF 		bl	socket_tx
+ 113 00c2 0228     		cmp	r0, #2
+ 114 00c4 0AD0     		beq	.L1
+ 115 00c6 42F21070 		movw	r0, #10000
+ 116 00ca FFF7FEFF 		bl	socket_delay
+ 117 00ce 0523     		movs	r3, #5
+ 118              	.L31:
+ 119 00d0 2380     		strh	r3, [r4]	@ movhi
+ 120 00d2 38BD     		pop	{r3, r4, r5, pc}
+ 121              	.L4:
+ 122 00d4 BDE83840 		pop	{r3, r4, r5, lr}
+ 123 00d8 FFF7FEBF 		b	socket_close
+ 124              	.L1:
+ 125 00dc 38BD     		pop	{r3, r4, r5, pc}
+ 126              	.L35:
+ 127 00de 00BF     		.align	2
+ 128              	.L34:
+ 129 00e0 40000000 		.word	.LC3
+ 130 00e4 00000000 		.word	.LANCHOR0
+ 131 00e8 00000000 		.word	.LC0
+ 132 00ec 14000000 		.word	.LC1
+ 133 00f0 31000000 		.word	.LC2
+ 135              		.section	.text.example_tcp_client,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	example_tcp_client
+ 138              		.thumb
+ 139              		.thumb_func
+ 141              	example_tcp_client:
+ 142              		@ args = 0, pretend = 0, frame = 0
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144 0000 70B5     		push	{r4, r5, r6, lr}
+ 145 0002 074C     		ldr	r4, .L37
+ 146 0004 0D46     		mov	r5, r1
+ 147 0006 0646     		mov	r6, r0
+ 148 0008 2046     		mov	r0, r4
+ 149 000a FFF7FEFF 		bl	tcp_client_delete
+ 150 000e 2046     		mov	r0, r4
+ 151 0010 3246     		mov	r2, r6
+ 152 0012 2B46     		mov	r3, r5
+ 153 0014 0021     		movs	r1, #0
+ 154 0016 BDE87040 		pop	{r4, r5, r6, lr}
+ 155 001a FFF7FEBF 		b	tcp_client_add
+ 156              	.L38:
+ 157 001e 00BF     		.align	2
+ 158              	.L37:
+ 159 0020 00000000 		.word	socket_tcp_client
+ 161              		.section	.bss.str.6493,"aw",%nobits
+ 162              		.set	.LANCHOR0,. + 0
+ 165              	str.6493:
+ 166 0000 00000000 		.space	30
+ 166      00000000 
+ 166      00000000 
+ 166      00000000 
+ 166      00000000 
+ 167              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 168              	.LC0:
+ 169 0000 48656C6C 		.ascii	"Hello, who are you?\000"
+ 169      6F2C2077 
+ 169      686F2061 
+ 169      72652079 
+ 169      6F753F00 
+ 170              	.LC1:
+ 171 0014 476F6F64 		.ascii	"Goodbye, indifference world!\000"
+ 171      6279652C 
+ 171      20696E64 
+ 171      69666665 
+ 171      72656E63 
+ 172              	.LC2:
+ 173 0031 53656520 		.ascii	"See you later!\000"
+ 173      796F7520 
+ 173      6C617465 
+ 173      722100
+ 174              	.LC3:
+ 175 0040 74637020 		.ascii	"tcp client tx_socket error!!!\015\000"
+ 175      636C6965 
+ 175      6E742074 
+ 175      785F736F 
+ 175      636B6574 
+ 176              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tcpc.c
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:16     .text.socket_tcp_client:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:20     .text.socket_tcp_client:00000000 socket_tcp_client
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:129    .text.socket_tcp_client:000000e0 $d
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:136    .text.example_tcp_client:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:141    .text.example_tcp_client:00000000 example_tcp_client
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:159    .text.example_tcp_client:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:165    .bss.str.6493:00000000 str.6493
+D:\Users\draapho\AppData\Local\Temp\ccwUeC0x.s:166    .bss.str.6493:00000000 $d
+
+UNDEFINED SYMBOLS
+socket_closed
+puts
+strcpy
+strlen
+socket_tx
+socket_rx_chr
+socket_len
+socket_delay
+socket_close
+tcp_client_delete
+tcp_client_add

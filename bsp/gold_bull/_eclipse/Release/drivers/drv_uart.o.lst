@@ -1,0 +1,1058 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_uart.c"
+  15              		.section	.text.uart_rx_byte_static,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	uart_rx_byte_static:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 70B5     		push	{r4, r5, r6, lr}
+  24 0002 0446     		mov	r4, r0
+  25 0004 0D46     		mov	r5, r1
+  26 0006 FFF7FEFF 		bl	__get_PRIMASK
+  27              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  28 000a 72B6     		cpsid i
+  29              	@ 0 "" 2
+  30              		.thumb
+  31 000c 0E4A     		ldr	r2, .L7
+  32 000e 0F49     		ldr	r1, .L7+4
+  33 0010 32F81430 		ldrh	r3, [r2, r4, lsl #1]
+  34 0014 31F81410 		ldrh	r1, [r1, r4, lsl #1]
+  35 0018 9942     		cmp	r1, r3
+  36 001a 10D0     		beq	.L4
+  37 001c 0C4E     		ldr	r6, .L7+8
+  38 001e 03EB8411 		add	r1, r3, r4, lsl #6
+  39 0022 715C     		ldrb	r1, [r6, r1]	@ zero_extendqisi2
+  40 0024 0133     		adds	r3, r3, #1
+  41 0026 2970     		strb	r1, [r5]
+  42 0028 99B2     		uxth	r1, r3
+  43 002a 3F29     		cmp	r1, #63
+  44 002c 4FF00003 		mov	r3, #0
+  45 0030 94BF     		ite	ls
+  46 0032 22F81410 		strhls	r1, [r2, r4, lsl #1]	@ movhi
+  47 0036 22F81430 		strhhi	r3, [r2, r4, lsl #1]	@ movhi
+  48 003a 1C46     		mov	r4, r3
+  49 003c 00E0     		b	.L2
+  50              	.L4:
+  51 003e 0124     		movs	r4, #1
+  52              	.L2:
+  53 0040 FFF7FEFF 		bl	__set_PRIMASK
+  54 0044 2046     		mov	r0, r4
+  55 0046 70BD     		pop	{r4, r5, r6, pc}
+  56              	.L8:
+  57              		.align	2
+  58              	.L7:
+  59 0048 00000000 		.word	.LANCHOR0
+  60 004c 00000000 		.word	.LANCHOR1
+  61 0050 00000000 		.word	.LANCHOR2
+  63              		.section	.text.uart_tx_byte_static,"ax",%progbits
+  64              		.align	1
+  65              		.thumb
+  66              		.thumb_func
+  68              	uart_tx_byte_static:
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  72 0004 0446     		mov	r4, r0
+  73 0006 8846     		mov	r8, r1
+  74 0008 FFF7FEFF 		bl	__get_PRIMASK
+  75 000c 0746     		mov	r7, r0
+  76              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  77 000e 72B6     		cpsid i
+  78              	@ 0 "" 2
+  79              		.thumb
+  80 0010 2A4B     		ldr	r3, .L20
+  81 0012 2B4A     		ldr	r2, .L20+4
+  82 0014 2421     		movs	r1, #36
+  83 0016 01FB0431 		mla	r1, r1, r4, r3
+  84 001a DFF8B0E0 		ldr	lr, .L20+16
+  85 001e 294B     		ldr	r3, .L20+8
+  86 0020 1646     		mov	r6, r2
+  87 0022 4FEA441C 		lsl	ip, r4, #5
+  88 0026 4FF00009 		mov	r9, #0
+  89              	.L10:
+  90 002a 32F81400 		ldrh	r0, [r2, r4, lsl #1]
+  91 002e 244D     		ldr	r5, .L20+4
+  92 0030 80B2     		uxth	r0, r0
+  93 0032 1F28     		cmp	r0, #31
+  94 0034 1DD9     		bls	.L19
+  95 0036 C868     		ldr	r0, [r1, #12]
+  96              	.L12:
+  97 0038 0588     		ldrh	r5, [r0]
+  98 003a 2D06     		lsls	r5, r5, #24
+  99 003c FCD5     		bpl	.L12
+ 100 003e 33F81450 		ldrh	r5, [r3, r4, lsl #1]
+ 101 0042 0CEB050A 		add	r10, ip, r5
+ 102 0046 1EF80AA0 		ldrb	r10, [lr, r10]	@ zero_extendqisi2
+ 103 004a 0135     		adds	r5, r5, #1
+ 104 004c 5FFA8AFA 		uxtb	r10, r10
+ 105 0050 A0F804A0 		strh	r10, [r0, #4]	@ movhi
+ 106 0054 36F81400 		ldrh	r0, [r6, r4, lsl #1]
+ 107 0058 ADB2     		uxth	r5, r5
+ 108 005a 80B2     		uxth	r0, r0
+ 109 005c 0138     		subs	r0, r0, #1
+ 110 005e 1F2D     		cmp	r5, #31
+ 111 0060 80B2     		uxth	r0, r0
+ 112 0062 94BF     		ite	ls
+ 113 0064 23F81450 		strhls	r5, [r3, r4, lsl #1]	@ movhi
+ 114 0068 23F81490 		strhhi	r9, [r3, r4, lsl #1]	@ movhi
+ 115 006c 26F81400 		strh	r0, [r6, r4, lsl #1]	@ movhi
+ 116 0070 DBE7     		b	.L10
+ 117              	.L19:
+ 118 0072 154B     		ldr	r3, .L20+12
+ 119 0074 1548     		ldr	r0, .L20+16
+ 120 0076 33F81420 		ldrh	r2, [r3, r4, lsl #1]
+ 121 007a 02EB4411 		add	r1, r2, r4, lsl #5
+ 122 007e 00F80180 		strb	r8, [r0, r1]
+ 123 0082 0132     		adds	r2, r2, #1
+ 124 0084 35F81410 		ldrh	r1, [r5, r4, lsl #1]
+ 125 0088 92B2     		uxth	r2, r2
+ 126 008a 1F2A     		cmp	r2, #31
+ 127 008c 88BF     		it	hi
+ 128 008e 0022     		movhi	r2, #0
+ 129 0090 89B2     		uxth	r1, r1
+ 130 0092 23F81420 		strh	r2, [r3, r4, lsl #1]	@ movhi
+ 131 0096 0131     		adds	r1, r1, #1
+ 132 0098 084B     		ldr	r3, .L20
+ 133 009a 89B2     		uxth	r1, r1
+ 134 009c 2422     		movs	r2, #36
+ 135 009e 25F81410 		strh	r1, [r5, r4, lsl #1]	@ movhi
+ 136 00a2 02FB0434 		mla	r4, r2, r4, r3
+ 137 00a6 40F22771 		movw	r1, #1831
+ 138 00aa E068     		ldr	r0, [r4, #12]
+ 139 00ac 0122     		movs	r2, #1
+ 140 00ae FFF7FEFF 		bl	USART_ITConfig
+ 141 00b2 3846     		mov	r0, r7
+ 142 00b4 BDE8F047 		pop	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 143 00b8 FFF7FEBF 		b	__set_PRIMASK
+ 144              	.L21:
+ 145              		.align	2
+ 146              	.L20:
+ 147 00bc 00000000 		.word	.LANCHOR3
+ 148 00c0 00000000 		.word	.LANCHOR6
+ 149 00c4 00000000 		.word	.LANCHOR4
+ 150 00c8 00000000 		.word	.LANCHOR7
+ 151 00cc 00000000 		.word	.LANCHOR5
+ 153              		.section	.text.uart_buf_clear,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	uart_buf_clear
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	uart_buf_clear:
+ 160              		@ args = 0, pretend = 0, frame = 0
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162 0000 08B5     		push	{r3, lr}
+ 163 0002 30B1     		cbz	r0, .L23
+ 164 0004 0C48     		ldr	r0, .L24
+ 165 0006 4FF4AC71 		mov	r1, #344
+ 166 000a BDE80840 		pop	{r3, lr}
+ 167 000e FFF7FEBF 		b	assert_err
+ 168              	.L23:
+ 169 0012 FFF7FEFF 		bl	__get_PRIMASK
+ 170              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 171 0016 72B6     		cpsid i
+ 172              	@ 0 "" 2
+ 173              		.thumb
+ 174 0018 084A     		ldr	r2, .L24+4
+ 175 001a 0023     		movs	r3, #0
+ 176 001c 1380     		strh	r3, [r2]	@ movhi
+ 177 001e 084A     		ldr	r2, .L24+8
+ 178 0020 1380     		strh	r3, [r2]	@ movhi
+ 179 0022 084A     		ldr	r2, .L24+12
+ 180 0024 1380     		strh	r3, [r2]	@ movhi
+ 181 0026 084A     		ldr	r2, .L24+16
+ 182 0028 1380     		strh	r3, [r2]	@ movhi
+ 183 002a 084A     		ldr	r2, .L24+20
+ 184 002c 1380     		strh	r3, [r2]	@ movhi
+ 185 002e BDE80840 		pop	{r3, lr}
+ 186 0032 FFF7FEBF 		b	__set_PRIMASK
+ 187              	.L25:
+ 188 0036 00BF     		.align	2
+ 189              	.L24:
+ 190 0038 00000000 		.word	.LC0
+ 191 003c 00000000 		.word	.LANCHOR7
+ 192 0040 00000000 		.word	.LANCHOR4
+ 193 0044 00000000 		.word	.LANCHOR6
+ 194 0048 00000000 		.word	.LANCHOR1
+ 195 004c 00000000 		.word	.LANCHOR0
+ 197              		.section	.text.uart_init,"ax",%progbits
+ 198              		.align	1
+ 199              		.global	uart_init
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	uart_init:
+ 204              		@ args = 4, pretend = 0, frame = 40
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 207 0004 5C4C     		ldr	r4, .L54
+ 208 0006 9946     		mov	r9, r3
+ 209 0008 2423     		movs	r3, #36
+ 210 000a 03FB0043 		mla	r3, r3, r0, r4
+ 211 000e 8BB0     		sub	sp, sp, #44
+ 212 0010 0646     		mov	r6, r0
+ 213 0012 8B46     		mov	fp, r1
+ 214 0014 9246     		mov	r10, r2
+ 215 0016 BDF85080 		ldrh	r8, [sp, #80]
+ 216 001a DD68     		ldr	r5, [r3, #12]
+ 217 001c 18B1     		cbz	r0, .L27
+ 218 001e 5748     		ldr	r0, .L54+4
+ 219 0020 E221     		movs	r1, #226
+ 220 0022 FFF7FEFF 		bl	assert_err
+ 221              	.L27:
+ 222 0026 564B     		ldr	r3, .L54+8
+ 223 0028 0BF1FF32 		add	r2, fp, #-1
+ 224 002c 9A42     		cmp	r2, r3
+ 225 002e 03D9     		bls	.L28
+ 226 0030 5248     		ldr	r0, .L54+4
+ 227 0032 E321     		movs	r1, #227
+ 228 0034 FFF7FEFF 		bl	assert_err
+ 229              	.L28:
+ 230 0038 2AF48053 		bic	r3, r10, #4096
+ 231 003c 1BB1     		cbz	r3, .L29
+ 232 003e 4F48     		ldr	r0, .L54+4
+ 233 0040 E421     		movs	r1, #228
+ 234 0042 FFF7FEFF 		bl	assert_err
+ 235              	.L29:
+ 236 0046 29F44053 		bic	r3, r9, #12288
+ 237 004a 1BB1     		cbz	r3, .L30
+ 238 004c 4B48     		ldr	r0, .L54+4
+ 239 004e E521     		movs	r1, #229
+ 240 0050 FFF7FEFF 		bl	assert_err
+ 241              	.L30:
+ 242 0054 28F48063 		bic	r3, r8, #1024
+ 243 0058 33B1     		cbz	r3, .L31
+ 244 005a B8F5C06F 		cmp	r8, #1536
+ 245 005e 03D0     		beq	.L31
+ 246 0060 4648     		ldr	r0, .L54+4
+ 247 0062 E621     		movs	r1, #230
+ 248 0064 FFF7FEFF 		bl	assert_err
+ 249              	.L31:
+ 250 0068 002E     		cmp	r6, #0
+ 251 006a 40F08280 		bne	.L26
+ 252 006e A069     		ldr	r0, [r4, #24]
+ 253 0070 6668     		ldr	r6, [r4, #4]
+ 254 0072 A768     		ldr	r7, [r4, #8]
+ 255 0074 38B1     		cbz	r0, .L33
+ 256 0076 0121     		movs	r1, #1
+ 257 0078 FFF7FEFF 		bl	GPIO_PinRemapConfig
+ 258 007c 46EA0700 		orr	r0, r6, r7
+ 259 0080 40F00100 		orr	r0, r0, #1
+ 260 0084 01E0     		b	.L53
+ 261              	.L33:
+ 262 0086 47EA0600 		orr	r0, r7, r6
+ 263              	.L53:
+ 264 008a 0121     		movs	r1, #1
+ 265 008c FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 266 0090 2068     		ldr	r0, [r4]
+ 267 0092 0121     		movs	r1, #1
+ 268 0094 B0F5804F 		cmp	r0, #16384
+ 269 0098 02D1     		bne	.L35
+ 270 009a FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 271 009e 01E0     		b	.L36
+ 272              	.L35:
+ 273 00a0 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 274              	.L36:
+ 275 00a4 0021     		movs	r1, #0
+ 276 00a6 2846     		mov	r0, r5
+ 277 00a8 FFF7FEFF 		bl	USART_Cmd
+ 278 00ac 2846     		mov	r0, r5
+ 279 00ae FFF7FEFF 		bl	USART_DeInit
+ 280 00b2 1823     		movs	r3, #24
+ 281 00b4 8DF80B30 		strb	r3, [sp, #11]
+ 282 00b8 0323     		movs	r3, #3
+ 283 00ba 8DF80A30 		strb	r3, [sp, #10]
+ 284 00be 314B     		ldr	r3, .L54+12
+ 285 00c0 0AAF     		add	r7, sp, #40
+ 286 00c2 9A88     		ldrh	r2, [r3, #4]
+ 287 00c4 2069     		ldr	r0, [r4, #16]
+ 288 00c6 27F8202D 		strh	r2, [r7, #-32]!	@ movhi
+ 289 00ca 3946     		mov	r1, r7
+ 290 00cc 0193     		str	r3, [sp, #4]
+ 291 00ce FFF7FEFF 		bl	GPIO_Init
+ 292 00d2 019B     		ldr	r3, [sp, #4]
+ 293 00d4 0422     		movs	r2, #4
+ 294 00d6 8DF80B20 		strb	r2, [sp, #11]
+ 295 00da DA88     		ldrh	r2, [r3, #6]
+ 296 00dc 3946     		mov	r1, r7
+ 297 00de 6069     		ldr	r0, [r4, #20]
+ 298 00e0 ADF80820 		strh	r2, [sp, #8]	@ movhi
+ 299 00e4 FFF7FEFF 		bl	GPIO_Init
+ 300 00e8 4FF4A060 		mov	r0, #1280
+ 301 00ec FFF7FEFF 		bl	NVIC_PriorityGroupConfig
+ 302 00f0 019B     		ldr	r3, [sp, #4]
+ 303 00f2 94F82020 		ldrb	r2, [r4, #32]	@ zero_extendqisi2
+ 304 00f6 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 305 00f8 0124     		movs	r4, #1
+ 306 00fa 8DF80C20 		strb	r2, [sp, #12]
+ 307 00fe 03A8     		add	r0, sp, #12
+ 308 0100 C3F38102 		ubfx	r2, r3, #2, #2
+ 309 0104 03F00303 		and	r3, r3, #3
+ 310 0108 0026     		movs	r6, #0
+ 311 010a 8DF80D20 		strb	r2, [sp, #13]
+ 312 010e 8DF80E30 		strb	r3, [sp, #14]
+ 313 0112 8DF80F40 		strb	r4, [sp, #15]
+ 314 0116 FFF7FEFF 		bl	NVIC_Init
+ 315 011a 0C23     		movs	r3, #12
+ 316 011c 2846     		mov	r0, r5
+ 317 011e 06A9     		add	r1, sp, #24
+ 318 0120 ADF82230 		strh	r3, [sp, #34]	@ movhi
+ 319 0124 CDF818B0 		str	fp, [sp, #24]
+ 320 0128 ADF81CA0 		strh	r10, [sp, #28]	@ movhi
+ 321 012c ADF81E90 		strh	r9, [sp, #30]	@ movhi
+ 322 0130 ADF82080 		strh	r8, [sp, #32]	@ movhi
+ 323 0134 ADF82460 		strh	r6, [sp, #36]	@ movhi
+ 324 0138 FFF7FEFF 		bl	USART_Init
+ 325 013c 4FF40073 		mov	r3, #512
+ 326 0140 04A9     		add	r1, sp, #16
+ 327 0142 1148     		ldr	r0, .L54+16
+ 328 0144 ADF81430 		strh	r3, [sp, #20]	@ movhi
+ 329 0148 ADF81060 		strh	r6, [sp, #16]	@ movhi
+ 330 014c ADF81260 		strh	r6, [sp, #18]	@ movhi
+ 331 0150 ADF81660 		strh	r6, [sp, #22]	@ movhi
+ 332 0154 FFF7FEFF 		bl	USART_ClockInit
+ 333 0158 3046     		mov	r0, r6
+ 334 015a FFF7FEFF 		bl	uart_buf_clear
+ 335 015e 2846     		mov	r0, r5
+ 336 0160 40F22551 		movw	r1, #1317
+ 337 0164 2246     		mov	r2, r4
+ 338 0166 FFF7FEFF 		bl	USART_ITConfig
+ 339 016a 2846     		mov	r0, r5
+ 340 016c 2146     		mov	r1, r4
+ 341 016e FFF7FEFF 		bl	USART_Cmd
+ 342              	.L26:
+ 343 0172 0BB0     		add	sp, sp, #44
+ 344              		@ sp needed
+ 345 0174 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 346              	.L55:
+ 347              		.align	2
+ 348              	.L54:
+ 349 0178 00000000 		.word	.LANCHOR3
+ 350 017c 00000000 		.word	.LC0
+ 351 0180 1FAA4400 		.word	4499999
+ 352 0184 18000000 		.word	.LANCHOR3+24
+ 353 0188 00380140 		.word	1073821696
+ 355              		.section	.text.uart_deinit,"ax",%progbits
+ 356              		.align	1
+ 357              		.global	uart_deinit
+ 358              		.thumb
+ 359              		.thumb_func
+ 361              	uart_deinit:
+ 362              		@ args = 0, pretend = 0, frame = 8
+ 363              		@ frame_needed = 0, uses_anonymous_args = 0
+ 364 0000 F7B5     		push	{r0, r1, r2, r4, r5, r6, r7, lr}
+ 365 0002 2426     		movs	r6, #36
+ 366 0004 4643     		muls	r6, r0, r6
+ 367 0006 234D     		ldr	r5, .L63
+ 368 0008 0446     		mov	r4, r0
+ 369 000a AB19     		adds	r3, r5, r6
+ 370 000c DF68     		ldr	r7, [r3, #12]
+ 371 000e 28B1     		cbz	r0, .L57
+ 372 0010 2148     		ldr	r0, .L63+4
+ 373 0012 40F23111 		movw	r1, #305
+ 374 0016 FFF7FEFF 		bl	assert_err
+ 375 001a 39E0     		b	.L56
+ 376              	.L57:
+ 377 001c 3846     		mov	r0, r7
+ 378 001e 2146     		mov	r1, r4
+ 379 0020 FFF7FEFF 		bl	USART_Cmd
+ 380 0024 3846     		mov	r0, r7
+ 381 0026 FFF7FEFF 		bl	USART_DeInit
+ 382 002a A859     		ldr	r0, [r5, r6]
+ 383 002c B0F5804F 		cmp	r0, #16384
+ 384 0030 03D1     		bne	.L62
+ 385 0032 2146     		mov	r1, r4
+ 386 0034 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 387 0038 02E0     		b	.L59
+ 388              	.L62:
+ 389 003a 2146     		mov	r1, r4
+ 390 003c FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 391              	.L59:
+ 392 0040 0020     		movs	r0, #0
+ 393 0042 FFF7FEFF 		bl	uart_buf_clear
+ 394 0046 154E     		ldr	r6, .L63+8
+ 395 0048 0423     		movs	r3, #4
+ 396 004a 8DF80330 		strb	r3, [sp, #3]
+ 397 004e 0223     		movs	r3, #2
+ 398 0050 8DF80230 		strb	r3, [sp, #2]
+ 399 0054 B388     		ldrh	r3, [r6, #4]
+ 400 0056 2869     		ldr	r0, [r5, #16]
+ 401 0058 6946     		mov	r1, sp
+ 402 005a 02AC     		add	r4, sp, #8
+ 403 005c 24F8083D 		strh	r3, [r4, #-8]!	@ movhi
+ 404 0060 FFF7FEFF 		bl	GPIO_Init
+ 405 0064 F388     		ldrh	r3, [r6, #6]
+ 406 0066 6869     		ldr	r0, [r5, #20]
+ 407 0068 6946     		mov	r1, sp
+ 408 006a ADF80030 		strh	r3, [sp]	@ movhi
+ 409 006e FFF7FEFF 		bl	GPIO_Init
+ 410 0072 95F82030 		ldrb	r3, [r5, #32]	@ zero_extendqisi2
+ 411 0076 01A8     		add	r0, sp, #4
+ 412 0078 8DF80430 		strb	r3, [sp, #4]
+ 413 007c 0F23     		movs	r3, #15
+ 414 007e 8DF80530 		strb	r3, [sp, #5]
+ 415 0082 8DF80630 		strb	r3, [sp, #6]
+ 416 0086 0023     		movs	r3, #0
+ 417 0088 8DF80730 		strb	r3, [sp, #7]
+ 418 008c FFF7FEFF 		bl	NVIC_Init
+ 419              	.L56:
+ 420 0090 03B0     		add	sp, sp, #12
+ 421              		@ sp needed
+ 422 0092 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 423              	.L64:
+ 424              		.align	2
+ 425              	.L63:
+ 426 0094 00000000 		.word	.LANCHOR3
+ 427 0098 00000000 		.word	.LC0
+ 428 009c 18000000 		.word	.LANCHOR3+24
+ 430              		.section	.text.uart_rx_byte,"ax",%progbits
+ 431              		.align	1
+ 432              		.global	uart_rx_byte
+ 433              		.thumb
+ 434              		.thumb_func
+ 436              	uart_rx_byte:
+ 437              		@ args = 0, pretend = 0, frame = 0
+ 438              		@ frame_needed = 0, uses_anonymous_args = 0
+ 439 0000 08B5     		push	{r3, lr}
+ 440 0002 18B9     		cbnz	r0, .L68
+ 441 0004 BDE80840 		pop	{r3, lr}
+ 442 0008 FFF7FEBF 		b	uart_rx_byte_static
+ 443              	.L68:
+ 444 000c 0348     		ldr	r0, .L69
+ 445 000e 4FF4E071 		mov	r1, #448
+ 446 0012 FFF7FEFF 		bl	assert_err
+ 447 0016 0120     		movs	r0, #1
+ 448 0018 08BD     		pop	{r3, pc}
+ 449              	.L70:
+ 450 001a 00BF     		.align	2
+ 451              	.L69:
+ 452 001c 00000000 		.word	.LC0
+ 454              		.section	.text.uart_rx_data,"ax",%progbits
+ 455              		.align	1
+ 456              		.global	uart_rx_data
+ 457              		.thumb
+ 458              		.thumb_func
+ 460              	uart_rx_data:
+ 461              		@ args = 0, pretend = 0, frame = 0
+ 462              		@ frame_needed = 0, uses_anonymous_args = 0
+ 463 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 464 0002 0E46     		mov	r6, r1
+ 465 0004 1746     		mov	r7, r2
+ 466 0006 08B9     		cbnz	r0, .L72
+ 467 0008 0446     		mov	r4, r0
+ 468 000a 0BE0     		b	.L73
+ 469              	.L72:
+ 470 000c 0948     		ldr	r0, .L77
+ 471 000e 40F2D511 		movw	r1, #469
+ 472 0012 FFF7FEFF 		bl	assert_err
+ 473 0016 0020     		movs	r0, #0
+ 474 0018 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 475              	.L75:
+ 476 001a 0020     		movs	r0, #0
+ 477 001c FFF7FEFF 		bl	uart_rx_byte_static
+ 478 0020 0134     		adds	r4, r4, #1
+ 479 0022 20B9     		cbnz	r0, .L76
+ 480              	.L73:
+ 481 0024 A5B2     		uxth	r5, r4
+ 482 0026 BD42     		cmp	r5, r7
+ 483 0028 06EB0401 		add	r1, r6, r4
+ 484 002c F5D3     		bcc	.L75
+ 485              	.L76:
+ 486 002e 2846     		mov	r0, r5
+ 487 0030 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 488              	.L78:
+ 489 0032 00BF     		.align	2
+ 490              	.L77:
+ 491 0034 00000000 		.word	.LC0
+ 493              		.section	.text.uart_tx_byte,"ax",%progbits
+ 494              		.align	1
+ 495              		.global	uart_tx_byte
+ 496              		.thumb
+ 497              		.thumb_func
+ 499              	uart_tx_byte:
+ 500              		@ args = 0, pretend = 0, frame = 0
+ 501              		@ frame_needed = 0, uses_anonymous_args = 0
+ 502              		@ link register save eliminated.
+ 503 0000 20B1     		cbz	r0, .L80
+ 504 0002 0348     		ldr	r0, .L81
+ 505 0004 4FF40871 		mov	r1, #544
+ 506 0008 FFF7FEBF 		b	assert_err
+ 507              	.L80:
+ 508 000c FFF7FEBF 		b	uart_tx_byte_static
+ 509              	.L82:
+ 510              		.align	2
+ 511              	.L81:
+ 512 0010 00000000 		.word	.LC0
+ 514              		.section	.text.uart_tx_data,"ax",%progbits
+ 515              		.align	1
+ 516              		.global	uart_tx_data
+ 517              		.thumb
+ 518              		.thumb_func
+ 520              	uart_tx_data:
+ 521              		@ args = 0, pretend = 0, frame = 0
+ 522              		@ frame_needed = 0, uses_anonymous_args = 0
+ 523 0000 38B5     		push	{r3, r4, r5, lr}
+ 524 0002 18B9     		cbnz	r0, .L84
+ 525 0004 8D18     		adds	r5, r1, r2
+ 526 0006 0C46     		mov	r4, r1
+ 527 0008 ADB2     		uxth	r5, r5
+ 528 000a 06E0     		b	.L85
+ 529              	.L84:
+ 530 000c 0848     		ldr	r0, .L88
+ 531 000e 40F23221 		movw	r1, #562
+ 532 0012 BDE83840 		pop	{r3, r4, r5, lr}
+ 533 0016 FFF7FEBF 		b	assert_err
+ 534              	.L85:
+ 535 001a A3B2     		uxth	r3, r4
+ 536 001c 9D42     		cmp	r5, r3
+ 537 001e 05D0     		beq	.L87
+ 538 0020 0020     		movs	r0, #0
+ 539 0022 14F8011B 		ldrb	r1, [r4], #1	@ zero_extendqisi2
+ 540 0026 FFF7FEFF 		bl	uart_tx_byte_static
+ 541 002a F6E7     		b	.L85
+ 542              	.L87:
+ 543 002c 38BD     		pop	{r3, r4, r5, pc}
+ 544              	.L89:
+ 545 002e 00BF     		.align	2
+ 546              	.L88:
+ 547 0030 00000000 		.word	.LC0
+ 549              		.section	.text.uart_tx_data2ascii,"ax",%progbits
+ 550              		.align	1
+ 551              		.global	uart_tx_data2ascii
+ 552              		.thumb
+ 553              		.thumb_func
+ 555              	uart_tx_data2ascii:
+ 556              		@ args = 0, pretend = 0, frame = 0
+ 557              		@ frame_needed = 0, uses_anonymous_args = 0
+ 558 0000 70B5     		push	{r4, r5, r6, lr}
+ 559 0002 0D46     		mov	r5, r1
+ 560 0004 1646     		mov	r6, r2
+ 561 0006 08B9     		cbnz	r0, .L91
+ 562 0008 0C46     		mov	r4, r1
+ 563 000a 06E0     		b	.L92
+ 564              	.L91:
+ 565 000c 1448     		ldr	r0, .L99
+ 566 000e 40F24A21 		movw	r1, #586
+ 567 0012 BDE87040 		pop	{r4, r5, r6, lr}
+ 568 0016 FFF7FEBF 		b	assert_err
+ 569              	.L92:
+ 570 001a 631B     		subs	r3, r4, r5
+ 571 001c 9BB2     		uxth	r3, r3
+ 572 001e B342     		cmp	r3, r6
+ 573 0020 1DD2     		bcs	.L98
+ 574 0022 14F8013B 		ldrb	r3, [r4], #1	@ zero_extendqisi2
+ 575 0026 0020     		movs	r0, #0
+ 576 0028 1B09     		lsrs	r3, r3, #4
+ 577 002a 092B     		cmp	r3, #9
+ 578 002c 94BF     		ite	ls
+ 579 002e 03F13001 		addls	r1, r3, #48
+ 580 0032 03F13701 		addhi	r1, r3, #55
+ 581 0036 FFF7FEFF 		bl	uart_tx_byte
+ 582 003a 14F8013C 		ldrb	r3, [r4, #-1]	@ zero_extendqisi2
+ 583 003e 0020     		movs	r0, #0
+ 584 0040 03F00F03 		and	r3, r3, #15
+ 585 0044 092B     		cmp	r3, #9
+ 586 0046 94BF     		ite	ls
+ 587 0048 03F13001 		addls	r1, r3, #48
+ 588 004c 03F13701 		addhi	r1, r3, #55
+ 589 0050 FFF7FEFF 		bl	uart_tx_byte_static
+ 590 0054 0020     		movs	r0, #0
+ 591 0056 2021     		movs	r1, #32
+ 592 0058 FFF7FEFF 		bl	uart_tx_byte_static
+ 593 005c DDE7     		b	.L92
+ 594              	.L98:
+ 595 005e 70BD     		pop	{r4, r5, r6, pc}
+ 596              	.L100:
+ 597              		.align	2
+ 598              	.L99:
+ 599 0060 00000000 		.word	.LC0
+ 601              		.section	.text.uart_printf,"ax",%progbits
+ 602              		.align	1
+ 603              		.global	uart_printf
+ 604              		.thumb
+ 605              		.thumb_func
+ 607              	uart_printf:
+ 608              		@ args = 4, pretend = 12, frame = 16
+ 609              		@ frame_needed = 0, uses_anonymous_args = 1
+ 610 0000 0EB4     		push	{r1, r2, r3}
+ 611 0002 2DE9FF4F 		push	{r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 612 0006 0D9B     		ldr	r3, [sp, #52]
+ 613 0008 28B1     		cbz	r0, .L102
+ 614 000a 7148     		ldr	r0, .L172
+ 615 000c 40F27721 		movw	r1, #631
+ 616 0010 FFF7FEFF 		bl	assert_err
+ 617 0014 D6E0     		b	.L101
+ 618              	.L102:
+ 619 0016 0EAA     		add	r2, sp, #56
+ 620 0018 DFF8B8A1 		ldr	r10, .L172+4
+ 621 001c 0392     		str	r2, [sp, #12]
+ 622              	.L106:
+ 623 001e 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 624 0020 002A     		cmp	r2, #0
+ 625 0022 00F0CF80 		beq	.L101
+ 626 0026 1C46     		mov	r4, r3
+ 627              	.L147:
+ 628 0028 2346     		mov	r3, r4
+ 629 002a 14F8011B 		ldrb	r1, [r4], #1	@ zero_extendqisi2
+ 630 002e 2529     		cmp	r1, #37
+ 631 0030 05D0     		beq	.L104
+ 632 0032 0029     		cmp	r1, #0
+ 633 0034 F3D0     		beq	.L106
+ 634 0036 0020     		movs	r0, #0
+ 635 0038 FFF7FEFF 		bl	uart_tx_byte_static
+ 636 003c F4E7     		b	.L147
+ 637              	.L104:
+ 638 003e 5A1C     		adds	r2, r3, #1
+ 639 0040 4FF0200B 		mov	fp, #32
+ 640 0044 0024     		movs	r4, #0
+ 641 0046 0A21     		movs	r1, #10
+ 642              	.L121:
+ 643 0048 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 644 004a 9146     		mov	r9, r2
+ 645 004c 632B     		cmp	r3, #99
+ 646 004e 02F10102 		add	r2, r2, #1
+ 647 0052 27D0     		beq	.L119
+ 648 0054 0FD8     		bhi	.L109
+ 649 0056 392B     		cmp	r3, #57
+ 650 0058 07D8     		bhi	.L110
+ 651 005a 302B     		cmp	r3, #48
+ 652 005c 17D2     		bcs	.L111
+ 653 005e 252B     		cmp	r3, #37
+ 654 0060 40F0A580 		bne	.L107
+ 655 0064 0020     		movs	r0, #0
+ 656 0066 1946     		mov	r1, r3
+ 657 0068 A3E0     		b	.L168
+ 658              	.L110:
+ 659 006a 582B     		cmp	r3, #88
+ 660 006c 40F09F80 		bne	.L107
+ 661 0070 DFF864A1 		ldr	r10, .L172+8
+ 662 0074 57E0     		b	.L117
+ 663              	.L109:
+ 664 0076 732B     		cmp	r3, #115
+ 665 0078 23D0     		beq	.L114
+ 666 007a 03D8     		bhi	.L115
+ 667 007c 642B     		cmp	r3, #100
+ 668 007e 3FD0     		beq	.L116
+ 669 0080 702B     		cmp	r3, #112
+ 670 0082 02E0     		b	.L167
+ 671              	.L115:
+ 672 0084 752B     		cmp	r3, #117
+ 673 0086 49D0     		beq	.L118
+ 674 0088 782B     		cmp	r3, #120
+ 675              	.L167:
+ 676 008a 4CD0     		beq	.L117
+ 677 008c 8FE0     		b	.L107
+ 678              	.L111:
+ 679 008e 03D1     		bne	.L120
+ 680 0090 002C     		cmp	r4, #0
+ 681 0092 08BF     		it	eq
+ 682 0094 4FF0300B 		moveq	fp, #48
+ 683              	.L120:
+ 684 0098 4C43     		muls	r4, r1, r4
+ 685 009a 303C     		subs	r4, r4, #48
+ 686 009c A4B2     		uxth	r4, r4
+ 687 009e 2344     		add	r3, r3, r4
+ 688 00a0 9CB2     		uxth	r4, r3
+ 689 00a2 D1E7     		b	.L121
+ 690              	.L119:
+ 691 00a4 012C     		cmp	r4, #1
+ 692 00a6 06D9     		bls	.L169
+ 693 00a8 0020     		movs	r0, #0
+ 694 00aa 5946     		mov	r1, fp
+ 695 00ac 013C     		subs	r4, r4, #1
+ 696 00ae FFF7FEFF 		bl	uart_tx_byte_static
+ 697 00b2 A4B2     		uxth	r4, r4
+ 698 00b4 F6E7     		b	.L119
+ 699              	.L169:
+ 700 00b6 039B     		ldr	r3, [sp, #12]
+ 701 00b8 0020     		movs	r0, #0
+ 702 00ba 1A1D     		adds	r2, r3, #4
+ 703 00bc 0392     		str	r2, [sp, #12]
+ 704 00be 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 705 00c0 77E0     		b	.L168
+ 706              	.L114:
+ 707 00c2 039B     		ldr	r3, [sp, #12]
+ 708 00c4 1A1D     		adds	r2, r3, #4
+ 709 00c6 1D68     		ldr	r5, [r3]
+ 710 00c8 0392     		str	r2, [sp, #12]
+ 711 00ca 0023     		movs	r3, #0
+ 712              	.L124:
+ 713 00cc E95C     		ldrb	r1, [r5, r3]	@ zero_extendqisi2
+ 714 00ce E21A     		subs	r2, r4, r3
+ 715 00d0 92B2     		uxth	r2, r2
+ 716 00d2 01B1     		cbz	r1, .L128
+ 717 00d4 0AB9     		cbnz	r2, .L125
+ 718              	.L128:
+ 719 00d6 1446     		mov	r4, r2
+ 720 00d8 01E0     		b	.L126
+ 721              	.L125:
+ 722 00da 0133     		adds	r3, r3, #1
+ 723 00dc F6E7     		b	.L124
+ 724              	.L126:
+ 725 00de 34B1     		cbz	r4, .L170
+ 726 00e0 0020     		movs	r0, #0
+ 727 00e2 2021     		movs	r1, #32
+ 728 00e4 013C     		subs	r4, r4, #1
+ 729 00e6 FFF7FEFF 		bl	uart_tx_byte_static
+ 730 00ea A4B2     		uxth	r4, r4
+ 731 00ec F7E7     		b	.L126
+ 732              	.L170:
+ 733 00ee 6C1E     		subs	r4, r5, #1
+ 734              	.L130:
+ 735 00f0 14F8011F 		ldrb	r1, [r4, #1]!	@ zero_extendqisi2
+ 736 00f4 0029     		cmp	r1, #0
+ 737 00f6 5ED0     		beq	.L123
+ 738 00f8 0020     		movs	r0, #0
+ 739 00fa FFF7FEFF 		bl	uart_tx_byte_static
+ 740 00fe F7E7     		b	.L130
+ 741              	.L116:
+ 742 0100 039B     		ldr	r3, [sp, #12]
+ 743 0102 A046     		mov	r8, r4
+ 744 0104 1E68     		ldr	r6, [r3]
+ 745 0106 1A1D     		adds	r2, r3, #4
+ 746 0108 002E     		cmp	r6, #0
+ 747 010a 0392     		str	r2, [sp, #12]
+ 748 010c 56DA     		bge	.L150
+ 749 010e BBF1300F 		cmp	fp, #48
+ 750 0112 C6F10006 		rsb	r6, r6, #0
+ 751 0116 0CD0     		beq	.L133
+ 752 0118 0122     		movs	r2, #1
+ 753 011a 0FE0     		b	.L134
+ 754              	.L118:
+ 755 011c 039B     		ldr	r3, [sp, #12]
+ 756 011e 1A1D     		adds	r2, r3, #4
+ 757 0120 0392     		str	r2, [sp, #12]
+ 758 0122 1E68     		ldr	r6, [r3]
+ 759 0124 4AE0     		b	.L150
+ 760              	.L117:
+ 761 0126 039B     		ldr	r3, [sp, #12]
+ 762 0128 1025     		movs	r5, #16
+ 763 012a 1A1D     		adds	r2, r3, #4
+ 764 012c 0392     		str	r2, [sp, #12]
+ 765 012e 1E68     		ldr	r6, [r3]
+ 766 0130 45E0     		b	.L132
+ 767              	.L133:
+ 768 0132 0020     		movs	r0, #0
+ 769 0134 2D21     		movs	r1, #45
+ 770 0136 FFF7FEFF 		bl	uart_tx_byte_static
+ 771 013a 0022     		movs	r2, #0
+ 772              	.L134:
+ 773 013c 14B1     		cbz	r4, .L151
+ 774 013e 013C     		subs	r4, r4, #1
+ 775 0140 1FFA84F8 		uxth	r8, r4
+ 776              	.L151:
+ 777 0144 0A25     		movs	r5, #10
+ 778              	.L135:
+ 779 0146 0127     		movs	r7, #1
+ 780              	.L136:
+ 781 0148 05FB07F1 		mul	r1, r5, r7
+ 782 014c B142     		cmp	r1, r6
+ 783 014e 0CD8     		bhi	.L139
+ 784 0150 B1FBF5F3 		udiv	r3, r1, r5
+ 785 0154 BB42     		cmp	r3, r7
+ 786 0156 08D1     		bne	.L139
+ 787 0158 B8F1000F 		cmp	r8, #0
+ 788 015c 03D0     		beq	.L137
+ 789 015e 08F1FF38 		add	r8, r8, #-1
+ 790 0162 1FFA88F8 		uxth	r8, r8
+ 791              	.L137:
+ 792 0166 0F46     		mov	r7, r1
+ 793 0168 EEE7     		b	.L136
+ 794              	.L139:
+ 795 016a B8F1010F 		cmp	r8, #1
+ 796 016e 0AD9     		bls	.L171
+ 797 0170 0020     		movs	r0, #0
+ 798 0172 5946     		mov	r1, fp
+ 799 0174 08F1FF38 		add	r8, r8, #-1
+ 800 0178 0192     		str	r2, [sp, #4]
+ 801 017a 1FFA88F8 		uxth	r8, r8
+ 802 017e FFF7FEFF 		bl	uart_tx_byte_static
+ 803 0182 019A     		ldr	r2, [sp, #4]
+ 804 0184 F1E7     		b	.L139
+ 805              	.L171:
+ 806 0186 1AB1     		cbz	r2, .L144
+ 807 0188 0020     		movs	r0, #0
+ 808 018a 2D21     		movs	r1, #45
+ 809 018c FFF7FEFF 		bl	uart_tx_byte_static
+ 810              	.L144:
+ 811 0190 8FB1     		cbz	r7, .L123
+ 812 0192 B6FBF7F3 		udiv	r3, r6, r7
+ 813 0196 B3FBF5F2 		udiv	r2, r3, r5
+ 814 019a 05FB1233 		mls	r3, r5, r2, r3
+ 815 019e 0020     		movs	r0, #0
+ 816 01a0 1AF80310 		ldrb	r1, [r10, r3]	@ zero_extendqisi2
+ 817 01a4 FFF7FEFF 		bl	uart_tx_byte_static
+ 818 01a8 B7FBF5F7 		udiv	r7, r7, r5
+ 819 01ac F0E7     		b	.L144
+ 820              	.L107:
+ 821 01ae 0020     		movs	r0, #0
+ 822 01b0 3F21     		movs	r1, #63
+ 823              	.L168:
+ 824 01b2 FFF7FEFF 		bl	uart_tx_byte_static
+ 825              	.L123:
+ 826 01b6 09F10103 		add	r3, r9, #1
+ 827 01ba 30E7     		b	.L106
+ 828              	.L150:
+ 829 01bc 0A25     		movs	r5, #10
+ 830              	.L132:
+ 831 01be A046     		mov	r8, r4
+ 832 01c0 0022     		movs	r2, #0
+ 833 01c2 C0E7     		b	.L135
+ 834              	.L101:
+ 835 01c4 04B0     		add	sp, sp, #16
+ 836              		@ sp needed
+ 837 01c6 BDE8F04F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 838 01ca 03B0     		add	sp, sp, #12
+ 839 01cc 7047     		bx	lr
+ 840              	.L173:
+ 841 01ce 00BF     		.align	2
+ 842              	.L172:
+ 843 01d0 00000000 		.word	.LC0
+ 844 01d4 4D000000 		.word	.LC2
+ 845 01d8 3C000000 		.word	.LC1
+ 847              		.section	.text.USART1_IRQHandler,"ax",%progbits
+ 848              		.align	1
+ 849              		.global	USART1_IRQHandler
+ 850              		.thumb
+ 851              		.thumb_func
+ 853              	USART1_IRQHandler:
+ 854              		@ args = 0, pretend = 0, frame = 0
+ 855              		@ frame_needed = 0, uses_anonymous_args = 0
+ 856 0000 10B5     		push	{r4, lr}
+ 857 0002 224C     		ldr	r4, .L189
+ 858 0004 40F22551 		movw	r1, #1317
+ 859 0008 2046     		mov	r0, r4
+ 860 000a FFF7FEFF 		bl	USART_GetITStatus
+ 861 000e B8B1     		cbz	r0, .L176
+ 862 0010 1F4B     		ldr	r3, .L189+4
+ 863 0012 A088     		ldrh	r0, [r4, #4]
+ 864 0014 1A88     		ldrh	r2, [r3]
+ 865 0016 1F49     		ldr	r1, .L189+8
+ 866 0018 C0B2     		uxtb	r0, r0
+ 867 001a 8854     		strb	r0, [r1, r2]
+ 868 001c 0132     		adds	r2, r2, #1
+ 869 001e 92B2     		uxth	r2, r2
+ 870 0020 3F2A     		cmp	r2, #63
+ 871 0022 88BF     		it	hi
+ 872 0024 0022     		movhi	r2, #0
+ 873 0026 1A80     		strh	r2, [r3]	@ movhi
+ 874 0028 1988     		ldrh	r1, [r3]
+ 875 002a 1B4B     		ldr	r3, .L189+12
+ 876 002c 1A88     		ldrh	r2, [r3]
+ 877 002e 8A42     		cmp	r2, r1
+ 878 0030 06D1     		bne	.L176
+ 879 0032 0132     		adds	r2, r2, #1
+ 880 0034 92B2     		uxth	r2, r2
+ 881 0036 3F2A     		cmp	r2, #63
+ 882 0038 1A80     		strh	r2, [r3]	@ movhi
+ 883 003a 84BF     		itt	hi
+ 884 003c 0022     		movhi	r2, #0
+ 885 003e 1A80     		strhhi	r2, [r3]	@ movhi
+ 886              	.L176:
+ 887 0040 124C     		ldr	r4, .L189
+ 888 0042 40F22771 		movw	r1, #1831
+ 889 0046 2046     		mov	r0, r4
+ 890 0048 FFF7FEFF 		bl	USART_GetITStatus
+ 891 004c E0B1     		cbz	r0, .L174
+ 892 004e 1349     		ldr	r1, .L189+16
+ 893 0050 0A88     		ldrh	r2, [r1]
+ 894 0052 92B2     		uxth	r2, r2
+ 895 0054 8AB1     		cbz	r2, .L181
+ 896 0056 124B     		ldr	r3, .L189+20
+ 897 0058 1248     		ldr	r0, .L189+24
+ 898 005a 1A88     		ldrh	r2, [r3]
+ 899 005c 805C     		ldrb	r0, [r0, r2]	@ zero_extendqisi2
+ 900 005e 0132     		adds	r2, r2, #1
+ 901 0060 92B2     		uxth	r2, r2
+ 902 0062 C0B2     		uxtb	r0, r0
+ 903 0064 1F2A     		cmp	r2, #31
+ 904 0066 A080     		strh	r0, [r4, #4]	@ movhi
+ 905 0068 88BF     		it	hi
+ 906 006a 0022     		movhi	r2, #0
+ 907 006c 1A80     		strh	r2, [r3]	@ movhi
+ 908 006e 0B88     		ldrh	r3, [r1]
+ 909 0070 9BB2     		uxth	r3, r3
+ 910 0072 013B     		subs	r3, r3, #1
+ 911 0074 9BB2     		uxth	r3, r3
+ 912 0076 0B80     		strh	r3, [r1]	@ movhi
+ 913 0078 10BD     		pop	{r4, pc}
+ 914              	.L181:
+ 915 007a 2046     		mov	r0, r4
+ 916 007c 40F22771 		movw	r1, #1831
+ 917 0080 BDE81040 		pop	{r4, lr}
+ 918 0084 FFF7FEBF 		b	USART_ITConfig
+ 919              	.L174:
+ 920 0088 10BD     		pop	{r4, pc}
+ 921              	.L190:
+ 922 008a 00BF     		.align	2
+ 923              	.L189:
+ 924 008c 00380140 		.word	1073821696
+ 925 0090 00000000 		.word	.LANCHOR1
+ 926 0094 00000000 		.word	.LANCHOR2
+ 927 0098 00000000 		.word	.LANCHOR0
+ 928 009c 00000000 		.word	.LANCHOR6
+ 929 00a0 00000000 		.word	.LANCHOR4
+ 930 00a4 00000000 		.word	.LANCHOR5
+ 932              		.section	.bss.tx_wr_index,"aw",%nobits
+ 933              		.align	1
+ 934              		.set	.LANCHOR7,. + 0
+ 937              	tx_wr_index:
+ 938 0000 0000     		.space	2
+ 939              		.section	.bss.rx_rd_index,"aw",%nobits
+ 940              		.align	1
+ 941              		.set	.LANCHOR0,. + 0
+ 944              	rx_rd_index:
+ 945 0000 0000     		.space	2
+ 946              		.section	.bss.tx_buffer,"aw",%nobits
+ 947              		.set	.LANCHOR5,. + 0
+ 950              	tx_buffer:
+ 951 0000 00000000 		.space	32
+ 951      00000000 
+ 951      00000000 
+ 951      00000000 
+ 951      00000000 
+ 952              		.section	.bss.rx_buffer,"aw",%nobits
+ 953              		.set	.LANCHOR2,. + 0
+ 956              	rx_buffer:
+ 957 0000 00000000 		.space	64
+ 957      00000000 
+ 957      00000000 
+ 957      00000000 
+ 957      00000000 
+ 958              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 959              	.LC0:
+ 960 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/dr"
+ 960      73657273 
+ 960      2F647261 
+ 960      6170686F 
+ 960      2F446573 
+ 961 0033 765F7561 		.ascii	"v_uart.c\000"
+ 961      72742E63 
+ 961      00
+ 962              	.LC1:
+ 963 003c 30313233 		.ascii	"0123456789ABCDEF\000"
+ 963      34353637 
+ 963      38394142 
+ 963      43444546 
+ 963      00
+ 964              	.LC2:
+ 965 004d 30313233 		.ascii	"0123456789abcdef\000"
+ 965      34353637 
+ 965      38396162 
+ 965      63646566 
+ 965      00
+ 966              		.section	.rodata.uart_hw,"a",%progbits
+ 967              		.align	2
+ 968              		.set	.LANCHOR3,. + 0
+ 971              	uart_hw:
+ 972 0000 00400000 		.word	16384
+ 973 0004 04000000 		.word	4
+ 974 0008 04000000 		.word	4
+ 975 000c 00380140 		.word	1073821696
+ 976 0010 00080140 		.word	1073809408
+ 977 0014 00080140 		.word	1073809408
+ 978 0018 00000000 		.word	0
+ 979 001c 0002     		.short	512
+ 980 001e 0004     		.short	1024
+ 981 0020 25       		.byte	37
+ 982 0021 0F       		.byte	15
+ 983 0022 0000     		.space	2
+ 984              		.section	.bss.tx_counter,"aw",%nobits
+ 985              		.align	1
+ 986              		.set	.LANCHOR6,. + 0
+ 989              	tx_counter:
+ 990 0000 0000     		.space	2
+ 991              		.section	.bss.tx_rd_index,"aw",%nobits
+ 992              		.align	1
+ 993              		.set	.LANCHOR4,. + 0
+ 996              	tx_rd_index:
+ 997 0000 0000     		.space	2
+ 998              		.section	.bss.rx_wr_index,"aw",%nobits
+ 999              		.align	1
+ 1000              		.set	.LANCHOR1,. + 0
+ 1003              	rx_wr_index:
+ 1004 0000 0000     		.space	2
+ 1005              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_uart.c
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:16     .text.uart_rx_byte_static:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:20     .text.uart_rx_byte_static:00000000 uart_rx_byte_static
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:59     .text.uart_rx_byte_static:00000048 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:64     .text.uart_tx_byte_static:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:68     .text.uart_tx_byte_static:00000000 uart_tx_byte_static
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:147    .text.uart_tx_byte_static:000000bc $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:154    .text.uart_buf_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:159    .text.uart_buf_clear:00000000 uart_buf_clear
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:190    .text.uart_buf_clear:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:198    .text.uart_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:203    .text.uart_init:00000000 uart_init
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:349    .text.uart_init:00000178 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:356    .text.uart_deinit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:361    .text.uart_deinit:00000000 uart_deinit
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:426    .text.uart_deinit:00000094 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:431    .text.uart_rx_byte:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:436    .text.uart_rx_byte:00000000 uart_rx_byte
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:452    .text.uart_rx_byte:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:455    .text.uart_rx_data:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:460    .text.uart_rx_data:00000000 uart_rx_data
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:491    .text.uart_rx_data:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:494    .text.uart_tx_byte:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:499    .text.uart_tx_byte:00000000 uart_tx_byte
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:512    .text.uart_tx_byte:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:515    .text.uart_tx_data:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:520    .text.uart_tx_data:00000000 uart_tx_data
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:547    .text.uart_tx_data:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:550    .text.uart_tx_data2ascii:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:555    .text.uart_tx_data2ascii:00000000 uart_tx_data2ascii
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:599    .text.uart_tx_data2ascii:00000060 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:602    .text.uart_printf:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:607    .text.uart_printf:00000000 uart_printf
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:843    .text.uart_printf:000001d0 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:848    .text.USART1_IRQHandler:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:853    .text.USART1_IRQHandler:00000000 USART1_IRQHandler
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:924    .text.USART1_IRQHandler:0000008c $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:933    .bss.tx_wr_index:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:937    .bss.tx_wr_index:00000000 tx_wr_index
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:940    .bss.rx_rd_index:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:944    .bss.rx_rd_index:00000000 rx_rd_index
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:950    .bss.tx_buffer:00000000 tx_buffer
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:951    .bss.tx_buffer:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:956    .bss.rx_buffer:00000000 rx_buffer
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:957    .bss.rx_buffer:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:967    .rodata.uart_hw:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:971    .rodata.uart_hw:00000000 uart_hw
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:985    .bss.tx_counter:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:989    .bss.tx_counter:00000000 tx_counter
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:992    .bss.tx_rd_index:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:996    .bss.tx_rd_index:00000000 tx_rd_index
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:999    .bss.rx_wr_index:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccBWgNXe.s:1003   .bss.rx_wr_index:00000000 rx_wr_index
+
+UNDEFINED SYMBOLS
+__get_PRIMASK
+__set_PRIMASK
+USART_ITConfig
+assert_err
+GPIO_PinRemapConfig
+RCC_APB2PeriphClockCmd
+RCC_APB1PeriphClockCmd
+USART_Cmd
+USART_DeInit
+GPIO_Init
+NVIC_PriorityGroupConfig
+NVIC_Init
+USART_Init
+USART_ClockInit
+USART_GetITStatus

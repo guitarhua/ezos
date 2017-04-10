@@ -1,0 +1,259 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"list.c"
+  15              		.section	.text.list_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	list_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	list_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 0023     		movs	r3, #0
+  26 0002 0360     		str	r3, [r0]
+  27 0004 7047     		bx	lr
+  29              		.section	.text.list_head,"ax",%progbits
+  30              		.align	1
+  31              		.global	list_head
+  32              		.thumb
+  33              		.thumb_func
+  35              	list_head:
+  36              		@ args = 0, pretend = 0, frame = 0
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38              		@ link register save eliminated.
+  39 0000 0068     		ldr	r0, [r0]
+  40 0002 7047     		bx	lr
+  42              		.section	.text.voidlist_copy,"ax",%progbits
+  43              		.align	1
+  44              		.global	voidlist_copy
+  45              		.thumb
+  46              		.thumb_func
+  48              	voidlist_copy:
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51              		@ link register save eliminated.
+  52 0000 0B68     		ldr	r3, [r1]
+  53 0002 0360     		str	r3, [r0]
+  54 0004 7047     		bx	lr
+  56              		.section	.text.list_tail,"ax",%progbits
+  57              		.align	1
+  58              		.global	list_tail
+  59              		.thumb
+  60              		.thumb_func
+  62              	list_tail:
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66 0000 0068     		ldr	r0, [r0]
+  67 0002 18B1     		cbz	r0, .L5
+  68              	.L6:
+  69 0004 0368     		ldr	r3, [r0]
+  70 0006 0BB1     		cbz	r3, .L5
+  71 0008 1846     		mov	r0, r3
+  72 000a FBE7     		b	.L6
+  73              	.L5:
+  74 000c 7047     		bx	lr
+  76              		.section	.text.list_chop,"ax",%progbits
+  77              		.align	1
+  78              		.global	list_chop
+  79              		.thumb
+  80              		.thumb_func
+  82              	list_chop:
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              		@ link register save eliminated.
+  86 0000 0368     		ldr	r3, [r0]
+  87 0002 5BB1     		cbz	r3, .L17
+  88 0004 1A68     		ldr	r2, [r3]
+  89 0006 0AB9     		cbnz	r2, .L16
+  90 0008 0260     		str	r2, [r0]
+  91 000a 07E0     		b	.L17
+  92              	.L16:
+  93 000c 1A68     		ldr	r2, [r3]
+  94 000e 1168     		ldr	r1, [r2]
+  95 0010 09B1     		cbz	r1, .L15
+  96 0012 1346     		mov	r3, r2
+  97 0014 FAE7     		b	.L16
+  98              	.L15:
+  99 0016 1960     		str	r1, [r3]
+ 100 0018 1046     		mov	r0, r2
+ 101 001a 7047     		bx	lr
+ 102              	.L17:
+ 103 001c 1846     		mov	r0, r3
+ 104 001e 7047     		bx	lr
+ 106              		.section	.text.list_pop,"ax",%progbits
+ 107              		.align	1
+ 108              		.global	list_pop
+ 109              		.thumb
+ 110              		.thumb_func
+ 112              	list_pop:
+ 113              		@ args = 0, pretend = 0, frame = 0
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115              		@ link register save eliminated.
+ 116 0000 0368     		ldr	r3, [r0]
+ 117 0002 0BB1     		cbz	r3, .L19
+ 118 0004 1A68     		ldr	r2, [r3]
+ 119 0006 0260     		str	r2, [r0]
+ 120              	.L19:
+ 121 0008 1846     		mov	r0, r3
+ 122 000a 7047     		bx	lr
+ 124              		.section	.text.list_remove,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	list_remove
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	list_remove:
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133 0000 0368     		ldr	r3, [r0]
+ 134 0002 10B5     		push	{r4, lr}
+ 135 0004 7BB1     		cbz	r3, .L23
+ 136 0006 0022     		movs	r2, #0
+ 137              	.L28:
+ 138 0008 8B42     		cmp	r3, r1
+ 139 000a 07D1     		bne	.L25
+ 140 000c 1968     		ldr	r1, [r3]
+ 141 000e 0AB9     		cbnz	r2, .L26
+ 142 0010 0160     		str	r1, [r0]
+ 143 0012 00E0     		b	.L27
+ 144              	.L26:
+ 145 0014 1160     		str	r1, [r2]
+ 146              	.L27:
+ 147 0016 0022     		movs	r2, #0
+ 148 0018 1A60     		str	r2, [r3]
+ 149 001a 10BD     		pop	{r4, pc}
+ 150              	.L25:
+ 151 001c 1C68     		ldr	r4, [r3]
+ 152 001e 14B1     		cbz	r4, .L23
+ 153 0020 1A46     		mov	r2, r3
+ 154 0022 2346     		mov	r3, r4
+ 155 0024 F0E7     		b	.L28
+ 156              	.L23:
+ 157 0026 10BD     		pop	{r4, pc}
+ 159              		.section	.text.list_add,"ax",%progbits
+ 160              		.align	1
+ 161              		.global	list_add
+ 162              		.thumb
+ 163              		.thumb_func
+ 165              	list_add:
+ 166              		@ args = 0, pretend = 0, frame = 0
+ 167              		@ frame_needed = 0, uses_anonymous_args = 0
+ 168 0000 38B5     		push	{r3, r4, r5, lr}
+ 169 0002 0546     		mov	r5, r0
+ 170 0004 0C46     		mov	r4, r1
+ 171 0006 FFF7FEFF 		bl	list_remove
+ 172 000a 0023     		movs	r3, #0
+ 173 000c 2360     		str	r3, [r4]
+ 174 000e 2846     		mov	r0, r5
+ 175 0010 FFF7FEFF 		bl	list_tail
+ 176 0014 08B9     		cbnz	r0, .L36
+ 177 0016 2C60     		str	r4, [r5]
+ 178 0018 38BD     		pop	{r3, r4, r5, pc}
+ 179              	.L36:
+ 180 001a 0460     		str	r4, [r0]
+ 181 001c 38BD     		pop	{r3, r4, r5, pc}
+ 183              		.section	.text.list_push,"ax",%progbits
+ 184              		.align	1
+ 185              		.global	list_push
+ 186              		.thumb
+ 187              		.thumb_func
+ 189              	list_push:
+ 190              		@ args = 0, pretend = 0, frame = 0
+ 191              		@ frame_needed = 0, uses_anonymous_args = 0
+ 192 0000 38B5     		push	{r3, r4, r5, lr}
+ 193 0002 0446     		mov	r4, r0
+ 194 0004 0D46     		mov	r5, r1
+ 195 0006 FFF7FEFF 		bl	list_remove
+ 196 000a 2368     		ldr	r3, [r4]
+ 197 000c 2B60     		str	r3, [r5]
+ 198 000e 2560     		str	r5, [r4]
+ 199 0010 38BD     		pop	{r3, r4, r5, pc}
+ 201              		.section	.text.list_length,"ax",%progbits
+ 202              		.align	1
+ 203              		.global	list_length
+ 204              		.thumb
+ 205              		.thumb_func
+ 207              	list_length:
+ 208              		@ args = 0, pretend = 0, frame = 0
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+ 210              		@ link register save eliminated.
+ 211 0000 0368     		ldr	r3, [r0]
+ 212 0002 0020     		movs	r0, #0
+ 213              	.L40:
+ 214 0004 13B1     		cbz	r3, .L42
+ 215 0006 0130     		adds	r0, r0, #1
+ 216 0008 1B68     		ldr	r3, [r3]
+ 217 000a FBE7     		b	.L40
+ 218              	.L42:
+ 219 000c 7047     		bx	lr
+ 221              		.section	.text.list_insert,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	list_insert
+ 224              		.thumb
+ 225              		.thumb_func
+ 227              	list_insert:
+ 228              		@ args = 0, pretend = 0, frame = 0
+ 229              		@ frame_needed = 0, uses_anonymous_args = 0
+ 230              		@ link register save eliminated.
+ 231 0000 11B9     		cbnz	r1, .L44
+ 232 0002 1146     		mov	r1, r2
+ 233 0004 FFF7FEBF 		b	list_push
+ 234              	.L44:
+ 235 0008 0B68     		ldr	r3, [r1]
+ 236 000a 1360     		str	r3, [r2]
+ 237 000c 0A60     		str	r2, [r1]
+ 238 000e 7047     		bx	lr
+ 240              		.section	.text.list_item_next,"ax",%progbits
+ 241              		.align	1
+ 242              		.global	list_item_next
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	list_item_next:
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              		@ link register save eliminated.
+ 250 0000 00B1     		cbz	r0, .L46
+ 251 0002 0068     		ldr	r0, [r0]
+ 252              	.L46:
+ 253 0004 7047     		bx	lr
+ 255              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 list.c
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:16     .text.list_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:21     .text.list_init:00000000 list_init
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:30     .text.list_head:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:35     .text.list_head:00000000 list_head
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:43     .text.voidlist_copy:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:48     .text.voidlist_copy:00000000 voidlist_copy
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:57     .text.list_tail:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:62     .text.list_tail:00000000 list_tail
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:77     .text.list_chop:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:82     .text.list_chop:00000000 list_chop
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:107    .text.list_pop:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:112    .text.list_pop:00000000 list_pop
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:125    .text.list_remove:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:130    .text.list_remove:00000000 list_remove
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:160    .text.list_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:165    .text.list_add:00000000 list_add
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:184    .text.list_push:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:189    .text.list_push:00000000 list_push
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:202    .text.list_length:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:207    .text.list_length:00000000 list_length
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:222    .text.list_insert:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:227    .text.list_insert:00000000 list_insert
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:241    .text.list_item_next:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccYnB35A.s:246    .text.list_item_next:00000000 list_item_next
+
+NO UNDEFINED SYMBOLS

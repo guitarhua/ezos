@@ -1,0 +1,122 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_dbgmcu.c"
+  15              		.section	.text.DBGMCU_GetREVID,"ax",%progbits
+  16              		.align	1
+  17              		.global	DBGMCU_GetREVID
+  18              		.thumb
+  19              		.thumb_func
+  21              	DBGMCU_GetREVID:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 014B     		ldr	r3, .L2
+  26 0002 1868     		ldr	r0, [r3]
+  27 0004 000C     		lsrs	r0, r0, #16
+  28 0006 7047     		bx	lr
+  29              	.L3:
+  30              		.align	2
+  31              	.L2:
+  32 0008 002004E0 		.word	-536600576
+  34              		.section	.text.DBGMCU_GetDEVID,"ax",%progbits
+  35              		.align	1
+  36              		.global	DBGMCU_GetDEVID
+  37              		.thumb
+  38              		.thumb_func
+  40              	DBGMCU_GetDEVID:
+  41              		@ args = 0, pretend = 0, frame = 0
+  42              		@ frame_needed = 0, uses_anonymous_args = 0
+  43              		@ link register save eliminated.
+  44 0000 024B     		ldr	r3, .L5
+  45 0002 1868     		ldr	r0, [r3]
+  46 0004 C0F30B00 		ubfx	r0, r0, #0, #12
+  47 0008 7047     		bx	lr
+  48              	.L6:
+  49 000a 00BF     		.align	2
+  50              	.L5:
+  51 000c 002004E0 		.word	-536600576
+  53              		.section	.text.DBGMCU_Config,"ax",%progbits
+  54              		.align	1
+  55              		.global	DBGMCU_Config
+  56              		.thumb
+  57              		.thumb_func
+  59              	DBGMCU_Config:
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62 0000 0D4B     		ldr	r3, .L16
+  63 0002 70B5     		push	{r4, r5, r6, lr}
+  64 0004 0340     		ands	r3, r3, r0
+  65 0006 0546     		mov	r5, r0
+  66 0008 0E46     		mov	r6, r1
+  67 000a 03B9     		cbnz	r3, .L8
+  68 000c 18B9     		cbnz	r0, .L9
+  69              	.L8:
+  70 000e 0B48     		ldr	r0, .L16+4
+  71 0010 8921     		movs	r1, #137
+  72 0012 FFF7FEFF 		bl	assert_err
+  73              	.L9:
+  74 0016 012E     		cmp	r6, #1
+  75 0018 094C     		ldr	r4, .L16+8
+  76 001a 04D9     		bls	.L10
+  77 001c 0748     		ldr	r0, .L16+4
+  78 001e 8A21     		movs	r1, #138
+  79 0020 FFF7FEFF 		bl	assert_err
+  80 0024 00E0     		b	.L11
+  81              	.L10:
+  82 0026 16B1     		cbz	r6, .L12
+  83              	.L11:
+  84 0028 6368     		ldr	r3, [r4, #4]
+  85 002a 1D43     		orrs	r5, r5, r3
+  86 002c 02E0     		b	.L14
+  87              	.L12:
+  88 002e 6368     		ldr	r3, [r4, #4]
+  89 0030 23EA0505 		bic	r5, r3, r5
+  90              	.L14:
+  91 0034 6560     		str	r5, [r4, #4]
+  92 0036 70BD     		pop	{r4, r5, r6, pc}
+  93              	.L17:
+  94              		.align	2
+  95              	.L16:
+  96 0038 F8000080 		.word	-2147483400
+  97 003c 00000000 		.word	.LC0
+  98 0040 002004E0 		.word	-536600576
+ 100              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 101              	.LC0:
+ 102 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 102      73657273 
+ 102      2F647261 
+ 102      6170686F 
+ 102      2F446573 
+ 103 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_db"
+ 103      6965732F 
+ 103      53544D33 
+ 103      32463130 
+ 103      785F5374 
+ 104 0066 676D6375 		.ascii	"gmcu.c\000"
+ 104      2E6300
+ 105              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_dbgmcu.c
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:16     .text.DBGMCU_GetREVID:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:21     .text.DBGMCU_GetREVID:00000000 DBGMCU_GetREVID
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:32     .text.DBGMCU_GetREVID:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:35     .text.DBGMCU_GetDEVID:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:40     .text.DBGMCU_GetDEVID:00000000 DBGMCU_GetDEVID
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:51     .text.DBGMCU_GetDEVID:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:54     .text.DBGMCU_Config:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:59     .text.DBGMCU_Config:00000000 DBGMCU_Config
+D:\Users\draapho\AppData\Local\Temp\ccINgVAy.s:96     .text.DBGMCU_Config:00000038 $d
+
+UNDEFINED SYMBOLS
+assert_err

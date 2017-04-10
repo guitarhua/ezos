@@ -1,0 +1,67 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_watchdog.c"
+  15              		.section	.text.watchdog_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	watchdog_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	watchdog_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 7047     		bx	lr
+  27              		.section	.text.iwatchdog_clear,"ax",%progbits
+  28              		.align	1
+  29              		.global	iwatchdog_clear
+  30              		.thumb
+  31              		.thumb_func
+  33              	iwatchdog_clear:
+  34              		@ args = 0, pretend = 0, frame = 0
+  35              		@ frame_needed = 0, uses_anonymous_args = 0
+  36              		@ link register save eliminated.
+  37 0000 7047     		bx	lr
+  39              		.section	.text.wwatchdog_clear,"ax",%progbits
+  40              		.align	1
+  41              		.global	wwatchdog_clear
+  42              		.thumb
+  43              		.thumb_func
+  45              	wwatchdog_clear:
+  46              		@ args = 0, pretend = 0, frame = 0
+  47              		@ frame_needed = 0, uses_anonymous_args = 0
+  48              		@ link register save eliminated.
+  49 0000 7047     		bx	lr
+  51              		.section	.text.wwatchdog_disable,"ax",%progbits
+  52              		.align	1
+  53              		.global	wwatchdog_disable
+  54              		.thumb
+  55              		.thumb_func
+  57              	wwatchdog_disable:
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  61 0000 7047     		bx	lr
+  63              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_watchdog.c
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:16     .text.watchdog_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:21     .text.watchdog_init:00000000 watchdog_init
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:28     .text.iwatchdog_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:33     .text.iwatchdog_clear:00000000 iwatchdog_clear
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:40     .text.wwatchdog_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:45     .text.wwatchdog_clear:00000000 wwatchdog_clear
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:52     .text.wwatchdog_disable:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccuOzGPq.s:57     .text.wwatchdog_disable:00000000 wwatchdog_disable
+
+NO UNDEFINED SYMBOLS

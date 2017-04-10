@@ -1,0 +1,162 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_message.c"
+  15              		.section	.text.task_led,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_led:
+  21              		@ args = 0, pretend = 0, frame = 8
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 07B5     		push	{r0, r1, r2, lr}
+  24 0002 0C48     		ldr	r0, .L9
+  25 0004 0DF10701 		add	r1, sp, #7
+  26 0008 4FF0FF32 		mov	r2, #-1
+  27 000c FFF7FEFF 		bl	ezos_mq_receive
+  28 0010 0828     		cmp	r0, #8
+  29 0012 0146     		mov	r1, r0
+  30 0014 0BD0     		beq	.L1
+  31 0016 20B9     		cbnz	r0, .L3
+  32 0018 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+  33 001c FFF7FEFF 		bl	led_toggle_gradual
+  34 0020 02E0     		b	.L4
+  35              	.L3:
+  36 0022 0548     		ldr	r0, .L9+4
+  37 0024 FFF7FEFF 		bl	printf
+  38              	.L4:
+  39 0028 0020     		movs	r0, #0
+  40 002a FFF7FEFF 		bl	ezos_delay
+  41              	.L1:
+  42 002e 03B0     		add	sp, sp, #12
+  43              		@ sp needed
+  44 0030 5DF804FB 		ldr	pc, [sp], #4
+  45              	.L10:
+  46              		.align	2
+  47              	.L9:
+  48 0034 00000000 		.word	mq_key
+  49 0038 00000000 		.word	.LC0
+  51              		.section	.text.task_key,"ax",%progbits
+  52              		.align	1
+  53              		.thumb
+  54              		.thumb_func
+  56              	task_key:
+  57              		@ args = 0, pretend = 0, frame = 8
+  58              		@ frame_needed = 0, uses_anonymous_args = 0
+  59 0000 07B5     		push	{r0, r1, r2, lr}
+  60 0002 0023     		movs	r3, #0
+  61 0004 8DF80430 		strb	r3, [sp, #4]
+  62 0008 0123     		movs	r3, #1
+  63 000a 8DF80530 		strb	r3, [sp, #5]
+  64 000e FFF7FEFF 		bl	key_scan_10ms
+  65 0012 0A4B     		ldr	r3, .L16
+  66 0014 5B88     		ldrh	r3, [r3, #2]
+  67 0016 9BB2     		uxth	r3, r3
+  68 0018 012B     		cmp	r3, #1
+  69 001a 05D0     		beq	.L13
+  70 001c 022B     		cmp	r3, #2
+  71 001e 07D1     		bne	.L12
+  72 0020 0748     		ldr	r0, .L16+4
+  73 0022 0DF10501 		add	r1, sp, #5
+  74 0026 01E0     		b	.L15
+  75              	.L13:
+  76 0028 0548     		ldr	r0, .L16+4
+  77 002a 01A9     		add	r1, sp, #4
+  78              	.L15:
+  79 002c FFF7FEFF 		bl	ezos_mq_send
+  80              	.L12:
+  81 0030 0A20     		movs	r0, #10
+  82 0032 FFF7FEFF 		bl	ezos_delay
+  83 0036 03B0     		add	sp, sp, #12
+  84              		@ sp needed
+  85 0038 5DF804FB 		ldr	pc, [sp], #4
+  86              	.L17:
+  87              		.align	2
+  88              	.L16:
+  89 003c 00000000 		.word	key_status
+  90 0040 00000000 		.word	mq_key
+  92              		.section	.text.message_start,"ax",%progbits
+  93              		.align	1
+  94              		.global	message_start
+  95              		.thumb
+  96              		.thumb_func
+  98              	message_start:
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101 0000 07B5     		push	{r0, r1, r2, lr}
+ 102 0002 FFF7FEFF 		bl	led_init_all
+ 103 0006 FFF7FEFF 		bl	key_init_all
+ 104 000a 0121     		movs	r1, #1
+ 105 000c 0B4A     		ldr	r2, .L19
+ 106 000e 0A23     		movs	r3, #10
+ 107 0010 0B48     		ldr	r0, .L19+4
+ 108 0012 FFF7FEFF 		bl	ezos_mq_add
+ 109 0016 0B48     		ldr	r0, .L19+8
+ 110 0018 0022     		movs	r2, #0
+ 111 001a 0323     		movs	r3, #3
+ 112 001c 0093     		str	r3, [sp]
+ 113 001e 0146     		mov	r1, r0
+ 114 0020 1346     		mov	r3, r2
+ 115 0022 FFF7FEFF 		bl	ezos_add
+ 116 0026 0848     		ldr	r0, .L19+12
+ 117 0028 0022     		movs	r2, #0
+ 118 002a 0823     		movs	r3, #8
+ 119 002c 0093     		str	r3, [sp]
+ 120 002e 0146     		mov	r1, r0
+ 121 0030 1346     		mov	r3, r2
+ 122 0032 FFF7FEFF 		bl	ezos_add
+ 123 0036 03B0     		add	sp, sp, #12
+ 124              		@ sp needed
+ 125 0038 5DF804FB 		ldr	pc, [sp], #4
+ 126              	.L20:
+ 127              		.align	2
+ 128              	.L19:
+ 129 003c 00000000 		.word	mq_buf
+ 130 0040 00000000 		.word	mq_key
+ 131 0044 00000000 		.word	task_key
+ 132 0048 00000000 		.word	task_led
+ 134              		.comm	mq_buf,10,1
+ 135              		.comm	mq_key,28,4
+ 136              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 137              	.LC0:
+ 138 0000 6D715F6B 		.ascii	"mq_key: %d\015\012\000"
+ 138      65793A20 
+ 138      25640D0A 
+ 138      00
+ 139              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_message.c
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:16     .text.task_led:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:20     .text.task_led:00000000 task_led
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:48     .text.task_led:00000034 $d
+                            *COM*:0000001c mq_key
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:52     .text.task_key:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:56     .text.task_key:00000000 task_key
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:89     .text.task_key:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:93     .text.message_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:98     .text.message_start:00000000 message_start
+D:\Users\draapho\AppData\Local\Temp\ccKceDZ9.s:129    .text.message_start:0000003c $d
+                            *COM*:0000000a mq_buf
+
+UNDEFINED SYMBOLS
+ezos_mq_receive
+led_toggle_gradual
+printf
+ezos_delay
+key_scan_10ms
+ezos_mq_send
+key_status
+led_init_all
+key_init_all
+ezos_mq_add
+ezos_add

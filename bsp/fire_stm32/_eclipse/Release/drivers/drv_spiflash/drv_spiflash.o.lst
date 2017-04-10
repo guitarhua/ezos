@@ -1,0 +1,509 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_spiflash.c"
+  15              		.section	.text.spiflash_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	spiflash_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	spiflash_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 FFF7FEFF 		bl	sf_unvsl_init
+  26 0006 044B     		ldr	r3, .L2
+  27 0008 4FF0FF32 		mov	r2, #-1
+  28 000c 1A60     		str	r2, [r3]
+  29 000e 034B     		ldr	r3, .L2+4
+  30 0010 0022     		movs	r2, #0
+  31 0012 1A70     		strb	r2, [r3]
+  32 0014 08BD     		pop	{r3, pc}
+  33              	.L3:
+  34 0016 00BF     		.align	2
+  35              	.L2:
+  36 0018 00000000 		.word	.LANCHOR0
+  37 001c 00000000 		.word	.LANCHOR1
+  39              		.section	.text.spiflash_set_protect,"ax",%progbits
+  40              		.align	1
+  41              		.global	spiflash_set_protect
+  42              		.thumb
+  43              		.thumb_func
+  45              	spiflash_set_protect:
+  46              		@ args = 0, pretend = 0, frame = 0
+  47              		@ frame_needed = 0, uses_anonymous_args = 0
+  48              		@ link register save eliminated.
+  49 0000 FFF7FEBF 		b	sf_unvsl_set_protect
+  51              		.section	.text.spiflash_power_down,"ax",%progbits
+  52              		.align	1
+  53              		.global	spiflash_power_down
+  54              		.thumb
+  55              		.thumb_func
+  57              	spiflash_power_down:
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  61 0000 FFF7FEBF 		b	sf_unvsl_power_down
+  63              		.section	.text.spiflash_power_on,"ax",%progbits
+  64              		.align	1
+  65              		.global	spiflash_power_on
+  66              		.thumb
+  67              		.thumb_func
+  69              	spiflash_power_on:
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72              		@ link register save eliminated.
+  73 0000 FFF7FEBF 		b	sf_unvsl_power_on
+  75              		.section	.text.spiflash_read_id,"ax",%progbits
+  76              		.align	1
+  77              		.global	spiflash_read_id
+  78              		.thumb
+  79              		.thumb_func
+  81              	spiflash_read_id:
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84              		@ link register save eliminated.
+  85 0000 FFF7FEBF 		b	sf_unvsl_read_id
+  87              		.section	.text.spiflash_sector_erase,"ax",%progbits
+  88              		.align	1
+  89              		.global	spiflash_sector_erase
+  90              		.thumb
+  91              		.thumb_func
+  93              	spiflash_sector_erase:
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96 0000 B0F5001F 		cmp	r0, #2097152
+  97 0004 08B5     		push	{r3, lr}
+  98 0006 05D3     		bcc	.L9
+  99 0008 0448     		ldr	r0, .L13
+ 100 000a CE21     		movs	r1, #206
+ 101 000c FFF7FEFF 		bl	assert_err
+ 102 0010 0120     		movs	r0, #1
+ 103 0012 08BD     		pop	{r3, pc}
+ 104              	.L9:
+ 105 0014 FFF7FEFF 		bl	sf_unvsl_sector_erase
+ 106 0018 0020     		movs	r0, #0
+ 107 001a 08BD     		pop	{r3, pc}
+ 108              	.L14:
+ 109              		.align	2
+ 110              	.L13:
+ 111 001c 00000000 		.word	.LC0
+ 113              		.section	.text.spiflash_block_erase,"ax",%progbits
+ 114              		.align	1
+ 115              		.global	spiflash_block_erase
+ 116              		.thumb
+ 117              		.thumb_func
+ 119              	spiflash_block_erase:
+ 120              		@ args = 0, pretend = 0, frame = 0
+ 121              		@ frame_needed = 0, uses_anonymous_args = 0
+ 122 0000 B0F5001F 		cmp	r0, #2097152
+ 123 0004 08B5     		push	{r3, lr}
+ 124 0006 05D3     		bcc	.L16
+ 125 0008 0448     		ldr	r0, .L19
+ 126 000a E521     		movs	r1, #229
+ 127 000c FFF7FEFF 		bl	assert_err
+ 128 0010 0120     		movs	r0, #1
+ 129 0012 08BD     		pop	{r3, pc}
+ 130              	.L16:
+ 131 0014 FFF7FEFF 		bl	sf_unvsl_block_erase
+ 132 0018 0020     		movs	r0, #0
+ 133 001a 08BD     		pop	{r3, pc}
+ 134              	.L20:
+ 135              		.align	2
+ 136              	.L19:
+ 137 001c 00000000 		.word	.LC0
+ 139              		.section	.text.spiflash_chip_erase,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	spiflash_chip_erase
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	spiflash_chip_erase:
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148              		@ link register save eliminated.
+ 149 0000 FFF7FEBF 		b	sf_unvsl_chip_erase
+ 151              		.section	.text.spiflash_read_start,"ax",%progbits
+ 152              		.align	1
+ 153              		.global	spiflash_read_start
+ 154              		.thumb
+ 155              		.thumb_func
+ 157              	spiflash_read_start:
+ 158              		@ args = 0, pretend = 0, frame = 0
+ 159              		@ frame_needed = 0, uses_anonymous_args = 0
+ 160              		@ link register save eliminated.
+ 161 0000 FFF7FEBF 		b	sf_unvsl_read_start
+ 163              		.section	.text.spiflash_read_bytes,"ax",%progbits
+ 164              		.align	1
+ 165              		.global	spiflash_read_bytes
+ 166              		.thumb
+ 167              		.thumb_func
+ 169              	spiflash_read_bytes:
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 0, uses_anonymous_args = 0
+ 172              		@ link register save eliminated.
+ 173 0000 FFF7FEBF 		b	sf_unvsl_read_bytes
+ 175              		.section	.text.spiflash_read_end,"ax",%progbits
+ 176              		.align	1
+ 177              		.global	spiflash_read_end
+ 178              		.thumb
+ 179              		.thumb_func
+ 181              	spiflash_read_end:
+ 182              		@ args = 0, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 184              		@ link register save eliminated.
+ 185 0000 FFF7FEBF 		b	sf_unvsl_read_end
+ 187              		.section	.text.spiflash_write_page,"ax",%progbits
+ 188              		.align	1
+ 189              		.global	spiflash_write_page
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	spiflash_write_page:
+ 194              		@ args = 0, pretend = 0, frame = 0
+ 195              		@ frame_needed = 0, uses_anonymous_args = 0
+ 196 0000 B2F5807F 		cmp	r2, #256
+ 197 0004 70B5     		push	{r4, r5, r6, lr}
+ 198 0006 0646     		mov	r6, r0
+ 199 0008 0D46     		mov	r5, r1
+ 200 000a 1446     		mov	r4, r2
+ 201 000c 04D9     		bls	.L26
+ 202 000e 0648     		ldr	r0, .L27
+ 203 0010 4FF4A471 		mov	r1, #328
+ 204 0014 FFF7FEFF 		bl	assert_err
+ 205              	.L26:
+ 206 0018 3046     		mov	r0, r6
+ 207 001a 2946     		mov	r1, r5
+ 208 001c 2246     		mov	r2, r4
+ 209 001e BDE87040 		pop	{r4, r5, r6, lr}
+ 210 0022 FFF7FEBF 		b	sf_unvsl_write_page
+ 211              	.L28:
+ 212 0026 00BF     		.align	2
+ 213              	.L27:
+ 214 0028 00000000 		.word	.LC0
+ 216              		.section	.text.spiflash_read,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	spiflash_read
+ 219              		.thumb
+ 220              		.thumb_func
+ 222              	spiflash_read:
+ 223              		@ args = 0, pretend = 0, frame = 0
+ 224              		@ frame_needed = 0, uses_anonymous_args = 0
+ 225 0000 8B18     		adds	r3, r1, r2
+ 226 0002 B3F5001F 		cmp	r3, #2097152
+ 227 0006 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 228 000a 0646     		mov	r6, r0
+ 229 000c 1446     		mov	r4, r2
+ 230 000e 07D9     		bls	.L30
+ 231 0010 2448     		ldr	r0, .L47
+ 232 0012 4FF4B071 		mov	r1, #352
+ 233 0016 FFF7FEFF 		bl	assert_err
+ 234 001a 0120     		movs	r0, #1
+ 235 001c BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 236              	.L30:
+ 237 0020 002A     		cmp	r2, #0
+ 238 0022 3BD0     		beq	.L39
+ 239 0024 C1F30B00 		ubfx	r0, r1, #0, #12
+ 240 0028 621E     		subs	r2, r4, #1
+ 241 002a 0244     		add	r2, r2, r0
+ 242 002c 120B     		lsrs	r2, r2, #12
+ 243 002e 0F1A     		subs	r7, r1, r0
+ 244 0030 02F10108 		add	r8, r2, #1
+ 245 0034 12B1     		cbz	r2, .L41
+ 246 0036 C0F58055 		rsb	r5, r0, #4096
+ 247 003a 00E0     		b	.L32
+ 248              	.L41:
+ 249 003c 2546     		mov	r5, r4
+ 250              	.L32:
+ 251 003e DFF868A0 		ldr	r10, .L47+4
+ 252 0042 DFF86890 		ldr	r9, .L47+8
+ 253              	.L33:
+ 254 0046 DAF80020 		ldr	r2, [r10]
+ 255 004a BA42     		cmp	r2, r7
+ 256 004c 04D1     		bne	.L34
+ 257 004e 311A     		subs	r1, r6, r0
+ 258 0050 0346     		mov	r3, r0
+ 259 0052 2A18     		adds	r2, r5, r0
+ 260 0054 0846     		mov	r0, r1
+ 261 0056 0AE0     		b	.L35
+ 262              	.L34:
+ 263 0058 3844     		add	r0, r0, r7
+ 264 005a FFF7FEFF 		bl	sf_unvsl_read_start
+ 265 005e 3046     		mov	r0, r6
+ 266 0060 2946     		mov	r1, r5
+ 267 0062 FFF7FEFF 		bl	sf_unvsl_read_bytes
+ 268 0066 2E44     		add	r6, r6, r5
+ 269 0068 FFF7FEFF 		bl	sf_unvsl_read_end
+ 270 006c 08E0     		b	.L36
+ 271              	.L35:
+ 272 006e 9342     		cmp	r3, r2
+ 273 0070 01EB0306 		add	r6, r1, r3
+ 274 0074 04D2     		bcs	.L36
+ 275 0076 13F80960 		ldrb	r6, [r3, r9]	@ zero_extendqisi2
+ 276 007a C654     		strb	r6, [r0, r3]
+ 277 007c 0133     		adds	r3, r3, #1
+ 278 007e F6E7     		b	.L35
+ 279              	.L36:
+ 280 0080 641B     		subs	r4, r4, r5
+ 281 0082 B4F5805F 		cmp	r4, #4096
+ 282 0086 34BF     		ite	cc
+ 283 0088 2546     		movcc	r5, r4
+ 284 008a 4FF48055 		movcs	r5, #4096
+ 285 008e B8F10108 		subs	r8, r8, #1
+ 286 0092 07F58057 		add	r7, r7, #4096
+ 287 0096 01D0     		beq	.L39
+ 288 0098 0020     		movs	r0, #0
+ 289 009a D4E7     		b	.L33
+ 290              	.L39:
+ 291 009c 0020     		movs	r0, #0
+ 292 009e BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 293              	.L48:
+ 294 00a2 00BF     		.align	2
+ 295              	.L47:
+ 296 00a4 00000000 		.word	.LC0
+ 297 00a8 00000000 		.word	.LANCHOR0
+ 298 00ac 00000000 		.word	.LANCHOR2
+ 300              		.section	.text.spiflash_write_buf,"ax",%progbits
+ 301              		.align	1
+ 302              		.global	spiflash_write_buf
+ 303              		.thumb
+ 304              		.thumb_func
+ 306              	spiflash_write_buf:
+ 307              		@ args = 0, pretend = 0, frame = 8
+ 308              		@ frame_needed = 0, uses_anonymous_args = 0
+ 309 0000 8B18     		adds	r3, r1, r2
+ 310 0002 B3F5001F 		cmp	r3, #2097152
+ 311 0006 2DE9F74F 		push	{r0, r1, r2, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 312 000a 8046     		mov	r8, r0
+ 313 000c 1446     		mov	r4, r2
+ 314 000e 06D9     		bls	.L50
+ 315 0010 3448     		ldr	r0, .L73
+ 316 0012 4FF4CB71 		mov	r1, #406
+ 317 0016 FFF7FEFF 		bl	assert_err
+ 318 001a 0120     		movs	r0, #1
+ 319 001c 5EE0     		b	.L70
+ 320              	.L50:
+ 321 001e 002A     		cmp	r2, #0
+ 322 0020 5BD0     		beq	.L61
+ 323 0022 C1F30B06 		ubfx	r6, r1, #0, #12
+ 324 0026 631E     		subs	r3, r4, #1
+ 325 0028 3344     		add	r3, r3, r6
+ 326 002a 1B0B     		lsrs	r3, r3, #12
+ 327 002c 8D1B     		subs	r5, r1, r6
+ 328 002e 03F10109 		add	r9, r3, #1
+ 329 0032 13B1     		cbz	r3, .L63
+ 330 0034 C6F58057 		rsb	r7, r6, #4096
+ 331 0038 00E0     		b	.L52
+ 332              	.L63:
+ 333 003a 2746     		mov	r7, r4
+ 334              	.L52:
+ 335 003c DFF8B0B0 		ldr	fp, .L73+12
+ 336 0040 DA46     		mov	r10, fp
+ 337              	.L53:
+ 338 0042 DBF80000 		ldr	r0, [fp]
+ 339 0046 A842     		cmp	r0, r5
+ 340 0048 27D0     		beq	.L54
+ 341 004a 274B     		ldr	r3, .L73+4
+ 342 004c 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 343 004e 42B9     		cbnz	r2, .L55
+ 344              	.L56:
+ 345 0050 2648     		ldr	r0, .L73+8
+ 346 0052 2946     		mov	r1, r5
+ 347 0054 4FF48052 		mov	r2, #4096
+ 348 0058 FFF7FEFF 		bl	spiflash_read
+ 349 005c CAF80050 		str	r5, [r10]
+ 350 0060 1BE0     		b	.L54
+ 351              	.L55:
+ 352 0062 FFF7FEFF 		bl	spiflash_sector_erase
+ 353 0066 4FF0000C 		mov	ip, #0
+ 354              	.L57:
+ 355 006a 2048     		ldr	r0, .L73+8
+ 356 006c DAF80010 		ldr	r1, [r10]
+ 357 0070 6044     		add	r0, r0, ip
+ 358 0072 4FF48072 		mov	r2, #256
+ 359 0076 CDF804C0 		str	ip, [sp, #4]
+ 360 007a FFF7FEFF 		bl	sf_unvsl_write_page
+ 361 007e DDF804C0 		ldr	ip, [sp, #4]
+ 362 0082 DAF80020 		ldr	r2, [r10]
+ 363 0086 0CF5807C 		add	ip, ip, #256
+ 364 008a 02F58072 		add	r2, r2, #256
+ 365 008e BCF5805F 		cmp	ip, #4096
+ 366 0092 CAF80020 		str	r2, [r10]
+ 367 0096 E8D1     		bne	.L57
+ 368 0098 DAE7     		b	.L56
+ 369              	.L54:
+ 370 009a C6EB0801 		rsb	r1, r6, r8
+ 371 009e 134B     		ldr	r3, .L73+8
+ 372 00a0 BA19     		adds	r2, r7, r6
+ 373 00a2 0846     		mov	r0, r1
+ 374              	.L58:
+ 375 00a4 9642     		cmp	r6, r2
+ 376 00a6 01EB0608 		add	r8, r1, r6
+ 377 00aa 05D2     		bcs	.L72
+ 378 00ac 10F80680 		ldrb	r8, [r0, r6]	@ zero_extendqisi2
+ 379 00b0 06F80380 		strb	r8, [r6, r3]
+ 380 00b4 0136     		adds	r6, r6, #1
+ 381 00b6 F5E7     		b	.L58
+ 382              	.L72:
+ 383 00b8 0B4B     		ldr	r3, .L73+4
+ 384 00ba E41B     		subs	r4, r4, r7
+ 385 00bc 0122     		movs	r2, #1
+ 386 00be B4F5805F 		cmp	r4, #4096
+ 387 00c2 34BF     		ite	cc
+ 388 00c4 2746     		movcc	r7, r4
+ 389 00c6 4FF48057 		movcs	r7, #4096
+ 390 00ca B9F10109 		subs	r9, r9, #1
+ 391 00ce 05F58055 		add	r5, r5, #4096
+ 392 00d2 1A70     		strb	r2, [r3]
+ 393 00d4 01D0     		beq	.L61
+ 394 00d6 0026     		movs	r6, #0
+ 395 00d8 B3E7     		b	.L53
+ 396              	.L61:
+ 397 00da 0020     		movs	r0, #0
+ 398              	.L70:
+ 399 00dc 03B0     		add	sp, sp, #12
+ 400              		@ sp needed
+ 401 00de BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 402              	.L74:
+ 403 00e2 00BF     		.align	2
+ 404              	.L73:
+ 405 00e4 00000000 		.word	.LC0
+ 406 00e8 00000000 		.word	.LANCHOR1
+ 407 00ec 00000000 		.word	.LANCHOR2
+ 408 00f0 00000000 		.word	.LANCHOR0
+ 410              		.section	.text.spiflash_write_buf2flash,"ax",%progbits
+ 411              		.align	1
+ 412              		.global	spiflash_write_buf2flash
+ 413              		.thumb
+ 414              		.thumb_func
+ 416              	spiflash_write_buf2flash:
+ 417              		@ args = 0, pretend = 0, frame = 0
+ 418              		@ frame_needed = 0, uses_anonymous_args = 0
+ 419 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 420 0002 0D4B     		ldr	r3, .L82
+ 421 0004 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 422 0006 1D46     		mov	r5, r3
+ 423 0008 A2B1     		cbz	r2, .L75
+ 424 000a 0C4B     		ldr	r3, .L82+4
+ 425 000c 0C4F     		ldr	r7, .L82+8
+ 426 000e 1C68     		ldr	r4, [r3]
+ 427 0010 2046     		mov	r0, r4
+ 428 0012 FFF7FEFF 		bl	spiflash_sector_erase
+ 429 0016 04F58056 		add	r6, r4, #4096
+ 430 001a 3F1B     		subs	r7, r7, r4
+ 431              	.L78:
+ 432 001c 3819     		adds	r0, r7, r4
+ 433 001e 2146     		mov	r1, r4
+ 434 0020 4FF48072 		mov	r2, #256
+ 435 0024 04F58074 		add	r4, r4, #256
+ 436 0028 FFF7FEFF 		bl	sf_unvsl_write_page
+ 437 002c B442     		cmp	r4, r6
+ 438 002e F5D1     		bne	.L78
+ 439 0030 0023     		movs	r3, #0
+ 440 0032 2B70     		strb	r3, [r5]
+ 441              	.L75:
+ 442 0034 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 443              	.L83:
+ 444 0036 00BF     		.align	2
+ 445              	.L82:
+ 446 0038 00000000 		.word	.LANCHOR1
+ 447 003c 00000000 		.word	.LANCHOR0
+ 448 0040 00000000 		.word	.LANCHOR2
+ 450              		.section	.bss.sector_addr_cur,"aw",%nobits
+ 451              		.align	2
+ 452              		.set	.LANCHOR0,. + 0
+ 455              	sector_addr_cur:
+ 456 0000 00000000 		.space	4
+ 457              		.section	.bss.data_changed,"aw",%nobits
+ 458              		.set	.LANCHOR1,. + 0
+ 461              	data_changed:
+ 462 0000 00       		.space	1
+ 463              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 464              	.LC0:
+ 465 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/dr"
+ 465      73657273 
+ 465      2F647261 
+ 465      6170686F 
+ 465      2F446573 
+ 466 0033 765F7370 		.ascii	"v_spiflash/drv_spiflash.c\000"
+ 466      69666C61 
+ 466      73682F64 
+ 466      72765F73 
+ 466      7069666C 
+ 467              		.section	.bss.data,"aw",%nobits
+ 468              		.set	.LANCHOR2,. + 0
+ 471              	data:
+ 472 0000 00000000 		.space	4096
+ 472      00000000 
+ 472      00000000 
+ 472      00000000 
+ 472      00000000 
+ 473              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_spiflash.c
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:16     .text.spiflash_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:21     .text.spiflash_init:00000000 spiflash_init
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:36     .text.spiflash_init:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:40     .text.spiflash_set_protect:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:45     .text.spiflash_set_protect:00000000 spiflash_set_protect
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:52     .text.spiflash_power_down:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:57     .text.spiflash_power_down:00000000 spiflash_power_down
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:64     .text.spiflash_power_on:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:69     .text.spiflash_power_on:00000000 spiflash_power_on
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:76     .text.spiflash_read_id:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:81     .text.spiflash_read_id:00000000 spiflash_read_id
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:88     .text.spiflash_sector_erase:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:93     .text.spiflash_sector_erase:00000000 spiflash_sector_erase
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:111    .text.spiflash_sector_erase:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:114    .text.spiflash_block_erase:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:119    .text.spiflash_block_erase:00000000 spiflash_block_erase
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:137    .text.spiflash_block_erase:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:140    .text.spiflash_chip_erase:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:145    .text.spiflash_chip_erase:00000000 spiflash_chip_erase
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:152    .text.spiflash_read_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:157    .text.spiflash_read_start:00000000 spiflash_read_start
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:164    .text.spiflash_read_bytes:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:169    .text.spiflash_read_bytes:00000000 spiflash_read_bytes
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:176    .text.spiflash_read_end:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:181    .text.spiflash_read_end:00000000 spiflash_read_end
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:188    .text.spiflash_write_page:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:193    .text.spiflash_write_page:00000000 spiflash_write_page
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:214    .text.spiflash_write_page:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:217    .text.spiflash_read:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:222    .text.spiflash_read:00000000 spiflash_read
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:296    .text.spiflash_read:000000a4 $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:301    .text.spiflash_write_buf:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:306    .text.spiflash_write_buf:00000000 spiflash_write_buf
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:405    .text.spiflash_write_buf:000000e4 $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:411    .text.spiflash_write_buf2flash:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:416    .text.spiflash_write_buf2flash:00000000 spiflash_write_buf2flash
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:446    .text.spiflash_write_buf2flash:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:451    .bss.sector_addr_cur:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:455    .bss.sector_addr_cur:00000000 sector_addr_cur
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:461    .bss.data_changed:00000000 data_changed
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:462    .bss.data_changed:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:471    .bss.data:00000000 data
+D:\Users\draapho\AppData\Local\Temp\ccX8kxcd.s:472    .bss.data:00000000 $d
+
+UNDEFINED SYMBOLS
+sf_unvsl_init
+sf_unvsl_set_protect
+sf_unvsl_power_down
+sf_unvsl_power_on
+sf_unvsl_read_id
+assert_err
+sf_unvsl_sector_erase
+sf_unvsl_block_erase
+sf_unvsl_chip_erase
+sf_unvsl_read_start
+sf_unvsl_read_bytes
+sf_unvsl_read_end
+sf_unvsl_write_page

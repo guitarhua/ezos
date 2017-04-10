@@ -1,0 +1,1244 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_rcc.c"
+  15              		.section	.text.RCC_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	RCC_DeInit
+  18              		.thumb
+  19              		.thumb_func
+  21              	RCC_DeInit:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 0D4B     		ldr	r3, .L2
+  26 0002 1A68     		ldr	r2, [r3]
+  27 0004 42F00102 		orr	r2, r2, #1
+  28 0008 1A60     		str	r2, [r3]
+  29 000a 5968     		ldr	r1, [r3, #4]
+  30 000c 0B4A     		ldr	r2, .L2+4
+  31 000e 0A40     		ands	r2, r2, r1
+  32 0010 5A60     		str	r2, [r3, #4]
+  33 0012 1A68     		ldr	r2, [r3]
+  34 0014 22F08472 		bic	r2, r2, #17301504
+  35 0018 22F48032 		bic	r2, r2, #65536
+  36 001c 1A60     		str	r2, [r3]
+  37 001e 1A68     		ldr	r2, [r3]
+  38 0020 22F48022 		bic	r2, r2, #262144
+  39 0024 1A60     		str	r2, [r3]
+  40 0026 5A68     		ldr	r2, [r3, #4]
+  41 0028 22F4FE02 		bic	r2, r2, #8323072
+  42 002c 5A60     		str	r2, [r3, #4]
+  43 002e 4FF41F02 		mov	r2, #10420224
+  44 0032 9A60     		str	r2, [r3, #8]
+  45 0034 7047     		bx	lr
+  46              	.L3:
+  47 0036 00BF     		.align	2
+  48              	.L2:
+  49 0038 00100240 		.word	1073876992
+  50 003c 0000FFF8 		.word	-117506048
+  52              		.section	.text.RCC_HSEConfig,"ax",%progbits
+  53              		.align	1
+  54              		.global	RCC_HSEConfig
+  55              		.thumb
+  56              		.thumb_func
+  58              	RCC_HSEConfig:
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61 0000 30F48033 		bics	r3, r0, #65536
+  62 0004 10B5     		push	{r4, lr}
+  63 0006 0446     		mov	r4, r0
+  64 0008 07D0     		beq	.L5
+  65 000a B0F5802F 		cmp	r0, #262144
+  66 000e 04D0     		beq	.L5
+  67 0010 0E48     		ldr	r0, .L17
+  68 0012 40F21111 		movw	r1, #273
+  69 0016 FFF7FEFF 		bl	assert_err
+  70              	.L5:
+  71 001a 0D4B     		ldr	r3, .L17+4
+  72 001c B4F5803F 		cmp	r4, #65536
+  73 0020 1A68     		ldr	r2, [r3]
+  74 0022 22F48032 		bic	r2, r2, #65536
+  75 0026 1A60     		str	r2, [r3]
+  76 0028 1A68     		ldr	r2, [r3]
+  77 002a 22F48022 		bic	r2, r2, #262144
+  78 002e 1A60     		str	r2, [r3]
+  79 0030 03D0     		beq	.L7
+  80 0032 B4F5802F 		cmp	r4, #262144
+  81 0036 04D0     		beq	.L8
+  82 0038 10BD     		pop	{r4, pc}
+  83              	.L7:
+  84 003a 1A68     		ldr	r2, [r3]
+  85 003c 42F48032 		orr	r2, r2, #65536
+  86 0040 02E0     		b	.L15
+  87              	.L8:
+  88 0042 1A68     		ldr	r2, [r3]
+  89 0044 42F4A022 		orr	r2, r2, #327680
+  90              	.L15:
+  91 0048 1A60     		str	r2, [r3]
+  92 004a 10BD     		pop	{r4, pc}
+  93              	.L18:
+  94              		.align	2
+  95              	.L17:
+  96 004c 00000000 		.word	.LC0
+  97 0050 00100240 		.word	1073876992
+  99              		.section	.text.RCC_AdjustHSICalibrationValue,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	RCC_AdjustHSICalibrationValue
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	RCC_AdjustHSICalibrationValue:
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108 0000 1F28     		cmp	r0, #31
+ 109 0002 10B5     		push	{r4, lr}
+ 110 0004 0446     		mov	r4, r0
+ 111 0006 04D9     		bls	.L20
+ 112 0008 0648     		ldr	r0, .L21
+ 113 000a 4FF4A971 		mov	r1, #338
+ 114 000e FFF7FEFF 		bl	assert_err
+ 115              	.L20:
+ 116 0012 054B     		ldr	r3, .L21+4
+ 117 0014 1A68     		ldr	r2, [r3]
+ 118 0016 22F0F802 		bic	r2, r2, #248
+ 119 001a 42EAC404 		orr	r4, r2, r4, lsl #3
+ 120 001e 1C60     		str	r4, [r3]
+ 121 0020 10BD     		pop	{r4, pc}
+ 122              	.L22:
+ 123 0022 00BF     		.align	2
+ 124              	.L21:
+ 125 0024 00000000 		.word	.LC0
+ 126 0028 00100240 		.word	1073876992
+ 128              		.section	.text.RCC_HSICmd,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	RCC_HSICmd
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	RCC_HSICmd:
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 137 0000 0128     		cmp	r0, #1
+ 138 0002 10B5     		push	{r4, lr}
+ 139 0004 0446     		mov	r4, r0
+ 140 0006 04D9     		bls	.L24
+ 141 0008 0348     		ldr	r0, .L25
+ 142 000a 40F26511 		movw	r1, #357
+ 143 000e FFF7FEFF 		bl	assert_err
+ 144              	.L24:
+ 145 0012 024B     		ldr	r3, .L25+4
+ 146 0014 1C60     		str	r4, [r3]
+ 147 0016 10BD     		pop	{r4, pc}
+ 148              	.L26:
+ 149              		.align	2
+ 150              	.L25:
+ 151 0018 00000000 		.word	.LC0
+ 152 001c 00004242 		.word	1111621632
+ 154              		.section	.text.RCC_PLLConfig,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	RCC_PLLConfig
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	RCC_PLLConfig:
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163 0000 38B5     		push	{r3, r4, r5, lr}
+ 164 0002 30F48033 		bics	r3, r0, #65536
+ 165 0006 0546     		mov	r5, r0
+ 166 0008 0C46     		mov	r4, r1
+ 167 000a 07D0     		beq	.L28
+ 168 000c B0F5403F 		cmp	r0, #196608
+ 169 0010 04D0     		beq	.L28
+ 170 0012 1148     		ldr	r0, .L51
+ 171 0014 40F27F11 		movw	r1, #383
+ 172 0018 FFF7FEFF 		bl	assert_err
+ 173              	.L28:
+ 174 001c 34F44023 		bics	r3, r4, #786432
+ 175 0020 24F48022 		bic	r2, r4, #262144
+ 176 0024 10D0     		beq	.L29
+ 177 0026 B3F5801F 		cmp	r3, #1048576
+ 178 002a 0DD0     		beq	.L29
+ 179 002c B3F5001F 		cmp	r3, #2097152
+ 180 0030 0AD0     		beq	.L29
+ 181 0032 B2F5401F 		cmp	r2, #3145728
+ 182 0036 07D0     		beq	.L29
+ 183 0038 B4F5601F 		cmp	r4, #3670016
+ 184 003c 04D0     		beq	.L29
+ 185 003e 0648     		ldr	r0, .L51
+ 186 0040 4FF4C071 		mov	r1, #384
+ 187 0044 FFF7FEFF 		bl	assert_err
+ 188              	.L29:
+ 189 0048 044B     		ldr	r3, .L51+4
+ 190 004a 5A68     		ldr	r2, [r3, #4]
+ 191 004c 22F47C12 		bic	r2, r2, #4128768
+ 192 0050 1443     		orrs	r4, r4, r2
+ 193 0052 2543     		orrs	r5, r5, r4
+ 194 0054 5D60     		str	r5, [r3, #4]
+ 195 0056 38BD     		pop	{r3, r4, r5, pc}
+ 196              	.L52:
+ 197              		.align	2
+ 198              	.L51:
+ 199 0058 00000000 		.word	.LC0
+ 200 005c 00100240 		.word	1073876992
+ 202              		.section	.text.RCC_PLLCmd,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	RCC_PLLCmd
+ 205              		.thumb
+ 206              		.thumb_func
+ 208              	RCC_PLLCmd:
+ 209              		@ args = 0, pretend = 0, frame = 0
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 211 0000 0128     		cmp	r0, #1
+ 212 0002 10B5     		push	{r4, lr}
+ 213 0004 0446     		mov	r4, r0
+ 214 0006 04D9     		bls	.L54
+ 215 0008 0348     		ldr	r0, .L55
+ 216 000a 4FF4CA71 		mov	r1, #404
+ 217 000e FFF7FEFF 		bl	assert_err
+ 218              	.L54:
+ 219 0012 024B     		ldr	r3, .L55+4
+ 220 0014 1C60     		str	r4, [r3]
+ 221 0016 10BD     		pop	{r4, pc}
+ 222              	.L56:
+ 223              		.align	2
+ 224              	.L55:
+ 225 0018 00000000 		.word	.LC0
+ 226 001c 60004242 		.word	1111621728
+ 228              		.section	.text.RCC_SYSCLKConfig,"ax",%progbits
+ 229              		.align	1
+ 230              		.global	RCC_SYSCLKConfig
+ 231              		.thumb
+ 232              		.thumb_func
+ 234              	RCC_SYSCLKConfig:
+ 235              		@ args = 0, pretend = 0, frame = 0
+ 236              		@ frame_needed = 0, uses_anonymous_args = 0
+ 237 0000 0228     		cmp	r0, #2
+ 238 0002 10B5     		push	{r4, lr}
+ 239 0004 0446     		mov	r4, r0
+ 240 0006 04D9     		bls	.L58
+ 241 0008 0548     		ldr	r0, .L59
+ 242 000a 4FF40E71 		mov	r1, #568
+ 243 000e FFF7FEFF 		bl	assert_err
+ 244              	.L58:
+ 245 0012 044B     		ldr	r3, .L59+4
+ 246 0014 5A68     		ldr	r2, [r3, #4]
+ 247 0016 22F00302 		bic	r2, r2, #3
+ 248 001a 1443     		orrs	r4, r4, r2
+ 249 001c 5C60     		str	r4, [r3, #4]
+ 250 001e 10BD     		pop	{r4, pc}
+ 251              	.L60:
+ 252              		.align	2
+ 253              	.L59:
+ 254 0020 00000000 		.word	.LC0
+ 255 0024 00100240 		.word	1073876992
+ 257              		.section	.text.RCC_GetSYSCLKSource,"ax",%progbits
+ 258              		.align	1
+ 259              		.global	RCC_GetSYSCLKSource
+ 260              		.thumb
+ 261              		.thumb_func
+ 263              	RCC_GetSYSCLKSource:
+ 264              		@ args = 0, pretend = 0, frame = 0
+ 265              		@ frame_needed = 0, uses_anonymous_args = 0
+ 266              		@ link register save eliminated.
+ 267 0000 024B     		ldr	r3, .L62
+ 268 0002 5868     		ldr	r0, [r3, #4]
+ 269 0004 00F00C00 		and	r0, r0, #12
+ 270 0008 7047     		bx	lr
+ 271              	.L63:
+ 272 000a 00BF     		.align	2
+ 273              	.L62:
+ 274 000c 00100240 		.word	1073876992
+ 276              		.section	.text.RCC_HCLKConfig,"ax",%progbits
+ 277              		.align	1
+ 278              		.global	RCC_HCLKConfig
+ 279              		.thumb
+ 280              		.thumb_func
+ 282              	RCC_HCLKConfig:
+ 283              		@ args = 0, pretend = 0, frame = 0
+ 284              		@ frame_needed = 0, uses_anonymous_args = 0
+ 285 0000 30F08003 		bics	r3, r0, #128
+ 286 0004 10B5     		push	{r4, lr}
+ 287 0006 0446     		mov	r4, r0
+ 288 0008 12D0     		beq	.L65
+ 289 000a 20F02003 		bic	r3, r0, #32
+ 290 000e 902B     		cmp	r3, #144
+ 291 0010 0ED0     		beq	.L65
+ 292 0012 20F04003 		bic	r3, r0, #64
+ 293 0016 A02B     		cmp	r3, #160
+ 294 0018 0AD0     		beq	.L65
+ 295 001a 20F01003 		bic	r3, r0, #16
+ 296 001e C02B     		cmp	r3, #192
+ 297 0020 06D0     		beq	.L65
+ 298 0022 F028     		cmp	r0, #240
+ 299 0024 04D0     		beq	.L65
+ 300 0026 0648     		ldr	r0, .L81
+ 301 0028 4FF41971 		mov	r1, #612
+ 302 002c FFF7FEFF 		bl	assert_err
+ 303              	.L65:
+ 304 0030 044B     		ldr	r3, .L81+4
+ 305 0032 5A68     		ldr	r2, [r3, #4]
+ 306 0034 22F0F002 		bic	r2, r2, #240
+ 307 0038 1443     		orrs	r4, r4, r2
+ 308 003a 5C60     		str	r4, [r3, #4]
+ 309 003c 10BD     		pop	{r4, pc}
+ 310              	.L82:
+ 311 003e 00BF     		.align	2
+ 312              	.L81:
+ 313 0040 00000000 		.word	.LC0
+ 314 0044 00100240 		.word	1073876992
+ 316              		.section	.text.RCC_PCLK1Config,"ax",%progbits
+ 317              		.align	1
+ 318              		.global	RCC_PCLK1Config
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	RCC_PCLK1Config:
+ 323              		@ args = 0, pretend = 0, frame = 0
+ 324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 325 0000 30F48063 		bics	r3, r0, #1024
+ 326 0004 10B5     		push	{r4, lr}
+ 327 0006 0446     		mov	r4, r0
+ 328 0008 0CD0     		beq	.L84
+ 329 000a 20F40073 		bic	r3, r0, #512
+ 330 000e B3F5A06F 		cmp	r3, #1280
+ 331 0012 07D0     		beq	.L84
+ 332 0014 B0F5C06F 		cmp	r0, #1536
+ 333 0018 04D0     		beq	.L84
+ 334 001a 0648     		ldr	r0, .L94
+ 335 001c 40F27E21 		movw	r1, #638
+ 336 0020 FFF7FEFF 		bl	assert_err
+ 337              	.L84:
+ 338 0024 044B     		ldr	r3, .L94+4
+ 339 0026 5A68     		ldr	r2, [r3, #4]
+ 340 0028 22F4E062 		bic	r2, r2, #1792
+ 341 002c 1443     		orrs	r4, r4, r2
+ 342 002e 5C60     		str	r4, [r3, #4]
+ 343 0030 10BD     		pop	{r4, pc}
+ 344              	.L95:
+ 345 0032 00BF     		.align	2
+ 346              	.L94:
+ 347 0034 00000000 		.word	.LC0
+ 348 0038 00100240 		.word	1073876992
+ 350              		.section	.text.RCC_PCLK2Config,"ax",%progbits
+ 351              		.align	1
+ 352              		.global	RCC_PCLK2Config
+ 353              		.thumb
+ 354              		.thumb_func
+ 356              	RCC_PCLK2Config:
+ 357              		@ args = 0, pretend = 0, frame = 0
+ 358              		@ frame_needed = 0, uses_anonymous_args = 0
+ 359 0000 30F48063 		bics	r3, r0, #1024
+ 360 0004 10B5     		push	{r4, lr}
+ 361 0006 0446     		mov	r4, r0
+ 362 0008 0CD0     		beq	.L97
+ 363 000a 20F40073 		bic	r3, r0, #512
+ 364 000e B3F5A06F 		cmp	r3, #1280
+ 365 0012 07D0     		beq	.L97
+ 366 0014 B0F5C06F 		cmp	r0, #1536
+ 367 0018 04D0     		beq	.L97
+ 368 001a 0648     		ldr	r0, .L107
+ 369 001c 4FF42671 		mov	r1, #664
+ 370 0020 FFF7FEFF 		bl	assert_err
+ 371              	.L97:
+ 372 0024 044B     		ldr	r3, .L107+4
+ 373 0026 5A68     		ldr	r2, [r3, #4]
+ 374 0028 22F46052 		bic	r2, r2, #14336
+ 375 002c 42EAC404 		orr	r4, r2, r4, lsl #3
+ 376 0030 5C60     		str	r4, [r3, #4]
+ 377 0032 10BD     		pop	{r4, pc}
+ 378              	.L108:
+ 379              		.align	2
+ 380              	.L107:
+ 381 0034 00000000 		.word	.LC0
+ 382 0038 00100240 		.word	1073876992
+ 384              		.section	.text.RCC_ITConfig,"ax",%progbits
+ 385              		.align	1
+ 386              		.global	RCC_ITConfig
+ 387              		.thumb
+ 388              		.thumb_func
+ 390              	RCC_ITConfig:
+ 391              		@ args = 0, pretend = 0, frame = 0
+ 392              		@ frame_needed = 0, uses_anonymous_args = 0
+ 393 0000 10F0E00F 		tst	r0, #224
+ 394 0004 70B5     		push	{r4, r5, r6, lr}
+ 395 0006 0546     		mov	r5, r0
+ 396 0008 0E46     		mov	r6, r1
+ 397 000a 00D1     		bne	.L110
+ 398 000c 20B9     		cbnz	r0, .L111
+ 399              	.L110:
+ 400 000e 0B48     		ldr	r0, .L117
+ 401 0010 40F2BF21 		movw	r1, #703
+ 402 0014 FFF7FEFF 		bl	assert_err
+ 403              	.L111:
+ 404 0018 012E     		cmp	r6, #1
+ 405 001a 094C     		ldr	r4, .L117+4
+ 406 001c 05D9     		bls	.L112
+ 407 001e 0748     		ldr	r0, .L117
+ 408 0020 4FF43071 		mov	r1, #704
+ 409 0024 FFF7FEFF 		bl	assert_err
+ 410 0028 00E0     		b	.L113
+ 411              	.L112:
+ 412 002a 16B1     		cbz	r6, .L114
+ 413              	.L113:
+ 414 002c 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 415 002e 1D43     		orrs	r5, r5, r3
+ 416 0030 02E0     		b	.L116
+ 417              	.L114:
+ 418 0032 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 419 0034 23EA0505 		bic	r5, r3, r5
+ 420              	.L116:
+ 421 0038 2570     		strb	r5, [r4]
+ 422 003a 70BD     		pop	{r4, r5, r6, pc}
+ 423              	.L118:
+ 424              		.align	2
+ 425              	.L117:
+ 426 003c 00000000 		.word	.LC0
+ 427 0040 09100240 		.word	1073877001
+ 429              		.section	.text.RCC_USBCLKConfig,"ax",%progbits
+ 430              		.align	1
+ 431              		.global	RCC_USBCLKConfig
+ 432              		.thumb
+ 433              		.thumb_func
+ 435              	RCC_USBCLKConfig:
+ 436              		@ args = 0, pretend = 0, frame = 0
+ 437              		@ frame_needed = 0, uses_anonymous_args = 0
+ 438 0000 0128     		cmp	r0, #1
+ 439 0002 10B5     		push	{r4, lr}
+ 440 0004 0446     		mov	r4, r0
+ 441 0006 04D9     		bls	.L120
+ 442 0008 0348     		ldr	r0, .L121
+ 443 000a 40F2DB21 		movw	r1, #731
+ 444 000e FFF7FEFF 		bl	assert_err
+ 445              	.L120:
+ 446 0012 024B     		ldr	r3, .L121+4
+ 447 0014 1C60     		str	r4, [r3]
+ 448 0016 10BD     		pop	{r4, pc}
+ 449              	.L122:
+ 450              		.align	2
+ 451              	.L121:
+ 452 0018 00000000 		.word	.LC0
+ 453 001c D8004242 		.word	1111621848
+ 455              		.section	.text.RCC_ADCCLKConfig,"ax",%progbits
+ 456              		.align	1
+ 457              		.global	RCC_ADCCLKConfig
+ 458              		.thumb
+ 459              		.thumb_func
+ 461              	RCC_ADCCLKConfig:
+ 462              		@ args = 0, pretend = 0, frame = 0
+ 463              		@ frame_needed = 0, uses_anonymous_args = 0
+ 464 0000 30F44043 		bics	r3, r0, #49152
+ 465 0004 10B5     		push	{r4, lr}
+ 466 0006 0446     		mov	r4, r0
+ 467 0008 04D0     		beq	.L124
+ 468 000a 0648     		ldr	r0, .L128
+ 469 000c 40F20231 		movw	r1, #770
+ 470 0010 FFF7FEFF 		bl	assert_err
+ 471              	.L124:
+ 472 0014 044B     		ldr	r3, .L128+4
+ 473 0016 5A68     		ldr	r2, [r3, #4]
+ 474 0018 22F44042 		bic	r2, r2, #49152
+ 475 001c 1443     		orrs	r4, r4, r2
+ 476 001e 5C60     		str	r4, [r3, #4]
+ 477 0020 10BD     		pop	{r4, pc}
+ 478              	.L129:
+ 479 0022 00BF     		.align	2
+ 480              	.L128:
+ 481 0024 00000000 		.word	.LC0
+ 482 0028 00100240 		.word	1073876992
+ 484              		.section	.text.RCC_LSEConfig,"ax",%progbits
+ 485              		.align	1
+ 486              		.global	RCC_LSEConfig
+ 487              		.thumb
+ 488              		.thumb_func
+ 490              	RCC_LSEConfig:
+ 491              		@ args = 0, pretend = 0, frame = 0
+ 492              		@ frame_needed = 0, uses_anonymous_args = 0
+ 493 0000 0128     		cmp	r0, #1
+ 494 0002 10B5     		push	{r4, lr}
+ 495 0004 0446     		mov	r4, r0
+ 496 0006 06D9     		bls	.L131
+ 497 0008 0428     		cmp	r0, #4
+ 498 000a 04D0     		beq	.L131
+ 499 000c 0948     		ldr	r0, .L138
+ 500 000e 4FF45071 		mov	r1, #832
+ 501 0012 FFF7FEFF 		bl	assert_err
+ 502              	.L131:
+ 503 0016 084B     		ldr	r3, .L138+4
+ 504 0018 0022     		movs	r2, #0
+ 505 001a 012C     		cmp	r4, #1
+ 506 001c 1A70     		strb	r2, [r3]
+ 507 001e 1A70     		strb	r2, [r3]
+ 508 0020 02D0     		beq	.L133
+ 509 0022 042C     		cmp	r4, #4
+ 510 0024 02D0     		beq	.L134
+ 511 0026 10BD     		pop	{r4, pc}
+ 512              	.L133:
+ 513 0028 1C70     		strb	r4, [r3]
+ 514 002a 10BD     		pop	{r4, pc}
+ 515              	.L134:
+ 516 002c 0522     		movs	r2, #5
+ 517 002e 1A70     		strb	r2, [r3]
+ 518 0030 10BD     		pop	{r4, pc}
+ 519              	.L139:
+ 520 0032 00BF     		.align	2
+ 521              	.L138:
+ 522 0034 00000000 		.word	.LC0
+ 523 0038 20100240 		.word	1073877024
+ 525              		.section	.text.RCC_LSICmd,"ax",%progbits
+ 526              		.align	1
+ 527              		.global	RCC_LSICmd
+ 528              		.thumb
+ 529              		.thumb_func
+ 531              	RCC_LSICmd:
+ 532              		@ args = 0, pretend = 0, frame = 0
+ 533              		@ frame_needed = 0, uses_anonymous_args = 0
+ 534 0000 0128     		cmp	r0, #1
+ 535 0002 10B5     		push	{r4, lr}
+ 536 0004 0446     		mov	r4, r0
+ 537 0006 04D9     		bls	.L141
+ 538 0008 0348     		ldr	r0, .L142
+ 539 000a 40F26131 		movw	r1, #865
+ 540 000e FFF7FEFF 		bl	assert_err
+ 541              	.L141:
+ 542 0012 024B     		ldr	r3, .L142+4
+ 543 0014 1C60     		str	r4, [r3]
+ 544 0016 10BD     		pop	{r4, pc}
+ 545              	.L143:
+ 546              		.align	2
+ 547              	.L142:
+ 548 0018 00000000 		.word	.LC0
+ 549 001c 80044242 		.word	1111622784
+ 551              		.section	.text.RCC_RTCCLKConfig,"ax",%progbits
+ 552              		.align	1
+ 553              		.global	RCC_RTCCLKConfig
+ 554              		.thumb
+ 555              		.thumb_func
+ 557              	RCC_RTCCLKConfig:
+ 558              		@ args = 0, pretend = 0, frame = 0
+ 559              		@ frame_needed = 0, uses_anonymous_args = 0
+ 560 0000 20F40073 		bic	r3, r0, #512
+ 561 0004 B3F5807F 		cmp	r3, #256
+ 562 0008 10B5     		push	{r4, lr}
+ 563 000a 0446     		mov	r4, r0
+ 564 000c 07D0     		beq	.L145
+ 565 000e B0F5007F 		cmp	r0, #512
+ 566 0012 04D0     		beq	.L145
+ 567 0014 0448     		ldr	r0, .L152
+ 568 0016 40F27231 		movw	r1, #882
+ 569 001a FFF7FEFF 		bl	assert_err
+ 570              	.L145:
+ 571 001e 034B     		ldr	r3, .L152+4
+ 572 0020 1A6A     		ldr	r2, [r3, #32]
+ 573 0022 1443     		orrs	r4, r4, r2
+ 574 0024 1C62     		str	r4, [r3, #32]
+ 575 0026 10BD     		pop	{r4, pc}
+ 576              	.L153:
+ 577              		.align	2
+ 578              	.L152:
+ 579 0028 00000000 		.word	.LC0
+ 580 002c 00100240 		.word	1073876992
+ 582              		.section	.text.RCC_RTCCLKCmd,"ax",%progbits
+ 583              		.align	1
+ 584              		.global	RCC_RTCCLKCmd
+ 585              		.thumb
+ 586              		.thumb_func
+ 588              	RCC_RTCCLKCmd:
+ 589              		@ args = 0, pretend = 0, frame = 0
+ 590              		@ frame_needed = 0, uses_anonymous_args = 0
+ 591 0000 0128     		cmp	r0, #1
+ 592 0002 10B5     		push	{r4, lr}
+ 593 0004 0446     		mov	r4, r0
+ 594 0006 04D9     		bls	.L155
+ 595 0008 0348     		ldr	r0, .L156
+ 596 000a 4FF46071 		mov	r1, #896
+ 597 000e FFF7FEFF 		bl	assert_err
+ 598              	.L155:
+ 599 0012 024B     		ldr	r3, .L156+4
+ 600 0014 1C60     		str	r4, [r3]
+ 601 0016 10BD     		pop	{r4, pc}
+ 602              	.L157:
+ 603              		.align	2
+ 604              	.L156:
+ 605 0018 00000000 		.word	.LC0
+ 606 001c 3C044242 		.word	1111622716
+ 608              		.section	.text.RCC_GetClocksFreq,"ax",%progbits
+ 609              		.align	1
+ 610              		.global	RCC_GetClocksFreq
+ 611              		.thumb
+ 612              		.thumb_func
+ 614              	RCC_GetClocksFreq:
+ 615              		@ args = 0, pretend = 0, frame = 0
+ 616              		@ frame_needed = 0, uses_anonymous_args = 0
+ 617 0000 1D4B     		ldr	r3, .L168
+ 618 0002 10B5     		push	{r4, lr}
+ 619 0004 5A68     		ldr	r2, [r3, #4]
+ 620 0006 02F00C02 		and	r2, r2, #12
+ 621 000a 042A     		cmp	r2, #4
+ 622 000c 01D0     		beq	.L160
+ 623 000e 082A     		cmp	r2, #8
+ 624 0010 02D0     		beq	.L161
+ 625              	.L160:
+ 626 0012 1A4B     		ldr	r3, .L168+4
+ 627 0014 0360     		str	r3, [r0]
+ 628 0016 0FE0     		b	.L163
+ 629              	.L161:
+ 630 0018 5A68     		ldr	r2, [r3, #4]
+ 631 001a 5968     		ldr	r1, [r3, #4]
+ 632 001c C2F38342 		ubfx	r2, r2, #18, #4
+ 633 0020 C903     		lsls	r1, r1, #15
+ 634 0022 02F10202 		add	r2, r2, #2
+ 635 0026 02D5     		bpl	.L167
+ 636 0028 5B68     		ldr	r3, [r3, #4]
+ 637 002a 9B03     		lsls	r3, r3, #14
+ 638 002c 01D5     		bpl	.L165
+ 639              	.L167:
+ 640 002e 144B     		ldr	r3, .L168+8
+ 641 0030 00E0     		b	.L166
+ 642              	.L165:
+ 643 0032 124B     		ldr	r3, .L168+4
+ 644              	.L166:
+ 645 0034 5A43     		muls	r2, r3, r2
+ 646 0036 0260     		str	r2, [r0]
+ 647              	.L163:
+ 648 0038 0F4B     		ldr	r3, .L168
+ 649 003a 1249     		ldr	r1, .L168+12
+ 650 003c 5A68     		ldr	r2, [r3, #4]
+ 651 003e C2F30312 		ubfx	r2, r2, #4, #4
+ 652 0042 8C5C     		ldrb	r4, [r1, r2]	@ zero_extendqisi2
+ 653 0044 0268     		ldr	r2, [r0]
+ 654 0046 E240     		lsrs	r2, r2, r4
+ 655 0048 4260     		str	r2, [r0, #4]
+ 656 004a 5C68     		ldr	r4, [r3, #4]
+ 657 004c C4F30224 		ubfx	r4, r4, #8, #3
+ 658 0050 0C5D     		ldrb	r4, [r1, r4]	@ zero_extendqisi2
+ 659 0052 22FA04F4 		lsr	r4, r2, r4
+ 660 0056 8460     		str	r4, [r0, #8]
+ 661 0058 5C68     		ldr	r4, [r3, #4]
+ 662 005a C4F3C224 		ubfx	r4, r4, #11, #3
+ 663 005e 095D     		ldrb	r1, [r1, r4]	@ zero_extendqisi2
+ 664 0060 CA40     		lsrs	r2, r2, r1
+ 665 0062 C260     		str	r2, [r0, #12]
+ 666 0064 5B68     		ldr	r3, [r3, #4]
+ 667 0066 0849     		ldr	r1, .L168+16
+ 668 0068 C3F38133 		ubfx	r3, r3, #14, #2
+ 669 006c CB5C     		ldrb	r3, [r1, r3]	@ zero_extendqisi2
+ 670 006e B2FBF3F2 		udiv	r2, r2, r3
+ 671 0072 0261     		str	r2, [r0, #16]
+ 672 0074 10BD     		pop	{r4, pc}
+ 673              	.L169:
+ 674 0076 00BF     		.align	2
+ 675              	.L168:
+ 676 0078 00100240 		.word	1073876992
+ 677 007c 00127A00 		.word	8000000
+ 678 0080 00093D00 		.word	4000000
+ 679 0084 00000000 		.word	.LANCHOR0
+ 680 0088 00000000 		.word	.LANCHOR1
+ 682              		.section	.text.RCC_AHBPeriphClockCmd,"ax",%progbits
+ 683              		.align	1
+ 684              		.global	RCC_AHBPeriphClockCmd
+ 685              		.thumb
+ 686              		.thumb_func
+ 688              	RCC_AHBPeriphClockCmd:
+ 689              		@ args = 0, pretend = 0, frame = 0
+ 690              		@ frame_needed = 0, uses_anonymous_args = 0
+ 691 0000 20F4AA63 		bic	r3, r0, #1360
+ 692 0004 23F00703 		bic	r3, r3, #7
+ 693 0008 70B5     		push	{r4, r5, r6, lr}
+ 694 000a 0546     		mov	r5, r0
+ 695 000c 0E46     		mov	r6, r1
+ 696 000e 03B9     		cbnz	r3, .L171
+ 697 0010 20B9     		cbnz	r0, .L172
+ 698              	.L171:
+ 699 0012 0B48     		ldr	r0, .L178
+ 700 0014 40F22B41 		movw	r1, #1067
+ 701 0018 FFF7FEFF 		bl	assert_err
+ 702              	.L172:
+ 703 001c 012E     		cmp	r6, #1
+ 704 001e 094C     		ldr	r4, .L178+4
+ 705 0020 05D9     		bls	.L173
+ 706 0022 0748     		ldr	r0, .L178
+ 707 0024 40F22C41 		movw	r1, #1068
+ 708 0028 FFF7FEFF 		bl	assert_err
+ 709 002c 00E0     		b	.L174
+ 710              	.L173:
+ 711 002e 16B1     		cbz	r6, .L175
+ 712              	.L174:
+ 713 0030 6369     		ldr	r3, [r4, #20]
+ 714 0032 1D43     		orrs	r5, r5, r3
+ 715 0034 02E0     		b	.L177
+ 716              	.L175:
+ 717 0036 6369     		ldr	r3, [r4, #20]
+ 718 0038 23EA0505 		bic	r5, r3, r5
+ 719              	.L177:
+ 720 003c 6561     		str	r5, [r4, #20]
+ 721 003e 70BD     		pop	{r4, r5, r6, pc}
+ 722              	.L179:
+ 723              		.align	2
+ 724              	.L178:
+ 725 0040 00000000 		.word	.LC0
+ 726 0044 00100240 		.word	1073876992
+ 728              		.section	.text.RCC_APB2PeriphClockCmd,"ax",%progbits
+ 729              		.align	1
+ 730              		.global	RCC_APB2PeriphClockCmd
+ 731              		.thumb
+ 732              		.thumb_func
+ 734              	RCC_APB2PeriphClockCmd:
+ 735              		@ args = 0, pretend = 0, frame = 0
+ 736              		@ frame_needed = 0, uses_anonymous_args = 0
+ 737 0000 0E4B     		ldr	r3, .L188
+ 738 0002 70B5     		push	{r4, r5, r6, lr}
+ 739 0004 0340     		ands	r3, r3, r0
+ 740 0006 0546     		mov	r5, r0
+ 741 0008 0E46     		mov	r6, r1
+ 742 000a 03B9     		cbnz	r3, .L181
+ 743 000c 20B9     		cbnz	r0, .L182
+ 744              	.L181:
+ 745 000e 0C48     		ldr	r0, .L188+4
+ 746 0010 40F24A41 		movw	r1, #1098
+ 747 0014 FFF7FEFF 		bl	assert_err
+ 748              	.L182:
+ 749 0018 012E     		cmp	r6, #1
+ 750 001a 0A4C     		ldr	r4, .L188+8
+ 751 001c 05D9     		bls	.L183
+ 752 001e 0848     		ldr	r0, .L188+4
+ 753 0020 40F24B41 		movw	r1, #1099
+ 754 0024 FFF7FEFF 		bl	assert_err
+ 755 0028 00E0     		b	.L184
+ 756              	.L183:
+ 757 002a 16B1     		cbz	r6, .L185
+ 758              	.L184:
+ 759 002c A369     		ldr	r3, [r4, #24]
+ 760 002e 1D43     		orrs	r5, r5, r3
+ 761 0030 02E0     		b	.L187
+ 762              	.L185:
+ 763 0032 A369     		ldr	r3, [r4, #24]
+ 764 0034 23EA0505 		bic	r5, r3, r5
+ 765              	.L187:
+ 766 0038 A561     		str	r5, [r4, #24]
+ 767 003a 70BD     		pop	{r4, r5, r6, pc}
+ 768              	.L189:
+ 769              		.align	2
+ 770              	.L188:
+ 771 003c 0200C0FF 		.word	-4194302
+ 772 0040 00000000 		.word	.LC0
+ 773 0044 00100240 		.word	1073876992
+ 775              		.section	.text.RCC_APB1PeriphClockCmd,"ax",%progbits
+ 776              		.align	1
+ 777              		.global	RCC_APB1PeriphClockCmd
+ 778              		.thumb
+ 779              		.thumb_func
+ 781              	RCC_APB1PeriphClockCmd:
+ 782              		@ args = 0, pretend = 0, frame = 0
+ 783              		@ frame_needed = 0, uses_anonymous_args = 0
+ 784 0000 0E4B     		ldr	r3, .L198
+ 785 0002 70B5     		push	{r4, r5, r6, lr}
+ 786 0004 0340     		ands	r3, r3, r0
+ 787 0006 0546     		mov	r5, r0
+ 788 0008 0E46     		mov	r6, r1
+ 789 000a 03B9     		cbnz	r3, .L191
+ 790 000c 20B9     		cbnz	r0, .L192
+ 791              	.L191:
+ 792 000e 0C48     		ldr	r0, .L198+4
+ 793 0010 40F26941 		movw	r1, #1129
+ 794 0014 FFF7FEFF 		bl	assert_err
+ 795              	.L192:
+ 796 0018 012E     		cmp	r6, #1
+ 797 001a 0A4C     		ldr	r4, .L198+8
+ 798 001c 05D9     		bls	.L193
+ 799 001e 0848     		ldr	r0, .L198+4
+ 800 0020 40F26A41 		movw	r1, #1130
+ 801 0024 FFF7FEFF 		bl	assert_err
+ 802 0028 00E0     		b	.L194
+ 803              	.L193:
+ 804 002a 16B1     		cbz	r6, .L195
+ 805              	.L194:
+ 806 002c E369     		ldr	r3, [r4, #28]
+ 807 002e 1D43     		orrs	r5, r5, r3
+ 808 0030 02E0     		b	.L197
+ 809              	.L195:
+ 810 0032 E369     		ldr	r3, [r4, #28]
+ 811 0034 23EA0505 		bic	r5, r3, r5
+ 812              	.L197:
+ 813 0038 E561     		str	r5, [r4, #28]
+ 814 003a 70BD     		pop	{r4, r5, r6, pc}
+ 815              	.L199:
+ 816              		.align	2
+ 817              	.L198:
+ 818 003c 00360181 		.word	-2130627072
+ 819 0040 00000000 		.word	.LC0
+ 820 0044 00100240 		.word	1073876992
+ 822              		.section	.text.RCC_APB2PeriphResetCmd,"ax",%progbits
+ 823              		.align	1
+ 824              		.global	RCC_APB2PeriphResetCmd
+ 825              		.thumb
+ 826              		.thumb_func
+ 828              	RCC_APB2PeriphResetCmd:
+ 829              		@ args = 0, pretend = 0, frame = 0
+ 830              		@ frame_needed = 0, uses_anonymous_args = 0
+ 831 0000 0E4B     		ldr	r3, .L208
+ 832 0002 70B5     		push	{r4, r5, r6, lr}
+ 833 0004 0340     		ands	r3, r3, r0
+ 834 0006 0546     		mov	r5, r0
+ 835 0008 0E46     		mov	r6, r1
+ 836 000a 03B9     		cbnz	r3, .L201
+ 837 000c 20B9     		cbnz	r0, .L202
+ 838              	.L201:
+ 839 000e 0C48     		ldr	r0, .L208+4
+ 840 0010 40F2A441 		movw	r1, #1188
+ 841 0014 FFF7FEFF 		bl	assert_err
+ 842              	.L202:
+ 843 0018 012E     		cmp	r6, #1
+ 844 001a 0A4C     		ldr	r4, .L208+8
+ 845 001c 05D9     		bls	.L203
+ 846 001e 0848     		ldr	r0, .L208+4
+ 847 0020 40F2A541 		movw	r1, #1189
+ 848 0024 FFF7FEFF 		bl	assert_err
+ 849 0028 00E0     		b	.L204
+ 850              	.L203:
+ 851 002a 16B1     		cbz	r6, .L205
+ 852              	.L204:
+ 853 002c E368     		ldr	r3, [r4, #12]
+ 854 002e 1D43     		orrs	r5, r5, r3
+ 855 0030 02E0     		b	.L207
+ 856              	.L205:
+ 857 0032 E368     		ldr	r3, [r4, #12]
+ 858 0034 23EA0505 		bic	r5, r3, r5
+ 859              	.L207:
+ 860 0038 E560     		str	r5, [r4, #12]
+ 861 003a 70BD     		pop	{r4, r5, r6, pc}
+ 862              	.L209:
+ 863              		.align	2
+ 864              	.L208:
+ 865 003c 0200C0FF 		.word	-4194302
+ 866 0040 00000000 		.word	.LC0
+ 867 0044 00100240 		.word	1073876992
+ 869              		.section	.text.RCC_APB1PeriphResetCmd,"ax",%progbits
+ 870              		.align	1
+ 871              		.global	RCC_APB1PeriphResetCmd
+ 872              		.thumb
+ 873              		.thumb_func
+ 875              	RCC_APB1PeriphResetCmd:
+ 876              		@ args = 0, pretend = 0, frame = 0
+ 877              		@ frame_needed = 0, uses_anonymous_args = 0
+ 878 0000 0E4B     		ldr	r3, .L218
+ 879 0002 70B5     		push	{r4, r5, r6, lr}
+ 880 0004 0340     		ands	r3, r3, r0
+ 881 0006 0546     		mov	r5, r0
+ 882 0008 0E46     		mov	r6, r1
+ 883 000a 03B9     		cbnz	r3, .L211
+ 884 000c 20B9     		cbnz	r0, .L212
+ 885              	.L211:
+ 886 000e 0C48     		ldr	r0, .L218+4
+ 887 0010 40F2C341 		movw	r1, #1219
+ 888 0014 FFF7FEFF 		bl	assert_err
+ 889              	.L212:
+ 890 0018 012E     		cmp	r6, #1
+ 891 001a 0A4C     		ldr	r4, .L218+8
+ 892 001c 05D9     		bls	.L213
+ 893 001e 0848     		ldr	r0, .L218+4
+ 894 0020 40F2C441 		movw	r1, #1220
+ 895 0024 FFF7FEFF 		bl	assert_err
+ 896 0028 00E0     		b	.L214
+ 897              	.L213:
+ 898 002a 16B1     		cbz	r6, .L215
+ 899              	.L214:
+ 900 002c 2369     		ldr	r3, [r4, #16]
+ 901 002e 1D43     		orrs	r5, r5, r3
+ 902 0030 02E0     		b	.L217
+ 903              	.L215:
+ 904 0032 2369     		ldr	r3, [r4, #16]
+ 905 0034 23EA0505 		bic	r5, r3, r5
+ 906              	.L217:
+ 907 0038 2561     		str	r5, [r4, #16]
+ 908 003a 70BD     		pop	{r4, r5, r6, pc}
+ 909              	.L219:
+ 910              		.align	2
+ 911              	.L218:
+ 912 003c 00360181 		.word	-2130627072
+ 913 0040 00000000 		.word	.LC0
+ 914 0044 00100240 		.word	1073876992
+ 916              		.section	.text.RCC_BackupResetCmd,"ax",%progbits
+ 917              		.align	1
+ 918              		.global	RCC_BackupResetCmd
+ 919              		.thumb
+ 920              		.thumb_func
+ 922              	RCC_BackupResetCmd:
+ 923              		@ args = 0, pretend = 0, frame = 0
+ 924              		@ frame_needed = 0, uses_anonymous_args = 0
+ 925 0000 0128     		cmp	r0, #1
+ 926 0002 10B5     		push	{r4, lr}
+ 927 0004 0446     		mov	r4, r0
+ 928 0006 04D9     		bls	.L221
+ 929 0008 0348     		ldr	r0, .L222
+ 930 000a 4FF49B61 		mov	r1, #1240
+ 931 000e FFF7FEFF 		bl	assert_err
+ 932              	.L221:
+ 933 0012 024B     		ldr	r3, .L222+4
+ 934 0014 1C60     		str	r4, [r3]
+ 935 0016 10BD     		pop	{r4, pc}
+ 936              	.L223:
+ 937              		.align	2
+ 938              	.L222:
+ 939 0018 00000000 		.word	.LC0
+ 940 001c 40044242 		.word	1111622720
+ 942              		.section	.text.RCC_ClockSecuritySystemCmd,"ax",%progbits
+ 943              		.align	1
+ 944              		.global	RCC_ClockSecuritySystemCmd
+ 945              		.thumb
+ 946              		.thumb_func
+ 948              	RCC_ClockSecuritySystemCmd:
+ 949              		@ args = 0, pretend = 0, frame = 0
+ 950              		@ frame_needed = 0, uses_anonymous_args = 0
+ 951 0000 0128     		cmp	r0, #1
+ 952 0002 10B5     		push	{r4, lr}
+ 953 0004 0446     		mov	r4, r0
+ 954 0006 04D9     		bls	.L225
+ 955 0008 0348     		ldr	r0, .L226
+ 956 000a 40F2E541 		movw	r1, #1253
+ 957 000e FFF7FEFF 		bl	assert_err
+ 958              	.L225:
+ 959 0012 024B     		ldr	r3, .L226+4
+ 960 0014 1C60     		str	r4, [r3]
+ 961 0016 10BD     		pop	{r4, pc}
+ 962              	.L227:
+ 963              		.align	2
+ 964              	.L226:
+ 965 0018 00000000 		.word	.LC0
+ 966 001c 4C004242 		.word	1111621708
+ 968              		.section	.text.RCC_MCOConfig,"ax",%progbits
+ 969              		.align	1
+ 970              		.global	RCC_MCOConfig
+ 971              		.thumb
+ 972              		.thumb_func
+ 974              	RCC_MCOConfig:
+ 975              		@ args = 0, pretend = 0, frame = 0
+ 976              		@ frame_needed = 0, uses_anonymous_args = 0
+ 977 0000 10B5     		push	{r4, lr}
+ 978 0002 0446     		mov	r4, r0
+ 979 0004 40B1     		cbz	r0, .L229
+ 980 0006 031F     		subs	r3, r0, #4
+ 981 0008 DBB2     		uxtb	r3, r3
+ 982 000a 032B     		cmp	r3, #3
+ 983 000c 04D9     		bls	.L229
+ 984 000e 0448     		ldr	r0, .L233
+ 985 0010 40F20551 		movw	r1, #1285
+ 986 0014 FFF7FEFF 		bl	assert_err
+ 987              	.L229:
+ 988 0018 024B     		ldr	r3, .L233+4
+ 989 001a 1C70     		strb	r4, [r3]
+ 990 001c 10BD     		pop	{r4, pc}
+ 991              	.L234:
+ 992 001e 00BF     		.align	2
+ 993              	.L233:
+ 994 0020 00000000 		.word	.LC0
+ 995 0024 07100240 		.word	1073876999
+ 997              		.section	.text.RCC_GetFlagStatus,"ax",%progbits
+ 998              		.align	1
+ 999              		.global	RCC_GetFlagStatus
+ 1000              		.thumb
+ 1001              		.thumb_func
+ 1003              	RCC_GetFlagStatus:
+ 1004              		@ args = 0, pretend = 0, frame = 0
+ 1005              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1006 0000 00F0EF03 		and	r3, r0, #239
+ 1007 0004 212B     		cmp	r3, #33
+ 1008 0006 10B5     		push	{r4, lr}
+ 1009 0008 0446     		mov	r4, r0
+ 1010 000a 0FD0     		beq	.L236
+ 1011 000c 3928     		cmp	r0, #57
+ 1012 000e 0DD0     		beq	.L236
+ 1013 0010 00F0DF03 		and	r3, r0, #223
+ 1014 0014 412B     		cmp	r3, #65
+ 1015 0016 09D0     		beq	.L236
+ 1016 0018 A0F17A03 		sub	r3, r0, #122
+ 1017 001c DBB2     		uxtb	r3, r3
+ 1018 001e 052B     		cmp	r3, #5
+ 1019 0020 04D9     		bls	.L236
+ 1020 0022 0B48     		ldr	r0, .L249
+ 1021 0024 40F23451 		movw	r1, #1332
+ 1022 0028 FFF7FEFF 		bl	assert_err
+ 1023              	.L236:
+ 1024 002c 6209     		lsrs	r2, r4, #5
+ 1025 002e 012A     		cmp	r2, #1
+ 1026 0030 084B     		ldr	r3, .L249+4
+ 1027 0032 01D1     		bne	.L237
+ 1028 0034 1B68     		ldr	r3, [r3]
+ 1029 0036 03E0     		b	.L238
+ 1030              	.L237:
+ 1031 0038 022A     		cmp	r2, #2
+ 1032 003a 0CBF     		ite	eq
+ 1033 003c 1B6A     		ldreq	r3, [r3, #32]
+ 1034 003e 5B6A     		ldrne	r3, [r3, #36]
+ 1035              	.L238:
+ 1036 0040 04F01F04 		and	r4, r4, #31
+ 1037 0044 23FA04F0 		lsr	r0, r3, r4
+ 1038 0048 00F00100 		and	r0, r0, #1
+ 1039 004c 10BD     		pop	{r4, pc}
+ 1040              	.L250:
+ 1041 004e 00BF     		.align	2
+ 1042              	.L249:
+ 1043 0050 00000000 		.word	.LC0
+ 1044 0054 00100240 		.word	1073876992
+ 1046              		.section	.text.RCC_WaitForHSEStartUp,"ax",%progbits
+ 1047              		.align	1
+ 1048              		.global	RCC_WaitForHSEStartUp
+ 1049              		.thumb
+ 1050              		.thumb_func
+ 1052              	RCC_WaitForHSEStartUp:
+ 1053              		@ args = 0, pretend = 0, frame = 8
+ 1054              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1055 0000 07B5     		push	{r0, r1, r2, lr}
+ 1056 0002 0023     		movs	r3, #0
+ 1057 0004 0193     		str	r3, [sp, #4]
+ 1058              	.L253:
+ 1059 0006 3120     		movs	r0, #49
+ 1060 0008 FFF7FEFF 		bl	RCC_GetFlagStatus
+ 1061 000c 019B     		ldr	r3, [sp, #4]
+ 1062 000e 0133     		adds	r3, r3, #1
+ 1063 0010 0193     		str	r3, [sp, #4]
+ 1064 0012 019B     		ldr	r3, [sp, #4]
+ 1065 0014 B3F5A06F 		cmp	r3, #1280
+ 1066 0018 01D0     		beq	.L252
+ 1067 001a 0028     		cmp	r0, #0
+ 1068 001c F3D0     		beq	.L253
+ 1069              	.L252:
+ 1070 001e 3120     		movs	r0, #49
+ 1071 0020 FFF7FEFF 		bl	RCC_GetFlagStatus
+ 1072 0024 0030     		adds	r0, r0, #0
+ 1073 0026 18BF     		it	ne
+ 1074 0028 0120     		movne	r0, #1
+ 1075 002a 03B0     		add	sp, sp, #12
+ 1076              		@ sp needed
+ 1077 002c 5DF804FB 		ldr	pc, [sp], #4
+ 1079              		.section	.text.RCC_ClearFlag,"ax",%progbits
+ 1080              		.align	1
+ 1081              		.global	RCC_ClearFlag
+ 1082              		.thumb
+ 1083              		.thumb_func
+ 1085              	RCC_ClearFlag:
+ 1086              		@ args = 0, pretend = 0, frame = 0
+ 1087              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1088              		@ link register save eliminated.
+ 1089 0000 024B     		ldr	r3, .L258
+ 1090 0002 5A6A     		ldr	r2, [r3, #36]
+ 1091 0004 42F08072 		orr	r2, r2, #16777216
+ 1092 0008 5A62     		str	r2, [r3, #36]
+ 1093 000a 7047     		bx	lr
+ 1094              	.L259:
+ 1095              		.align	2
+ 1096              	.L258:
+ 1097 000c 00100240 		.word	1073876992
+ 1099              		.section	.text.RCC_GetITStatus,"ax",%progbits
+ 1100              		.align	1
+ 1101              		.global	RCC_GetITStatus
+ 1102              		.thumb
+ 1103              		.thumb_func
+ 1105              	RCC_GetITStatus:
+ 1106              		@ args = 0, pretend = 0, frame = 0
+ 1107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1108 0000 431E     		subs	r3, r0, #1
+ 1109 0002 DBB2     		uxtb	r3, r3
+ 1110 0004 012B     		cmp	r3, #1
+ 1111 0006 10B5     		push	{r4, lr}
+ 1112 0008 0446     		mov	r4, r0
+ 1113 000a 0CD9     		bls	.L261
+ 1114 000c 0428     		cmp	r0, #4
+ 1115 000e 0AD0     		beq	.L261
+ 1116 0010 0828     		cmp	r0, #8
+ 1117 0012 08D0     		beq	.L261
+ 1118 0014 1028     		cmp	r0, #16
+ 1119 0016 06D0     		beq	.L261
+ 1120 0018 8028     		cmp	r0, #128
+ 1121 001a 04D0     		beq	.L261
+ 1122 001c 0548     		ldr	r0, .L274
+ 1123 001e 40F27E51 		movw	r1, #1406
+ 1124 0022 FFF7FEFF 		bl	assert_err
+ 1125              	.L261:
+ 1126 0026 044B     		ldr	r3, .L274+4
+ 1127 0028 9B68     		ldr	r3, [r3, #8]
+ 1128 002a 1C42     		tst	r4, r3
+ 1129 002c 0CBF     		ite	eq
+ 1130 002e 0020     		moveq	r0, #0
+ 1131 0030 0120     		movne	r0, #1
+ 1132 0032 10BD     		pop	{r4, pc}
+ 1133              	.L275:
+ 1134              		.align	2
+ 1135              	.L274:
+ 1136 0034 00000000 		.word	.LC0
+ 1137 0038 00100240 		.word	1073876992
+ 1139              		.section	.text.RCC_ClearITPendingBit,"ax",%progbits
+ 1140              		.align	1
+ 1141              		.global	RCC_ClearITPendingBit
+ 1142              		.thumb
+ 1143              		.thumb_func
+ 1145              	RCC_ClearITPendingBit:
+ 1146              		@ args = 0, pretend = 0, frame = 0
+ 1147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1148 0000 10F0600F 		tst	r0, #96
+ 1149 0004 10B5     		push	{r4, lr}
+ 1150 0006 0446     		mov	r4, r0
+ 1151 0008 00D1     		bne	.L277
+ 1152 000a 20B9     		cbnz	r0, .L278
+ 1153              	.L277:
+ 1154 000c 0348     		ldr	r0, .L279
+ 1155 000e 40F2AB51 		movw	r1, #1451
+ 1156 0012 FFF7FEFF 		bl	assert_err
+ 1157              	.L278:
+ 1158 0016 024B     		ldr	r3, .L279+4
+ 1159 0018 1C70     		strb	r4, [r3]
+ 1160 001a 10BD     		pop	{r4, pc}
+ 1161              	.L280:
+ 1162              		.align	2
+ 1163              	.L279:
+ 1164 001c 00000000 		.word	.LC0
+ 1165 0020 0A100240 		.word	1073877002
+ 1167              		.section	.data.ADCPrescTable,"aw",%progbits
+ 1168              		.set	.LANCHOR1,. + 0
+ 1171              	ADCPrescTable:
+ 1172 0000 02       		.byte	2
+ 1173 0001 04       		.byte	4
+ 1174 0002 06       		.byte	6
+ 1175 0003 08       		.byte	8
+ 1176              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 1177              	.LC0:
+ 1178 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 1178      73657273 
+ 1178      2F647261 
+ 1178      6170686F 
+ 1178      2F446573 
+ 1179 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rc"
+ 1179      6965732F 
+ 1179      53544D33 
+ 1179      32463130 
+ 1179      785F5374 
+ 1180 0066 632E6300 		.ascii	"c.c\000"
+ 1181              		.section	.data.APBAHBPrescTable,"aw",%progbits
+ 1182              		.set	.LANCHOR0,. + 0
+ 1185              	APBAHBPrescTable:
+ 1186 0000 00       		.byte	0
+ 1187 0001 00       		.byte	0
+ 1188 0002 00       		.byte	0
+ 1189 0003 00       		.byte	0
+ 1190 0004 01       		.byte	1
+ 1191 0005 02       		.byte	2
+ 1192 0006 03       		.byte	3
+ 1193 0007 04       		.byte	4
+ 1194 0008 01       		.byte	1
+ 1195 0009 02       		.byte	2
+ 1196 000a 03       		.byte	3
+ 1197 000b 04       		.byte	4
+ 1198 000c 06       		.byte	6
+ 1199 000d 07       		.byte	7
+ 1200 000e 08       		.byte	8
+ 1201 000f 09       		.byte	9
+ 1202              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_rcc.c
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:16     .text.RCC_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:21     .text.RCC_DeInit:00000000 RCC_DeInit
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:49     .text.RCC_DeInit:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:53     .text.RCC_HSEConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:58     .text.RCC_HSEConfig:00000000 RCC_HSEConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:96     .text.RCC_HSEConfig:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:100    .text.RCC_AdjustHSICalibrationValue:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:105    .text.RCC_AdjustHSICalibrationValue:00000000 RCC_AdjustHSICalibrationValue
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:125    .text.RCC_AdjustHSICalibrationValue:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:129    .text.RCC_HSICmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:134    .text.RCC_HSICmd:00000000 RCC_HSICmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:151    .text.RCC_HSICmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:155    .text.RCC_PLLConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:160    .text.RCC_PLLConfig:00000000 RCC_PLLConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:199    .text.RCC_PLLConfig:00000058 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:203    .text.RCC_PLLCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:208    .text.RCC_PLLCmd:00000000 RCC_PLLCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:225    .text.RCC_PLLCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:229    .text.RCC_SYSCLKConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:234    .text.RCC_SYSCLKConfig:00000000 RCC_SYSCLKConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:254    .text.RCC_SYSCLKConfig:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:258    .text.RCC_GetSYSCLKSource:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:263    .text.RCC_GetSYSCLKSource:00000000 RCC_GetSYSCLKSource
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:274    .text.RCC_GetSYSCLKSource:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:277    .text.RCC_HCLKConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:282    .text.RCC_HCLKConfig:00000000 RCC_HCLKConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:313    .text.RCC_HCLKConfig:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:317    .text.RCC_PCLK1Config:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:322    .text.RCC_PCLK1Config:00000000 RCC_PCLK1Config
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:347    .text.RCC_PCLK1Config:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:351    .text.RCC_PCLK2Config:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:356    .text.RCC_PCLK2Config:00000000 RCC_PCLK2Config
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:381    .text.RCC_PCLK2Config:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:385    .text.RCC_ITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:390    .text.RCC_ITConfig:00000000 RCC_ITConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:426    .text.RCC_ITConfig:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:430    .text.RCC_USBCLKConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:435    .text.RCC_USBCLKConfig:00000000 RCC_USBCLKConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:452    .text.RCC_USBCLKConfig:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:456    .text.RCC_ADCCLKConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:461    .text.RCC_ADCCLKConfig:00000000 RCC_ADCCLKConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:481    .text.RCC_ADCCLKConfig:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:485    .text.RCC_LSEConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:490    .text.RCC_LSEConfig:00000000 RCC_LSEConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:522    .text.RCC_LSEConfig:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:526    .text.RCC_LSICmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:531    .text.RCC_LSICmd:00000000 RCC_LSICmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:548    .text.RCC_LSICmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:552    .text.RCC_RTCCLKConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:557    .text.RCC_RTCCLKConfig:00000000 RCC_RTCCLKConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:579    .text.RCC_RTCCLKConfig:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:583    .text.RCC_RTCCLKCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:588    .text.RCC_RTCCLKCmd:00000000 RCC_RTCCLKCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:605    .text.RCC_RTCCLKCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:609    .text.RCC_GetClocksFreq:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:614    .text.RCC_GetClocksFreq:00000000 RCC_GetClocksFreq
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:676    .text.RCC_GetClocksFreq:00000078 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:683    .text.RCC_AHBPeriphClockCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:688    .text.RCC_AHBPeriphClockCmd:00000000 RCC_AHBPeriphClockCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:725    .text.RCC_AHBPeriphClockCmd:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:729    .text.RCC_APB2PeriphClockCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:734    .text.RCC_APB2PeriphClockCmd:00000000 RCC_APB2PeriphClockCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:771    .text.RCC_APB2PeriphClockCmd:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:776    .text.RCC_APB1PeriphClockCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:781    .text.RCC_APB1PeriphClockCmd:00000000 RCC_APB1PeriphClockCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:818    .text.RCC_APB1PeriphClockCmd:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:823    .text.RCC_APB2PeriphResetCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:828    .text.RCC_APB2PeriphResetCmd:00000000 RCC_APB2PeriphResetCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:865    .text.RCC_APB2PeriphResetCmd:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:870    .text.RCC_APB1PeriphResetCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:875    .text.RCC_APB1PeriphResetCmd:00000000 RCC_APB1PeriphResetCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:912    .text.RCC_APB1PeriphResetCmd:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:917    .text.RCC_BackupResetCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:922    .text.RCC_BackupResetCmd:00000000 RCC_BackupResetCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:939    .text.RCC_BackupResetCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:943    .text.RCC_ClockSecuritySystemCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:948    .text.RCC_ClockSecuritySystemCmd:00000000 RCC_ClockSecuritySystemCmd
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:965    .text.RCC_ClockSecuritySystemCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:969    .text.RCC_MCOConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:974    .text.RCC_MCOConfig:00000000 RCC_MCOConfig
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:994    .text.RCC_MCOConfig:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:998    .text.RCC_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1003   .text.RCC_GetFlagStatus:00000000 RCC_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1043   .text.RCC_GetFlagStatus:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1047   .text.RCC_WaitForHSEStartUp:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1052   .text.RCC_WaitForHSEStartUp:00000000 RCC_WaitForHSEStartUp
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1080   .text.RCC_ClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1085   .text.RCC_ClearFlag:00000000 RCC_ClearFlag
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1097   .text.RCC_ClearFlag:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1100   .text.RCC_GetITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1105   .text.RCC_GetITStatus:00000000 RCC_GetITStatus
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1136   .text.RCC_GetITStatus:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1140   .text.RCC_ClearITPendingBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1145   .text.RCC_ClearITPendingBit:00000000 RCC_ClearITPendingBit
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1164   .text.RCC_ClearITPendingBit:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1171   .data.ADCPrescTable:00000000 ADCPrescTable
+D:\Users\draapho\AppData\Local\Temp\cckstLH2.s:1185   .data.APBAHBPrescTable:00000000 APBAHBPrescTable
+
+UNDEFINED SYMBOLS
+assert_err

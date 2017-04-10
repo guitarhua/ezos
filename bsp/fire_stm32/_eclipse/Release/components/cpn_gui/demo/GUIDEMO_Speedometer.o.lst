@@ -1,0 +1,31 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO_Speedometer.c"
+  15              		.section	.text.GUIDEMO_Speedometer,"ax",%progbits
+  16              		.align	1
+  17              		.global	GUIDEMO_Speedometer
+  18              		.thumb
+  19              		.thumb_func
+  21              	GUIDEMO_Speedometer:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 7047     		bx	lr
+  27              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO_Speedometer.c
+D:\Users\draapho\AppData\Local\Temp\ccEBdDgx.s:16     .text.GUIDEMO_Speedometer:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccEBdDgx.s:21     .text.GUIDEMO_Speedometer:00000000 GUIDEMO_Speedometer
+
+NO UNDEFINED SYMBOLS

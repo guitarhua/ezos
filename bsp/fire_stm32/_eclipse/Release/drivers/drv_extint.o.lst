@@ -1,0 +1,207 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_extint.c"
+  15              		.section	.text.extint_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	extint_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	extint_init:
+  22              		@ args = 0, pretend = 0, frame = 16
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 7FB5     		push	{r0, r1, r2, r3, r4, r5, r6, lr}
+  25 0002 0D46     		mov	r5, r1
+  26 0004 0446     		mov	r4, r0
+  27 0006 18B1     		cbz	r0, .L2
+  28 0008 1F48     		ldr	r0, .L16
+  29 000a 9821     		movs	r1, #152
+  30 000c FFF7FEFF 		bl	assert_err
+  31              	.L2:
+  32 0010 05F0FB03 		and	r3, r5, #251
+  33 0014 082B     		cmp	r3, #8
+  34 0016 05D0     		beq	.L3
+  35 0018 102D     		cmp	r5, #16
+  36 001a 03D0     		beq	.L3
+  37 001c 1A48     		ldr	r0, .L16
+  38 001e 9921     		movs	r1, #153
+  39 0020 FFF7FEFF 		bl	assert_err
+  40              	.L3:
+  41 0024 6CBB     		cbnz	r4, .L1
+  42 0026 0920     		movs	r0, #9
+  43 0028 0121     		movs	r1, #1
+  44 002a FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  45 002e 4FF40056 		mov	r6, #8192
+  46 0032 0423     		movs	r3, #4
+  47 0034 1548     		ldr	r0, .L16+4
+  48 0036 6946     		mov	r1, sp
+  49 0038 8DF80330 		strb	r3, [sp, #3]
+  50 003c ADF80060 		strh	r6, [sp]	@ movhi
+  51 0040 FFF7FEFF 		bl	GPIO_Init
+  52 0044 0D21     		movs	r1, #13
+  53 0046 0120     		movs	r0, #1
+  54 0048 FFF7FEFF 		bl	GPIO_EXTILineConfig
+  55 004c 8DF80D50 		strb	r5, [sp, #13]
+  56 0050 02A8     		add	r0, sp, #8
+  57 0052 0125     		movs	r5, #1
+  58 0054 0296     		str	r6, [sp, #8]
+  59 0056 8DF80C40 		strb	r4, [sp, #12]
+  60 005a 8DF80E50 		strb	r5, [sp, #14]
+  61 005e FFF7FEFF 		bl	EXTI_Init
+  62 0062 4FF4A060 		mov	r0, #1280
+  63 0066 FFF7FEFF 		bl	NVIC_PriorityGroupConfig
+  64 006a 2823     		movs	r3, #40
+  65 006c 01A8     		add	r0, sp, #4
+  66 006e 8DF80430 		strb	r3, [sp, #4]
+  67 0072 8DF80540 		strb	r4, [sp, #5]
+  68 0076 8DF80640 		strb	r4, [sp, #6]
+  69 007a 8DF80750 		strb	r5, [sp, #7]
+  70 007e FFF7FEFF 		bl	NVIC_Init
+  71              	.L1:
+  72 0082 04B0     		add	sp, sp, #16
+  73              		@ sp needed
+  74 0084 70BD     		pop	{r4, r5, r6, pc}
+  75              	.L17:
+  76 0086 00BF     		.align	2
+  77              	.L16:
+  78 0088 00000000 		.word	.LC0
+  79 008c 000C0140 		.word	1073810432
+  81              		.section	.text.extint_deinit,"ax",%progbits
+  82              		.align	1
+  83              		.global	extint_deinit
+  84              		.thumb
+  85              		.thumb_func
+  87              	extint_deinit:
+  88              		@ args = 0, pretend = 0, frame = 16
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90 0000 1FB5     		push	{r0, r1, r2, r3, r4, lr}
+  91 0002 0446     		mov	r4, r0
+  92 0004 20B1     		cbz	r0, .L19
+  93 0006 1148     		ldr	r0, .L21
+  94 0008 C421     		movs	r1, #196
+  95 000a FFF7FEFF 		bl	assert_err
+  96 000e 1AE0     		b	.L18
+  97              	.L19:
+  98 0010 4FF40053 		mov	r3, #8192
+  99 0014 0293     		str	r3, [sp, #8]
+ 100 0016 0823     		movs	r3, #8
+ 101 0018 8DF80C00 		strb	r0, [sp, #12]
+ 102 001c 8DF80E00 		strb	r0, [sp, #14]
+ 103 0020 0DEB0300 		add	r0, sp, r3
+ 104 0024 8DF80D30 		strb	r3, [sp, #13]
+ 105 0028 FFF7FEFF 		bl	EXTI_Init
+ 106 002c 2823     		movs	r3, #40
+ 107 002e 8DF80430 		strb	r3, [sp, #4]
+ 108 0032 01A8     		add	r0, sp, #4
+ 109 0034 0F23     		movs	r3, #15
+ 110 0036 8DF80530 		strb	r3, [sp, #5]
+ 111 003a 8DF80630 		strb	r3, [sp, #6]
+ 112 003e 8DF80740 		strb	r4, [sp, #7]
+ 113 0042 FFF7FEFF 		bl	NVIC_Init
+ 114              	.L18:
+ 115 0046 04B0     		add	sp, sp, #16
+ 116              		@ sp needed
+ 117 0048 10BD     		pop	{r4, pc}
+ 118              	.L22:
+ 119 004a 00BF     		.align	2
+ 120              	.L21:
+ 121 004c 00000000 		.word	.LC0
+ 123              		.section	.text.extint_software,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	extint_software
+ 126              		.thumb
+ 127              		.thumb_func
+ 129              	extint_software:
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132              		@ link register save eliminated.
+ 133 0000 034B     		ldr	r3, .L24
+ 134 0002 1822     		movs	r2, #24
+ 135 0004 02FB0030 		mla	r0, r2, r0, r3
+ 136 0008 C068     		ldr	r0, [r0, #12]
+ 137 000a FFF7FEBF 		b	EXTI_GenerateSWInterrupt
+ 138              	.L25:
+ 139 000e 00BF     		.align	2
+ 140              	.L24:
+ 141 0010 00000000 		.word	.LANCHOR0
+ 143              		.section	.text.EXTI15_10_IRQHandler,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	EXTI15_10_IRQHandler
+ 146              		.thumb
+ 147              		.thumb_func
+ 149              	EXTI15_10_IRQHandler:
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152 0000 08B5     		push	{r3, lr}
+ 153 0002 4FF40050 		mov	r0, #8192
+ 154 0006 FFF7FEFF 		bl	EXTI_GetITStatus
+ 155 000a 38B1     		cbz	r0, .L26
+ 156 000c FFF7FEFF 		bl	enc28j60_isr
+ 157 0010 BDE80840 		pop	{r3, lr}
+ 158 0014 4FF40050 		mov	r0, #8192
+ 159 0018 FFF7FEBF 		b	EXTI_ClearITPendingBit
+ 160              	.L26:
+ 161 001c 08BD     		pop	{r3, pc}
+ 163              		.section	.rodata.extint_hw,"a",%progbits
+ 164              		.align	2
+ 165              		.set	.LANCHOR0,. + 0
+ 168              	extint_hw:
+ 169 0000 00000000 		.word	enc28j60_isr
+ 170 0004 000C0140 		.word	1073810432
+ 171 0008 08000000 		.word	8
+ 172 000c 00200000 		.word	8192
+ 173 0010 0020     		.short	8192
+ 174 0012 01       		.byte	1
+ 175 0013 0D       		.byte	13
+ 176 0014 28       		.byte	40
+ 177 0015 00       		.byte	0
+ 178 0016 0000     		.space	2
+ 179              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 180              	.LC0:
+ 181 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/dr"
+ 181      73657273 
+ 181      2F647261 
+ 181      6170686F 
+ 181      2F446573 
+ 182 0033 765F6578 		.ascii	"v_extint.c\000"
+ 182      74696E74 
+ 182      2E6300
+ 183              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_extint.c
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:16     .text.extint_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:21     .text.extint_init:00000000 extint_init
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:78     .text.extint_init:00000088 $d
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:82     .text.extint_deinit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:87     .text.extint_deinit:00000000 extint_deinit
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:121    .text.extint_deinit:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:124    .text.extint_software:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:129    .text.extint_software:00000000 extint_software
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:141    .text.extint_software:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:144    .text.EXTI15_10_IRQHandler:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:149    .text.EXTI15_10_IRQHandler:00000000 EXTI15_10_IRQHandler
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:164    .rodata.extint_hw:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\cc2FvAyd.s:168    .rodata.extint_hw:00000000 extint_hw
+
+UNDEFINED SYMBOLS
+assert_err
+RCC_APB2PeriphClockCmd
+GPIO_Init
+GPIO_EXTILineConfig
+EXTI_Init
+NVIC_PriorityGroupConfig
+NVIC_Init
+EXTI_GenerateSWInterrupt
+EXTI_GetITStatus
+enc28j60_isr
+EXTI_ClearITPendingBit

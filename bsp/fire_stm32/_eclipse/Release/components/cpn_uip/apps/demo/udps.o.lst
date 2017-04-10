@@ -1,0 +1,262 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"udps.c"
+  15              		.section	.text.socket_udp_server,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	socket_udp_server:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 38B5     		push	{r3, r4, r5, lr}
+  24 0002 0388     		ldrh	r3, [r0]
+  25 0004 0446     		mov	r4, r0
+  26 0006 032B     		cmp	r3, #3
+  27 0008 67D0     		beq	.L3
+  28 000a 03D8     		bhi	.L4
+  29 000c 012B     		cmp	r3, #1
+  30 000e 3DD0     		beq	.L5
+  31 0010 0ED9     		bls	.L42
+  32 0012 4AE0     		b	.L46
+  33              	.L4:
+  34 0014 F02B     		cmp	r3, #240
+  35 0016 29D0     		beq	.L8
+  36 0018 02D8     		bhi	.L9
+  37 001a 042B     		cmp	r3, #4
+  38 001c 70D0     		beq	.L10
+  39 001e 7FE0     		b	.L2
+  40              	.L9:
+  41 0020 F12B     		cmp	r3, #241
+  42 0022 7DD0     		beq	.L2
+  43 0024 FF2B     		cmp	r3, #255
+  44 0026 7BD1     		bne	.L2
+  45 0028 4048     		ldr	r0, .L47
+  46 002a FFF7FEFF 		bl	puts
+  47 002e 77E0     		b	.L2
+  48              	.L42:
+  49 0030 3F48     		ldr	r0, .L47+4
+  50 0032 2821     		movs	r1, #40
+  51 0034 0D22     		movs	r2, #13
+  52 0036 4FF0FF33 		mov	r3, #-1
+  53 003a FFF7FEFF 		bl	socket_rx_chr
+  54 003e 0228     		cmp	r0, #2
+  55 0040 72D0     		beq	.L1
+  56 0042 08B1     		cbz	r0, .L15
+  57 0044 0328     		cmp	r0, #3
+  58 0046 6FD1     		bne	.L1
+  59              	.L15:
+  60 0048 3948     		ldr	r0, .L47+4
+  61 004a 3A49     		ldr	r1, .L47+8
+  62 004c 0422     		movs	r2, #4
+  63 004e FFF7FEFF 		bl	strncmp
+  64 0052 28B9     		cbnz	r0, .L17
+  65 0054 3648     		ldr	r0, .L47+4
+  66 0056 3849     		ldr	r1, .L47+12
+  67 0058 FFF7FEFF 		bl	strcpy
+  68 005c 0123     		movs	r3, #1
+  69 005e 5DE0     		b	.L43
+  70              	.L17:
+  71 0060 3348     		ldr	r0, .L47+4
+  72 0062 3649     		ldr	r1, .L47+16
+  73 0064 FFF7FEFF 		bl	strcpy
+  74 0068 F023     		movs	r3, #240
+  75 006a 57E0     		b	.L43
+  76              	.L8:
+  77 006c 3048     		ldr	r0, .L47+4
+  78 006e FFF7FEFF 		bl	strlen
+  79 0072 4FF0FF32 		mov	r2, #-1
+  80 0076 81B2     		uxth	r1, r0
+  81 0078 2D48     		ldr	r0, .L47+4
+  82 007a FFF7FEFF 		bl	socket_tx
+  83 007e 0228     		cmp	r0, #2
+  84 0080 52D0     		beq	.L1
+  85 0082 08B9     		cbnz	r0, .L18
+  86 0084 F123     		movs	r3, #241
+  87 0086 49E0     		b	.L43
+  88              	.L18:
+  89 0088 FF23     		movs	r3, #255
+  90 008a 47E0     		b	.L43
+  91              	.L5:
+  92 008c 2848     		ldr	r0, .L47+4
+  93 008e FFF7FEFF 		bl	strlen
+  94 0092 4FF0FF32 		mov	r2, #-1
+  95 0096 81B2     		uxth	r1, r0
+  96 0098 2548     		ldr	r0, .L47+4
+  97 009a FFF7FEFF 		bl	socket_tx
+  98 009e 0228     		cmp	r0, #2
+  99 00a0 42D0     		beq	.L1
+ 100 00a2 0028     		cmp	r0, #0
+ 101 00a4 F0D1     		bne	.L18
+ 102 00a6 0223     		movs	r3, #2
+ 103 00a8 38E0     		b	.L43
+ 104              	.L46:
+ 105 00aa 2148     		ldr	r0, .L47+4
+ 106 00ac 2821     		movs	r1, #40
+ 107 00ae 0D22     		movs	r2, #13
+ 108 00b0 44F62063 		movw	r3, #20000
+ 109 00b4 FFF7FEFF 		bl	socket_rx_chr
+ 110 00b8 0228     		cmp	r0, #2
+ 111 00ba 1D4D     		ldr	r5, .L47+4
+ 112 00bc 34D0     		beq	.L1
+ 113 00be 08B1     		cbz	r0, .L19
+ 114 00c0 0328     		cmp	r0, #3
+ 115 00c2 07D1     		bne	.L20
+ 116              	.L19:
+ 117 00c4 FFF7FEFF 		bl	socket_len
+ 118 00c8 0023     		movs	r3, #0
+ 119 00ca 2844     		add	r0, r0, r5
+ 120 00cc 00F8013C 		strb	r3, [r0, #-1]
+ 121 00d0 0323     		movs	r3, #3
+ 122 00d2 23E0     		b	.L43
+ 123              	.L20:
+ 124 00d4 2846     		mov	r0, r5
+ 125 00d6 1A49     		ldr	r1, .L47+20
+ 126 00d8 0EE0     		b	.L44
+ 127              	.L3:
+ 128 00da 1548     		ldr	r0, .L47+4
+ 129 00dc FFF7FEFF 		bl	strlen
+ 130 00e0 4FF0FF32 		mov	r2, #-1
+ 131 00e4 81B2     		uxth	r1, r0
+ 132 00e6 1248     		ldr	r0, .L47+4
+ 133 00e8 FFF7FEFF 		bl	socket_tx
+ 134 00ec 0228     		cmp	r0, #2
+ 135 00ee 1BD0     		beq	.L1
+ 136 00f0 0028     		cmp	r0, #0
+ 137 00f2 C9D1     		bne	.L18
+ 138 00f4 0E48     		ldr	r0, .L47+4
+ 139 00f6 1349     		ldr	r1, .L47+24
+ 140              	.L44:
+ 141 00f8 FFF7FEFF 		bl	strcpy
+ 142 00fc 0423     		movs	r3, #4
+ 143 00fe 0DE0     		b	.L43
+ 144              	.L10:
+ 145 0100 0B48     		ldr	r0, .L47+4
+ 146 0102 FFF7FEFF 		bl	strlen
+ 147 0106 4FF0FF32 		mov	r2, #-1
+ 148 010a 81B2     		uxth	r1, r0
+ 149 010c 0848     		ldr	r0, .L47+4
+ 150 010e FFF7FEFF 		bl	socket_tx
+ 151 0112 0228     		cmp	r0, #2
+ 152 0114 08D0     		beq	.L1
+ 153 0116 0028     		cmp	r0, #0
+ 154 0118 B6D1     		bne	.L18
+ 155 011a 0523     		movs	r3, #5
+ 156              	.L43:
+ 157 011c 2380     		strh	r3, [r4]	@ movhi
+ 158 011e 38BD     		pop	{r3, r4, r5, pc}
+ 159              	.L2:
+ 160 0120 BDE83840 		pop	{r3, r4, r5, lr}
+ 161 0124 FFF7FEBF 		b	socket_close
+ 162              	.L1:
+ 163 0128 38BD     		pop	{r3, r4, r5, pc}
+ 164              	.L48:
+ 165 012a 00BF     		.align	2
+ 166              	.L47:
+ 167 012c 63000000 		.word	.LC5
+ 168 0130 00000000 		.word	.LANCHOR0
+ 169 0134 00000000 		.word	.LC0
+ 170 0138 05000000 		.word	.LC1
+ 171 013c 19000000 		.word	.LC2
+ 172 0140 37000000 		.word	.LC3
+ 173 0144 54000000 		.word	.LC4
+ 175              		.section	.text.example_udp_server,"ax",%progbits
+ 176              		.align	1
+ 177              		.global	example_udp_server
+ 178              		.thumb
+ 179              		.thumb_func
+ 181              	example_udp_server:
+ 182              		@ args = 0, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 184 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 185 0002 074C     		ldr	r4, .L50
+ 186 0004 0546     		mov	r5, r0
+ 187 0006 2046     		mov	r0, r4
+ 188 0008 FFF7FEFF 		bl	udp_delete
+ 189 000c 0021     		movs	r1, #0
+ 190 000e 0095     		str	r5, [sp]
+ 191 0010 2046     		mov	r0, r4
+ 192 0012 0A46     		mov	r2, r1
+ 193 0014 0B46     		mov	r3, r1
+ 194 0016 FFF7FEFF 		bl	udp_add
+ 195 001a 03B0     		add	sp, sp, #12
+ 196              		@ sp needed
+ 197 001c 30BD     		pop	{r4, r5, pc}
+ 198              	.L51:
+ 199 001e 00BF     		.align	2
+ 200              	.L50:
+ 201 0020 00000000 		.word	socket_udp_server
+ 203              		.section	.bss.str.6491,"aw",%nobits
+ 204              		.set	.LANCHOR0,. + 0
+ 207              	str.6491:
+ 208 0000 00000000 		.space	40
+ 208      00000000 
+ 208      00000000 
+ 208      00000000 
+ 208      00000000 
+ 209              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 210              	.LC0:
+ 211 0000 6C696E6B 		.ascii	"link\000"
+ 211      00
+ 212              	.LC1:
+ 213 0005 48656C6C 		.ascii	"Hello, who are you?\000"
+ 213      6F2C2077 
+ 213      686F2061 
+ 213      72652079 
+ 213      6F753F00 
+ 214              	.LC2:
+ 215 0019 506C6561 		.ascii	"Please input \"link\" to start!\000"
+ 215      73652069 
+ 215      6E707574 
+ 215      20226C69 
+ 215      6E6B2220 
+ 216              	.LC3:
+ 217 0037 476F6F64 		.ascii	"Goodbye, indifference world!\000"
+ 217      6279652C 
+ 217      20696E64 
+ 217      69666665 
+ 217      72656E63 
+ 218              	.LC4:
+ 219 0054 53656520 		.ascii	"See you later!\000"
+ 219      796F7520 
+ 219      6C617465 
+ 219      722100
+ 220              	.LC5:
+ 221 0063 75647020 		.ascii	"udp server tx_socket error!!!\015\000"
+ 221      73657276 
+ 221      65722074 
+ 221      785F736F 
+ 221      636B6574 
+ 222              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 udps.c
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:16     .text.socket_udp_server:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:20     .text.socket_udp_server:00000000 socket_udp_server
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:167    .text.socket_udp_server:0000012c $d
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:176    .text.example_udp_server:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:181    .text.example_udp_server:00000000 example_udp_server
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:201    .text.example_udp_server:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:207    .bss.str.6491:00000000 str.6491
+D:\Users\draapho\AppData\Local\Temp\ccAez7le.s:208    .bss.str.6491:00000000 $d
+
+UNDEFINED SYMBOLS
+puts
+socket_rx_chr
+strncmp
+strcpy
+strlen
+socket_tx
+socket_len
+socket_close
+udp_delete
+udp_add

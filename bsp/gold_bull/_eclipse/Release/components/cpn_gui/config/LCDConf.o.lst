@@ -1,0 +1,273 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"LCDConf.c"
+  15              		.section	.text.LcdWriteReg,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	LcdWriteReg:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 10B5     		push	{r4, lr}
+  24 0002 074B     		ldr	r3, .L2
+  25 0004 074A     		ldr	r2, .L2+4
+  26 0006 4021     		movs	r1, #64
+  27 0008 4FF40054 		mov	r4, #8192
+  28 000c 5161     		str	r1, [r2, #20]
+  29 000e 5C61     		str	r4, [r3, #20]
+  30 0010 054C     		ldr	r4, .L2+8
+  31 0012 E060     		str	r0, [r4, #12]
+  32 0014 4FF48040 		mov	r0, #16384
+  33 0018 5861     		str	r0, [r3, #20]
+  34 001a 1861     		str	r0, [r3, #16]
+  35 001c 1161     		str	r1, [r2, #16]
+  36 001e 10BD     		pop	{r4, pc}
+  37              	.L3:
+  38              		.align	2
+  39              	.L2:
+  40 0020 00140140 		.word	1073812480
+  41 0024 00100140 		.word	1073811456
+  42 0028 00180140 		.word	1073813504
+  44              		.section	.text.LcdWriteData,"ax",%progbits
+  45              		.align	1
+  46              		.thumb
+  47              		.thumb_func
+  49              	LcdWriteData:
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52 0000 10B5     		push	{r4, lr}
+  53 0002 074B     		ldr	r3, .L5
+  54 0004 074A     		ldr	r2, .L5+4
+  55 0006 4021     		movs	r1, #64
+  56 0008 4FF40054 		mov	r4, #8192
+  57 000c 5161     		str	r1, [r2, #20]
+  58 000e 1C61     		str	r4, [r3, #16]
+  59 0010 054C     		ldr	r4, .L5+8
+  60 0012 E060     		str	r0, [r4, #12]
+  61 0014 4FF48040 		mov	r0, #16384
+  62 0018 5861     		str	r0, [r3, #20]
+  63 001a 1861     		str	r0, [r3, #16]
+  64 001c 1161     		str	r1, [r2, #16]
+  65 001e 10BD     		pop	{r4, pc}
+  66              	.L6:
+  67              		.align	2
+  68              	.L5:
+  69 0020 00140140 		.word	1073812480
+  70 0024 00100140 		.word	1073811456
+  71 0028 00180140 		.word	1073813504
+  73              		.section	.text.LcdWriteDataMultiple,"ax",%progbits
+  74              		.align	1
+  75              		.thumb
+  76              		.thumb_func
+  78              	LcdWriteDataMultiple:
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81 0000 0E4B     		ldr	r3, .L12
+  82 0002 4FF40052 		mov	r2, #8192
+  83 0006 30B5     		push	{r4, r5, lr}
+  84 0008 1A61     		str	r2, [r3, #16]
+  85 000a 0D4C     		ldr	r4, .L12+4
+  86 000c 4FF40042 		mov	r2, #32768
+  87 0010 1A61     		str	r2, [r3, #16]
+  88 0012 4025     		movs	r5, #64
+  89 0014 4FF48042 		mov	r2, #16384
+  90 0018 1A61     		str	r2, [r3, #16]
+  91 001a 6561     		str	r5, [r4, #20]
+  92 001c 04F50064 		add	r4, r4, #2048
+  93              	.L8:
+  94 0020 11F1FF31 		adds	r1, r1, #-1
+  95 0024 05D3     		bcc	.L11
+  96 0026 30F8025B 		ldrh	r5, [r0], #2
+  97 002a E560     		str	r5, [r4, #12]
+  98 002c 5A61     		str	r2, [r3, #20]
+  99 002e 1A61     		str	r2, [r3, #16]
+ 100 0030 F6E7     		b	.L8
+ 101              	.L11:
+ 102 0032 034B     		ldr	r3, .L12+4
+ 103 0034 4022     		movs	r2, #64
+ 104 0036 1A61     		str	r2, [r3, #16]
+ 105 0038 30BD     		pop	{r4, r5, pc}
+ 106              	.L13:
+ 107 003a 00BF     		.align	2
+ 108              	.L12:
+ 109 003c 00140140 		.word	1073812480
+ 110 0040 00100140 		.word	1073811456
+ 112              		.section	.text.LcdReadDataMultiple,"ax",%progbits
+ 113              		.align	1
+ 114              		.thumb
+ 115              		.thumb_func
+ 117              	LcdReadDataMultiple:
+ 118              		@ args = 0, pretend = 0, frame = 8
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120 0000 73B5     		push	{r0, r1, r4, r5, r6, lr}
+ 121 0002 0423     		movs	r3, #4
+ 122 0004 8DF80730 		strb	r3, [sp, #7]
+ 123 0008 0323     		movs	r3, #3
+ 124 000a 8DF80630 		strb	r3, [sp, #6]
+ 125 000e 02AC     		add	r4, sp, #8
+ 126 0010 4FF6FF73 		movw	r3, #65535
+ 127 0014 24F8043D 		strh	r3, [r4, #-4]!	@ movhi
+ 128 0018 0646     		mov	r6, r0
+ 129 001a 0D46     		mov	r5, r1
+ 130 001c 1648     		ldr	r0, .L18
+ 131 001e 2146     		mov	r1, r4
+ 132 0020 FFF7FEFF 		bl	GPIO_Init
+ 133 0024 154B     		ldr	r3, .L18+4
+ 134 0026 4FF40052 		mov	r2, #8192
+ 135 002a 1A61     		str	r2, [r3, #16]
+ 136 002c 4FF48041 		mov	r1, #16384
+ 137 0030 4FF40042 		mov	r2, #32768
+ 138 0034 1A61     		str	r2, [r3, #16]
+ 139 0036 1961     		str	r1, [r3, #16]
+ 140 0038 1149     		ldr	r1, .L18+8
+ 141 003a 4020     		movs	r0, #64
+ 142 003c 4861     		str	r0, [r1, #20]
+ 143 003e 01F50061 		add	r1, r1, #2048
+ 144              	.L15:
+ 145 0042 15F1FF35 		adds	r5, r5, #-1
+ 146 0046 05D3     		bcc	.L17
+ 147 0048 5A61     		str	r2, [r3, #20]
+ 148 004a 1A61     		str	r2, [r3, #16]
+ 149 004c 8868     		ldr	r0, [r1, #8]
+ 150 004e 26F8020B 		strh	r0, [r6], #2	@ movhi
+ 151 0052 F6E7     		b	.L15
+ 152              	.L17:
+ 153 0054 0A4B     		ldr	r3, .L18+8
+ 154 0056 4022     		movs	r2, #64
+ 155 0058 1A61     		str	r2, [r3, #16]
+ 156 005a 1023     		movs	r3, #16
+ 157 005c 8DF80730 		strb	r3, [sp, #7]
+ 158 0060 0548     		ldr	r0, .L18
+ 159 0062 0323     		movs	r3, #3
+ 160 0064 2146     		mov	r1, r4
+ 161 0066 8DF80630 		strb	r3, [sp, #6]
+ 162 006a ADF80450 		strh	r5, [sp, #4]	@ movhi
+ 163 006e FFF7FEFF 		bl	GPIO_Init
+ 164 0072 02B0     		add	sp, sp, #8
+ 165              		@ sp needed
+ 166 0074 70BD     		pop	{r4, r5, r6, pc}
+ 167              	.L19:
+ 168 0076 00BF     		.align	2
+ 169              	.L18:
+ 170 0078 00180140 		.word	1073813504
+ 171 007c 00140140 		.word	1073812480
+ 172 0080 00100140 		.word	1073811456
+ 174              		.section	.text.LCD_X_Config,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	LCD_X_Config
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	LCD_X_Config:
+ 181              		@ args = 0, pretend = 0, frame = 128
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183 0000 10B5     		push	{r4, lr}
+ 184 0002 A0B0     		sub	sp, sp, #128
+ 185 0004 01A8     		add	r0, sp, #4
+ 186 0006 0021     		movs	r1, #0
+ 187 0008 1422     		movs	r2, #20
+ 188 000a FFF7FEFF 		bl	memset
+ 189 000e 06A8     		add	r0, sp, #24
+ 190 0010 0021     		movs	r1, #0
+ 191 0012 6822     		movs	r2, #104
+ 192 0014 FFF7FEFF 		bl	memset
+ 193 0018 0022     		movs	r2, #0
+ 194 001a 1346     		mov	r3, r2
+ 195 001c 1349     		ldr	r1, .L21
+ 196 001e 1448     		ldr	r0, .L21+4
+ 197 0020 FFF7FEFF 		bl	GUI_DEVICE_CreateAndLink
+ 198 0024 F021     		movs	r1, #240
+ 199 0026 0446     		mov	r4, r0
+ 200 0028 4FF4A072 		mov	r2, #320
+ 201 002c 0020     		movs	r0, #0
+ 202 002e FFF7FEFF 		bl	LCD_SetSizeEx
+ 203 0032 4FF4A072 		mov	r2, #320
+ 204 0036 F021     		movs	r1, #240
+ 205 0038 0020     		movs	r0, #0
+ 206 003a FFF7FEFF 		bl	LCD_SetVSizeEx
+ 207 003e 0023     		movs	r3, #0
+ 208 0040 2046     		mov	r0, r4
+ 209 0042 01A9     		add	r1, sp, #4
+ 210 0044 0393     		str	r3, [sp, #12]
+ 211 0046 FFF7FEFF 		bl	GUIDRV_FlexColor_Config
+ 212 004a 0A4B     		ldr	r3, .L21+8
+ 213 004c 2046     		mov	r0, r4
+ 214 004e 0E93     		str	r3, [sp, #56]
+ 215 0050 094B     		ldr	r3, .L21+12
+ 216 0052 06A9     		add	r1, sp, #24
+ 217 0054 0F93     		str	r3, [sp, #60]
+ 218 0056 094B     		ldr	r3, .L21+16
+ 219 0058 094A     		ldr	r2, .L21+20
+ 220 005a 1193     		str	r3, [sp, #68]
+ 221 005c 094B     		ldr	r3, .L21+24
+ 222 005e 1593     		str	r3, [sp, #84]
+ 223 0060 094B     		ldr	r3, .L21+28
+ 224 0062 FFF7FEFF 		bl	GUIDRV_FlexColor_SetFunc
+ 225 0066 20B0     		add	sp, sp, #128
+ 226              		@ sp needed
+ 227 0068 10BD     		pop	{r4, pc}
+ 228              	.L22:
+ 229 006a 00BF     		.align	2
+ 230              	.L21:
+ 231 006c 00000000 		.word	LCD_API_ColorConv_565
+ 232 0070 00000000 		.word	GUIDRV_FlexColor_API
+ 233 0074 00000000 		.word	LcdWriteReg
+ 234 0078 00000000 		.word	LcdWriteData
+ 235 007c 00000000 		.word	LcdWriteDataMultiple
+ 236 0080 00000000 		.word	GUIDRV_FlexColor_SetFunc66708
+ 237 0084 00000000 		.word	LcdReadDataMultiple
+ 238 0088 00000000 		.word	GUIDRV_FlexColor_SetMode16bppC0B16
+ 240              		.section	.text.LCD_X_DisplayDriver,"ax",%progbits
+ 241              		.align	1
+ 242              		.global	LCD_X_DisplayDriver
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	LCD_X_DisplayDriver:
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              		@ link register save eliminated.
+ 250 0000 4FF0FF30 		mov	r0, #-1
+ 251 0004 7047     		bx	lr
+ 253              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 LCDConf.c
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:16     .text.LcdWriteReg:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:20     .text.LcdWriteReg:00000000 LcdWriteReg
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:40     .text.LcdWriteReg:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:45     .text.LcdWriteData:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:49     .text.LcdWriteData:00000000 LcdWriteData
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:69     .text.LcdWriteData:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:74     .text.LcdWriteDataMultiple:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:78     .text.LcdWriteDataMultiple:00000000 LcdWriteDataMultiple
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:109    .text.LcdWriteDataMultiple:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:113    .text.LcdReadDataMultiple:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:117    .text.LcdReadDataMultiple:00000000 LcdReadDataMultiple
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:170    .text.LcdReadDataMultiple:00000078 $d
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:175    .text.LCD_X_Config:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:180    .text.LCD_X_Config:00000000 LCD_X_Config
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:231    .text.LCD_X_Config:0000006c $d
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:241    .text.LCD_X_DisplayDriver:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGT5Xq3.s:246    .text.LCD_X_DisplayDriver:00000000 LCD_X_DisplayDriver
+
+UNDEFINED SYMBOLS
+GPIO_Init
+memset
+GUI_DEVICE_CreateAndLink
+LCD_SetSizeEx
+LCD_SetVSizeEx
+GUIDRV_FlexColor_Config
+GUIDRV_FlexColor_SetFunc
+LCD_API_ColorConv_565
+GUIDRV_FlexColor_API
+GUIDRV_FlexColor_SetFunc66708
+GUIDRV_FlexColor_SetMode16bppC0B16

@@ -1,0 +1,4584 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32_eth_uip.c"
+  15              		.section	.text.GPIO_Configuration,"ax",%progbits
+  16              		.align	1
+  17              		.global	GPIO_Configuration
+  18              		.thumb
+  19              		.thumb_func
+  21              	GPIO_Configuration:
+  22              		@ args = 0, pretend = 0, frame = 8
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 2DE9F74F 		push	{r0, r1, r2, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  25 0004 1C20     		movs	r0, #28
+  26 0006 0121     		movs	r1, #1
+  27 0008 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  28 000c 2120     		movs	r0, #33
+  29 000e 0121     		movs	r1, #1
+  30 0010 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  31 0014 0121     		movs	r1, #1
+  32 0016 4FF02010 		mov	r0, #2097184
+  33 001a FFF7FEFF 		bl	GPIO_PinRemapConfig
+  34 001e 524F     		ldr	r7, .L2
+  35 0020 0020     		movs	r0, #0
+  36 0022 0425     		movs	r5, #4
+  37 0024 FFF7FEFF 		bl	GPIO_ETH_MediaInterfaceConfig
+  38 0028 0620     		movs	r0, #6
+  39 002a 0324     		movs	r4, #3
+  40 002c FFF7FEFF 		bl	RCC_MCOConfig
+  41 0030 DFF83891 		ldr	r9, .L2+4
+  42 0034 4FF00208 		mov	r8, #2
+  43 0038 3846     		mov	r0, r7
+  44 003a 0DEB0501 		add	r1, sp, r5
+  45 003e 1826     		movs	r6, #24
+  46 0040 ADF80480 		strh	r8, [sp, #4]	@ movhi
+  47 0044 8DF80640 		strb	r4, [sp, #6]
+  48 0048 8DF80750 		strb	r5, [sp, #7]
+  49 004c FFF7FEFF 		bl	GPIO_Init
+  50 0050 3846     		mov	r0, r7
+  51 0052 0DEB0501 		add	r1, sp, r5
+  52 0056 ADF80450 		strh	r5, [sp, #4]	@ movhi
+  53 005a 8DF80640 		strb	r4, [sp, #6]
+  54 005e 8DF80760 		strb	r6, [sp, #7]
+  55 0062 FFF7FEFF 		bl	GPIO_Init
+  56 0066 4FF46053 		mov	r3, #14336
+  57 006a 4846     		mov	r0, r9
+  58 006c 0DEB0501 		add	r1, sp, r5
+  59 0070 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  60 0074 8DF80640 		strb	r4, [sp, #6]
+  61 0078 8DF80760 		strb	r6, [sp, #7]
+  62 007c FFF7FEFF 		bl	GPIO_Init
+  63 0080 ADF80480 		strh	r8, [sp, #4]	@ movhi
+  64 0084 DFF8E880 		ldr	r8, .L2+8
+  65 0088 DFF8E8B0 		ldr	fp, .L2+12
+  66 008c 4046     		mov	r0, r8
+  67 008e 0DEB0501 		add	r1, sp, r5
+  68 0092 8DF80640 		strb	r4, [sp, #6]
+  69 0096 8DF80760 		strb	r6, [sp, #7]
+  70 009a FFF7FEFF 		bl	GPIO_Init
+  71 009e 4FF4E063 		mov	r3, #1792
+  72 00a2 5846     		mov	r0, fp
+  73 00a4 0DEB0501 		add	r1, sp, r5
+  74 00a8 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  75 00ac 8DF80640 		strb	r4, [sp, #6]
+  76 00b0 8DF80750 		strb	r5, [sp, #7]
+  77 00b4 FFF7FEFF 		bl	GPIO_Init
+  78 00b8 0923     		movs	r3, #9
+  79 00ba 3846     		mov	r0, r7
+  80 00bc 0DEB0501 		add	r1, sp, r5
+  81 00c0 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  82 00c4 4FF4807A 		mov	r10, #256
+  83 00c8 8DF80640 		strb	r4, [sp, #6]
+  84 00cc 8DF80750 		strb	r5, [sp, #7]
+  85 00d0 FFF7FEFF 		bl	GPIO_Init
+  86 00d4 4846     		mov	r0, r9
+  87 00d6 0DEB0501 		add	r1, sp, r5
+  88 00da ADF804A0 		strh	r10, [sp, #4]	@ movhi
+  89 00de 8DF80640 		strb	r4, [sp, #6]
+  90 00e2 8DF80760 		strb	r6, [sp, #7]
+  91 00e6 FFF7FEFF 		bl	GPIO_Init
+  92 00ea 4FF48063 		mov	r3, #1024
+  93 00ee 4846     		mov	r0, r9
+  94 00f0 0DEB0501 		add	r1, sp, r5
+  95 00f4 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  96 00f8 8DF80640 		strb	r4, [sp, #6]
+  97 00fc 8DF80750 		strb	r5, [sp, #7]
+  98 0100 FFF7FEFF 		bl	GPIO_Init
+  99 0104 4046     		mov	r0, r8
+ 100 0106 0DEB0501 		add	r1, sp, r5
+ 101 010a ADF80450 		strh	r5, [sp, #4]	@ movhi
+ 102 010e 8DF80640 		strb	r4, [sp, #6]
+ 103 0112 8DF80760 		strb	r6, [sp, #7]
+ 104 0116 FFF7FEFF 		bl	GPIO_Init
+ 105 011a 0823     		movs	r3, #8
+ 106 011c 4046     		mov	r0, r8
+ 107 011e 0DEB0501 		add	r1, sp, r5
+ 108 0122 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 109 0126 8DF80640 		strb	r4, [sp, #6]
+ 110 012a 8DF80750 		strb	r5, [sp, #7]
+ 111 012e FFF7FEFF 		bl	GPIO_Init
+ 112 0132 4FF4C053 		mov	r3, #6144
+ 113 0136 5846     		mov	r0, fp
+ 114 0138 0DEB0501 		add	r1, sp, r5
+ 115 013c ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 116 0140 8DF80640 		strb	r4, [sp, #6]
+ 117 0144 8DF80750 		strb	r5, [sp, #7]
+ 118 0148 FFF7FEFF 		bl	GPIO_Init
+ 119 014c 3846     		mov	r0, r7
+ 120 014e 0DEB0501 		add	r1, sp, r5
+ 121 0152 ADF804A0 		strh	r10, [sp, #4]	@ movhi
+ 122 0156 8DF80640 		strb	r4, [sp, #6]
+ 123 015a 8DF80760 		strb	r6, [sp, #7]
+ 124 015e FFF7FEFF 		bl	GPIO_Init
+ 125 0162 03B0     		add	sp, sp, #12
+ 126              		@ sp needed
+ 127 0164 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 128              	.L3:
+ 129              		.align	2
+ 130              	.L2:
+ 131 0168 00080140 		.word	1073809408
+ 132 016c 000C0140 		.word	1073810432
+ 133 0170 00100140 		.word	1073811456
+ 134 0174 00140140 		.word	1073812480
+ 136              		.section	.text.ETH_DeInit,"ax",%progbits
+ 137              		.align	1
+ 138              		.global	ETH_DeInit
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	ETH_DeInit:
+ 143              		@ args = 0, pretend = 0, frame = 0
+ 144              		@ frame_needed = 0, uses_anonymous_args = 0
+ 145 0000 08B5     		push	{r3, lr}
+ 146 0002 4FF48040 		mov	r0, #16384
+ 147 0006 0121     		movs	r1, #1
+ 148 0008 FFF7FEFF 		bl	RCC_AHBPeriphResetCmd
+ 149 000c BDE80840 		pop	{r3, lr}
+ 150 0010 4FF48040 		mov	r0, #16384
+ 151 0014 0021     		movs	r1, #0
+ 152 0016 FFF7FEBF 		b	RCC_AHBPeriphResetCmd
+ 154              		.section	.text.ETH_StructInit,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	ETH_StructInit
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	ETH_StructInit:
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164 0000 4022     		movs	r2, #64
+ 165 0002 0264     		str	r2, [r0, #64]
+ 166 0004 2022     		movs	r2, #32
+ 167 0006 4264     		str	r2, [r0, #68]
+ 168 0008 8022     		movs	r2, #128
+ 169 000a 4266     		str	r2, [r0, #100]
+ 170 000c 4FF08062 		mov	r2, #67108864
+ 171 0010 0023     		movs	r3, #0
+ 172 0012 C0F88020 		str	r2, [r0, #128]
+ 173 0016 4FF00072 		mov	r2, #33554432
+ 174 001a 4FF08071 		mov	r1, #16777216
+ 175 001e 0360     		str	r3, [r0]
+ 176 0020 4360     		str	r3, [r0, #4]
+ 177 0022 8360     		str	r3, [r0, #8]
+ 178 0024 C360     		str	r3, [r0, #12]
+ 179 0026 0361     		str	r3, [r0, #16]
+ 180 0028 4361     		str	r3, [r0, #20]
+ 181 002a 8361     		str	r3, [r0, #24]
+ 182 002c C361     		str	r3, [r0, #28]
+ 183 002e 0362     		str	r3, [r0, #32]
+ 184 0030 4362     		str	r3, [r0, #36]
+ 185 0032 8362     		str	r3, [r0, #40]
+ 186 0034 C362     		str	r3, [r0, #44]
+ 187 0036 0363     		str	r3, [r0, #48]
+ 188 0038 4363     		str	r3, [r0, #52]
+ 189 003a 8363     		str	r3, [r0, #56]
+ 190 003c C363     		str	r3, [r0, #60]
+ 191 003e 8364     		str	r3, [r0, #72]
+ 192 0040 C364     		str	r3, [r0, #76]
+ 193 0042 0365     		str	r3, [r0, #80]
+ 194 0044 4365     		str	r3, [r0, #84]
+ 195 0046 8365     		str	r3, [r0, #88]
+ 196 0048 C365     		str	r3, [r0, #92]
+ 197 004a 0366     		str	r3, [r0, #96]
+ 198 004c 8366     		str	r3, [r0, #104]
+ 199 004e C366     		str	r3, [r0, #108]
+ 200 0050 0367     		str	r3, [r0, #112]
+ 201 0052 4367     		str	r3, [r0, #116]
+ 202 0054 8367     		str	r3, [r0, #120]
+ 203 0056 C367     		str	r3, [r0, #124]
+ 204 0058 C0F88420 		str	r2, [r0, #132]
+ 205 005c C0F8A420 		str	r2, [r0, #164]
+ 206 0060 4FF40032 		mov	r2, #131072
+ 207 0064 C0F88810 		str	r1, [r0, #136]
+ 208 0068 C0F8AC20 		str	r2, [r0, #172]
+ 209 006c 4FF40011 		mov	r1, #2097152
+ 210 0070 4FF48072 		mov	r2, #256
+ 211 0074 C0F88C10 		str	r1, [r0, #140]
+ 212 0078 C0F89030 		str	r3, [r0, #144]
+ 213 007c C0F89430 		str	r3, [r0, #148]
+ 214 0080 C0F89830 		str	r3, [r0, #152]
+ 215 0084 C0F89C30 		str	r3, [r0, #156]
+ 216 0088 C0F8A030 		str	r3, [r0, #160]
+ 217 008c C0F8A830 		str	r3, [r0, #168]
+ 218 0090 C0F8B020 		str	r2, [r0, #176]
+ 219 0094 C0F8B430 		str	r3, [r0, #180]
+ 220 0098 C0F8B830 		str	r3, [r0, #184]
+ 221 009c 7047     		bx	lr
+ 223              		.section	.text.ETH_HandleTxPkt,"ax",%progbits
+ 224              		.align	1
+ 225              		.global	ETH_HandleTxPkt
+ 226              		.thumb
+ 227              		.thumb_func
+ 229              	ETH_HandleTxPkt:
+ 230              		@ args = 0, pretend = 0, frame = 0
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232 0000 194B     		ldr	r3, .L20
+ 233 0002 30B5     		push	{r4, r5, lr}
+ 234 0004 1A68     		ldr	r2, [r3]
+ 235 0006 1268     		ldr	r2, [r2]
+ 236 0008 002A     		cmp	r2, #0
+ 237 000a 2ADB     		blt	.L13
+ 238 000c 0022     		movs	r2, #0
+ 239              	.L8:
+ 240 000e 8A42     		cmp	r2, r1
+ 241 0010 05D2     		bcs	.L19
+ 242 0012 1C68     		ldr	r4, [r3]
+ 243 0014 855C     		ldrb	r5, [r0, r2]	@ zero_extendqisi2
+ 244 0016 A468     		ldr	r4, [r4, #8]
+ 245 0018 1555     		strb	r5, [r2, r4]
+ 246 001a 0132     		adds	r2, r2, #1
+ 247 001c F7E7     		b	.L8
+ 248              	.L19:
+ 249 001e 1A68     		ldr	r2, [r3]
+ 250 0020 C1F30C01 		ubfx	r1, r1, #0, #13
+ 251 0024 5160     		str	r1, [r2, #4]
+ 252 0026 1168     		ldr	r1, [r2]
+ 253 0028 41F03040 		orr	r0, r1, #-1342177280
+ 254 002c 1060     		str	r0, [r2]
+ 255 002e 0F48     		ldr	r0, .L20+4
+ 256 0030 4469     		ldr	r4, [r0, #20]
+ 257 0032 6407     		lsls	r4, r4, #29
+ 258 0034 03D5     		bpl	.L10
+ 259 0036 0424     		movs	r4, #4
+ 260 0038 4461     		str	r4, [r0, #20]
+ 261 003a 0024     		movs	r4, #0
+ 262 003c 4460     		str	r4, [r0, #4]
+ 263              	.L10:
+ 264 003e C802     		lsls	r0, r1, #11
+ 265 0040 01D5     		bpl	.L11
+ 266 0042 D268     		ldr	r2, [r2, #12]
+ 267 0044 04E0     		b	.L17
+ 268              	.L11:
+ 269 0046 11F4001F 		tst	r1, #2097152
+ 270 004a 0849     		ldr	r1, .L20+4
+ 271 004c 03D0     		beq	.L12
+ 272 004e 0A69     		ldr	r2, [r1, #16]
+ 273              	.L17:
+ 274 0050 1A60     		str	r2, [r3]
+ 275 0052 0120     		movs	r0, #1
+ 276 0054 30BD     		pop	{r4, r5, pc}
+ 277              	.L12:
+ 278 0056 0968     		ldr	r1, [r1]
+ 279 0058 1032     		adds	r2, r2, #16
+ 280 005a C1F38401 		ubfx	r1, r1, #2, #5
+ 281 005e 0A44     		add	r2, r2, r1
+ 282 0060 F6E7     		b	.L17
+ 283              	.L13:
+ 284 0062 0020     		movs	r0, #0
+ 285 0064 30BD     		pop	{r4, r5, pc}
+ 286              	.L21:
+ 287 0066 00BF     		.align	2
+ 288              	.L20:
+ 289 0068 00000000 		.word	DMATxDescToSet
+ 290 006c 00900240 		.word	1073909760
+ 292              		.section	.text.ETH_HandleRxPkt,"ax",%progbits
+ 293              		.align	1
+ 294              		.global	ETH_HandleRxPkt
+ 295              		.thumb
+ 296              		.thumb_func
+ 298              	ETH_HandleRxPkt:
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301 0000 1C4A     		ldr	r2, .L36
+ 302 0002 10B5     		push	{r4, lr}
+ 303 0004 1368     		ldr	r3, [r2]
+ 304 0006 1B68     		ldr	r3, [r3]
+ 305 0008 002B     		cmp	r3, #0
+ 306 000a 30DB     		blt	.L30
+ 307 000c 03F40341 		and	r1, r3, #33536
+ 308 0010 B1F5407F 		cmp	r1, #768
+ 309 0014 0BD1     		bne	.L31
+ 310 0016 C3F30D43 		ubfx	r3, r3, #16, #14
+ 311 001a 043B     		subs	r3, r3, #4
+ 312 001c 0021     		movs	r1, #0
+ 313              	.L25:
+ 314 001e 9942     		cmp	r1, r3
+ 315 0020 06D2     		bcs	.L24
+ 316 0022 1468     		ldr	r4, [r2]
+ 317 0024 A468     		ldr	r4, [r4, #8]
+ 318 0026 0C5D     		ldrb	r4, [r1, r4]	@ zero_extendqisi2
+ 319 0028 4454     		strb	r4, [r0, r1]
+ 320 002a 0131     		adds	r1, r1, #1
+ 321 002c F7E7     		b	.L25
+ 322              	.L31:
+ 323 002e 0023     		movs	r3, #0
+ 324              	.L24:
+ 325 0030 1168     		ldr	r1, [r2]
+ 326 0032 4FF00040 		mov	r0, #-2147483648
+ 327 0036 0860     		str	r0, [r1]
+ 328 0038 0F48     		ldr	r0, .L36+4
+ 329 003a 4469     		ldr	r4, [r0, #20]
+ 330 003c 2406     		lsls	r4, r4, #24
+ 331 003e 03D5     		bpl	.L27
+ 332 0040 8024     		movs	r4, #128
+ 333 0042 4461     		str	r4, [r0, #20]
+ 334 0044 0024     		movs	r4, #0
+ 335 0046 8460     		str	r4, [r0, #8]
+ 336              	.L27:
+ 337 0048 4868     		ldr	r0, [r1, #4]
+ 338 004a 4404     		lsls	r4, r0, #17
+ 339 004c 01D5     		bpl	.L28
+ 340 004e C968     		ldr	r1, [r1, #12]
+ 341 0050 04E0     		b	.L35
+ 342              	.L28:
+ 343 0052 10F4004F 		tst	r0, #32768
+ 344 0056 0848     		ldr	r0, .L36+4
+ 345 0058 03D0     		beq	.L29
+ 346 005a C168     		ldr	r1, [r0, #12]
+ 347              	.L35:
+ 348 005c 1160     		str	r1, [r2]
+ 349 005e 1846     		mov	r0, r3
+ 350 0060 10BD     		pop	{r4, pc}
+ 351              	.L29:
+ 352 0062 0068     		ldr	r0, [r0]
+ 353 0064 1031     		adds	r1, r1, #16
+ 354 0066 C0F38400 		ubfx	r0, r0, #2, #5
+ 355 006a 0144     		add	r1, r1, r0
+ 356 006c F6E7     		b	.L35
+ 357              	.L30:
+ 358 006e 0020     		movs	r0, #0
+ 359 0070 10BD     		pop	{r4, pc}
+ 360              	.L37:
+ 361 0072 00BF     		.align	2
+ 362              	.L36:
+ 363 0074 00000000 		.word	DMARxDescToGet
+ 364 0078 00900240 		.word	1073909760
+ 366              		.section	.text.ETH_GetRxPktSize,"ax",%progbits
+ 367              		.align	1
+ 368              		.global	ETH_GetRxPktSize
+ 369              		.thumb
+ 370              		.thumb_func
+ 372              	ETH_GetRxPktSize:
+ 373              		@ args = 0, pretend = 0, frame = 0
+ 374              		@ frame_needed = 0, uses_anonymous_args = 0
+ 375              		@ link register save eliminated.
+ 376 0000 074B     		ldr	r3, .L42
+ 377 0002 1B68     		ldr	r3, [r3]
+ 378 0004 1868     		ldr	r0, [r3]
+ 379 0006 0028     		cmp	r0, #0
+ 380 0008 07DB     		blt	.L41
+ 381 000a 00F40343 		and	r3, r0, #33536
+ 382 000e B3F5407F 		cmp	r3, #768
+ 383 0012 02D1     		bne	.L41
+ 384 0014 C0F30D40 		ubfx	r0, r0, #16, #14
+ 385 0018 7047     		bx	lr
+ 386              	.L41:
+ 387 001a 0020     		movs	r0, #0
+ 388 001c 7047     		bx	lr
+ 389              	.L43:
+ 390 001e 00BF     		.align	2
+ 391              	.L42:
+ 392 0020 00000000 		.word	DMARxDescToGet
+ 394              		.section	.text.ETH_DropRxPkt,"ax",%progbits
+ 395              		.align	1
+ 396              		.global	ETH_DropRxPkt
+ 397              		.thumb
+ 398              		.thumb_func
+ 400              	ETH_DropRxPkt:
+ 401              		@ args = 0, pretend = 0, frame = 0
+ 402              		@ frame_needed = 0, uses_anonymous_args = 0
+ 403              		@ link register save eliminated.
+ 404 0000 0B4B     		ldr	r3, .L49
+ 405 0002 4FF00041 		mov	r1, #-2147483648
+ 406 0006 1A68     		ldr	r2, [r3]
+ 407 0008 1160     		str	r1, [r2]
+ 408 000a 5168     		ldr	r1, [r2, #4]
+ 409 000c 4804     		lsls	r0, r1, #17
+ 410 000e 01D5     		bpl	.L45
+ 411 0010 D268     		ldr	r2, [r2, #12]
+ 412 0012 0AE0     		b	.L48
+ 413              	.L45:
+ 414 0014 11F4004F 		tst	r1, #32768
+ 415 0018 0649     		ldr	r1, .L49+4
+ 416 001a 01D0     		beq	.L47
+ 417 001c CA68     		ldr	r2, [r1, #12]
+ 418 001e 04E0     		b	.L48
+ 419              	.L47:
+ 420 0020 0968     		ldr	r1, [r1]
+ 421 0022 1032     		adds	r2, r2, #16
+ 422 0024 C1F38401 		ubfx	r1, r1, #2, #5
+ 423 0028 0A44     		add	r2, r2, r1
+ 424              	.L48:
+ 425 002a 1A60     		str	r2, [r3]
+ 426 002c 7047     		bx	lr
+ 427              	.L50:
+ 428 002e 00BF     		.align	2
+ 429              	.L49:
+ 430 0030 00000000 		.word	DMARxDescToGet
+ 431 0034 00900240 		.word	1073909760
+ 433              		.section	.text.ETH_ReadPHYRegister,"ax",%progbits
+ 434              		.align	1
+ 435              		.global	ETH_ReadPHYRegister
+ 436              		.thumb
+ 437              		.thumb_func
+ 439              	ETH_ReadPHYRegister:
+ 440              		@ args = 0, pretend = 0, frame = 8
+ 441              		@ frame_needed = 0, uses_anonymous_args = 0
+ 442 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 443 0002 0023     		movs	r3, #0
+ 444 0004 2028     		cmp	r0, #32
+ 445 0006 0546     		mov	r5, r0
+ 446 0008 0C46     		mov	r4, r1
+ 447 000a 0193     		str	r3, [sp, #4]
+ 448 000c 04D9     		bls	.L52
+ 449 000e 1848     		ldr	r0, .L64
+ 450 0010 4FF48061 		mov	r1, #1024
+ 451 0014 FFF7FEFF 		bl	assert_err
+ 452              	.L52:
+ 453 0018 012C     		cmp	r4, #1
+ 454 001a 06D9     		bls	.L53
+ 455 001c 102C     		cmp	r4, #16
+ 456 001e 04D0     		beq	.L53
+ 457 0020 1348     		ldr	r0, .L64
+ 458 0022 40F20141 		movw	r1, #1025
+ 459 0026 FFF7FEFF 		bl	assert_err
+ 460              	.L53:
+ 461 002a 124B     		ldr	r3, .L64+4
+ 462 002c A401     		lsls	r4, r4, #6
+ 463 002e 1A69     		ldr	r2, [r3, #16]
+ 464 0030 04F4F864 		and	r4, r4, #1984
+ 465 0034 02F01C02 		and	r2, r2, #28
+ 466 0038 ED02     		lsls	r5, r5, #11
+ 467 003a 1443     		orrs	r4, r4, r2
+ 468 003c ADB2     		uxth	r5, r5
+ 469 003e 2543     		orrs	r5, r5, r4
+ 470 0040 45F00105 		orr	r5, r5, #1
+ 471 0044 0C4A     		ldr	r2, .L64+8
+ 472 0046 1D61     		str	r5, [r3, #16]
+ 473              	.L55:
+ 474 0048 0199     		ldr	r1, [sp, #4]
+ 475 004a 0131     		adds	r1, r1, #1
+ 476 004c 0191     		str	r1, [sp, #4]
+ 477 004e 1969     		ldr	r1, [r3, #16]
+ 478 0050 CC07     		lsls	r4, r1, #31
+ 479 0052 02D5     		bpl	.L54
+ 480 0054 0199     		ldr	r1, [sp, #4]
+ 481 0056 9142     		cmp	r1, r2
+ 482 0058 F6D9     		bls	.L55
+ 483              	.L54:
+ 484 005a 084B     		ldr	r3, .L64+12
+ 485 005c 019A     		ldr	r2, [sp, #4]
+ 486 005e 9A42     		cmp	r2, r3
+ 487 0060 17BF     		itett	ne
+ 488 0062 044B     		ldrne	r3, .L64+4
+ 489 0064 0020     		moveq	r0, #0
+ 490 0066 5869     		ldrne	r0, [r3, #20]
+ 491 0068 80B2     		uxthne	r0, r0
+ 492 006a 03B0     		add	sp, sp, #12
+ 493              		@ sp needed
+ 494 006c 30BD     		pop	{r4, r5, pc}
+ 495              	.L65:
+ 496 006e 00BF     		.align	2
+ 497              	.L64:
+ 498 0070 00000000 		.word	.LC0
+ 499 0074 00800240 		.word	1073905664
+ 500 0078 FEFF0400 		.word	327678
+ 501 007c FFFF0400 		.word	327679
+ 503              		.section	.text.stm32_eth_linked,"ax",%progbits
+ 504              		.align	1
+ 505              		.global	stm32_eth_linked
+ 506              		.thumb
+ 507              		.thumb_func
+ 509              	stm32_eth_linked:
+ 510              		@ args = 0, pretend = 0, frame = 0
+ 511              		@ frame_needed = 0, uses_anonymous_args = 0
+ 512 0000 0120     		movs	r0, #1
+ 513 0002 08B5     		push	{r3, lr}
+ 514 0004 0146     		mov	r1, r0
+ 515 0006 FFF7FEFF 		bl	ETH_ReadPHYRegister
+ 516 000a C0F38000 		ubfx	r0, r0, #2, #1
+ 517 000e 08BD     		pop	{r3, pc}
+ 519              		.section	.text.ETH_WritePHYRegister,"ax",%progbits
+ 520              		.align	1
+ 521              		.global	ETH_WritePHYRegister
+ 522              		.thumb
+ 523              		.thumb_func
+ 525              	ETH_WritePHYRegister:
+ 526              		@ args = 0, pretend = 0, frame = 8
+ 527              		@ frame_needed = 0, uses_anonymous_args = 0
+ 528 0000 73B5     		push	{r0, r1, r4, r5, r6, lr}
+ 529 0002 0023     		movs	r3, #0
+ 530 0004 2028     		cmp	r0, #32
+ 531 0006 0546     		mov	r5, r0
+ 532 0008 0C46     		mov	r4, r1
+ 533 000a 1646     		mov	r6, r2
+ 534 000c 0193     		str	r3, [sp, #4]
+ 535 000e 04D9     		bls	.L68
+ 536 0010 1648     		ldr	r0, .L78
+ 537 0012 40F23141 		movw	r1, #1073
+ 538 0016 FFF7FEFF 		bl	assert_err
+ 539              	.L68:
+ 540 001a 012C     		cmp	r4, #1
+ 541 001c 06D9     		bls	.L69
+ 542 001e 102C     		cmp	r4, #16
+ 543 0020 04D0     		beq	.L69
+ 544 0022 1248     		ldr	r0, .L78
+ 545 0024 40F23241 		movw	r1, #1074
+ 546 0028 FFF7FEFF 		bl	assert_err
+ 547              	.L69:
+ 548 002c 104B     		ldr	r3, .L78+4
+ 549 002e A401     		lsls	r4, r4, #6
+ 550 0030 1A69     		ldr	r2, [r3, #16]
+ 551 0032 04F4F864 		and	r4, r4, #1984
+ 552 0036 02F01C02 		and	r2, r2, #28
+ 553 003a 42F00302 		orr	r2, r2, #3
+ 554 003e ED02     		lsls	r5, r5, #11
+ 555 0040 1443     		orrs	r4, r4, r2
+ 556 0042 ADB2     		uxth	r5, r5
+ 557 0044 2543     		orrs	r5, r5, r4
+ 558 0046 0B4A     		ldr	r2, .L78+8
+ 559 0048 5E61     		str	r6, [r3, #20]
+ 560 004a 1D61     		str	r5, [r3, #16]
+ 561              	.L71:
+ 562 004c 0199     		ldr	r1, [sp, #4]
+ 563 004e 0131     		adds	r1, r1, #1
+ 564 0050 0191     		str	r1, [sp, #4]
+ 565 0052 1969     		ldr	r1, [r3, #16]
+ 566 0054 CD07     		lsls	r5, r1, #31
+ 567 0056 02D5     		bpl	.L70
+ 568 0058 0199     		ldr	r1, [sp, #4]
+ 569 005a 9142     		cmp	r1, r2
+ 570 005c F6D9     		bls	.L71
+ 571              	.L70:
+ 572 005e 0198     		ldr	r0, [sp, #4]
+ 573 0060 054B     		ldr	r3, .L78+12
+ 574 0062 C01A     		subs	r0, r0, r3
+ 575 0064 18BF     		it	ne
+ 576 0066 0120     		movne	r0, #1
+ 577 0068 02B0     		add	sp, sp, #8
+ 578              		@ sp needed
+ 579 006a 70BD     		pop	{r4, r5, r6, pc}
+ 580              	.L79:
+ 581              		.align	2
+ 582              	.L78:
+ 583 006c 00000000 		.word	.LC0
+ 584 0070 00800240 		.word	1073905664
+ 585 0074 FEFF0400 		.word	327678
+ 586 0078 FFFF0400 		.word	327679
+ 588              		.section	.text.ETH_Init,"ax",%progbits
+ 589              		.align	1
+ 590              		.global	ETH_Init
+ 591              		.thumb
+ 592              		.thumb_func
+ 594              	ETH_Init:
+ 595              		@ args = 0, pretend = 0, frame = 32
+ 596              		@ frame_needed = 0, uses_anonymous_args = 0
+ 597 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 598 0002 0023     		movs	r3, #0
+ 599 0004 89B0     		sub	sp, sp, #36
+ 600 0006 0193     		str	r3, [sp, #4]
+ 601 0008 0293     		str	r3, [sp, #8]
+ 602 000a 0368     		ldr	r3, [r0]
+ 603 000c 0446     		mov	r4, r0
+ 604 000e 012B     		cmp	r3, #1
+ 605 0010 0D46     		mov	r5, r1
+ 606 0012 04D9     		bls	.L81
+ 607 0014 C148     		ldr	r0, .L325
+ 608 0016 4FF4DD71 		mov	r1, #442
+ 609 001a FFF7FEFF 		bl	assert_err
+ 610              	.L81:
+ 611 001e 6368     		ldr	r3, [r4, #4]
+ 612 0020 33F40002 		bics	r2, r3, #8388608
+ 613 0024 04D0     		beq	.L82
+ 614 0026 BD48     		ldr	r0, .L325
+ 615 0028 40F2BB11 		movw	r1, #443
+ 616 002c FFF7FEFF 		bl	assert_err
+ 617              	.L82:
+ 618 0030 A368     		ldr	r3, [r4, #8]
+ 619 0032 33F48002 		bics	r2, r3, #4194304
+ 620 0036 04D0     		beq	.L83
+ 621 0038 B848     		ldr	r0, .L325
+ 622 003a 4FF4DE71 		mov	r1, #444
+ 623 003e FFF7FEFF 		bl	assert_err
+ 624              	.L83:
+ 625 0042 E368     		ldr	r3, [r4, #12]
+ 626 0044 33F4C023 		bics	r3, r3, #393216
+ 627 0048 07D0     		beq	.L84
+ 628 004a B3F5002F 		cmp	r3, #524288
+ 629 004e 04D0     		beq	.L84
+ 630 0050 B248     		ldr	r0, .L325
+ 631 0052 40F2BD11 		movw	r1, #445
+ 632 0056 FFF7FEFF 		bl	assert_err
+ 633              	.L84:
+ 634 005a 2369     		ldr	r3, [r4, #16]
+ 635 005c 33F48032 		bics	r2, r3, #65536
+ 636 0060 04D0     		beq	.L85
+ 637 0062 AE48     		ldr	r0, .L325
+ 638 0064 4FF4DF71 		mov	r1, #446
+ 639 0068 FFF7FEFF 		bl	assert_err
+ 640              	.L85:
+ 641 006c 6369     		ldr	r3, [r4, #20]
+ 642 006e 33F48042 		bics	r2, r3, #16384
+ 643 0072 04D0     		beq	.L86
+ 644 0074 A948     		ldr	r0, .L325
+ 645 0076 40F2BF11 		movw	r1, #447
+ 646 007a FFF7FEFF 		bl	assert_err
+ 647              	.L86:
+ 648 007e A369     		ldr	r3, [r4, #24]
+ 649 0080 33F40052 		bics	r2, r3, #8192
+ 650 0084 04D0     		beq	.L87
+ 651 0086 A548     		ldr	r0, .L325
+ 652 0088 4FF4E071 		mov	r1, #448
+ 653 008c FFF7FEFF 		bl	assert_err
+ 654              	.L87:
+ 655 0090 E369     		ldr	r3, [r4, #28]
+ 656 0092 33F48052 		bics	r2, r3, #4096
+ 657 0096 04D0     		beq	.L88
+ 658 0098 A048     		ldr	r0, .L325
+ 659 009a 40F2C111 		movw	r1, #449
+ 660 009e FFF7FEFF 		bl	assert_err
+ 661              	.L88:
+ 662 00a2 236A     		ldr	r3, [r4, #32]
+ 663 00a4 33F40062 		bics	r2, r3, #2048
+ 664 00a8 04D0     		beq	.L89
+ 665 00aa 9C48     		ldr	r0, .L325
+ 666 00ac 4FF4E171 		mov	r1, #450
+ 667 00b0 FFF7FEFF 		bl	assert_err
+ 668              	.L89:
+ 669 00b4 636A     		ldr	r3, [r4, #36]
+ 670 00b6 33F48062 		bics	r2, r3, #1024
+ 671 00ba 04D0     		beq	.L90
+ 672 00bc 9748     		ldr	r0, .L325
+ 673 00be 40F2C311 		movw	r1, #451
+ 674 00c2 FFF7FEFF 		bl	assert_err
+ 675              	.L90:
+ 676 00c6 A36A     		ldr	r3, [r4, #40]
+ 677 00c8 33F40072 		bics	r2, r3, #512
+ 678 00cc 04D0     		beq	.L91
+ 679 00ce 9348     		ldr	r0, .L325
+ 680 00d0 4FF4E271 		mov	r1, #452
+ 681 00d4 FFF7FEFF 		bl	assert_err
+ 682              	.L91:
+ 683 00d8 E36A     		ldr	r3, [r4, #44]
+ 684 00da 33F08002 		bics	r2, r3, #128
+ 685 00de 04D0     		beq	.L92
+ 686 00e0 8E48     		ldr	r0, .L325
+ 687 00e2 40F2C511 		movw	r1, #453
+ 688 00e6 FFF7FEFF 		bl	assert_err
+ 689              	.L92:
+ 690 00ea 236B     		ldr	r3, [r4, #48]
+ 691 00ec 33F06002 		bics	r2, r3, #96
+ 692 00f0 04D0     		beq	.L93
+ 693 00f2 8A48     		ldr	r0, .L325
+ 694 00f4 4FF4E371 		mov	r1, #454
+ 695 00f8 FFF7FEFF 		bl	assert_err
+ 696              	.L93:
+ 697 00fc 636B     		ldr	r3, [r4, #52]
+ 698 00fe 33F01002 		bics	r2, r3, #16
+ 699 0102 04D0     		beq	.L94
+ 700 0104 8548     		ldr	r0, .L325
+ 701 0106 40F2C711 		movw	r1, #455
+ 702 010a FFF7FEFF 		bl	assert_err
+ 703              	.L94:
+ 704 010e A36B     		ldr	r3, [r4, #56]
+ 705 0110 23F00043 		bic	r3, r3, #-2147483648
+ 706 0114 23B1     		cbz	r3, .L95
+ 707 0116 8148     		ldr	r0, .L325
+ 708 0118 4FF4E471 		mov	r1, #456
+ 709 011c FFF7FEFF 		bl	assert_err
+ 710              	.L95:
+ 711 0120 E36B     		ldr	r3, [r4, #60]
+ 712 0122 B3F5407F 		cmp	r3, #768
+ 713 0126 07D0     		beq	.L96
+ 714 0128 33F40072 		bics	r2, r3, #512
+ 715 012c 04D0     		beq	.L96
+ 716 012e 7B48     		ldr	r0, .L325
+ 717 0130 40F2C911 		movw	r1, #457
+ 718 0134 FFF7FEFF 		bl	assert_err
+ 719              	.L96:
+ 720 0138 236C     		ldr	r3, [r4, #64]
+ 721 013a 23F08002 		bic	r2, r3, #128
+ 722 013e 402A     		cmp	r2, #64
+ 723 0140 06D0     		beq	.L97
+ 724 0142 802B     		cmp	r3, #128
+ 725 0144 04D0     		beq	.L97
+ 726 0146 7548     		ldr	r0, .L325
+ 727 0148 4FF4E571 		mov	r1, #458
+ 728 014c FFF7FEFF 		bl	assert_err
+ 729              	.L97:
+ 730 0150 636C     		ldr	r3, [r4, #68]
+ 731 0152 33F02002 		bics	r2, r3, #32
+ 732 0156 04D0     		beq	.L98
+ 733 0158 7048     		ldr	r0, .L325
+ 734 015a 40F2CB11 		movw	r1, #459
+ 735 015e FFF7FEFF 		bl	assert_err
+ 736              	.L98:
+ 737 0162 A36C     		ldr	r3, [r4, #72]
+ 738 0164 33F00802 		bics	r2, r3, #8
+ 739 0168 04D0     		beq	.L99
+ 740 016a 6C48     		ldr	r0, .L325
+ 741 016c 4FF4E671 		mov	r1, #460
+ 742 0170 FFF7FEFF 		bl	assert_err
+ 743              	.L99:
+ 744 0174 E36C     		ldr	r3, [r4, #76]
+ 745 0176 012B     		cmp	r3, #1
+ 746 0178 04D9     		bls	.L100
+ 747 017a 6848     		ldr	r0, .L325
+ 748 017c 40F2CD11 		movw	r1, #461
+ 749 0180 FFF7FEFF 		bl	assert_err
+ 750              	.L100:
+ 751 0184 236D     		ldr	r3, [r4, #80]
+ 752 0186 40F20442 		movw	r2, #1028
+ 753 018a 9342     		cmp	r3, r2
+ 754 018c 09D0     		beq	.L101
+ 755 018e 33F00402 		bics	r2, r3, #4
+ 756 0192 06D0     		beq	.L101
+ 757 0194 102B     		cmp	r3, #16
+ 758 0196 04D0     		beq	.L101
+ 759 0198 6048     		ldr	r0, .L325
+ 760 019a 4FF4E771 		mov	r1, #462
+ 761 019e FFF7FEFF 		bl	assert_err
+ 762              	.L101:
+ 763 01a2 636D     		ldr	r3, [r4, #84]
+ 764 01a4 40F20242 		movw	r2, #1026
+ 765 01a8 9342     		cmp	r3, r2
+ 766 01aa 07D0     		beq	.L102
+ 767 01ac 33F00202 		bics	r2, r3, #2
+ 768 01b0 04D0     		beq	.L102
+ 769 01b2 5A48     		ldr	r0, .L325
+ 770 01b4 40F2CF11 		movw	r1, #463
+ 771 01b8 FFF7FEFF 		bl	assert_err
+ 772              	.L102:
+ 773 01bc 236E     		ldr	r3, [r4, #96]
+ 774 01be B3F5803F 		cmp	r3, #65536
+ 775 01c2 04D3     		bcc	.L103
+ 776 01c4 5548     		ldr	r0, .L325
+ 777 01c6 4FF4E871 		mov	r1, #464
+ 778 01ca FFF7FEFF 		bl	assert_err
+ 779              	.L103:
+ 780 01ce 636E     		ldr	r3, [r4, #100]
+ 781 01d0 33F08002 		bics	r2, r3, #128
+ 782 01d4 04D0     		beq	.L104
+ 783 01d6 5148     		ldr	r0, .L325
+ 784 01d8 40F2D111 		movw	r1, #465
+ 785 01dc FFF7FEFF 		bl	assert_err
+ 786              	.L104:
+ 787 01e0 A36E     		ldr	r3, [r4, #104]
+ 788 01e2 33F03002 		bics	r2, r3, #48
+ 789 01e6 04D0     		beq	.L105
+ 790 01e8 4C48     		ldr	r0, .L325
+ 791 01ea 4FF4E971 		mov	r1, #466
+ 792 01ee FFF7FEFF 		bl	assert_err
+ 793              	.L105:
+ 794 01f2 E36E     		ldr	r3, [r4, #108]
+ 795 01f4 33F00802 		bics	r2, r3, #8
+ 796 01f8 04D0     		beq	.L106
+ 797 01fa 4848     		ldr	r0, .L325
+ 798 01fc 40F2D311 		movw	r1, #467
+ 799 0200 FFF7FEFF 		bl	assert_err
+ 800              	.L106:
+ 801 0204 236F     		ldr	r3, [r4, #112]
+ 802 0206 33F00402 		bics	r2, r3, #4
+ 803 020a 04D0     		beq	.L107
+ 804 020c 4348     		ldr	r0, .L325
+ 805 020e 4FF4EA71 		mov	r1, #468
+ 806 0212 FFF7FEFF 		bl	assert_err
+ 807              	.L107:
+ 808 0216 636F     		ldr	r3, [r4, #116]
+ 809 0218 33F00202 		bics	r2, r3, #2
+ 810 021c 04D0     		beq	.L108
+ 811 021e 3F48     		ldr	r0, .L325
+ 812 0220 40F2D511 		movw	r1, #469
+ 813 0224 FFF7FEFF 		bl	assert_err
+ 814              	.L108:
+ 815 0228 A36F     		ldr	r3, [r4, #120]
+ 816 022a 33F48032 		bics	r2, r3, #65536
+ 817 022e 04D0     		beq	.L109
+ 818 0230 3A48     		ldr	r0, .L325
+ 819 0232 4FF4EB71 		mov	r1, #470
+ 820 0236 FFF7FEFF 		bl	assert_err
+ 821              	.L109:
+ 822 023a E36F     		ldr	r3, [r4, #124]
+ 823 023c B3F5803F 		cmp	r3, #65536
+ 824 0240 04D3     		bcc	.L110
+ 825 0242 3648     		ldr	r0, .L325
+ 826 0244 40F2D711 		movw	r1, #471
+ 827 0248 FFF7FEFF 		bl	assert_err
+ 828              	.L110:
+ 829 024c D4F88030 		ldr	r3, [r4, #128]
+ 830 0250 33F08062 		bics	r2, r3, #67108864
+ 831 0254 04D0     		beq	.L111
+ 832 0256 3148     		ldr	r0, .L325
+ 833 0258 40F2D911 		movw	r1, #473
+ 834 025c FFF7FEFF 		bl	assert_err
+ 835              	.L111:
+ 836 0260 D4F88430 		ldr	r3, [r4, #132]
+ 837 0264 33F00072 		bics	r2, r3, #33554432
+ 838 0268 04D0     		beq	.L112
+ 839 026a 2C48     		ldr	r0, .L325
+ 840 026c 4FF4ED71 		mov	r1, #474
+ 841 0270 FFF7FEFF 		bl	assert_err
+ 842              	.L112:
+ 843 0274 D4F88830 		ldr	r3, [r4, #136]
+ 844 0278 33F08072 		bics	r2, r3, #16777216
+ 845 027c 04D0     		beq	.L113
+ 846 027e 2748     		ldr	r0, .L325
+ 847 0280 40F2DB11 		movw	r1, #475
+ 848 0284 FFF7FEFF 		bl	assert_err
+ 849              	.L113:
+ 850 0288 D4F88C30 		ldr	r3, [r4, #140]
+ 851 028c 33F40012 		bics	r2, r3, #2097152
+ 852 0290 04D0     		beq	.L114
+ 853 0292 2248     		ldr	r0, .L325
+ 854 0294 4FF4EE71 		mov	r1, #476
+ 855 0298 FFF7FEFF 		bl	assert_err
+ 856              	.L114:
+ 857 029c D4F89030 		ldr	r3, [r4, #144]
+ 858 02a0 33F44043 		bics	r3, r3, #49152
+ 859 02a4 07D0     		beq	.L115
+ 860 02a6 B3F5803F 		cmp	r3, #65536
+ 861 02aa 04D0     		beq	.L115
+ 862 02ac 1B48     		ldr	r0, .L325
+ 863 02ae 40F2DD11 		movw	r1, #477
+ 864 02b2 FFF7FEFF 		bl	assert_err
+ 865              	.L115:
+ 866 02b6 D4F89430 		ldr	r3, [r4, #148]
+ 867 02ba 33F08002 		bics	r2, r3, #128
+ 868 02be 04D0     		beq	.L116
+ 869 02c0 1648     		ldr	r0, .L325
+ 870 02c2 4FF4EF71 		mov	r1, #478
+ 871 02c6 FFF7FEFF 		bl	assert_err
+ 872              	.L116:
+ 873 02ca D4F89830 		ldr	r3, [r4, #152]
+ 874 02ce 33F04002 		bics	r2, r3, #64
+ 875 02d2 04D0     		beq	.L117
+ 876 02d4 1148     		ldr	r0, .L325
+ 877 02d6 40F2DF11 		movw	r1, #479
+ 878 02da FFF7FEFF 		bl	assert_err
+ 879              	.L117:
+ 880 02de D4F89C30 		ldr	r3, [r4, #156]
+ 881 02e2 33F01802 		bics	r2, r3, #24
+ 882 02e6 04D0     		beq	.L118
+ 883 02e8 0C48     		ldr	r0, .L325
+ 884 02ea 4FF4F071 		mov	r1, #480
+ 885 02ee FFF7FEFF 		bl	assert_err
+ 886              	.L118:
+ 887 02f2 D4F8A030 		ldr	r3, [r4, #160]
+ 888 02f6 33F00402 		bics	r2, r3, #4
+ 889 02fa 04D0     		beq	.L119
+ 890 02fc 0748     		ldr	r0, .L325
+ 891 02fe 40F2E111 		movw	r1, #481
+ 892 0302 FFF7FEFF 		bl	assert_err
+ 893              	.L119:
+ 894 0306 D4F8A430 		ldr	r3, [r4, #164]
+ 895 030a 33F00072 		bics	r2, r3, #33554432
+ 896 030e 07D0     		beq	.L120
+ 897 0310 0248     		ldr	r0, .L325
+ 898 0312 4FF4F171 		mov	r1, #482
+ 899 0316 FFF7FEFF 		bl	assert_err
+ 900 031a 01E0     		b	.L326
+ 901              	.L327:
+ 902              		.align	2
+ 903              	.L325:
+ 904 031c 00000000 		.word	.LC0
+ 905              	.L326:
+ 906              	.L120:
+ 907 0320 D4F8A830 		ldr	r3, [r4, #168]
+ 908 0324 33F48032 		bics	r2, r3, #65536
+ 909 0328 04D0     		beq	.L121
+ 910 032a 7448     		ldr	r0, .L328
+ 911 032c 40F2E311 		movw	r1, #483
+ 912 0330 FFF7FEFF 		bl	assert_err
+ 913              	.L121:
+ 914 0334 D4F8AC30 		ldr	r3, [r4, #172]
+ 915 0338 23F08073 		bic	r3, r3, #16777216
+ 916 033c B3F5003F 		cmp	r3, #131072
+ 917 0340 13D0     		beq	.L122
+ 918 0342 B3F5802F 		cmp	r3, #262144
+ 919 0346 10D0     		beq	.L122
+ 920 0348 B3F5002F 		cmp	r3, #524288
+ 921 034c 0DD0     		beq	.L122
+ 922 034e B3F5801F 		cmp	r3, #1048576
+ 923 0352 0AD0     		beq	.L122
+ 924 0354 B3F5001F 		cmp	r3, #2097152
+ 925 0358 07D0     		beq	.L122
+ 926 035a B3F5800F 		cmp	r3, #4194304
+ 927 035e 04D0     		beq	.L122
+ 928 0360 6648     		ldr	r0, .L328
+ 929 0362 4FF4F271 		mov	r1, #484
+ 930 0366 FFF7FEFF 		bl	assert_err
+ 931              	.L122:
+ 932 036a D4F8B030 		ldr	r3, [r4, #176]
+ 933 036e 23F08073 		bic	r3, r3, #16777216
+ 934 0372 B3F5807F 		cmp	r3, #256
+ 935 0376 13D0     		beq	.L123
+ 936 0378 B3F5007F 		cmp	r3, #512
+ 937 037c 10D0     		beq	.L123
+ 938 037e B3F5806F 		cmp	r3, #1024
+ 939 0382 0DD0     		beq	.L123
+ 940 0384 B3F5006F 		cmp	r3, #2048
+ 941 0388 0AD0     		beq	.L123
+ 942 038a B3F5805F 		cmp	r3, #4096
+ 943 038e 07D0     		beq	.L123
+ 944 0390 B3F5005F 		cmp	r3, #8192
+ 945 0394 04D0     		beq	.L123
+ 946 0396 5948     		ldr	r0, .L328
+ 947 0398 40F2E511 		movw	r1, #485
+ 948 039c FFF7FEFF 		bl	assert_err
+ 949              	.L123:
+ 950 03a0 D4F8B430 		ldr	r3, [r4, #180]
+ 951 03a4 1F2B     		cmp	r3, #31
+ 952 03a6 04D9     		bls	.L124
+ 953 03a8 5448     		ldr	r0, .L328
+ 954 03aa 4FF4F371 		mov	r1, #486
+ 955 03ae FFF7FEFF 		bl	assert_err
+ 956              	.L124:
+ 957 03b2 D4F8B830 		ldr	r3, [r4, #184]
+ 958 03b6 33F00202 		bics	r2, r3, #2
+ 959 03ba 0CD0     		beq	.L125
+ 960 03bc 23F40042 		bic	r2, r3, #32768
+ 961 03c0 B2F5804F 		cmp	r2, #16384
+ 962 03c4 07D0     		beq	.L125
+ 963 03c6 B3F5004F 		cmp	r3, #32768
+ 964 03ca 04D0     		beq	.L125
+ 965 03cc 4B48     		ldr	r0, .L328
+ 966 03ce 40F2E711 		movw	r1, #487
+ 967 03d2 FFF7FEFF 		bl	assert_err
+ 968              	.L125:
+ 969 03d6 4A4F     		ldr	r7, .L328+4
+ 970 03d8 03A8     		add	r0, sp, #12
+ 971 03da 3E69     		ldr	r6, [r7, #16]
+ 972 03dc FFF7FEFF 		bl	RCC_GetClocksFreq
+ 973 03e0 049A     		ldr	r2, [sp, #16]
+ 974 03e2 484B     		ldr	r3, .L328+8
+ 975 03e4 4849     		ldr	r1, .L328+12
+ 976 03e6 1344     		add	r3, r3, r2
+ 977 03e8 8B42     		cmp	r3, r1
+ 978 03ea 26F01C06 		bic	r6, r6, #28
+ 979 03ee 02D8     		bhi	.L126
+ 980 03f0 46F00806 		orr	r6, r6, #8
+ 981 03f4 06E0     		b	.L127
+ 982              	.L126:
+ 983 03f6 454B     		ldr	r3, .L328+16
+ 984 03f8 1344     		add	r3, r3, r2
+ 985 03fa 454A     		ldr	r2, .L328+20
+ 986 03fc 9342     		cmp	r3, r2
+ 987 03fe 98BF     		it	ls
+ 988 0400 46F00C06 		orrls	r6, r6, #12
+ 989              	.L127:
+ 990 0404 3E61     		str	r6, [r7, #16]
+ 991 0406 2846     		mov	r0, r5
+ 992 0408 0021     		movs	r1, #0
+ 993 040a 4FF40042 		mov	r2, #32768
+ 994 040e FFF7FEFF 		bl	ETH_WritePHYRegister
+ 995 0412 08B9     		cbnz	r0, .L128
+ 996              	.L135:
+ 997 0414 0020     		movs	r0, #0
+ 998 0416 11E1     		b	.L129
+ 999              	.L128:
+ 1000 0418 3E4B     		ldr	r3, .L328+24
+ 1001              	.L320:
+ 1002 041a 0193     		str	r3, [sp, #4]
+ 1003 041c 019B     		ldr	r3, [sp, #4]
+ 1004 041e 13B1     		cbz	r3, .L324
+ 1005 0420 019B     		ldr	r3, [sp, #4]
+ 1006 0422 013B     		subs	r3, r3, #1
+ 1007 0424 F9E7     		b	.L320
+ 1008              	.L324:
+ 1009 0426 2168     		ldr	r1, [r4]
+ 1010 0428 0029     		cmp	r1, #0
+ 1011 042a 51D0     		beq	.L132
+ 1012 042c 3A48     		ldr	r0, .L328+28
+ 1013 042e FFF7FEFF 		bl	puts
+ 1014 0432 3A4E     		ldr	r6, .L328+32
+ 1015              	.L134:
+ 1016 0434 029B     		ldr	r3, [sp, #8]
+ 1017 0436 2846     		mov	r0, r5
+ 1018 0438 0133     		adds	r3, r3, #1
+ 1019 043a 0121     		movs	r1, #1
+ 1020 043c 0293     		str	r3, [sp, #8]
+ 1021 043e FFF7FEFF 		bl	ETH_ReadPHYRegister
+ 1022 0442 4307     		lsls	r3, r0, #29
+ 1023 0444 02D4     		bmi	.L133
+ 1024 0446 029B     		ldr	r3, [sp, #8]
+ 1025 0448 B342     		cmp	r3, r6
+ 1026 044a F3D9     		bls	.L134
+ 1027              	.L133:
+ 1028 044c 029A     		ldr	r2, [sp, #8]
+ 1029 044e 344B     		ldr	r3, .L328+36
+ 1030 0450 9A42     		cmp	r2, r3
+ 1031 0452 DFD0     		beq	.L135
+ 1032 0454 0021     		movs	r1, #0
+ 1033 0456 2846     		mov	r0, r5
+ 1034 0458 4FF48052 		mov	r2, #4096
+ 1035 045c 0291     		str	r1, [sp, #8]
+ 1036 045e FFF7FEFF 		bl	ETH_WritePHYRegister
+ 1037 0462 0028     		cmp	r0, #0
+ 1038 0464 D6D0     		beq	.L135
+ 1039 0466 2D4E     		ldr	r6, .L328+32
+ 1040              	.L137:
+ 1041 0468 029B     		ldr	r3, [sp, #8]
+ 1042 046a 2846     		mov	r0, r5
+ 1043 046c 0133     		adds	r3, r3, #1
+ 1044 046e 0121     		movs	r1, #1
+ 1045 0470 0293     		str	r3, [sp, #8]
+ 1046 0472 FFF7FEFF 		bl	ETH_ReadPHYRegister
+ 1047 0476 8706     		lsls	r7, r0, #26
+ 1048 0478 02D4     		bmi	.L136
+ 1049 047a 029B     		ldr	r3, [sp, #8]
+ 1050 047c B342     		cmp	r3, r6
+ 1051 047e F3D9     		bls	.L137
+ 1052              	.L136:
+ 1053 0480 029A     		ldr	r2, [sp, #8]
+ 1054 0482 274B     		ldr	r3, .L328+36
+ 1055 0484 9A42     		cmp	r2, r3
+ 1056 0486 C5D0     		beq	.L135
+ 1057 0488 0023     		movs	r3, #0
+ 1058 048a 2846     		mov	r0, r5
+ 1059 048c 1021     		movs	r1, #16
+ 1060 048e 0293     		str	r3, [sp, #8]
+ 1061 0490 FFF7FEFF 		bl	ETH_ReadPHYRegister
+ 1062 0494 00F00403 		and	r3, r0, #4
+ 1063 0498 9BB2     		uxth	r3, r3
+ 1064 049a 0546     		mov	r5, r0
+ 1065 049c 23B1     		cbz	r3, .L138
+ 1066 049e 4FF40063 		mov	r3, #2048
+ 1067 04a2 2362     		str	r3, [r4, #32]
+ 1068 04a4 1F48     		ldr	r0, .L328+40
+ 1069 04a6 01E0     		b	.L321
+ 1070              	.L138:
+ 1071 04a8 1F48     		ldr	r0, .L328+44
+ 1072 04aa 2362     		str	r3, [r4, #32]
+ 1073              	.L321:
+ 1074 04ac FFF7FEFF 		bl	puts
+ 1075 04b0 AE07     		lsls	r6, r5, #30
+ 1076 04b2 03D5     		bpl	.L140
+ 1077 04b4 0023     		movs	r3, #0
+ 1078 04b6 6361     		str	r3, [r4, #20]
+ 1079 04b8 1C48     		ldr	r0, .L328+48
+ 1080 04ba 03E0     		b	.L322
+ 1081              	.L140:
+ 1082 04bc 4FF48043 		mov	r3, #16384
+ 1083 04c0 1B48     		ldr	r0, .L328+52
+ 1084 04c2 6361     		str	r3, [r4, #20]
+ 1085              	.L322:
+ 1086 04c4 FFF7FEFF 		bl	puts
+ 1087 04c8 1A48     		ldr	r0, .L328+56
+ 1088 04ca FFF7FEFF 		bl	puts
+ 1089 04ce 35E0     		b	.L142
+ 1090              	.L132:
+ 1091 04d0 226A     		ldr	r2, [r4, #32]
+ 1092 04d2 6369     		ldr	r3, [r4, #20]
+ 1093 04d4 D208     		lsrs	r2, r2, #3
+ 1094 04d6 42EA5302 		orr	r2, r2, r3, lsr #1
+ 1095 04da 2846     		mov	r0, r5
+ 1096 04dc 92B2     		uxth	r2, r2
+ 1097 04de FFF7FEFF 		bl	ETH_WritePHYRegister
+ 1098 04e2 18B9     		cbnz	r0, .L143
+ 1099 04e4 1448     		ldr	r0, .L328+60
+ 1100 04e6 FFF7FEFF 		bl	puts
+ 1101 04ea 93E7     		b	.L135
+ 1102              	.L143:
+ 1103 04ec 6FF07F43 		mvn	r3, #-16777216
+ 1104              	.L323:
+ 1105 04f0 0193     		str	r3, [sp, #4]
+ 1106 04f2 019B     		ldr	r3, [sp, #4]
+ 1107 04f4 13B3     		cbz	r3, .L142
+ 1108 04f6 019B     		ldr	r3, [sp, #4]
+ 1109 04f8 013B     		subs	r3, r3, #1
+ 1110 04fa F9E7     		b	.L323
+ 1111              	.L329:
+ 1112              		.align	2
+ 1113              	.L328:
+ 1114 04fc 00000000 		.word	.LC0
+ 1115 0500 00800240 		.word	1073905664
+ 1116 0504 00D3CEFE 		.word	-20000000
+ 1117 0508 BFE1E400 		.word	14999999
+ 1118 050c 40F1E9FD 		.word	-35000000
+ 1119 0510 3F787D01 		.word	24999999
+ 1120 0514 FFFF0F00 		.word	1048575
+ 1121 0518 52000000 		.word	.LC1
+ 1122 051c FEFF0400 		.word	327678
+ 1123 0520 FFFF0400 		.word	327679
+ 1124 0524 7A000000 		.word	.LC2
+ 1125 0528 95000000 		.word	.LC3
+ 1126 052c B0000000 		.word	.LC4
+ 1127 0530 C9000000 		.word	.LC5
+ 1128 0534 E3000000 		.word	.LC6
+ 1129 0538 08010000 		.word	.LC7
+ 1130              	.L142:
+ 1131 053c 404B     		ldr	r3, .L330
+ 1132 053e 414A     		ldr	r2, .L330+4
+ 1133 0540 1968     		ldr	r1, [r3]
+ 1134 0542 A068     		ldr	r0, [r4, #8]
+ 1135 0544 0A40     		ands	r2, r2, r1
+ 1136 0546 6168     		ldr	r1, [r4, #4]
+ 1137 0548 0843     		orrs	r0, r0, r1
+ 1138 054a E168     		ldr	r1, [r4, #12]
+ 1139 054c 0843     		orrs	r0, r0, r1
+ 1140 054e 2169     		ldr	r1, [r4, #16]
+ 1141 0550 0843     		orrs	r0, r0, r1
+ 1142 0552 6169     		ldr	r1, [r4, #20]
+ 1143 0554 0843     		orrs	r0, r0, r1
+ 1144 0556 A169     		ldr	r1, [r4, #24]
+ 1145 0558 0843     		orrs	r0, r0, r1
+ 1146 055a E169     		ldr	r1, [r4, #28]
+ 1147 055c 0843     		orrs	r0, r0, r1
+ 1148 055e 216A     		ldr	r1, [r4, #32]
+ 1149 0560 0843     		orrs	r0, r0, r1
+ 1150 0562 616A     		ldr	r1, [r4, #36]
+ 1151 0564 0843     		orrs	r0, r0, r1
+ 1152 0566 A16A     		ldr	r1, [r4, #40]
+ 1153 0568 0843     		orrs	r0, r0, r1
+ 1154 056a E16A     		ldr	r1, [r4, #44]
+ 1155 056c 0843     		orrs	r0, r0, r1
+ 1156 056e 216B     		ldr	r1, [r4, #48]
+ 1157 0570 0843     		orrs	r0, r0, r1
+ 1158 0572 616B     		ldr	r1, [r4, #52]
+ 1159 0574 0143     		orrs	r1, r1, r0
+ 1160 0576 0A43     		orrs	r2, r2, r1
+ 1161 0578 1A60     		str	r2, [r3]
+ 1162 057a A26B     		ldr	r2, [r4, #56]
+ 1163 057c E16B     		ldr	r1, [r4, #60]
+ 1164 057e 1143     		orrs	r1, r1, r2
+ 1165 0580 226C     		ldr	r2, [r4, #64]
+ 1166 0582 1143     		orrs	r1, r1, r2
+ 1167 0584 626C     		ldr	r2, [r4, #68]
+ 1168 0586 1143     		orrs	r1, r1, r2
+ 1169 0588 A26C     		ldr	r2, [r4, #72]
+ 1170 058a 1143     		orrs	r1, r1, r2
+ 1171 058c E26C     		ldr	r2, [r4, #76]
+ 1172 058e 1143     		orrs	r1, r1, r2
+ 1173 0590 226D     		ldr	r2, [r4, #80]
+ 1174 0592 1143     		orrs	r1, r1, r2
+ 1175 0594 626D     		ldr	r2, [r4, #84]
+ 1176 0596 0A43     		orrs	r2, r2, r1
+ 1177 0598 5A60     		str	r2, [r3, #4]
+ 1178 059a A26D     		ldr	r2, [r4, #88]
+ 1179 059c 9A60     		str	r2, [r3, #8]
+ 1180 059e E26D     		ldr	r2, [r4, #92]
+ 1181 05a0 DA60     		str	r2, [r3, #12]
+ 1182 05a2 626E     		ldr	r2, [r4, #100]
+ 1183 05a4 A16E     		ldr	r1, [r4, #104]
+ 1184 05a6 9869     		ldr	r0, [r3, #24]
+ 1185 05a8 1143     		orrs	r1, r1, r2
+ 1186 05aa E26E     		ldr	r2, [r4, #108]
+ 1187 05ac 1143     		orrs	r1, r1, r2
+ 1188 05ae 226F     		ldr	r2, [r4, #112]
+ 1189 05b0 1143     		orrs	r1, r1, r2
+ 1190 05b2 626F     		ldr	r2, [r4, #116]
+ 1191 05b4 1143     		orrs	r1, r1, r2
+ 1192 05b6 4FF64172 		movw	r2, #65345
+ 1193 05ba 0240     		ands	r2, r2, r0
+ 1194 05bc 0A43     		orrs	r2, r2, r1
+ 1195 05be 216E     		ldr	r1, [r4, #96]
+ 1196 05c0 42EA0141 		orr	r1, r2, r1, lsl #16
+ 1197 05c4 9961     		str	r1, [r3, #24]
+ 1198 05c6 E16F     		ldr	r1, [r4, #124]
+ 1199 05c8 A26F     		ldr	r2, [r4, #120]
+ 1200 05ca 0A43     		orrs	r2, r2, r1
+ 1201 05cc DA61     		str	r2, [r3, #28]
+ 1202 05ce 03F58053 		add	r3, r3, #4096
+ 1203 05d2 9969     		ldr	r1, [r3, #24]
+ 1204 05d4 1C4A     		ldr	r2, .L330+8
+ 1205 05d6 D4F88400 		ldr	r0, [r4, #132]
+ 1206 05da 0A40     		ands	r2, r2, r1
+ 1207 05dc D4F88010 		ldr	r1, [r4, #128]
+ 1208 05e0 0843     		orrs	r0, r0, r1
+ 1209 05e2 D4F88810 		ldr	r1, [r4, #136]
+ 1210 05e6 0843     		orrs	r0, r0, r1
+ 1211 05e8 D4F88C10 		ldr	r1, [r4, #140]
+ 1212 05ec 0843     		orrs	r0, r0, r1
+ 1213 05ee D4F89010 		ldr	r1, [r4, #144]
+ 1214 05f2 0843     		orrs	r0, r0, r1
+ 1215 05f4 D4F89410 		ldr	r1, [r4, #148]
+ 1216 05f8 0843     		orrs	r0, r0, r1
+ 1217 05fa D4F89810 		ldr	r1, [r4, #152]
+ 1218 05fe 0843     		orrs	r0, r0, r1
+ 1219 0600 D4F89C10 		ldr	r1, [r4, #156]
+ 1220 0604 0843     		orrs	r0, r0, r1
+ 1221 0606 D4F8A010 		ldr	r1, [r4, #160]
+ 1222 060a 0143     		orrs	r1, r1, r0
+ 1223 060c 0A43     		orrs	r2, r2, r1
+ 1224 060e 9A61     		str	r2, [r3, #24]
+ 1225 0610 D4F8A820 		ldr	r2, [r4, #168]
+ 1226 0614 D4F8A410 		ldr	r1, [r4, #164]
+ 1227 0618 0120     		movs	r0, #1
+ 1228 061a 1143     		orrs	r1, r1, r2
+ 1229 061c D4F8AC20 		ldr	r2, [r4, #172]
+ 1230 0620 41F40001 		orr	r1, r1, #8388608
+ 1231 0624 1143     		orrs	r1, r1, r2
+ 1232 0626 D4F8B020 		ldr	r2, [r4, #176]
+ 1233 062a 1143     		orrs	r1, r1, r2
+ 1234 062c D4F8B820 		ldr	r2, [r4, #184]
+ 1235 0630 0A43     		orrs	r2, r2, r1
+ 1236 0632 D4F8B410 		ldr	r1, [r4, #180]
+ 1237 0636 42EA8102 		orr	r2, r2, r1, lsl #2
+ 1238 063a 1A60     		str	r2, [r3]
+ 1239              	.L129:
+ 1240 063c 09B0     		add	sp, sp, #36
+ 1241              		@ sp needed
+ 1242 063e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1243              	.L331:
+ 1244              		.align	2
+ 1245              	.L330:
+ 1246 0640 00800240 		.word	1073905664
+ 1247 0644 0F8120FF 		.word	-14647025
+ 1248 0648 233FDEF8 		.word	-119652573
+ 1250              		.section	.text.ETH_PHYLoopBackCmd,"ax",%progbits
+ 1251              		.align	1
+ 1252              		.global	ETH_PHYLoopBackCmd
+ 1253              		.thumb
+ 1254              		.thumb_func
+ 1256              	ETH_PHYLoopBackCmd:
+ 1257              		@ args = 0, pretend = 0, frame = 0
+ 1258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1259 0000 2028     		cmp	r0, #32
+ 1260 0002 38B5     		push	{r3, r4, r5, lr}
+ 1261 0004 0446     		mov	r4, r0
+ 1262 0006 0D46     		mov	r5, r1
+ 1263 0008 04D9     		bls	.L333
+ 1264 000a 0F48     		ldr	r0, .L338
+ 1265 000c 40F26141 		movw	r1, #1121
+ 1266 0010 FFF7FEFF 		bl	assert_err
+ 1267              	.L333:
+ 1268 0014 012D     		cmp	r5, #1
+ 1269 0016 04D9     		bls	.L334
+ 1270 0018 0B48     		ldr	r0, .L338
+ 1271 001a 40F26241 		movw	r1, #1122
+ 1272 001e FFF7FEFF 		bl	assert_err
+ 1273              	.L334:
+ 1274 0022 2046     		mov	r0, r4
+ 1275 0024 0021     		movs	r1, #0
+ 1276 0026 FFF7FEFF 		bl	ETH_ReadPHYRegister
+ 1277 002a 15B1     		cbz	r5, .L335
+ 1278 002c 40F48042 		orr	r2, r0, #16384
+ 1279 0030 01E0     		b	.L337
+ 1280              	.L335:
+ 1281 0032 20F48042 		bic	r2, r0, #16384
+ 1282              	.L337:
+ 1283 0036 92B2     		uxth	r2, r2
+ 1284 0038 2046     		mov	r0, r4
+ 1285 003a 0021     		movs	r1, #0
+ 1286 003c FFF7FEFF 		bl	ETH_WritePHYRegister
+ 1287 0040 0030     		adds	r0, r0, #0
+ 1288 0042 18BF     		it	ne
+ 1289 0044 0120     		movne	r0, #1
+ 1290 0046 38BD     		pop	{r3, r4, r5, pc}
+ 1291              	.L339:
+ 1292              		.align	2
+ 1293              	.L338:
+ 1294 0048 00000000 		.word	.LC0
+ 1296              		.section	.text.ETH_MACTransmissionCmd,"ax",%progbits
+ 1297              		.align	1
+ 1298              		.global	ETH_MACTransmissionCmd
+ 1299              		.thumb
+ 1300              		.thumb_func
+ 1302              	ETH_MACTransmissionCmd:
+ 1303              		@ args = 0, pretend = 0, frame = 0
+ 1304              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1305 0000 0128     		cmp	r0, #1
+ 1306 0002 10B5     		push	{r4, lr}
+ 1307 0004 084C     		ldr	r4, .L346
+ 1308 0006 05D9     		bls	.L341
+ 1309 0008 0848     		ldr	r0, .L346+4
+ 1310 000a 40F28741 		movw	r1, #1159
+ 1311 000e FFF7FEFF 		bl	assert_err
+ 1312 0012 00E0     		b	.L342
+ 1313              	.L341:
+ 1314 0014 18B1     		cbz	r0, .L343
+ 1315              	.L342:
+ 1316 0016 2368     		ldr	r3, [r4]
+ 1317 0018 43F00803 		orr	r3, r3, #8
+ 1318 001c 02E0     		b	.L345
+ 1319              	.L343:
+ 1320 001e 2368     		ldr	r3, [r4]
+ 1321 0020 23F00803 		bic	r3, r3, #8
+ 1322              	.L345:
+ 1323 0024 2360     		str	r3, [r4]
+ 1324 0026 10BD     		pop	{r4, pc}
+ 1325              	.L347:
+ 1326              		.align	2
+ 1327              	.L346:
+ 1328 0028 00800240 		.word	1073905664
+ 1329 002c 00000000 		.word	.LC0
+ 1331              		.section	.text.ETH_MACReceptionCmd,"ax",%progbits
+ 1332              		.align	1
+ 1333              		.global	ETH_MACReceptionCmd
+ 1334              		.thumb
+ 1335              		.thumb_func
+ 1337              	ETH_MACReceptionCmd:
+ 1338              		@ args = 0, pretend = 0, frame = 0
+ 1339              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1340 0000 0128     		cmp	r0, #1
+ 1341 0002 10B5     		push	{r4, lr}
+ 1342 0004 084C     		ldr	r4, .L354
+ 1343 0006 05D9     		bls	.L349
+ 1344 0008 0848     		ldr	r0, .L354+4
+ 1345 000a 40F29E41 		movw	r1, #1182
+ 1346 000e FFF7FEFF 		bl	assert_err
+ 1347 0012 00E0     		b	.L350
+ 1348              	.L349:
+ 1349 0014 18B1     		cbz	r0, .L351
+ 1350              	.L350:
+ 1351 0016 2368     		ldr	r3, [r4]
+ 1352 0018 43F00403 		orr	r3, r3, #4
+ 1353 001c 02E0     		b	.L353
+ 1354              	.L351:
+ 1355 001e 2368     		ldr	r3, [r4]
+ 1356 0020 23F00403 		bic	r3, r3, #4
+ 1357              	.L353:
+ 1358 0024 2360     		str	r3, [r4]
+ 1359 0026 10BD     		pop	{r4, pc}
+ 1360              	.L355:
+ 1361              		.align	2
+ 1362              	.L354:
+ 1363 0028 00800240 		.word	1073905664
+ 1364 002c 00000000 		.word	.LC0
+ 1366              		.section	.text.ETH_GetFlowControlBusyStatus,"ax",%progbits
+ 1367              		.align	1
+ 1368              		.global	ETH_GetFlowControlBusyStatus
+ 1369              		.thumb
+ 1370              		.thumb_func
+ 1372              	ETH_GetFlowControlBusyStatus:
+ 1373              		@ args = 0, pretend = 0, frame = 0
+ 1374              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1375              		@ link register save eliminated.
+ 1376 0000 024B     		ldr	r3, .L357
+ 1377 0002 9869     		ldr	r0, [r3, #24]
+ 1378 0004 00F00100 		and	r0, r0, #1
+ 1379 0008 7047     		bx	lr
+ 1380              	.L358:
+ 1381 000a 00BF     		.align	2
+ 1382              	.L357:
+ 1383 000c 00800240 		.word	1073905664
+ 1385              		.section	.text.ETH_InitiatePauseControlFrame,"ax",%progbits
+ 1386              		.align	1
+ 1387              		.global	ETH_InitiatePauseControlFrame
+ 1388              		.thumb
+ 1389              		.thumb_func
+ 1391              	ETH_InitiatePauseControlFrame:
+ 1392              		@ args = 0, pretend = 0, frame = 0
+ 1393              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1394              		@ link register save eliminated.
+ 1395 0000 024B     		ldr	r3, .L360
+ 1396 0002 9A69     		ldr	r2, [r3, #24]
+ 1397 0004 42F00102 		orr	r2, r2, #1
+ 1398 0008 9A61     		str	r2, [r3, #24]
+ 1399 000a 7047     		bx	lr
+ 1400              	.L361:
+ 1401              		.align	2
+ 1402              	.L360:
+ 1403 000c 00800240 		.word	1073905664
+ 1405              		.section	.text.ETH_BackPressureActivationCmd,"ax",%progbits
+ 1406              		.align	1
+ 1407              		.global	ETH_BackPressureActivationCmd
+ 1408              		.thumb
+ 1409              		.thumb_func
+ 1411              	ETH_BackPressureActivationCmd:
+ 1412              		@ args = 0, pretend = 0, frame = 0
+ 1413              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1414 0000 0128     		cmp	r0, #1
+ 1415 0002 10B5     		push	{r4, lr}
+ 1416 0004 084C     		ldr	r4, .L368
+ 1417 0006 05D9     		bls	.L363
+ 1418 0008 0848     		ldr	r0, .L368+4
+ 1419 000a 40F2D441 		movw	r1, #1236
+ 1420 000e FFF7FEFF 		bl	assert_err
+ 1421 0012 00E0     		b	.L364
+ 1422              	.L363:
+ 1423 0014 18B1     		cbz	r0, .L365
+ 1424              	.L364:
+ 1425 0016 A369     		ldr	r3, [r4, #24]
+ 1426 0018 43F00103 		orr	r3, r3, #1
+ 1427 001c 02E0     		b	.L367
+ 1428              	.L365:
+ 1429 001e A369     		ldr	r3, [r4, #24]
+ 1430 0020 23F00103 		bic	r3, r3, #1
+ 1431              	.L367:
+ 1432 0024 A361     		str	r3, [r4, #24]
+ 1433 0026 10BD     		pop	{r4, pc}
+ 1434              	.L369:
+ 1435              		.align	2
+ 1436              	.L368:
+ 1437 0028 00800240 		.word	1073905664
+ 1438 002c 00000000 		.word	.LC0
+ 1440              		.section	.text.ETH_GetMACFlagStatus,"ax",%progbits
+ 1441              		.align	1
+ 1442              		.global	ETH_GetMACFlagStatus
+ 1443              		.thumb
+ 1444              		.thumb_func
+ 1446              	ETH_GetMACFlagStatus:
+ 1447              		@ args = 0, pretend = 0, frame = 0
+ 1448              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1449 0000 B0F5007F 		cmp	r0, #512
+ 1450 0004 10B5     		push	{r4, lr}
+ 1451 0006 0446     		mov	r4, r0
+ 1452 0008 0CD0     		beq	.L371
+ 1453 000a 4028     		cmp	r0, #64
+ 1454 000c 0AD0     		beq	.L371
+ 1455 000e 2028     		cmp	r0, #32
+ 1456 0010 08D0     		beq	.L371
+ 1457 0012 1028     		cmp	r0, #16
+ 1458 0014 06D0     		beq	.L371
+ 1459 0016 0828     		cmp	r0, #8
+ 1460 0018 04D0     		beq	.L371
+ 1461 001a 0648     		ldr	r0, .L387
+ 1462 001c 40F2F341 		movw	r1, #1267
+ 1463 0020 FFF7FEFF 		bl	assert_err
+ 1464              	.L371:
+ 1465 0024 044B     		ldr	r3, .L387+4
+ 1466 0026 9B6B     		ldr	r3, [r3, #56]
+ 1467 0028 1C42     		tst	r4, r3
+ 1468 002a 0CBF     		ite	eq
+ 1469 002c 0020     		moveq	r0, #0
+ 1470 002e 0120     		movne	r0, #1
+ 1471 0030 10BD     		pop	{r4, pc}
+ 1472              	.L388:
+ 1473 0032 00BF     		.align	2
+ 1474              	.L387:
+ 1475 0034 00000000 		.word	.LC0
+ 1476 0038 00800240 		.word	1073905664
+ 1478              		.section	.text.ETH_GetMACITStatus,"ax",%progbits
+ 1479              		.align	1
+ 1480              		.global	ETH_GetMACITStatus
+ 1481              		.thumb
+ 1482              		.thumb_func
+ 1484              	ETH_GetMACITStatus:
+ 1485              		@ args = 0, pretend = 0, frame = 0
+ 1486              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1487 0000 B0F5007F 		cmp	r0, #512
+ 1488 0004 10B5     		push	{r4, lr}
+ 1489 0006 0446     		mov	r4, r0
+ 1490 0008 0CD0     		beq	.L390
+ 1491 000a 4028     		cmp	r0, #64
+ 1492 000c 0AD0     		beq	.L390
+ 1493 000e 2028     		cmp	r0, #32
+ 1494 0010 08D0     		beq	.L390
+ 1495 0012 1028     		cmp	r0, #16
+ 1496 0014 06D0     		beq	.L390
+ 1497 0016 0828     		cmp	r0, #8
+ 1498 0018 04D0     		beq	.L390
+ 1499 001a 0648     		ldr	r0, .L406
+ 1500 001c 40F20E51 		movw	r1, #1294
+ 1501 0020 FFF7FEFF 		bl	assert_err
+ 1502              	.L390:
+ 1503 0024 044B     		ldr	r3, .L406+4
+ 1504 0026 9B6B     		ldr	r3, [r3, #56]
+ 1505 0028 1C42     		tst	r4, r3
+ 1506 002a 0CBF     		ite	eq
+ 1507 002c 0020     		moveq	r0, #0
+ 1508 002e 0120     		movne	r0, #1
+ 1509 0030 10BD     		pop	{r4, pc}
+ 1510              	.L407:
+ 1511 0032 00BF     		.align	2
+ 1512              	.L406:
+ 1513 0034 00000000 		.word	.LC0
+ 1514 0038 00800240 		.word	1073905664
+ 1516              		.section	.text.ETH_MACITConfig,"ax",%progbits
+ 1517              		.align	1
+ 1518              		.global	ETH_MACITConfig
+ 1519              		.thumb
+ 1520              		.thumb_func
+ 1522              	ETH_MACITConfig:
+ 1523              		@ args = 0, pretend = 0, frame = 0
+ 1524              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1525 0000 30F40273 		bics	r3, r0, #520
+ 1526 0004 70B5     		push	{r4, r5, r6, lr}
+ 1527 0006 0546     		mov	r5, r0
+ 1528 0008 0E46     		mov	r6, r1
+ 1529 000a 00D1     		bne	.L409
+ 1530 000c 20B9     		cbnz	r0, .L410
+ 1531              	.L409:
+ 1532 000e 0B48     		ldr	r0, .L416
+ 1533 0010 4FF4A561 		mov	r1, #1320
+ 1534 0014 FFF7FEFF 		bl	assert_err
+ 1535              	.L410:
+ 1536 0018 012E     		cmp	r6, #1
+ 1537 001a 094C     		ldr	r4, .L416+4
+ 1538 001c 05D9     		bls	.L411
+ 1539 001e 0748     		ldr	r0, .L416
+ 1540 0020 40F22951 		movw	r1, #1321
+ 1541 0024 FFF7FEFF 		bl	assert_err
+ 1542 0028 00E0     		b	.L412
+ 1543              	.L411:
+ 1544 002a 1EB1     		cbz	r6, .L413
+ 1545              	.L412:
+ 1546 002c E36B     		ldr	r3, [r4, #60]
+ 1547 002e 23EA0505 		bic	r5, r3, r5
+ 1548 0032 01E0     		b	.L415
+ 1549              	.L413:
+ 1550 0034 E36B     		ldr	r3, [r4, #60]
+ 1551 0036 1D43     		orrs	r5, r5, r3
+ 1552              	.L415:
+ 1553 0038 E563     		str	r5, [r4, #60]
+ 1554 003a 70BD     		pop	{r4, r5, r6, pc}
+ 1555              	.L417:
+ 1556              		.align	2
+ 1557              	.L416:
+ 1558 003c 00000000 		.word	.LC0
+ 1559 0040 00800240 		.word	1073905664
+ 1561              		.section	.text.ETH_MACAddressConfig,"ax",%progbits
+ 1562              		.align	1
+ 1563              		.global	ETH_MACAddressConfig
+ 1564              		.thumb
+ 1565              		.thumb_func
+ 1567              	ETH_MACAddressConfig:
+ 1568              		@ args = 0, pretend = 0, frame = 0
+ 1569              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1570 0000 38B5     		push	{r3, r4, r5, lr}
+ 1571 0002 30F01803 		bics	r3, r0, #24
+ 1572 0006 0546     		mov	r5, r0
+ 1573 0008 0C46     		mov	r4, r1
+ 1574 000a 04D0     		beq	.L419
+ 1575 000c 0B48     		ldr	r0, .L423
+ 1576 000e 40F24651 		movw	r1, #1350
+ 1577 0012 FFF7FEFF 		bl	assert_err
+ 1578              	.L419:
+ 1579 0016 2379     		ldrb	r3, [r4, #4]	@ zero_extendqisi2
+ 1580 0018 6279     		ldrb	r2, [r4, #5]	@ zero_extendqisi2
+ 1581 001a 43EA0222 		orr	r2, r3, r2, lsl #8
+ 1582 001e 084B     		ldr	r3, .L423+4
+ 1583 0020 EA50     		str	r2, [r5, r3]
+ 1584 0022 A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 1585 0024 E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
+ 1586 0026 1204     		lsls	r2, r2, #16
+ 1587 0028 42EA0362 		orr	r2, r2, r3, lsl #24
+ 1588 002c 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 1589 002e 1A43     		orrs	r2, r2, r3
+ 1590 0030 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 1591 0032 42EA0322 		orr	r2, r2, r3, lsl #8
+ 1592 0036 034B     		ldr	r3, .L423+8
+ 1593 0038 EA50     		str	r2, [r5, r3]
+ 1594 003a 38BD     		pop	{r3, r4, r5, pc}
+ 1595              	.L424:
+ 1596              		.align	2
+ 1597              	.L423:
+ 1598 003c 00000000 		.word	.LC0
+ 1599 0040 40800240 		.word	1073905728
+ 1600 0044 44800240 		.word	1073905732
+ 1602              		.section	.text.ETH_GetMACAddress,"ax",%progbits
+ 1603              		.align	1
+ 1604              		.global	ETH_GetMACAddress
+ 1605              		.thumb
+ 1606              		.thumb_func
+ 1608              	ETH_GetMACAddress:
+ 1609              		@ args = 0, pretend = 0, frame = 0
+ 1610              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1611 0000 38B5     		push	{r3, r4, r5, lr}
+ 1612 0002 30F01803 		bics	r3, r0, #24
+ 1613 0006 0546     		mov	r5, r0
+ 1614 0008 0C46     		mov	r4, r1
+ 1615 000a 04D0     		beq	.L426
+ 1616 000c 0948     		ldr	r0, .L430
+ 1617 000e 40F26251 		movw	r1, #1378
+ 1618 0012 FFF7FEFF 		bl	assert_err
+ 1619              	.L426:
+ 1620 0016 084B     		ldr	r3, .L430+4
+ 1621 0018 EB58     		ldr	r3, [r5, r3]
+ 1622 001a 1A0A     		lsrs	r2, r3, #8
+ 1623 001c 2371     		strb	r3, [r4, #4]
+ 1624 001e 074B     		ldr	r3, .L430+8
+ 1625 0020 6271     		strb	r2, [r4, #5]
+ 1626 0022 EB58     		ldr	r3, [r5, r3]
+ 1627 0024 1A0E     		lsrs	r2, r3, #24
+ 1628 0026 E270     		strb	r2, [r4, #3]
+ 1629 0028 1A0C     		lsrs	r2, r3, #16
+ 1630 002a A270     		strb	r2, [r4, #2]
+ 1631 002c 1A0A     		lsrs	r2, r3, #8
+ 1632 002e 6270     		strb	r2, [r4, #1]
+ 1633 0030 2370     		strb	r3, [r4]
+ 1634 0032 38BD     		pop	{r3, r4, r5, pc}
+ 1635              	.L431:
+ 1636              		.align	2
+ 1637              	.L430:
+ 1638 0034 00000000 		.word	.LC0
+ 1639 0038 40800240 		.word	1073905728
+ 1640 003c 44800240 		.word	1073905732
+ 1642              		.section	.text.ETH_MACAddressPerfectFilterCmd,"ax",%progbits
+ 1643              		.align	1
+ 1644              		.global	ETH_MACAddressPerfectFilterCmd
+ 1645              		.thumb
+ 1646              		.thumb_func
+ 1648              	ETH_MACAddressPerfectFilterCmd:
+ 1649              		@ args = 0, pretend = 0, frame = 0
+ 1650              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1651 0000 20F01003 		bic	r3, r0, #16
+ 1652 0004 082B     		cmp	r3, #8
+ 1653 0006 70B5     		push	{r4, r5, r6, lr}
+ 1654 0008 0446     		mov	r4, r0
+ 1655 000a 0E46     		mov	r6, r1
+ 1656 000c 06D0     		beq	.L433
+ 1657 000e 1028     		cmp	r0, #16
+ 1658 0010 04D0     		beq	.L433
+ 1659 0012 0C48     		ldr	r0, .L445
+ 1660 0014 40F28251 		movw	r1, #1410
+ 1661 0018 FFF7FEFF 		bl	assert_err
+ 1662              	.L433:
+ 1663 001c 012E     		cmp	r6, #1
+ 1664 001e 0A4D     		ldr	r5, .L445+4
+ 1665 0020 05D9     		bls	.L434
+ 1666 0022 0848     		ldr	r0, .L445
+ 1667 0024 40F28351 		movw	r1, #1411
+ 1668 0028 FFF7FEFF 		bl	assert_err
+ 1669 002c 00E0     		b	.L435
+ 1670              	.L434:
+ 1671 002e 1EB1     		cbz	r6, .L436
+ 1672              	.L435:
+ 1673 0030 6359     		ldr	r3, [r4, r5]
+ 1674 0032 43F00043 		orr	r3, r3, #-2147483648
+ 1675 0036 02E0     		b	.L444
+ 1676              	.L436:
+ 1677 0038 6359     		ldr	r3, [r4, r5]
+ 1678 003a 23F00043 		bic	r3, r3, #-2147483648
+ 1679              	.L444:
+ 1680 003e 6351     		str	r3, [r4, r5]
+ 1681 0040 70BD     		pop	{r4, r5, r6, pc}
+ 1682              	.L446:
+ 1683 0042 00BF     		.align	2
+ 1684              	.L445:
+ 1685 0044 00000000 		.word	.LC0
+ 1686 0048 40800240 		.word	1073905728
+ 1688              		.section	.text.ETH_MACAddressFilterConfig,"ax",%progbits
+ 1689              		.align	1
+ 1690              		.global	ETH_MACAddressFilterConfig
+ 1691              		.thumb
+ 1692              		.thumb_func
+ 1694              	ETH_MACAddressFilterConfig:
+ 1695              		@ args = 0, pretend = 0, frame = 0
+ 1696              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1697 0000 20F01003 		bic	r3, r0, #16
+ 1698 0004 082B     		cmp	r3, #8
+ 1699 0006 70B5     		push	{r4, r5, r6, lr}
+ 1700 0008 0446     		mov	r4, r0
+ 1701 000a 0E46     		mov	r6, r1
+ 1702 000c 06D0     		beq	.L448
+ 1703 000e 1028     		cmp	r0, #16
+ 1704 0010 04D0     		beq	.L448
+ 1705 0012 0B48     		ldr	r0, .L462
+ 1706 0014 40F2A351 		movw	r1, #1443
+ 1707 0018 FFF7FEFF 		bl	assert_err
+ 1708              	.L448:
+ 1709 001c 094D     		ldr	r5, .L462+4
+ 1710 001e 36B1     		cbz	r6, .L449
+ 1711 0020 082E     		cmp	r6, #8
+ 1712 0022 08D0     		beq	.L450
+ 1713 0024 0648     		ldr	r0, .L462
+ 1714 0026 40F2A451 		movw	r1, #1444
+ 1715 002a FFF7FEFF 		bl	assert_err
+ 1716              	.L449:
+ 1717 002e 6359     		ldr	r3, [r4, r5]
+ 1718 0030 43F08043 		orr	r3, r3, #1073741824
+ 1719 0034 02E0     		b	.L461
+ 1720              	.L450:
+ 1721 0036 6359     		ldr	r3, [r4, r5]
+ 1722 0038 23F08043 		bic	r3, r3, #1073741824
+ 1723              	.L461:
+ 1724 003c 6351     		str	r3, [r4, r5]
+ 1725 003e 70BD     		pop	{r4, r5, r6, pc}
+ 1726              	.L463:
+ 1727              		.align	2
+ 1728              	.L462:
+ 1729 0040 00000000 		.word	.LC0
+ 1730 0044 40800240 		.word	1073905728
+ 1732              		.section	.text.ETH_MACAddressMaskBytesFilterConfig,"ax",%progbits
+ 1733              		.align	1
+ 1734              		.global	ETH_MACAddressMaskBytesFilterConfig
+ 1735              		.thumb
+ 1736              		.thumb_func
+ 1738              	ETH_MACAddressMaskBytesFilterConfig:
+ 1739              		@ args = 0, pretend = 0, frame = 0
+ 1740              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1741 0000 38B5     		push	{r3, r4, r5, lr}
+ 1742 0002 20F01003 		bic	r3, r0, #16
+ 1743 0006 082B     		cmp	r3, #8
+ 1744 0008 0546     		mov	r5, r0
+ 1745 000a 0C46     		mov	r4, r1
+ 1746 000c 06D0     		beq	.L465
+ 1747 000e 1028     		cmp	r0, #16
+ 1748 0010 04D0     		beq	.L465
+ 1749 0012 1248     		ldr	r0, .L491
+ 1750 0014 4FF4B961 		mov	r1, #1480
+ 1751 0018 FFF7FEFF 		bl	assert_err
+ 1752              	.L465:
+ 1753 001c B4F1005F 		cmp	r4, #536870912
+ 1754 0020 13D0     		beq	.L466
+ 1755 0022 B4F1805F 		cmp	r4, #268435456
+ 1756 0026 10D0     		beq	.L466
+ 1757 0028 B4F1006F 		cmp	r4, #134217728
+ 1758 002c 0DD0     		beq	.L466
+ 1759 002e B4F1806F 		cmp	r4, #67108864
+ 1760 0032 0AD0     		beq	.L466
+ 1761 0034 B4F1007F 		cmp	r4, #33554432
+ 1762 0038 07D0     		beq	.L466
+ 1763 003a B4F1807F 		cmp	r4, #16777216
+ 1764 003e 04D0     		beq	.L466
+ 1765 0040 0648     		ldr	r0, .L491
+ 1766 0042 40F2C951 		movw	r1, #1481
+ 1767 0046 FFF7FEFF 		bl	assert_err
+ 1768              	.L466:
+ 1769 004a 054B     		ldr	r3, .L491+4
+ 1770 004c EA58     		ldr	r2, [r5, r3]
+ 1771 004e 22F07C52 		bic	r2, r2, #1056964608
+ 1772 0052 EA50     		str	r2, [r5, r3]
+ 1773 0054 EA58     		ldr	r2, [r5, r3]
+ 1774 0056 1443     		orrs	r4, r4, r2
+ 1775 0058 EC50     		str	r4, [r5, r3]
+ 1776 005a 38BD     		pop	{r3, r4, r5, pc}
+ 1777              	.L492:
+ 1778              		.align	2
+ 1779              	.L491:
+ 1780 005c 00000000 		.word	.LC0
+ 1781 0060 40800240 		.word	1073905728
+ 1783              		.section	.text.ETH_DMATxDescChainInit,"ax",%progbits
+ 1784              		.align	1
+ 1785              		.global	ETH_DMATxDescChainInit
+ 1786              		.thumb
+ 1787              		.thumb_func
+ 1789              	ETH_DMATxDescChainInit:
+ 1790              		@ args = 0, pretend = 0, frame = 0
+ 1791              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1792 0000 0F4B     		ldr	r3, .L499
+ 1793 0002 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1794 0004 1860     		str	r0, [r3]
+ 1795 0006 0024     		movs	r4, #0
+ 1796 0008 00F11003 		add	r3, r0, #16
+ 1797 000c 4FF48015 		mov	r5, #1048576
+ 1798 0010 4FF4BE66 		mov	r6, #1520
+ 1799 0014 571E     		subs	r7, r2, #1
+ 1800              	.L494:
+ 1801 0016 9442     		cmp	r4, r2
+ 1802 0018 0ED0     		beq	.L498
+ 1803 001a 06FB041C 		mla	ip, r6, r4, r1
+ 1804 001e 43F808CC 		str	ip, [r3, #-8]
+ 1805 0022 BC42     		cmp	r4, r7
+ 1806 0024 2CBF     		ite	cs
+ 1807 0026 8446     		movcs	ip, r0
+ 1808 0028 9C46     		movcc	ip, r3
+ 1809 002a 43F8105C 		str	r5, [r3, #-16]
+ 1810 002e 43F804CC 		str	ip, [r3, #-4]
+ 1811 0032 0134     		adds	r4, r4, #1
+ 1812 0034 1033     		adds	r3, r3, #16
+ 1813 0036 EEE7     		b	.L494
+ 1814              	.L498:
+ 1815 0038 024B     		ldr	r3, .L499+4
+ 1816 003a 1861     		str	r0, [r3, #16]
+ 1817 003c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1818              	.L500:
+ 1819 003e 00BF     		.align	2
+ 1820              	.L499:
+ 1821 0040 00000000 		.word	DMATxDescToSet
+ 1822 0044 00900240 		.word	1073909760
+ 1824              		.section	.text.ETH_DMATxDescRingInit,"ax",%progbits
+ 1825              		.align	1
+ 1826              		.global	ETH_DMATxDescRingInit
+ 1827              		.thumb
+ 1828              		.thumb_func
+ 1830              	ETH_DMATxDescRingInit:
+ 1831              		@ args = 0, pretend = 0, frame = 0
+ 1832              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1833 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 1834 0004 0F4C     		ldr	r4, .L506
+ 1835 0006 0546     		mov	r5, r0
+ 1836 0008 2060     		str	r0, [r4]
+ 1837 000a 4FF4BE67 		mov	r7, #1520
+ 1838 000e 0024     		movs	r4, #0
+ 1839 0010 03F1FF3C 		add	ip, r3, #-1
+ 1840 0014 4FF40018 		mov	r8, #2097152
+ 1841              	.L502:
+ 1842 0018 9C42     		cmp	r4, r3
+ 1843 001a 0ED0     		beq	.L505
+ 1844 001c 07FB04F6 		mul	r6, r7, r4
+ 1845 0020 6445     		cmp	r4, ip
+ 1846 0022 01EB0609 		add	r9, r1, r6
+ 1847 0026 1644     		add	r6, r6, r2
+ 1848 0028 C5F80890 		str	r9, [r5, #8]
+ 1849 002c EE60     		str	r6, [r5, #12]
+ 1850 002e 08BF     		it	eq
+ 1851 0030 C5F80080 		streq	r8, [r5]
+ 1852 0034 0134     		adds	r4, r4, #1
+ 1853 0036 1035     		adds	r5, r5, #16
+ 1854 0038 EEE7     		b	.L502
+ 1855              	.L505:
+ 1856 003a 034B     		ldr	r3, .L506+4
+ 1857 003c 1861     		str	r0, [r3, #16]
+ 1858 003e BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 1859              	.L507:
+ 1860 0042 00BF     		.align	2
+ 1861              	.L506:
+ 1862 0044 00000000 		.word	DMATxDescToSet
+ 1863 0048 00900240 		.word	1073909760
+ 1865              		.section	.text.ETH_GetDMATxDescFlagStatus,"ax",%progbits
+ 1866              		.align	1
+ 1867              		.global	ETH_GetDMATxDescFlagStatus
+ 1868              		.thumb
+ 1869              		.thumb_func
+ 1871              	ETH_GetDMATxDescFlagStatus:
+ 1872              		@ args = 0, pretend = 0, frame = 0
+ 1873              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1874 0000 B1F1004F 		cmp	r1, #-2147483648
+ 1875 0004 38B5     		push	{r3, r4, r5, lr}
+ 1876 0006 0546     		mov	r5, r0
+ 1877 0008 0C46     		mov	r4, r1
+ 1878 000a 43D0     		beq	.L509
+ 1879 000c B1F1804F 		cmp	r1, #1073741824
+ 1880 0010 40D0     		beq	.L509
+ 1881 0012 B1F1005F 		cmp	r1, #536870912
+ 1882 0016 3DD0     		beq	.L509
+ 1883 0018 B1F1805F 		cmp	r1, #268435456
+ 1884 001c 3AD0     		beq	.L509
+ 1885 001e B1F1006F 		cmp	r1, #134217728
+ 1886 0022 37D0     		beq	.L509
+ 1887 0024 B1F1806F 		cmp	r1, #67108864
+ 1888 0028 34D0     		beq	.L509
+ 1889 002a B1F1007F 		cmp	r1, #33554432
+ 1890 002e 31D0     		beq	.L509
+ 1891 0030 B1F5001F 		cmp	r1, #2097152
+ 1892 0034 2ED0     		beq	.L509
+ 1893 0036 B1F5801F 		cmp	r1, #1048576
+ 1894 003a 2BD0     		beq	.L509
+ 1895 003c B1F5003F 		cmp	r1, #131072
+ 1896 0040 28D0     		beq	.L509
+ 1897 0042 B1F5803F 		cmp	r1, #65536
+ 1898 0046 25D0     		beq	.L509
+ 1899 0048 B1F5004F 		cmp	r1, #32768
+ 1900 004c 22D0     		beq	.L509
+ 1901 004e B1F5804F 		cmp	r1, #16384
+ 1902 0052 1FD0     		beq	.L509
+ 1903 0054 B1F5005F 		cmp	r1, #8192
+ 1904 0058 1CD0     		beq	.L509
+ 1905 005a B1F5805F 		cmp	r1, #4096
+ 1906 005e 19D0     		beq	.L509
+ 1907 0060 B1F5006F 		cmp	r1, #2048
+ 1908 0064 16D0     		beq	.L509
+ 1909 0066 B1F5806F 		cmp	r1, #1024
+ 1910 006a 13D0     		beq	.L509
+ 1911 006c B1F5007F 		cmp	r1, #512
+ 1912 0070 10D0     		beq	.L509
+ 1913 0072 B1F5807F 		cmp	r1, #256
+ 1914 0076 0DD0     		beq	.L509
+ 1915 0078 8029     		cmp	r1, #128
+ 1916 007a 0BD0     		beq	.L509
+ 1917 007c 7829     		cmp	r1, #120
+ 1918 007e 09D0     		beq	.L509
+ 1919 0080 0429     		cmp	r1, #4
+ 1920 0082 07D0     		beq	.L509
+ 1921 0084 4B1E     		subs	r3, r1, #1
+ 1922 0086 012B     		cmp	r3, #1
+ 1923 0088 04D9     		bls	.L509
+ 1924 008a 0548     		ldr	r0, .L576
+ 1925 008c 4FF4C961 		mov	r1, #1608
+ 1926 0090 FFF7FEFF 		bl	assert_err
+ 1927              	.L509:
+ 1928 0094 2B68     		ldr	r3, [r5]
+ 1929 0096 1C42     		tst	r4, r3
+ 1930 0098 0CBF     		ite	eq
+ 1931 009a 0020     		moveq	r0, #0
+ 1932 009c 0120     		movne	r0, #1
+ 1933 009e 38BD     		pop	{r3, r4, r5, pc}
+ 1934              	.L577:
+ 1935              		.align	2
+ 1936              	.L576:
+ 1937 00a0 00000000 		.word	.LC0
+ 1939              		.section	.text.ETH_GetDMATxDescCollisionCount,"ax",%progbits
+ 1940              		.align	1
+ 1941              		.global	ETH_GetDMATxDescCollisionCount
+ 1942              		.thumb
+ 1943              		.thumb_func
+ 1945              	ETH_GetDMATxDescCollisionCount:
+ 1946              		@ args = 0, pretend = 0, frame = 0
+ 1947              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1948              		@ link register save eliminated.
+ 1949 0000 0068     		ldr	r0, [r0]
+ 1950 0002 C0F3C300 		ubfx	r0, r0, #3, #4
+ 1951 0006 7047     		bx	lr
+ 1953              		.section	.text.ETH_SetDMATxDescOwnBit,"ax",%progbits
+ 1954              		.align	1
+ 1955              		.global	ETH_SetDMATxDescOwnBit
+ 1956              		.thumb
+ 1957              		.thumb_func
+ 1959              	ETH_SetDMATxDescOwnBit:
+ 1960              		@ args = 0, pretend = 0, frame = 0
+ 1961              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1962              		@ link register save eliminated.
+ 1963 0000 0368     		ldr	r3, [r0]
+ 1964 0002 43F00043 		orr	r3, r3, #-2147483648
+ 1965 0006 0360     		str	r3, [r0]
+ 1966 0008 7047     		bx	lr
+ 1968              		.section	.text.ETH_DMATxDescTransmitITConfig,"ax",%progbits
+ 1969              		.align	1
+ 1970              		.global	ETH_DMATxDescTransmitITConfig
+ 1971              		.thumb
+ 1972              		.thumb_func
+ 1974              	ETH_DMATxDescTransmitITConfig:
+ 1975              		@ args = 0, pretend = 0, frame = 0
+ 1976              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1977 0000 0129     		cmp	r1, #1
+ 1978 0002 10B5     		push	{r4, lr}
+ 1979 0004 0446     		mov	r4, r0
+ 1980 0006 05D9     		bls	.L581
+ 1981 0008 0748     		ldr	r0, .L586
+ 1982 000a 40F27561 		movw	r1, #1653
+ 1983 000e FFF7FEFF 		bl	assert_err
+ 1984 0012 00E0     		b	.L582
+ 1985              	.L581:
+ 1986 0014 19B1     		cbz	r1, .L583
+ 1987              	.L582:
+ 1988 0016 2368     		ldr	r3, [r4]
+ 1989 0018 43F08043 		orr	r3, r3, #1073741824
+ 1990 001c 02E0     		b	.L585
+ 1991              	.L583:
+ 1992 001e 0368     		ldr	r3, [r0]
+ 1993 0020 23F08043 		bic	r3, r3, #1073741824
+ 1994              	.L585:
+ 1995 0024 2360     		str	r3, [r4]
+ 1996 0026 10BD     		pop	{r4, pc}
+ 1997              	.L587:
+ 1998              		.align	2
+ 1999              	.L586:
+ 2000 0028 00000000 		.word	.LC0
+ 2002              		.section	.text.ETH_DMATxDescFrameSegmentConfig,"ax",%progbits
+ 2003              		.align	1
+ 2004              		.global	ETH_DMATxDescFrameSegmentConfig
+ 2005              		.thumb
+ 2006              		.thumb_func
+ 2008              	ETH_DMATxDescFrameSegmentConfig:
+ 2009              		@ args = 0, pretend = 0, frame = 0
+ 2010              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2011 0000 B1F1804F 		cmp	r1, #1073741824
+ 2012 0004 38B5     		push	{r3, r4, r5, lr}
+ 2013 0006 0546     		mov	r5, r0
+ 2014 0008 0C46     		mov	r4, r1
+ 2015 000a 07D0     		beq	.L589
+ 2016 000c B1F1005F 		cmp	r1, #536870912
+ 2017 0010 04D0     		beq	.L589
+ 2018 0012 0448     		ldr	r0, .L596
+ 2019 0014 40F28F61 		movw	r1, #1679
+ 2020 0018 FFF7FEFF 		bl	assert_err
+ 2021              	.L589:
+ 2022 001c 2B68     		ldr	r3, [r5]
+ 2023 001e 1C43     		orrs	r4, r4, r3
+ 2024 0020 2C60     		str	r4, [r5]
+ 2025 0022 38BD     		pop	{r3, r4, r5, pc}
+ 2026              	.L597:
+ 2027              		.align	2
+ 2028              	.L596:
+ 2029 0024 00000000 		.word	.LC0
+ 2031              		.section	.text.ETH_DMATxDescChecksumInsertionConfig,"ax",%progbits
+ 2032              		.align	1
+ 2033              		.global	ETH_DMATxDescChecksumInsertionConfig
+ 2034              		.thumb
+ 2035              		.thumb_func
+ 2037              	ETH_DMATxDescChecksumInsertionConfig:
+ 2038              		@ args = 0, pretend = 0, frame = 0
+ 2039              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2040 0000 38B5     		push	{r3, r4, r5, lr}
+ 2041 0002 31F44003 		bics	r3, r1, #12582912
+ 2042 0006 0446     		mov	r4, r0
+ 2043 0008 0D46     		mov	r5, r1
+ 2044 000a 04D0     		beq	.L599
+ 2045 000c 0448     		ldr	r0, .L603
+ 2046 000e 40F2A361 		movw	r1, #1699
+ 2047 0012 FFF7FEFF 		bl	assert_err
+ 2048              	.L599:
+ 2049 0016 2368     		ldr	r3, [r4]
+ 2050 0018 1D43     		orrs	r5, r5, r3
+ 2051 001a 2560     		str	r5, [r4]
+ 2052 001c 38BD     		pop	{r3, r4, r5, pc}
+ 2053              	.L604:
+ 2054 001e 00BF     		.align	2
+ 2055              	.L603:
+ 2056 0020 00000000 		.word	.LC0
+ 2058              		.section	.text.ETH_DMATxDescCRCCmd,"ax",%progbits
+ 2059              		.align	1
+ 2060              		.global	ETH_DMATxDescCRCCmd
+ 2061              		.thumb
+ 2062              		.thumb_func
+ 2064              	ETH_DMATxDescCRCCmd:
+ 2065              		@ args = 0, pretend = 0, frame = 0
+ 2066              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2067 0000 0129     		cmp	r1, #1
+ 2068 0002 10B5     		push	{r4, lr}
+ 2069 0004 0446     		mov	r4, r0
+ 2070 0006 05D9     		bls	.L606
+ 2071 0008 0748     		ldr	r0, .L611
+ 2072 000a 40F2B361 		movw	r1, #1715
+ 2073 000e FFF7FEFF 		bl	assert_err
+ 2074 0012 00E0     		b	.L607
+ 2075              	.L606:
+ 2076 0014 19B1     		cbz	r1, .L608
+ 2077              	.L607:
+ 2078 0016 2368     		ldr	r3, [r4]
+ 2079 0018 23F00063 		bic	r3, r3, #134217728
+ 2080 001c 02E0     		b	.L610
+ 2081              	.L608:
+ 2082 001e 0368     		ldr	r3, [r0]
+ 2083 0020 43F00063 		orr	r3, r3, #134217728
+ 2084              	.L610:
+ 2085 0024 2360     		str	r3, [r4]
+ 2086 0026 10BD     		pop	{r4, pc}
+ 2087              	.L612:
+ 2088              		.align	2
+ 2089              	.L611:
+ 2090 0028 00000000 		.word	.LC0
+ 2092              		.section	.text.ETH_DMATxDescEndOfRingCmd,"ax",%progbits
+ 2093              		.align	1
+ 2094              		.global	ETH_DMATxDescEndOfRingCmd
+ 2095              		.thumb
+ 2096              		.thumb_func
+ 2098              	ETH_DMATxDescEndOfRingCmd:
+ 2099              		@ args = 0, pretend = 0, frame = 0
+ 2100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2101 0000 0129     		cmp	r1, #1
+ 2102 0002 10B5     		push	{r4, lr}
+ 2103 0004 0446     		mov	r4, r0
+ 2104 0006 05D9     		bls	.L614
+ 2105 0008 0748     		ldr	r0, .L619
+ 2106 000a 40F2CB61 		movw	r1, #1739
+ 2107 000e FFF7FEFF 		bl	assert_err
+ 2108 0012 00E0     		b	.L615
+ 2109              	.L614:
+ 2110 0014 19B1     		cbz	r1, .L616
+ 2111              	.L615:
+ 2112 0016 2368     		ldr	r3, [r4]
+ 2113 0018 43F40013 		orr	r3, r3, #2097152
+ 2114 001c 02E0     		b	.L618
+ 2115              	.L616:
+ 2116 001e 0368     		ldr	r3, [r0]
+ 2117 0020 23F40013 		bic	r3, r3, #2097152
+ 2118              	.L618:
+ 2119 0024 2360     		str	r3, [r4]
+ 2120 0026 10BD     		pop	{r4, pc}
+ 2121              	.L620:
+ 2122              		.align	2
+ 2123              	.L619:
+ 2124 0028 00000000 		.word	.LC0
+ 2126              		.section	.text.ETH_DMATxDescSecondAddressChainedCmd,"ax",%progbits
+ 2127              		.align	1
+ 2128              		.global	ETH_DMATxDescSecondAddressChainedCmd
+ 2129              		.thumb
+ 2130              		.thumb_func
+ 2132              	ETH_DMATxDescSecondAddressChainedCmd:
+ 2133              		@ args = 0, pretend = 0, frame = 0
+ 2134              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2135 0000 0129     		cmp	r1, #1
+ 2136 0002 10B5     		push	{r4, lr}
+ 2137 0004 0446     		mov	r4, r0
+ 2138 0006 05D9     		bls	.L622
+ 2139 0008 0748     		ldr	r0, .L627
+ 2140 000a 40F2E361 		movw	r1, #1763
+ 2141 000e FFF7FEFF 		bl	assert_err
+ 2142 0012 00E0     		b	.L623
+ 2143              	.L622:
+ 2144 0014 19B1     		cbz	r1, .L624
+ 2145              	.L623:
+ 2146 0016 2368     		ldr	r3, [r4]
+ 2147 0018 43F48013 		orr	r3, r3, #1048576
+ 2148 001c 02E0     		b	.L626
+ 2149              	.L624:
+ 2150 001e 0368     		ldr	r3, [r0]
+ 2151 0020 23F48013 		bic	r3, r3, #1048576
+ 2152              	.L626:
+ 2153 0024 2360     		str	r3, [r4]
+ 2154 0026 10BD     		pop	{r4, pc}
+ 2155              	.L628:
+ 2156              		.align	2
+ 2157              	.L627:
+ 2158 0028 00000000 		.word	.LC0
+ 2160              		.section	.text.ETH_DMATxDescShortFramePaddingCmd,"ax",%progbits
+ 2161              		.align	1
+ 2162              		.global	ETH_DMATxDescShortFramePaddingCmd
+ 2163              		.thumb
+ 2164              		.thumb_func
+ 2166              	ETH_DMATxDescShortFramePaddingCmd:
+ 2167              		@ args = 0, pretend = 0, frame = 0
+ 2168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2169 0000 0129     		cmp	r1, #1
+ 2170 0002 10B5     		push	{r4, lr}
+ 2171 0004 0446     		mov	r4, r0
+ 2172 0006 05D9     		bls	.L630
+ 2173 0008 0748     		ldr	r0, .L635
+ 2174 000a 40F2FC61 		movw	r1, #1788
+ 2175 000e FFF7FEFF 		bl	assert_err
+ 2176 0012 00E0     		b	.L631
+ 2177              	.L630:
+ 2178 0014 19B1     		cbz	r1, .L632
+ 2179              	.L631:
+ 2180 0016 2368     		ldr	r3, [r4]
+ 2181 0018 23F08063 		bic	r3, r3, #67108864
+ 2182 001c 02E0     		b	.L634
+ 2183              	.L632:
+ 2184 001e 0368     		ldr	r3, [r0]
+ 2185 0020 43F08063 		orr	r3, r3, #67108864
+ 2186              	.L634:
+ 2187 0024 2360     		str	r3, [r4]
+ 2188 0026 10BD     		pop	{r4, pc}
+ 2189              	.L636:
+ 2190              		.align	2
+ 2191              	.L635:
+ 2192 0028 00000000 		.word	.LC0
+ 2194              		.section	.text.ETH_DMATxDescTimeStampCmd,"ax",%progbits
+ 2195              		.align	1
+ 2196              		.global	ETH_DMATxDescTimeStampCmd
+ 2197              		.thumb
+ 2198              		.thumb_func
+ 2200              	ETH_DMATxDescTimeStampCmd:
+ 2201              		@ args = 0, pretend = 0, frame = 0
+ 2202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2203 0000 0129     		cmp	r1, #1
+ 2204 0002 10B5     		push	{r4, lr}
+ 2205 0004 0446     		mov	r4, r0
+ 2206 0006 05D9     		bls	.L638
+ 2207 0008 0748     		ldr	r0, .L643
+ 2208 000a 40F21471 		movw	r1, #1812
+ 2209 000e FFF7FEFF 		bl	assert_err
+ 2210 0012 00E0     		b	.L639
+ 2211              	.L638:
+ 2212 0014 19B1     		cbz	r1, .L640
+ 2213              	.L639:
+ 2214 0016 2368     		ldr	r3, [r4]
+ 2215 0018 43F00073 		orr	r3, r3, #33554432
+ 2216 001c 02E0     		b	.L642
+ 2217              	.L640:
+ 2218 001e 0368     		ldr	r3, [r0]
+ 2219 0020 23F00073 		bic	r3, r3, #33554432
+ 2220              	.L642:
+ 2221 0024 2360     		str	r3, [r4]
+ 2222 0026 10BD     		pop	{r4, pc}
+ 2223              	.L644:
+ 2224              		.align	2
+ 2225              	.L643:
+ 2226 0028 00000000 		.word	.LC0
+ 2228              		.section	.text.ETH_DMATxDescBufferSizeConfig,"ax",%progbits
+ 2229              		.align	1
+ 2230              		.global	ETH_DMATxDescBufferSizeConfig
+ 2231              		.thumb
+ 2232              		.thumb_func
+ 2234              	ETH_DMATxDescBufferSizeConfig:
+ 2235              		@ args = 0, pretend = 0, frame = 0
+ 2236              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2237 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 2238 0002 41F6FF73 		movw	r3, #8191
+ 2239 0006 9942     		cmp	r1, r3
+ 2240 0008 0646     		mov	r6, r0
+ 2241 000a 0C46     		mov	r4, r1
+ 2242 000c 1546     		mov	r5, r2
+ 2243 000e 1F46     		mov	r7, r3
+ 2244 0010 04D9     		bls	.L646
+ 2245 0012 0948     		ldr	r0, .L648
+ 2246 0014 40F22C71 		movw	r1, #1836
+ 2247 0018 FFF7FEFF 		bl	assert_err
+ 2248              	.L646:
+ 2249 001c BD42     		cmp	r5, r7
+ 2250 001e 04D9     		bls	.L647
+ 2251 0020 0548     		ldr	r0, .L648
+ 2252 0022 40F22D71 		movw	r1, #1837
+ 2253 0026 FFF7FEFF 		bl	assert_err
+ 2254              	.L647:
+ 2255 002a 7368     		ldr	r3, [r6, #4]
+ 2256 002c 43EA0545 		orr	r5, r3, r5, lsl #16
+ 2257 0030 2C43     		orrs	r4, r4, r5
+ 2258 0032 7460     		str	r4, [r6, #4]
+ 2259 0034 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 2260              	.L649:
+ 2261 0036 00BF     		.align	2
+ 2262              	.L648:
+ 2263 0038 00000000 		.word	.LC0
+ 2265              		.section	.text.ETH_DMARxDescChainInit,"ax",%progbits
+ 2266              		.align	1
+ 2267              		.global	ETH_DMARxDescChainInit
+ 2268              		.thumb
+ 2269              		.thumb_func
+ 2271              	ETH_DMARxDescChainInit:
+ 2272              		@ args = 0, pretend = 0, frame = 0
+ 2273              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2274 0000 124B     		ldr	r3, .L656
+ 2275 0002 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 2276 0006 02F1FF3C 		add	ip, r2, #-1
+ 2277 000a 1860     		str	r0, [r3]
+ 2278 000c 0024     		movs	r4, #0
+ 2279 000e 00F11003 		add	r3, r0, #16
+ 2280 0012 4FF00045 		mov	r5, #-2147483648
+ 2281 0016 44F2F056 		movw	r6, #17904
+ 2282 001a 4FF4BE67 		mov	r7, #1520
+ 2283              	.L651:
+ 2284 001e 9442     		cmp	r4, r2
+ 2285 0020 10D0     		beq	.L655
+ 2286 0022 07FB0418 		mla	r8, r7, r4, r1
+ 2287 0026 43F8088C 		str	r8, [r3, #-8]
+ 2288 002a 6445     		cmp	r4, ip
+ 2289 002c 2CBF     		ite	cs
+ 2290 002e 8046     		movcs	r8, r0
+ 2291 0030 9846     		movcc	r8, r3
+ 2292 0032 43F8105C 		str	r5, [r3, #-16]
+ 2293 0036 43F80C6C 		str	r6, [r3, #-12]
+ 2294 003a 43F8048C 		str	r8, [r3, #-4]
+ 2295 003e 0134     		adds	r4, r4, #1
+ 2296 0040 1033     		adds	r3, r3, #16
+ 2297 0042 ECE7     		b	.L651
+ 2298              	.L655:
+ 2299 0044 024B     		ldr	r3, .L656+4
+ 2300 0046 D860     		str	r0, [r3, #12]
+ 2301 0048 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 2302              	.L657:
+ 2303              		.align	2
+ 2304              	.L656:
+ 2305 004c 00000000 		.word	DMARxDescToGet
+ 2306 0050 00900240 		.word	1073909760
+ 2308              		.section	.text.ETH_DMARxDescRingInit,"ax",%progbits
+ 2309              		.align	1
+ 2310              		.global	ETH_DMARxDescRingInit
+ 2311              		.thumb
+ 2312              		.thumb_func
+ 2314              	ETH_DMARxDescRingInit:
+ 2315              		@ args = 0, pretend = 0, frame = 0
+ 2316              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2317 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 2318 0004 114C     		ldr	r4, .L663
+ 2319 0006 0025     		movs	r5, #0
+ 2320 0008 2060     		str	r0, [r4]
+ 2321 000a 4FF0004C 		mov	ip, #-2147483648
+ 2322 000e 0446     		mov	r4, r0
+ 2323 0010 4FF4BE66 		mov	r6, #1520
+ 2324 0014 03F1FF38 		add	r8, r3, #-1
+ 2325 0018 48F2F059 		movw	r9, #34288
+ 2326              	.L659:
+ 2327 001c 9D42     		cmp	r5, r3
+ 2328 001e 11D0     		beq	.L662
+ 2329 0020 06FB05F7 		mul	r7, r6, r5
+ 2330 0024 4545     		cmp	r5, r8
+ 2331 0026 01EB070A 		add	r10, r1, r7
+ 2332 002a 1744     		add	r7, r7, r2
+ 2333 002c 6660     		str	r6, [r4, #4]
+ 2334 002e C4F800C0 		str	ip, [r4]
+ 2335 0032 C4F808A0 		str	r10, [r4, #8]
+ 2336 0036 E760     		str	r7, [r4, #12]
+ 2337 0038 08BF     		it	eq
+ 2338 003a C4F80490 		streq	r9, [r4, #4]
+ 2339 003e 0135     		adds	r5, r5, #1
+ 2340 0040 1034     		adds	r4, r4, #16
+ 2341 0042 EBE7     		b	.L659
+ 2342              	.L662:
+ 2343 0044 024B     		ldr	r3, .L663+4
+ 2344 0046 D860     		str	r0, [r3, #12]
+ 2345 0048 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 2346              	.L664:
+ 2347              		.align	2
+ 2348              	.L663:
+ 2349 004c 00000000 		.word	DMARxDescToGet
+ 2350 0050 00900240 		.word	1073909760
+ 2352              		.section	.text.ETH_GetDMARxDescFlagStatus,"ax",%progbits
+ 2353              		.align	1
+ 2354              		.global	ETH_GetDMARxDescFlagStatus
+ 2355              		.thumb
+ 2356              		.thumb_func
+ 2358              	ETH_GetDMARxDescFlagStatus:
+ 2359              		@ args = 0, pretend = 0, frame = 0
+ 2360              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2361 0000 B1F1004F 		cmp	r1, #-2147483648
+ 2362 0004 38B5     		push	{r3, r4, r5, lr}
+ 2363 0006 0546     		mov	r5, r0
+ 2364 0008 0C46     		mov	r4, r1
+ 2365 000a 2ED0     		beq	.L666
+ 2366 000c B1F1804F 		cmp	r1, #1073741824
+ 2367 0010 2BD0     		beq	.L666
+ 2368 0012 B1F5004F 		cmp	r1, #32768
+ 2369 0016 28D0     		beq	.L666
+ 2370 0018 B1F5804F 		cmp	r1, #16384
+ 2371 001c 25D0     		beq	.L666
+ 2372 001e B1F5005F 		cmp	r1, #8192
+ 2373 0022 22D0     		beq	.L666
+ 2374 0024 B1F5805F 		cmp	r1, #4096
+ 2375 0028 1FD0     		beq	.L666
+ 2376 002a B1F5006F 		cmp	r1, #2048
+ 2377 002e 1CD0     		beq	.L666
+ 2378 0030 B1F5806F 		cmp	r1, #1024
+ 2379 0034 19D0     		beq	.L666
+ 2380 0036 B1F5007F 		cmp	r1, #512
+ 2381 003a 16D0     		beq	.L666
+ 2382 003c B1F5807F 		cmp	r1, #256
+ 2383 0040 13D0     		beq	.L666
+ 2384 0042 8029     		cmp	r1, #128
+ 2385 0044 11D0     		beq	.L666
+ 2386 0046 4029     		cmp	r1, #64
+ 2387 0048 0FD0     		beq	.L666
+ 2388 004a 2029     		cmp	r1, #32
+ 2389 004c 0DD0     		beq	.L666
+ 2390 004e 1029     		cmp	r1, #16
+ 2391 0050 0BD0     		beq	.L666
+ 2392 0052 0829     		cmp	r1, #8
+ 2393 0054 09D0     		beq	.L666
+ 2394 0056 0429     		cmp	r1, #4
+ 2395 0058 07D0     		beq	.L666
+ 2396 005a 4B1E     		subs	r3, r1, #1
+ 2397 005c 012B     		cmp	r3, #1
+ 2398 005e 04D9     		bls	.L666
+ 2399 0060 0548     		ldr	r0, .L715
+ 2400 0062 4FF4F561 		mov	r1, #1960
+ 2401 0066 FFF7FEFF 		bl	assert_err
+ 2402              	.L666:
+ 2403 006a 2B68     		ldr	r3, [r5]
+ 2404 006c 1C42     		tst	r4, r3
+ 2405 006e 0CBF     		ite	eq
+ 2406 0070 0020     		moveq	r0, #0
+ 2407 0072 0120     		movne	r0, #1
+ 2408 0074 38BD     		pop	{r3, r4, r5, pc}
+ 2409              	.L716:
+ 2410 0076 00BF     		.align	2
+ 2411              	.L715:
+ 2412 0078 00000000 		.word	.LC0
+ 2414              		.section	.text.ETH_SetDMARxDescOwnBit,"ax",%progbits
+ 2415              		.align	1
+ 2416              		.global	ETH_SetDMARxDescOwnBit
+ 2417              		.thumb
+ 2418              		.thumb_func
+ 2420              	ETH_SetDMARxDescOwnBit:
+ 2421              		@ args = 0, pretend = 0, frame = 0
+ 2422              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2423              		@ link register save eliminated.
+ 2424 0000 0368     		ldr	r3, [r0]
+ 2425 0002 43F00043 		orr	r3, r3, #-2147483648
+ 2426 0006 0360     		str	r3, [r0]
+ 2427 0008 7047     		bx	lr
+ 2429              		.section	.text.ETH_GetDMARxDescFrameLength,"ax",%progbits
+ 2430              		.align	1
+ 2431              		.global	ETH_GetDMARxDescFrameLength
+ 2432              		.thumb
+ 2433              		.thumb_func
+ 2435              	ETH_GetDMARxDescFrameLength:
+ 2436              		@ args = 0, pretend = 0, frame = 0
+ 2437              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2438              		@ link register save eliminated.
+ 2439 0000 0068     		ldr	r0, [r0]
+ 2440 0002 C0F30D40 		ubfx	r0, r0, #16, #14
+ 2441 0006 7047     		bx	lr
+ 2443              		.section	.text.ETH_DMARxDescReceiveITConfig,"ax",%progbits
+ 2444              		.align	1
+ 2445              		.global	ETH_DMARxDescReceiveITConfig
+ 2446              		.thumb
+ 2447              		.thumb_func
+ 2449              	ETH_DMARxDescReceiveITConfig:
+ 2450              		@ args = 0, pretend = 0, frame = 0
+ 2451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2452 0000 0129     		cmp	r1, #1
+ 2453 0002 10B5     		push	{r4, lr}
+ 2454 0004 0446     		mov	r4, r0
+ 2455 0006 05D9     		bls	.L720
+ 2456 0008 0748     		ldr	r0, .L725
+ 2457 000a 40F2D471 		movw	r1, #2004
+ 2458 000e FFF7FEFF 		bl	assert_err
+ 2459 0012 00E0     		b	.L721
+ 2460              	.L720:
+ 2461 0014 19B1     		cbz	r1, .L722
+ 2462              	.L721:
+ 2463 0016 6368     		ldr	r3, [r4, #4]
+ 2464 0018 23F00043 		bic	r3, r3, #-2147483648
+ 2465 001c 02E0     		b	.L724
+ 2466              	.L722:
+ 2467 001e 4368     		ldr	r3, [r0, #4]
+ 2468 0020 43F00043 		orr	r3, r3, #-2147483648
+ 2469              	.L724:
+ 2470 0024 6360     		str	r3, [r4, #4]
+ 2471 0026 10BD     		pop	{r4, pc}
+ 2472              	.L726:
+ 2473              		.align	2
+ 2474              	.L725:
+ 2475 0028 00000000 		.word	.LC0
+ 2477              		.section	.text.ETH_DMARxDescEndOfRingCmd,"ax",%progbits
+ 2478              		.align	1
+ 2479              		.global	ETH_DMARxDescEndOfRingCmd
+ 2480              		.thumb
+ 2481              		.thumb_func
+ 2483              	ETH_DMARxDescEndOfRingCmd:
+ 2484              		@ args = 0, pretend = 0, frame = 0
+ 2485              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2486 0000 0129     		cmp	r1, #1
+ 2487 0002 10B5     		push	{r4, lr}
+ 2488 0004 0446     		mov	r4, r0
+ 2489 0006 05D9     		bls	.L728
+ 2490 0008 0748     		ldr	r0, .L733
+ 2491 000a 40F2EC71 		movw	r1, #2028
+ 2492 000e FFF7FEFF 		bl	assert_err
+ 2493 0012 00E0     		b	.L729
+ 2494              	.L728:
+ 2495 0014 19B1     		cbz	r1, .L730
+ 2496              	.L729:
+ 2497 0016 6368     		ldr	r3, [r4, #4]
+ 2498 0018 43F40043 		orr	r3, r3, #32768
+ 2499 001c 02E0     		b	.L732
+ 2500              	.L730:
+ 2501 001e 4368     		ldr	r3, [r0, #4]
+ 2502 0020 23F40043 		bic	r3, r3, #32768
+ 2503              	.L732:
+ 2504 0024 6360     		str	r3, [r4, #4]
+ 2505 0026 10BD     		pop	{r4, pc}
+ 2506              	.L734:
+ 2507              		.align	2
+ 2508              	.L733:
+ 2509 0028 00000000 		.word	.LC0
+ 2511              		.section	.text.ETH_DMARxDescSecondAddressChainedCmd,"ax",%progbits
+ 2512              		.align	1
+ 2513              		.global	ETH_DMARxDescSecondAddressChainedCmd
+ 2514              		.thumb
+ 2515              		.thumb_func
+ 2517              	ETH_DMARxDescSecondAddressChainedCmd:
+ 2518              		@ args = 0, pretend = 0, frame = 0
+ 2519              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2520 0000 0129     		cmp	r1, #1
+ 2521 0002 10B5     		push	{r4, lr}
+ 2522 0004 0446     		mov	r4, r0
+ 2523 0006 05D9     		bls	.L736
+ 2524 0008 0748     		ldr	r0, .L741
+ 2525 000a 40F60401 		movw	r1, #2052
+ 2526 000e FFF7FEFF 		bl	assert_err
+ 2527 0012 00E0     		b	.L737
+ 2528              	.L736:
+ 2529 0014 19B1     		cbz	r1, .L738
+ 2530              	.L737:
+ 2531 0016 6368     		ldr	r3, [r4, #4]
+ 2532 0018 43F48043 		orr	r3, r3, #16384
+ 2533 001c 02E0     		b	.L740
+ 2534              	.L738:
+ 2535 001e 4368     		ldr	r3, [r0, #4]
+ 2536 0020 23F48043 		bic	r3, r3, #16384
+ 2537              	.L740:
+ 2538 0024 6360     		str	r3, [r4, #4]
+ 2539 0026 10BD     		pop	{r4, pc}
+ 2540              	.L742:
+ 2541              		.align	2
+ 2542              	.L741:
+ 2543 0028 00000000 		.word	.LC0
+ 2545              		.section	.text.ETH_GetDMARxDescBufferSize,"ax",%progbits
+ 2546              		.align	1
+ 2547              		.global	ETH_GetDMARxDescBufferSize
+ 2548              		.thumb
+ 2549              		.thumb_func
+ 2551              	ETH_GetDMARxDescBufferSize:
+ 2552              		@ args = 0, pretend = 0, frame = 0
+ 2553              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2554 0000 0129     		cmp	r1, #1
+ 2555 0002 10B5     		push	{r4, lr}
+ 2556 0004 0446     		mov	r4, r0
+ 2557 0006 05D9     		bls	.L744
+ 2558 0008 0748     		ldr	r0, .L748
+ 2559 000a 40F61E01 		movw	r1, #2078
+ 2560 000e FFF7FEFF 		bl	assert_err
+ 2561 0012 00E0     		b	.L745
+ 2562              	.L744:
+ 2563 0014 19B1     		cbz	r1, .L746
+ 2564              	.L745:
+ 2565 0016 6068     		ldr	r0, [r4, #4]
+ 2566 0018 C0F30C40 		ubfx	r0, r0, #16, #13
+ 2567 001c 10BD     		pop	{r4, pc}
+ 2568              	.L746:
+ 2569 001e 4068     		ldr	r0, [r0, #4]
+ 2570 0020 C0F30C00 		ubfx	r0, r0, #0, #13
+ 2571 0024 10BD     		pop	{r4, pc}
+ 2572              	.L749:
+ 2573 0026 00BF     		.align	2
+ 2574              	.L748:
+ 2575 0028 00000000 		.word	.LC0
+ 2577              		.section	.text.ETH_SoftwareReset,"ax",%progbits
+ 2578              		.align	1
+ 2579              		.global	ETH_SoftwareReset
+ 2580              		.thumb
+ 2581              		.thumb_func
+ 2583              	ETH_SoftwareReset:
+ 2584              		@ args = 0, pretend = 0, frame = 0
+ 2585              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2586              		@ link register save eliminated.
+ 2587 0000 024B     		ldr	r3, .L751
+ 2588 0002 1A68     		ldr	r2, [r3]
+ 2589 0004 42F00102 		orr	r2, r2, #1
+ 2590 0008 1A60     		str	r2, [r3]
+ 2591 000a 7047     		bx	lr
+ 2592              	.L752:
+ 2593              		.align	2
+ 2594              	.L751:
+ 2595 000c 00900240 		.word	1073909760
+ 2597              		.section	.text.ETH_GetSoftwareResetStatus,"ax",%progbits
+ 2598              		.align	1
+ 2599              		.global	ETH_GetSoftwareResetStatus
+ 2600              		.thumb
+ 2601              		.thumb_func
+ 2603              	ETH_GetSoftwareResetStatus:
+ 2604              		@ args = 0, pretend = 0, frame = 0
+ 2605              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2606              		@ link register save eliminated.
+ 2607 0000 024B     		ldr	r3, .L754
+ 2608 0002 1868     		ldr	r0, [r3]
+ 2609 0004 00F00100 		and	r0, r0, #1
+ 2610 0008 7047     		bx	lr
+ 2611              	.L755:
+ 2612 000a 00BF     		.align	2
+ 2613              	.L754:
+ 2614 000c 00900240 		.word	1073909760
+ 2616              		.section	.text.ETH_GetDMAFlagStatus,"ax",%progbits
+ 2617              		.align	1
+ 2618              		.global	ETH_GetDMAFlagStatus
+ 2619              		.thumb
+ 2620              		.thumb_func
+ 2622              	ETH_GetDMAFlagStatus:
+ 2623              		@ args = 0, pretend = 0, frame = 0
+ 2624              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2625 0000 B0F1005F 		cmp	r0, #536870912
+ 2626 0004 10B5     		push	{r4, lr}
+ 2627 0006 0446     		mov	r4, r0
+ 2628 0008 2ED0     		beq	.L757
+ 2629 000a B0F1805F 		cmp	r0, #268435456
+ 2630 000e 2BD0     		beq	.L757
+ 2631 0010 B0F1006F 		cmp	r0, #134217728
+ 2632 0014 28D0     		beq	.L757
+ 2633 0016 B0F5803F 		cmp	r0, #65536
+ 2634 001a 25D0     		beq	.L757
+ 2635 001c B0F5004F 		cmp	r0, #32768
+ 2636 0020 22D0     		beq	.L757
+ 2637 0022 B0F5804F 		cmp	r0, #16384
+ 2638 0026 1FD0     		beq	.L757
+ 2639 0028 B0F5005F 		cmp	r0, #8192
+ 2640 002c 1CD0     		beq	.L757
+ 2641 002e B0F5806F 		cmp	r0, #1024
+ 2642 0032 19D0     		beq	.L757
+ 2643 0034 B0F5007F 		cmp	r0, #512
+ 2644 0038 16D0     		beq	.L757
+ 2645 003a B0F5807F 		cmp	r0, #256
+ 2646 003e 13D0     		beq	.L757
+ 2647 0040 8028     		cmp	r0, #128
+ 2648 0042 11D0     		beq	.L757
+ 2649 0044 4028     		cmp	r0, #64
+ 2650 0046 0FD0     		beq	.L757
+ 2651 0048 2028     		cmp	r0, #32
+ 2652 004a 0DD0     		beq	.L757
+ 2653 004c 1028     		cmp	r0, #16
+ 2654 004e 0BD0     		beq	.L757
+ 2655 0050 0828     		cmp	r0, #8
+ 2656 0052 09D0     		beq	.L757
+ 2657 0054 0428     		cmp	r0, #4
+ 2658 0056 07D0     		beq	.L757
+ 2659 0058 431E     		subs	r3, r0, #1
+ 2660 005a 012B     		cmp	r3, #1
+ 2661 005c 04D9     		bls	.L757
+ 2662 005e 0648     		ldr	r0, .L806
+ 2663 0060 40F66B01 		movw	r1, #2155
+ 2664 0064 FFF7FEFF 		bl	assert_err
+ 2665              	.L757:
+ 2666 0068 044B     		ldr	r3, .L806+4
+ 2667 006a 5B69     		ldr	r3, [r3, #20]
+ 2668 006c 1C42     		tst	r4, r3
+ 2669 006e 0CBF     		ite	eq
+ 2670 0070 0020     		moveq	r0, #0
+ 2671 0072 0120     		movne	r0, #1
+ 2672 0074 10BD     		pop	{r4, pc}
+ 2673              	.L807:
+ 2674 0076 00BF     		.align	2
+ 2675              	.L806:
+ 2676 0078 00000000 		.word	.LC0
+ 2677 007c 00900240 		.word	1073909760
+ 2679              		.section	.text.ETH_DMAClearFlag,"ax",%progbits
+ 2680              		.align	1
+ 2681              		.global	ETH_DMAClearFlag
+ 2682              		.thumb
+ 2683              		.thumb_func
+ 2685              	ETH_DMAClearFlag:
+ 2686              		@ args = 0, pretend = 0, frame = 0
+ 2687              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2688 0000 064B     		ldr	r3, .L811
+ 2689 0002 10B5     		push	{r4, lr}
+ 2690 0004 0340     		ands	r3, r3, r0
+ 2691 0006 0446     		mov	r4, r0
+ 2692 0008 03B9     		cbnz	r3, .L809
+ 2693 000a 20B9     		cbnz	r0, .L810
+ 2694              	.L809:
+ 2695 000c 0448     		ldr	r0, .L811+4
+ 2696 000e 40F68F01 		movw	r1, #2191
+ 2697 0012 FFF7FEFF 		bl	assert_err
+ 2698              	.L810:
+ 2699 0016 034B     		ldr	r3, .L811+8
+ 2700 0018 5C61     		str	r4, [r3, #20]
+ 2701 001a 10BD     		pop	{r4, pc}
+ 2702              	.L812:
+ 2703              		.align	2
+ 2704              	.L811:
+ 2705 001c 0018FEFF 		.word	-124928
+ 2706 0020 00000000 		.word	.LC0
+ 2707 0024 00900240 		.word	1073909760
+ 2709              		.section	.text.ETH_GetDMAITStatus,"ax",%progbits
+ 2710              		.align	1
+ 2711              		.global	ETH_GetDMAITStatus
+ 2712              		.thumb
+ 2713              		.thumb_func
+ 2715              	ETH_GetDMAITStatus:
+ 2716              		@ args = 0, pretend = 0, frame = 0
+ 2717              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2718 0000 B0F1005F 		cmp	r0, #536870912
+ 2719 0004 10B5     		push	{r4, lr}
+ 2720 0006 0446     		mov	r4, r0
+ 2721 0008 2ED0     		beq	.L814
+ 2722 000a B0F1805F 		cmp	r0, #268435456
+ 2723 000e 2BD0     		beq	.L814
+ 2724 0010 B0F1006F 		cmp	r0, #134217728
+ 2725 0014 28D0     		beq	.L814
+ 2726 0016 B0F5803F 		cmp	r0, #65536
+ 2727 001a 25D0     		beq	.L814
+ 2728 001c B0F5004F 		cmp	r0, #32768
+ 2729 0020 22D0     		beq	.L814
+ 2730 0022 B0F5804F 		cmp	r0, #16384
+ 2731 0026 1FD0     		beq	.L814
+ 2732 0028 B0F5005F 		cmp	r0, #8192
+ 2733 002c 1CD0     		beq	.L814
+ 2734 002e B0F5806F 		cmp	r0, #1024
+ 2735 0032 19D0     		beq	.L814
+ 2736 0034 B0F5007F 		cmp	r0, #512
+ 2737 0038 16D0     		beq	.L814
+ 2738 003a B0F5807F 		cmp	r0, #256
+ 2739 003e 13D0     		beq	.L814
+ 2740 0040 8028     		cmp	r0, #128
+ 2741 0042 11D0     		beq	.L814
+ 2742 0044 4028     		cmp	r0, #64
+ 2743 0046 0FD0     		beq	.L814
+ 2744 0048 2028     		cmp	r0, #32
+ 2745 004a 0DD0     		beq	.L814
+ 2746 004c 1028     		cmp	r0, #16
+ 2747 004e 0BD0     		beq	.L814
+ 2748 0050 0828     		cmp	r0, #8
+ 2749 0052 09D0     		beq	.L814
+ 2750 0054 0428     		cmp	r0, #4
+ 2751 0056 07D0     		beq	.L814
+ 2752 0058 431E     		subs	r3, r0, #1
+ 2753 005a 012B     		cmp	r3, #1
+ 2754 005c 04D9     		bls	.L814
+ 2755 005e 0648     		ldr	r0, .L863
+ 2756 0060 40F6B101 		movw	r1, #2225
+ 2757 0064 FFF7FEFF 		bl	assert_err
+ 2758              	.L814:
+ 2759 0068 044B     		ldr	r3, .L863+4
+ 2760 006a 5B69     		ldr	r3, [r3, #20]
+ 2761 006c 1C42     		tst	r4, r3
+ 2762 006e 0CBF     		ite	eq
+ 2763 0070 0020     		moveq	r0, #0
+ 2764 0072 0120     		movne	r0, #1
+ 2765 0074 10BD     		pop	{r4, pc}
+ 2766              	.L864:
+ 2767 0076 00BF     		.align	2
+ 2768              	.L863:
+ 2769 0078 00000000 		.word	.LC0
+ 2770 007c 00900240 		.word	1073909760
+ 2772              		.section	.text.ETH_DMAClearITPendingBit,"ax",%progbits
+ 2773              		.align	1
+ 2774              		.global	ETH_DMAClearITPendingBit
+ 2775              		.thumb
+ 2776              		.thumb_func
+ 2778              	ETH_DMAClearITPendingBit:
+ 2779              		@ args = 0, pretend = 0, frame = 0
+ 2780              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2781 0000 064B     		ldr	r3, .L868
+ 2782 0002 10B5     		push	{r4, lr}
+ 2783 0004 0340     		ands	r3, r3, r0
+ 2784 0006 0446     		mov	r4, r0
+ 2785 0008 03B9     		cbnz	r3, .L866
+ 2786 000a 20B9     		cbnz	r0, .L867
+ 2787              	.L866:
+ 2788 000c 0448     		ldr	r0, .L868+4
+ 2789 000e 40F6D501 		movw	r1, #2261
+ 2790 0012 FFF7FEFF 		bl	assert_err
+ 2791              	.L867:
+ 2792 0016 034B     		ldr	r3, .L868+8
+ 2793 0018 5C61     		str	r4, [r3, #20]
+ 2794 001a 10BD     		pop	{r4, pc}
+ 2795              	.L869:
+ 2796              		.align	2
+ 2797              	.L868:
+ 2798 001c 0018FEFF 		.word	-124928
+ 2799 0020 00000000 		.word	.LC0
+ 2800 0024 00900240 		.word	1073909760
+ 2802              		.section	.text.ETH_IRQHandler,"ax",%progbits
+ 2803              		.align	1
+ 2804              		.global	ETH_IRQHandler
+ 2805              		.thumb
+ 2806              		.thumb_func
+ 2808              	ETH_IRQHandler:
+ 2809              		@ args = 0, pretend = 0, frame = 0
+ 2810              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2811 0000 08B5     		push	{r3, lr}
+ 2812 0002 074B     		ldr	r3, .L875
+ 2813 0004 5B69     		ldr	r3, [r3, #20]
+ 2814 0006 5A06     		lsls	r2, r3, #25
+ 2815 0008 01D5     		bpl	.L871
+ 2816 000a FFF7FEFF 		bl	uip_chip_irq_rx
+ 2817              	.L871:
+ 2818 000e 4020     		movs	r0, #64
+ 2819 0010 FFF7FEFF 		bl	ETH_DMAClearITPendingBit
+ 2820 0014 BDE80840 		pop	{r3, lr}
+ 2821 0018 4FF48030 		mov	r0, #65536
+ 2822 001c FFF7FEBF 		b	ETH_DMAClearITPendingBit
+ 2823              	.L876:
+ 2824              		.align	2
+ 2825              	.L875:
+ 2826 0020 00900240 		.word	1073909760
+ 2828              		.section	.text.ETH_GetTransmitProcessState,"ax",%progbits
+ 2829              		.align	1
+ 2830              		.global	ETH_GetTransmitProcessState
+ 2831              		.thumb
+ 2832              		.thumb_func
+ 2834              	ETH_GetTransmitProcessState:
+ 2835              		@ args = 0, pretend = 0, frame = 0
+ 2836              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2837              		@ link register save eliminated.
+ 2838 0000 024B     		ldr	r3, .L878
+ 2839 0002 5869     		ldr	r0, [r3, #20]
+ 2840 0004 00F00100 		and	r0, r0, #1
+ 2841 0008 7047     		bx	lr
+ 2842              	.L879:
+ 2843 000a 00BF     		.align	2
+ 2844              	.L878:
+ 2845 000c 00900240 		.word	1073909760
+ 2847              		.section	.text.ETH_GetReceiveProcessState,"ax",%progbits
+ 2848              		.align	1
+ 2849              		.global	ETH_GetReceiveProcessState
+ 2850              		.thumb
+ 2851              		.thumb_func
+ 2853              	ETH_GetReceiveProcessState:
+ 2854              		@ args = 0, pretend = 0, frame = 0
+ 2855              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2856              		@ link register save eliminated.
+ 2857 0000 024B     		ldr	r3, .L881
+ 2858 0002 5869     		ldr	r0, [r3, #20]
+ 2859 0004 00F04000 		and	r0, r0, #64
+ 2860 0008 7047     		bx	lr
+ 2861              	.L882:
+ 2862 000a 00BF     		.align	2
+ 2863              	.L881:
+ 2864 000c 00900240 		.word	1073909760
+ 2866              		.section	.text.ETH_FlushTransmitFIFO,"ax",%progbits
+ 2867              		.align	1
+ 2868              		.global	ETH_FlushTransmitFIFO
+ 2869              		.thumb
+ 2870              		.thumb_func
+ 2872              	ETH_FlushTransmitFIFO:
+ 2873              		@ args = 0, pretend = 0, frame = 0
+ 2874              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2875              		@ link register save eliminated.
+ 2876 0000 024B     		ldr	r3, .L884
+ 2877 0002 9A69     		ldr	r2, [r3, #24]
+ 2878 0004 42F48012 		orr	r2, r2, #1048576
+ 2879 0008 9A61     		str	r2, [r3, #24]
+ 2880 000a 7047     		bx	lr
+ 2881              	.L885:
+ 2882              		.align	2
+ 2883              	.L884:
+ 2884 000c 00900240 		.word	1073909760
+ 2886              		.section	.text.ETH_GetFlushTransmitFIFOStatus,"ax",%progbits
+ 2887              		.align	1
+ 2888              		.global	ETH_GetFlushTransmitFIFOStatus
+ 2889              		.thumb
+ 2890              		.thumb_func
+ 2892              	ETH_GetFlushTransmitFIFOStatus:
+ 2893              		@ args = 0, pretend = 0, frame = 0
+ 2894              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2895              		@ link register save eliminated.
+ 2896 0000 024B     		ldr	r3, .L887
+ 2897 0002 9869     		ldr	r0, [r3, #24]
+ 2898 0004 C0F30050 		ubfx	r0, r0, #20, #1
+ 2899 0008 7047     		bx	lr
+ 2900              	.L888:
+ 2901 000a 00BF     		.align	2
+ 2902              	.L887:
+ 2903 000c 00900240 		.word	1073909760
+ 2905              		.section	.text.ETH_DMATransmissionCmd,"ax",%progbits
+ 2906              		.align	1
+ 2907              		.global	ETH_DMATransmissionCmd
+ 2908              		.thumb
+ 2909              		.thumb_func
+ 2911              	ETH_DMATransmissionCmd:
+ 2912              		@ args = 0, pretend = 0, frame = 0
+ 2913              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2914 0000 0128     		cmp	r0, #1
+ 2915 0002 10B5     		push	{r4, lr}
+ 2916 0004 084C     		ldr	r4, .L895
+ 2917 0006 05D9     		bls	.L890
+ 2918 0008 0848     		ldr	r0, .L895+4
+ 2919 000a 40F62411 		movw	r1, #2340
+ 2920 000e FFF7FEFF 		bl	assert_err
+ 2921 0012 00E0     		b	.L891
+ 2922              	.L890:
+ 2923 0014 18B1     		cbz	r0, .L892
+ 2924              	.L891:
+ 2925 0016 A369     		ldr	r3, [r4, #24]
+ 2926 0018 43F40053 		orr	r3, r3, #8192
+ 2927 001c 02E0     		b	.L894
+ 2928              	.L892:
+ 2929 001e A369     		ldr	r3, [r4, #24]
+ 2930 0020 23F40053 		bic	r3, r3, #8192
+ 2931              	.L894:
+ 2932 0024 A361     		str	r3, [r4, #24]
+ 2933 0026 10BD     		pop	{r4, pc}
+ 2934              	.L896:
+ 2935              		.align	2
+ 2936              	.L895:
+ 2937 0028 00900240 		.word	1073909760
+ 2938 002c 00000000 		.word	.LC0
+ 2940              		.section	.text.ETH_DMAReceptionCmd,"ax",%progbits
+ 2941              		.align	1
+ 2942              		.global	ETH_DMAReceptionCmd
+ 2943              		.thumb
+ 2944              		.thumb_func
+ 2946              	ETH_DMAReceptionCmd:
+ 2947              		@ args = 0, pretend = 0, frame = 0
+ 2948              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2949 0000 0128     		cmp	r0, #1
+ 2950 0002 10B5     		push	{r4, lr}
+ 2951 0004 084C     		ldr	r4, .L903
+ 2952 0006 05D9     		bls	.L898
+ 2953 0008 0848     		ldr	r0, .L903+4
+ 2954 000a 40F63B11 		movw	r1, #2363
+ 2955 000e FFF7FEFF 		bl	assert_err
+ 2956 0012 00E0     		b	.L899
+ 2957              	.L898:
+ 2958 0014 18B1     		cbz	r0, .L900
+ 2959              	.L899:
+ 2960 0016 A369     		ldr	r3, [r4, #24]
+ 2961 0018 43F00203 		orr	r3, r3, #2
+ 2962 001c 02E0     		b	.L902
+ 2963              	.L900:
+ 2964 001e A369     		ldr	r3, [r4, #24]
+ 2965 0020 23F00203 		bic	r3, r3, #2
+ 2966              	.L902:
+ 2967 0024 A361     		str	r3, [r4, #24]
+ 2968 0026 10BD     		pop	{r4, pc}
+ 2969              	.L904:
+ 2970              		.align	2
+ 2971              	.L903:
+ 2972 0028 00900240 		.word	1073909760
+ 2973 002c 00000000 		.word	.LC0
+ 2975              		.section	.text.ETH_Start,"ax",%progbits
+ 2976              		.align	1
+ 2977              		.global	ETH_Start
+ 2978              		.thumb
+ 2979              		.thumb_func
+ 2981              	ETH_Start:
+ 2982              		@ args = 0, pretend = 0, frame = 0
+ 2983              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2984 0000 08B5     		push	{r3, lr}
+ 2985 0002 0120     		movs	r0, #1
+ 2986 0004 FFF7FEFF 		bl	ETH_MACTransmissionCmd
+ 2987 0008 FFF7FEFF 		bl	ETH_FlushTransmitFIFO
+ 2988 000c 0120     		movs	r0, #1
+ 2989 000e FFF7FEFF 		bl	ETH_MACReceptionCmd
+ 2990 0012 0120     		movs	r0, #1
+ 2991 0014 FFF7FEFF 		bl	ETH_DMATransmissionCmd
+ 2992 0018 BDE80840 		pop	{r3, lr}
+ 2993 001c 0120     		movs	r0, #1
+ 2994 001e FFF7FEBF 		b	ETH_DMAReceptionCmd
+ 2996              		.section	.text.ETH_DMAITConfig,"ax",%progbits
+ 2997              		.align	1
+ 2998              		.global	ETH_DMAITConfig
+ 2999              		.thumb
+ 3000              		.thumb_func
+ 3002              	ETH_DMAITConfig:
+ 3003              		@ args = 0, pretend = 0, frame = 0
+ 3004              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3005 0000 0E4B     		ldr	r3, .L914
+ 3006 0002 70B5     		push	{r4, r5, r6, lr}
+ 3007 0004 0340     		ands	r3, r3, r0
+ 3008 0006 0546     		mov	r5, r0
+ 3009 0008 0E46     		mov	r6, r1
+ 3010 000a 03B9     		cbnz	r3, .L907
+ 3011 000c 20B9     		cbnz	r0, .L908
+ 3012              	.L907:
+ 3013 000e 0C48     		ldr	r0, .L914+4
+ 3014 0010 40F66411 		movw	r1, #2404
+ 3015 0014 FFF7FEFF 		bl	assert_err
+ 3016              	.L908:
+ 3017 0018 012E     		cmp	r6, #1
+ 3018 001a 0A4C     		ldr	r4, .L914+8
+ 3019 001c 05D9     		bls	.L909
+ 3020 001e 0848     		ldr	r0, .L914+4
+ 3021 0020 40F66511 		movw	r1, #2405
+ 3022 0024 FFF7FEFF 		bl	assert_err
+ 3023 0028 00E0     		b	.L910
+ 3024              	.L909:
+ 3025 002a 16B1     		cbz	r6, .L911
+ 3026              	.L910:
+ 3027 002c E369     		ldr	r3, [r4, #28]
+ 3028 002e 1D43     		orrs	r5, r5, r3
+ 3029 0030 02E0     		b	.L913
+ 3030              	.L911:
+ 3031 0032 E369     		ldr	r3, [r4, #28]
+ 3032 0034 23EA0505 		bic	r5, r3, r5
+ 3033              	.L913:
+ 3034 0038 E561     		str	r5, [r4, #28]
+ 3035 003a 70BD     		pop	{r4, r5, r6, pc}
+ 3036              	.L915:
+ 3037              		.align	2
+ 3038              	.L914:
+ 3039 003c 0018FEFF 		.word	-124928
+ 3040 0040 00000000 		.word	.LC0
+ 3041 0044 00900240 		.word	1073909760
+ 3043              		.section	.text.stm32_eth_init,"ax",%progbits
+ 3044              		.align	1
+ 3045              		.global	stm32_eth_init
+ 3046              		.thumb
+ 3047              		.thumb_func
+ 3049              	stm32_eth_init:
+ 3050              		@ args = 0, pretend = 0, frame = 200
+ 3051              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3052 0000 70B5     		push	{r4, r5, r6, lr}
+ 3053 0002 B2B0     		sub	sp, sp, #200
+ 3054 0004 8DE80300 		stmia	sp, {r0, r1}
+ 3055 0008 0121     		movs	r1, #1
+ 3056 000a 4FF4E030 		mov	r0, #114688
+ 3057 000e FFF7FEFF 		bl	RCC_AHBPeriphClockCmd
+ 3058 0012 FFF7FEFF 		bl	GPIO_Configuration
+ 3059 0016 3D23     		movs	r3, #61
+ 3060 0018 8DF80830 		strb	r3, [sp, #8]
+ 3061 001c 0023     		movs	r3, #0
+ 3062 001e 02A8     		add	r0, sp, #8
+ 3063 0020 8DF80930 		strb	r3, [sp, #9]
+ 3064 0024 8DF80A30 		strb	r3, [sp, #10]
+ 3065 0028 0123     		movs	r3, #1
+ 3066 002a 8DF80B30 		strb	r3, [sp, #11]
+ 3067 002e FFF7FEFF 		bl	NVIC_Init
+ 3068 0032 FFF7FEFF 		bl	ETH_DeInit
+ 3069 0036 FFF7FEFF 		bl	ETH_SoftwareReset
+ 3070              	.L918:
+ 3071 003a FFF7FEFF 		bl	ETH_GetSoftwareResetStatus
+ 3072 003e 0128     		cmp	r0, #1
+ 3073 0040 FBD0     		beq	.L918
+ 3074 0042 0125     		movs	r5, #1
+ 3075 0044 03A8     		add	r0, sp, #12
+ 3076 0046 FFF7FEFF 		bl	ETH_StructInit
+ 3077 004a 0026     		movs	r6, #0
+ 3078 004c 4FF48063 		mov	r3, #1024
+ 3079 0050 2946     		mov	r1, r5
+ 3080 0052 03A8     		add	r0, sp, #12
+ 3081 0054 0C93     		str	r3, [sp, #48]
+ 3082 0056 0395     		str	r5, [sp, #12]
+ 3083 0058 1496     		str	r6, [sp, #80]
+ 3084 005a FFF7FEFF 		bl	ETH_Init
+ 3085 005e 2946     		mov	r1, r5
+ 3086 0060 0A48     		ldr	r0, .L919
+ 3087 0062 FFF7FEFF 		bl	ETH_DMAITConfig
+ 3088 0066 0A48     		ldr	r0, .L919+4
+ 3089 0068 0A49     		ldr	r1, .L919+8
+ 3090 006a 0222     		movs	r2, #2
+ 3091 006c FFF7FEFF 		bl	ETH_DMATxDescChainInit
+ 3092 0070 0222     		movs	r2, #2
+ 3093 0072 0948     		ldr	r0, .L919+12
+ 3094 0074 0949     		ldr	r1, .L919+16
+ 3095 0076 FFF7FEFF 		bl	ETH_DMARxDescChainInit
+ 3096 007a 3046     		mov	r0, r6
+ 3097 007c 6946     		mov	r1, sp
+ 3098 007e FFF7FEFF 		bl	ETH_MACAddressConfig
+ 3099 0082 FFF7FEFF 		bl	ETH_Start
+ 3100 0086 32B0     		add	sp, sp, #200
+ 3101              		@ sp needed
+ 3102 0088 70BD     		pop	{r4, r5, r6, pc}
+ 3103              	.L920:
+ 3104 008a 00BF     		.align	2
+ 3105              	.L919:
+ 3106 008c 40000100 		.word	65600
+ 3107 0090 00000000 		.word	DMATxDscrTab
+ 3108 0094 00000000 		.word	Tx_Buff
+ 3109 0098 00000000 		.word	DMARxDscrTab
+ 3110 009c 00000000 		.word	Rx_Buff
+ 3112              		.section	.text.ETH_GetDMAOverflowStatus,"ax",%progbits
+ 3113              		.align	1
+ 3114              		.global	ETH_GetDMAOverflowStatus
+ 3115              		.thumb
+ 3116              		.thumb_func
+ 3118              	ETH_GetDMAOverflowStatus:
+ 3119              		@ args = 0, pretend = 0, frame = 0
+ 3120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3121 0000 B0F1805F 		cmp	r0, #268435456
+ 3122 0004 10B5     		push	{r4, lr}
+ 3123 0006 0446     		mov	r4, r0
+ 3124 0008 07D0     		beq	.L922
+ 3125 000a B0F5803F 		cmp	r0, #65536
+ 3126 000e 04D0     		beq	.L922
+ 3127 0010 0548     		ldr	r0, .L929
+ 3128 0012 40F67F11 		movw	r1, #2431
+ 3129 0016 FFF7FEFF 		bl	assert_err
+ 3130              	.L922:
+ 3131 001a 044B     		ldr	r3, .L929+4
+ 3132 001c 1B68     		ldr	r3, [r3]
+ 3133 001e 1C42     		tst	r4, r3
+ 3134 0020 0CBF     		ite	eq
+ 3135 0022 0020     		moveq	r0, #0
+ 3136 0024 0120     		movne	r0, #1
+ 3137 0026 10BD     		pop	{r4, pc}
+ 3138              	.L930:
+ 3139              		.align	2
+ 3140              	.L929:
+ 3141 0028 00000000 		.word	.LC0
+ 3142 002c 20900240 		.word	1073909792
+ 3144              		.section	.text.ETH_GetRxOverflowMissedFrameCounter,"ax",%progbits
+ 3145              		.align	1
+ 3146              		.global	ETH_GetRxOverflowMissedFrameCounter
+ 3147              		.thumb
+ 3148              		.thumb_func
+ 3150              	ETH_GetRxOverflowMissedFrameCounter:
+ 3151              		@ args = 0, pretend = 0, frame = 0
+ 3152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3153              		@ link register save eliminated.
+ 3154 0000 024B     		ldr	r3, .L932
+ 3155 0002 1868     		ldr	r0, [r3]
+ 3156 0004 C0F34A40 		ubfx	r0, r0, #17, #11
+ 3157 0008 7047     		bx	lr
+ 3158              	.L933:
+ 3159 000a 00BF     		.align	2
+ 3160              	.L932:
+ 3161 000c 20900240 		.word	1073909792
+ 3163              		.section	.text.ETH_GetBufferUnavailableMissedFrameCounter,"ax",%progbits
+ 3164              		.align	1
+ 3165              		.global	ETH_GetBufferUnavailableMissedFrameCounter
+ 3166              		.thumb
+ 3167              		.thumb_func
+ 3169              	ETH_GetBufferUnavailableMissedFrameCounter:
+ 3170              		@ args = 0, pretend = 0, frame = 0
+ 3171              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3172              		@ link register save eliminated.
+ 3173 0000 014B     		ldr	r3, .L935
+ 3174 0002 1868     		ldr	r0, [r3]
+ 3175 0004 80B2     		uxth	r0, r0
+ 3176 0006 7047     		bx	lr
+ 3177              	.L936:
+ 3178              		.align	2
+ 3179              	.L935:
+ 3180 0008 20900240 		.word	1073909792
+ 3182              		.section	.text.ETH_GetCurrentTxDescStartAddress,"ax",%progbits
+ 3183              		.align	1
+ 3184              		.global	ETH_GetCurrentTxDescStartAddress
+ 3185              		.thumb
+ 3186              		.thumb_func
+ 3188              	ETH_GetCurrentTxDescStartAddress:
+ 3189              		@ args = 0, pretend = 0, frame = 0
+ 3190              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3191              		@ link register save eliminated.
+ 3192 0000 014B     		ldr	r3, .L938
+ 3193 0002 9868     		ldr	r0, [r3, #8]
+ 3194 0004 7047     		bx	lr
+ 3195              	.L939:
+ 3196 0006 00BF     		.align	2
+ 3197              	.L938:
+ 3198 0008 40900240 		.word	1073909824
+ 3200              		.section	.text.ETH_GetCurrentRxDescStartAddress,"ax",%progbits
+ 3201              		.align	1
+ 3202              		.global	ETH_GetCurrentRxDescStartAddress
+ 3203              		.thumb
+ 3204              		.thumb_func
+ 3206              	ETH_GetCurrentRxDescStartAddress:
+ 3207              		@ args = 0, pretend = 0, frame = 0
+ 3208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3209              		@ link register save eliminated.
+ 3210 0000 014B     		ldr	r3, .L941
+ 3211 0002 D868     		ldr	r0, [r3, #12]
+ 3212 0004 7047     		bx	lr
+ 3213              	.L942:
+ 3214 0006 00BF     		.align	2
+ 3215              	.L941:
+ 3216 0008 40900240 		.word	1073909824
+ 3218              		.section	.text.ETH_GetCurrentTxBufferAddress,"ax",%progbits
+ 3219              		.align	1
+ 3220              		.global	ETH_GetCurrentTxBufferAddress
+ 3221              		.thumb
+ 3222              		.thumb_func
+ 3224              	ETH_GetCurrentTxBufferAddress:
+ 3225              		@ args = 0, pretend = 0, frame = 0
+ 3226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3227              		@ link register save eliminated.
+ 3228 0000 014B     		ldr	r3, .L944
+ 3229 0002 1869     		ldr	r0, [r3, #16]
+ 3230 0004 7047     		bx	lr
+ 3231              	.L945:
+ 3232 0006 00BF     		.align	2
+ 3233              	.L944:
+ 3234 0008 40900240 		.word	1073909824
+ 3236              		.section	.text.ETH_GetCurrentRxBufferAddress,"ax",%progbits
+ 3237              		.align	1
+ 3238              		.global	ETH_GetCurrentRxBufferAddress
+ 3239              		.thumb
+ 3240              		.thumb_func
+ 3242              	ETH_GetCurrentRxBufferAddress:
+ 3243              		@ args = 0, pretend = 0, frame = 0
+ 3244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3245              		@ link register save eliminated.
+ 3246 0000 014B     		ldr	r3, .L947
+ 3247 0002 5869     		ldr	r0, [r3, #20]
+ 3248 0004 7047     		bx	lr
+ 3249              	.L948:
+ 3250 0006 00BF     		.align	2
+ 3251              	.L947:
+ 3252 0008 40900240 		.word	1073909824
+ 3254              		.section	.text.ETH_ResumeDMATransmission,"ax",%progbits
+ 3255              		.align	1
+ 3256              		.global	ETH_ResumeDMATransmission
+ 3257              		.thumb
+ 3258              		.thumb_func
+ 3260              	ETH_ResumeDMATransmission:
+ 3261              		@ args = 0, pretend = 0, frame = 0
+ 3262              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3263              		@ link register save eliminated.
+ 3264 0000 014B     		ldr	r3, .L950
+ 3265 0002 0022     		movs	r2, #0
+ 3266 0004 5A60     		str	r2, [r3, #4]
+ 3267 0006 7047     		bx	lr
+ 3268              	.L951:
+ 3269              		.align	2
+ 3270              	.L950:
+ 3271 0008 00900240 		.word	1073909760
+ 3273              		.section	.text.ETH_ResumeDMAReception,"ax",%progbits
+ 3274              		.align	1
+ 3275              		.global	ETH_ResumeDMAReception
+ 3276              		.thumb
+ 3277              		.thumb_func
+ 3279              	ETH_ResumeDMAReception:
+ 3280              		@ args = 0, pretend = 0, frame = 0
+ 3281              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3282              		@ link register save eliminated.
+ 3283 0000 014B     		ldr	r3, .L953
+ 3284 0002 0022     		movs	r2, #0
+ 3285 0004 9A60     		str	r2, [r3, #8]
+ 3286 0006 7047     		bx	lr
+ 3287              	.L954:
+ 3288              		.align	2
+ 3289              	.L953:
+ 3290 0008 00900240 		.word	1073909760
+ 3292              		.section	.text.ETH_ResetWakeUpFrameFilterRegisterPointer,"ax",%progbits
+ 3293              		.align	1
+ 3294              		.global	ETH_ResetWakeUpFrameFilterRegisterPointer
+ 3295              		.thumb
+ 3296              		.thumb_func
+ 3298              	ETH_ResetWakeUpFrameFilterRegisterPointer:
+ 3299              		@ args = 0, pretend = 0, frame = 0
+ 3300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3301              		@ link register save eliminated.
+ 3302 0000 024B     		ldr	r3, .L956
+ 3303 0002 DA6A     		ldr	r2, [r3, #44]
+ 3304 0004 42F00042 		orr	r2, r2, #-2147483648
+ 3305 0008 DA62     		str	r2, [r3, #44]
+ 3306 000a 7047     		bx	lr
+ 3307              	.L957:
+ 3308              		.align	2
+ 3309              	.L956:
+ 3310 000c 00800240 		.word	1073905664
+ 3312              		.section	.text.ETH_SetWakeUpFrameFilterRegister,"ax",%progbits
+ 3313              		.align	1
+ 3314              		.global	ETH_SetWakeUpFrameFilterRegister
+ 3315              		.thumb
+ 3316              		.thumb_func
+ 3318              	ETH_SetWakeUpFrameFilterRegister:
+ 3319              		@ args = 0, pretend = 0, frame = 0
+ 3320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3321              		@ link register save eliminated.
+ 3322 0000 0349     		ldr	r1, .L962
+ 3323 0002 0023     		movs	r3, #0
+ 3324              	.L960:
+ 3325 0004 C258     		ldr	r2, [r0, r3]
+ 3326 0006 0433     		adds	r3, r3, #4
+ 3327 0008 202B     		cmp	r3, #32
+ 3328 000a 8A62     		str	r2, [r1, #40]
+ 3329 000c FAD1     		bne	.L960
+ 3330 000e 7047     		bx	lr
+ 3331              	.L963:
+ 3332              		.align	2
+ 3333              	.L962:
+ 3334 0010 00800240 		.word	1073905664
+ 3336              		.section	.text.ETH_GlobalUnicastWakeUpCmd,"ax",%progbits
+ 3337              		.align	1
+ 3338              		.global	ETH_GlobalUnicastWakeUpCmd
+ 3339              		.thumb
+ 3340              		.thumb_func
+ 3342              	ETH_GlobalUnicastWakeUpCmd:
+ 3343              		@ args = 0, pretend = 0, frame = 0
+ 3344              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3345 0000 0128     		cmp	r0, #1
+ 3346 0002 10B5     		push	{r4, lr}
+ 3347 0004 084C     		ldr	r4, .L970
+ 3348 0006 05D9     		bls	.L965
+ 3349 0008 0848     		ldr	r0, .L970+4
+ 3350 000a 40F60821 		movw	r1, #2568
+ 3351 000e FFF7FEFF 		bl	assert_err
+ 3352 0012 00E0     		b	.L966
+ 3353              	.L965:
+ 3354 0014 18B1     		cbz	r0, .L967
+ 3355              	.L966:
+ 3356 0016 E36A     		ldr	r3, [r4, #44]
+ 3357 0018 43F40073 		orr	r3, r3, #512
+ 3358 001c 02E0     		b	.L969
+ 3359              	.L967:
+ 3360 001e E36A     		ldr	r3, [r4, #44]
+ 3361 0020 23F40073 		bic	r3, r3, #512
+ 3362              	.L969:
+ 3363 0024 E362     		str	r3, [r4, #44]
+ 3364 0026 10BD     		pop	{r4, pc}
+ 3365              	.L971:
+ 3366              		.align	2
+ 3367              	.L970:
+ 3368 0028 00800240 		.word	1073905664
+ 3369 002c 00000000 		.word	.LC0
+ 3371              		.section	.text.ETH_GetPMTFlagStatus,"ax",%progbits
+ 3372              		.align	1
+ 3373              		.global	ETH_GetPMTFlagStatus
+ 3374              		.thumb
+ 3375              		.thumb_func
+ 3377              	ETH_GetPMTFlagStatus:
+ 3378              		@ args = 0, pretend = 0, frame = 0
+ 3379              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3380 0000 4028     		cmp	r0, #64
+ 3381 0002 10B5     		push	{r4, lr}
+ 3382 0004 0446     		mov	r4, r0
+ 3383 0006 06D0     		beq	.L973
+ 3384 0008 2028     		cmp	r0, #32
+ 3385 000a 04D0     		beq	.L973
+ 3386 000c 0548     		ldr	r0, .L980
+ 3387 000e 40F62321 		movw	r1, #2595
+ 3388 0012 FFF7FEFF 		bl	assert_err
+ 3389              	.L973:
+ 3390 0016 044B     		ldr	r3, .L980+4
+ 3391 0018 DB6A     		ldr	r3, [r3, #44]
+ 3392 001a 1C42     		tst	r4, r3
+ 3393 001c 0CBF     		ite	eq
+ 3394 001e 0020     		moveq	r0, #0
+ 3395 0020 0120     		movne	r0, #1
+ 3396 0022 10BD     		pop	{r4, pc}
+ 3397              	.L981:
+ 3398              		.align	2
+ 3399              	.L980:
+ 3400 0024 00000000 		.word	.LC0
+ 3401 0028 00800240 		.word	1073905664
+ 3403              		.section	.text.ETH_WakeUpFrameDetectionCmd,"ax",%progbits
+ 3404              		.align	1
+ 3405              		.global	ETH_WakeUpFrameDetectionCmd
+ 3406              		.thumb
+ 3407              		.thumb_func
+ 3409              	ETH_WakeUpFrameDetectionCmd:
+ 3410              		@ args = 0, pretend = 0, frame = 0
+ 3411              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3412 0000 0128     		cmp	r0, #1
+ 3413 0002 10B5     		push	{r4, lr}
+ 3414 0004 084C     		ldr	r4, .L988
+ 3415 0006 05D9     		bls	.L983
+ 3416 0008 0848     		ldr	r0, .L988+4
+ 3417 000a 40F63921 		movw	r1, #2617
+ 3418 000e FFF7FEFF 		bl	assert_err
+ 3419 0012 00E0     		b	.L984
+ 3420              	.L983:
+ 3421 0014 18B1     		cbz	r0, .L985
+ 3422              	.L984:
+ 3423 0016 E36A     		ldr	r3, [r4, #44]
+ 3424 0018 43F00403 		orr	r3, r3, #4
+ 3425 001c 02E0     		b	.L987
+ 3426              	.L985:
+ 3427 001e E36A     		ldr	r3, [r4, #44]
+ 3428 0020 23F00403 		bic	r3, r3, #4
+ 3429              	.L987:
+ 3430 0024 E362     		str	r3, [r4, #44]
+ 3431 0026 10BD     		pop	{r4, pc}
+ 3432              	.L989:
+ 3433              		.align	2
+ 3434              	.L988:
+ 3435 0028 00800240 		.word	1073905664
+ 3436 002c 00000000 		.word	.LC0
+ 3438              		.section	.text.ETH_MagicPacketDetectionCmd,"ax",%progbits
+ 3439              		.align	1
+ 3440              		.global	ETH_MagicPacketDetectionCmd
+ 3441              		.thumb
+ 3442              		.thumb_func
+ 3444              	ETH_MagicPacketDetectionCmd:
+ 3445              		@ args = 0, pretend = 0, frame = 0
+ 3446              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3447 0000 0128     		cmp	r0, #1
+ 3448 0002 10B5     		push	{r4, lr}
+ 3449 0004 084C     		ldr	r4, .L996
+ 3450 0006 05D9     		bls	.L991
+ 3451 0008 0848     		ldr	r0, .L996+4
+ 3452 000a 4FF42561 		mov	r1, #2640
+ 3453 000e FFF7FEFF 		bl	assert_err
+ 3454 0012 00E0     		b	.L992
+ 3455              	.L991:
+ 3456 0014 18B1     		cbz	r0, .L993
+ 3457              	.L992:
+ 3458 0016 E36A     		ldr	r3, [r4, #44]
+ 3459 0018 43F00203 		orr	r3, r3, #2
+ 3460 001c 02E0     		b	.L995
+ 3461              	.L993:
+ 3462 001e E36A     		ldr	r3, [r4, #44]
+ 3463 0020 23F00203 		bic	r3, r3, #2
+ 3464              	.L995:
+ 3465 0024 E362     		str	r3, [r4, #44]
+ 3466 0026 10BD     		pop	{r4, pc}
+ 3467              	.L997:
+ 3468              		.align	2
+ 3469              	.L996:
+ 3470 0028 00800240 		.word	1073905664
+ 3471 002c 00000000 		.word	.LC0
+ 3473              		.section	.text.ETH_PowerDownCmd,"ax",%progbits
+ 3474              		.align	1
+ 3475              		.global	ETH_PowerDownCmd
+ 3476              		.thumb
+ 3477              		.thumb_func
+ 3479              	ETH_PowerDownCmd:
+ 3480              		@ args = 0, pretend = 0, frame = 0
+ 3481              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3482 0000 0128     		cmp	r0, #1
+ 3483 0002 10B5     		push	{r4, lr}
+ 3484 0004 084C     		ldr	r4, .L1004
+ 3485 0006 05D9     		bls	.L999
+ 3486 0008 0848     		ldr	r0, .L1004+4
+ 3487 000a 40F66721 		movw	r1, #2663
+ 3488 000e FFF7FEFF 		bl	assert_err
+ 3489 0012 00E0     		b	.L1000
+ 3490              	.L999:
+ 3491 0014 18B1     		cbz	r0, .L1001
+ 3492              	.L1000:
+ 3493 0016 E36A     		ldr	r3, [r4, #44]
+ 3494 0018 43F00103 		orr	r3, r3, #1
+ 3495 001c 02E0     		b	.L1003
+ 3496              	.L1001:
+ 3497 001e E36A     		ldr	r3, [r4, #44]
+ 3498 0020 23F00103 		bic	r3, r3, #1
+ 3499              	.L1003:
+ 3500 0024 E362     		str	r3, [r4, #44]
+ 3501 0026 10BD     		pop	{r4, pc}
+ 3502              	.L1005:
+ 3503              		.align	2
+ 3504              	.L1004:
+ 3505 0028 00800240 		.word	1073905664
+ 3506 002c 00000000 		.word	.LC0
+ 3508              		.section	.text.ETH_MMCCounterFreezeCmd,"ax",%progbits
+ 3509              		.align	1
+ 3510              		.global	ETH_MMCCounterFreezeCmd
+ 3511              		.thumb
+ 3512              		.thumb_func
+ 3514              	ETH_MMCCounterFreezeCmd:
+ 3515              		@ args = 0, pretend = 0, frame = 0
+ 3516              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3517 0000 0128     		cmp	r0, #1
+ 3518 0002 10B5     		push	{r4, lr}
+ 3519 0004 0A4C     		ldr	r4, .L1012
+ 3520 0006 05D9     		bls	.L1007
+ 3521 0008 0A48     		ldr	r0, .L1012+4
+ 3522 000a 4FF42861 		mov	r1, #2688
+ 3523 000e FFF7FEFF 		bl	assert_err
+ 3524 0012 00E0     		b	.L1008
+ 3525              	.L1007:
+ 3526 0014 20B1     		cbz	r0, .L1009
+ 3527              	.L1008:
+ 3528 0016 D4F80031 		ldr	r3, [r4, #256]
+ 3529 001a 43F00803 		orr	r3, r3, #8
+ 3530 001e 03E0     		b	.L1011
+ 3531              	.L1009:
+ 3532 0020 D4F80031 		ldr	r3, [r4, #256]
+ 3533 0024 23F00803 		bic	r3, r3, #8
+ 3534              	.L1011:
+ 3535 0028 C4F80031 		str	r3, [r4, #256]
+ 3536 002c 10BD     		pop	{r4, pc}
+ 3537              	.L1013:
+ 3538 002e 00BF     		.align	2
+ 3539              	.L1012:
+ 3540 0030 00800240 		.word	1073905664
+ 3541 0034 00000000 		.word	.LC0
+ 3543              		.section	.text.ETH_MMCResetOnReadCmd,"ax",%progbits
+ 3544              		.align	1
+ 3545              		.global	ETH_MMCResetOnReadCmd
+ 3546              		.thumb
+ 3547              		.thumb_func
+ 3549              	ETH_MMCResetOnReadCmd:
+ 3550              		@ args = 0, pretend = 0, frame = 0
+ 3551              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3552 0000 0128     		cmp	r0, #1
+ 3553 0002 10B5     		push	{r4, lr}
+ 3554 0004 0A4C     		ldr	r4, .L1020
+ 3555 0006 05D9     		bls	.L1015
+ 3556 0008 0A48     		ldr	r0, .L1020+4
+ 3557 000a 40F69721 		movw	r1, #2711
+ 3558 000e FFF7FEFF 		bl	assert_err
+ 3559 0012 00E0     		b	.L1016
+ 3560              	.L1015:
+ 3561 0014 20B1     		cbz	r0, .L1017
+ 3562              	.L1016:
+ 3563 0016 D4F80031 		ldr	r3, [r4, #256]
+ 3564 001a 43F00403 		orr	r3, r3, #4
+ 3565 001e 03E0     		b	.L1019
+ 3566              	.L1017:
+ 3567 0020 D4F80031 		ldr	r3, [r4, #256]
+ 3568 0024 23F00403 		bic	r3, r3, #4
+ 3569              	.L1019:
+ 3570 0028 C4F80031 		str	r3, [r4, #256]
+ 3571 002c 10BD     		pop	{r4, pc}
+ 3572              	.L1021:
+ 3573 002e 00BF     		.align	2
+ 3574              	.L1020:
+ 3575 0030 00800240 		.word	1073905664
+ 3576 0034 00000000 		.word	.LC0
+ 3578              		.section	.text.ETH_MMCCounterRolloverCmd,"ax",%progbits
+ 3579              		.align	1
+ 3580              		.global	ETH_MMCCounterRolloverCmd
+ 3581              		.thumb
+ 3582              		.thumb_func
+ 3584              	ETH_MMCCounterRolloverCmd:
+ 3585              		@ args = 0, pretend = 0, frame = 0
+ 3586              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3587 0000 0128     		cmp	r0, #1
+ 3588 0002 10B5     		push	{r4, lr}
+ 3589 0004 0A4C     		ldr	r4, .L1028
+ 3590 0006 05D9     		bls	.L1023
+ 3591 0008 0A48     		ldr	r0, .L1028+4
+ 3592 000a 40F6AE21 		movw	r1, #2734
+ 3593 000e FFF7FEFF 		bl	assert_err
+ 3594 0012 00E0     		b	.L1024
+ 3595              	.L1023:
+ 3596 0014 20B1     		cbz	r0, .L1025
+ 3597              	.L1024:
+ 3598 0016 D4F80031 		ldr	r3, [r4, #256]
+ 3599 001a 23F00203 		bic	r3, r3, #2
+ 3600 001e 03E0     		b	.L1027
+ 3601              	.L1025:
+ 3602 0020 D4F80031 		ldr	r3, [r4, #256]
+ 3603 0024 43F00203 		orr	r3, r3, #2
+ 3604              	.L1027:
+ 3605 0028 C4F80031 		str	r3, [r4, #256]
+ 3606 002c 10BD     		pop	{r4, pc}
+ 3607              	.L1029:
+ 3608 002e 00BF     		.align	2
+ 3609              	.L1028:
+ 3610 0030 00800240 		.word	1073905664
+ 3611 0034 00000000 		.word	.LC0
+ 3613              		.section	.text.ETH_MMCCountersReset,"ax",%progbits
+ 3614              		.align	1
+ 3615              		.global	ETH_MMCCountersReset
+ 3616              		.thumb
+ 3617              		.thumb_func
+ 3619              	ETH_MMCCountersReset:
+ 3620              		@ args = 0, pretend = 0, frame = 0
+ 3621              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3622              		@ link register save eliminated.
+ 3623 0000 034B     		ldr	r3, .L1031
+ 3624 0002 D3F80021 		ldr	r2, [r3, #256]
+ 3625 0006 42F00102 		orr	r2, r2, #1
+ 3626 000a C3F80021 		str	r2, [r3, #256]
+ 3627 000e 7047     		bx	lr
+ 3628              	.L1032:
+ 3629              		.align	2
+ 3630              	.L1031:
+ 3631 0010 00800240 		.word	1073905664
+ 3633              		.section	.text.ETH_MMCITConfig,"ax",%progbits
+ 3634              		.align	1
+ 3635              		.global	ETH_MMCITConfig
+ 3636              		.thumb
+ 3637              		.thumb_func
+ 3639              	ETH_MMCITConfig:
+ 3640              		@ args = 0, pretend = 0, frame = 0
+ 3641              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3642 0000 38B5     		push	{r3, r4, r5, lr}
+ 3643 0002 30F40313 		bics	r3, r0, #2146304
+ 3644 0006 0446     		mov	r4, r0
+ 3645 0008 0D46     		mov	r5, r1
+ 3646 000a 03D0     		beq	.L1034
+ 3647 000c 154B     		ldr	r3, .L1044
+ 3648 000e 0340     		ands	r3, r3, r0
+ 3649 0010 0BB9     		cbnz	r3, .L1035
+ 3650 0012 05E0     		b	.L1036
+ 3651              	.L1034:
+ 3652 0014 20B9     		cbnz	r0, .L1036
+ 3653              	.L1035:
+ 3654 0016 1448     		ldr	r0, .L1044+4
+ 3655 0018 40F6DA21 		movw	r1, #2778
+ 3656 001c FFF7FEFF 		bl	assert_err
+ 3657              	.L1036:
+ 3658 0020 012D     		cmp	r5, #1
+ 3659 0022 04D9     		bls	.L1037
+ 3660 0024 1048     		ldr	r0, .L1044+4
+ 3661 0026 40F6DB21 		movw	r1, #2779
+ 3662 002a FFF7FEFF 		bl	assert_err
+ 3663              	.L1037:
+ 3664 002e 14F0805F 		tst	r4, #268435456
+ 3665 0032 0E4B     		ldr	r3, .L1044+8
+ 3666 0034 0BD0     		beq	.L1038
+ 3667 0036 24F08054 		bic	r4, r4, #268435456
+ 3668 003a D3F80C21 		ldr	r2, [r3, #268]
+ 3669 003e 15B1     		cbz	r5, .L1039
+ 3670 0040 22EA0404 		bic	r4, r2, r4
+ 3671 0044 00E0     		b	.L1042
+ 3672              	.L1039:
+ 3673 0046 1443     		orrs	r4, r4, r2
+ 3674              	.L1042:
+ 3675 0048 C3F80C41 		str	r4, [r3, #268]
+ 3676 004c 38BD     		pop	{r3, r4, r5, pc}
+ 3677              	.L1038:
+ 3678 004e D3F81021 		ldr	r2, [r3, #272]
+ 3679 0052 15B1     		cbz	r5, .L1041
+ 3680 0054 22EA0404 		bic	r4, r2, r4
+ 3681 0058 00E0     		b	.L1043
+ 3682              	.L1041:
+ 3683 005a 1443     		orrs	r4, r4, r2
+ 3684              	.L1043:
+ 3685 005c C3F81041 		str	r4, [r3, #272]
+ 3686 0060 38BD     		pop	{r3, r4, r5, pc}
+ 3687              	.L1045:
+ 3688 0062 00BF     		.align	2
+ 3689              	.L1044:
+ 3690 0064 9FFFFDEF 		.word	-268566625
+ 3691 0068 00000000 		.word	.LC0
+ 3692 006c 00800240 		.word	1073905664
+ 3694              		.section	.text.ETH_GetMMCITStatus,"ax",%progbits
+ 3695              		.align	1
+ 3696              		.global	ETH_GetMMCITStatus
+ 3697              		.thumb
+ 3698              		.thumb_func
+ 3700              	ETH_GetMMCITStatus:
+ 3701              		@ args = 0, pretend = 0, frame = 0
+ 3702              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3703 0000 B0F5001F 		cmp	r0, #2097152
+ 3704 0004 10B5     		push	{r4, lr}
+ 3705 0006 0446     		mov	r4, r0
+ 3706 0008 13D0     		beq	.L1047
+ 3707 000a B0F5004F 		cmp	r0, #32768
+ 3708 000e 10D0     		beq	.L1047
+ 3709 0010 B0F5804F 		cmp	r0, #16384
+ 3710 0014 0DD0     		beq	.L1047
+ 3711 0016 0F4B     		ldr	r3, .L1064
+ 3712 0018 9842     		cmp	r0, r3
+ 3713 001a 0AD0     		beq	.L1047
+ 3714 001c 0E4B     		ldr	r3, .L1064+4
+ 3715 001e 9842     		cmp	r0, r3
+ 3716 0020 07D0     		beq	.L1047
+ 3717 0022 203B     		subs	r3, r3, #32
+ 3718 0024 9842     		cmp	r0, r3
+ 3719 0026 04D0     		beq	.L1047
+ 3720 0028 0C48     		ldr	r0, .L1064+8
+ 3721 002a 40F60E31 		movw	r1, #2830
+ 3722 002e FFF7FEFF 		bl	assert_err
+ 3723              	.L1047:
+ 3724 0032 0B4B     		ldr	r3, .L1064+12
+ 3725 0034 14F0805F 		tst	r4, #268435456
+ 3726 0038 14BF     		ite	ne
+ 3727 003a D3F80401 		ldrne	r0, [r3, #260]
+ 3728 003e D3F80801 		ldreq	r0, [r3, #264]
+ 3729 0042 2040     		ands	r0, r4, r0
+ 3730 0044 05D0     		beq	.L1049
+ 3731 0046 D3F80C31 		ldr	r3, [r3, #268]
+ 3732 004a 1C42     		tst	r4, r3
+ 3733 004c 0CBF     		ite	eq
+ 3734 004e 0020     		moveq	r0, #0
+ 3735 0050 0120     		movne	r0, #1
+ 3736              	.L1049:
+ 3737 0052 10BD     		pop	{r4, pc}
+ 3738              	.L1065:
+ 3739              		.align	2
+ 3740              	.L1064:
+ 3741 0054 00000210 		.word	268566528
+ 3742 0058 40000010 		.word	268435520
+ 3743 005c 00000000 		.word	.LC0
+ 3744 0060 00800240 		.word	1073905664
+ 3746              		.section	.text.ETH_GetMMCRegister,"ax",%progbits
+ 3747              		.align	1
+ 3748              		.global	ETH_GetMMCRegister
+ 3749              		.thumb
+ 3750              		.thumb_func
+ 3752              	ETH_GetMMCRegister:
+ 3753              		@ args = 0, pretend = 0, frame = 0
+ 3754              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3755 0000 20F00C03 		bic	r3, r0, #12
+ 3756 0004 B3F5807F 		cmp	r3, #256
+ 3757 0008 10B5     		push	{r4, lr}
+ 3758 000a 0446     		mov	r4, r0
+ 3759 000c 18D0     		beq	.L1067
+ 3760 000e 20F04003 		bic	r3, r0, #64
+ 3761 0012 B3F5887F 		cmp	r3, #272
+ 3762 0016 13D0     		beq	.L1067
+ 3763 0018 B0F5A67F 		cmp	r0, #332
+ 3764 001c 10D0     		beq	.L1067
+ 3765 001e B0F5B47F 		cmp	r0, #360
+ 3766 0022 0DD0     		beq	.L1067
+ 3767 0024 B0F5CA7F 		cmp	r0, #404
+ 3768 0028 0AD0     		beq	.L1067
+ 3769 002a B0F5CC7F 		cmp	r0, #408
+ 3770 002e 07D0     		beq	.L1067
+ 3771 0030 B0F5E27F 		cmp	r0, #452
+ 3772 0034 04D0     		beq	.L1067
+ 3773 0036 0548     		ldr	r0, .L1089
+ 3774 0038 40F64231 		movw	r1, #2882
+ 3775 003c FFF7FEFF 		bl	assert_err
+ 3776              	.L1067:
+ 3777 0040 04F18044 		add	r4, r4, #1073741824
+ 3778 0044 04F52034 		add	r4, r4, #163840
+ 3779 0048 2068     		ldr	r0, [r4]
+ 3780 004a 10BD     		pop	{r4, pc}
+ 3781              	.L1090:
+ 3782              		.align	2
+ 3783              	.L1089:
+ 3784 004c 00000000 		.word	.LC0
+ 3786              		.section	.text.ETH_EnablePTPTimeStampAddend,"ax",%progbits
+ 3787              		.align	1
+ 3788              		.global	ETH_EnablePTPTimeStampAddend
+ 3789              		.thumb
+ 3790              		.thumb_func
+ 3792              	ETH_EnablePTPTimeStampAddend:
+ 3793              		@ args = 0, pretend = 0, frame = 0
+ 3794              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3795              		@ link register save eliminated.
+ 3796 0000 034B     		ldr	r3, .L1092
+ 3797 0002 D3F80027 		ldr	r2, [r3, #1792]
+ 3798 0006 42F02002 		orr	r2, r2, #32
+ 3799 000a C3F80027 		str	r2, [r3, #1792]
+ 3800 000e 7047     		bx	lr
+ 3801              	.L1093:
+ 3802              		.align	2
+ 3803              	.L1092:
+ 3804 0010 00800240 		.word	1073905664
+ 3806              		.section	.text.ETH_EnablePTPTimeStampInterruptTrigger,"ax",%progbits
+ 3807              		.align	1
+ 3808              		.global	ETH_EnablePTPTimeStampInterruptTrigger
+ 3809              		.thumb
+ 3810              		.thumb_func
+ 3812              	ETH_EnablePTPTimeStampInterruptTrigger:
+ 3813              		@ args = 0, pretend = 0, frame = 0
+ 3814              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3815              		@ link register save eliminated.
+ 3816 0000 034B     		ldr	r3, .L1095
+ 3817 0002 D3F80027 		ldr	r2, [r3, #1792]
+ 3818 0006 42F01002 		orr	r2, r2, #16
+ 3819 000a C3F80027 		str	r2, [r3, #1792]
+ 3820 000e 7047     		bx	lr
+ 3821              	.L1096:
+ 3822              		.align	2
+ 3823              	.L1095:
+ 3824 0010 00800240 		.word	1073905664
+ 3826              		.section	.text.ETH_EnablePTPTimeStampUpdate,"ax",%progbits
+ 3827              		.align	1
+ 3828              		.global	ETH_EnablePTPTimeStampUpdate
+ 3829              		.thumb
+ 3830              		.thumb_func
+ 3832              	ETH_EnablePTPTimeStampUpdate:
+ 3833              		@ args = 0, pretend = 0, frame = 0
+ 3834              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3835              		@ link register save eliminated.
+ 3836 0000 034B     		ldr	r3, .L1098
+ 3837 0002 D3F80027 		ldr	r2, [r3, #1792]
+ 3838 0006 42F00802 		orr	r2, r2, #8
+ 3839 000a C3F80027 		str	r2, [r3, #1792]
+ 3840 000e 7047     		bx	lr
+ 3841              	.L1099:
+ 3842              		.align	2
+ 3843              	.L1098:
+ 3844 0010 00800240 		.word	1073905664
+ 3846              		.section	.text.ETH_InitializePTPTimeStamp,"ax",%progbits
+ 3847              		.align	1
+ 3848              		.global	ETH_InitializePTPTimeStamp
+ 3849              		.thumb
+ 3850              		.thumb_func
+ 3852              	ETH_InitializePTPTimeStamp:
+ 3853              		@ args = 0, pretend = 0, frame = 0
+ 3854              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3855              		@ link register save eliminated.
+ 3856 0000 034B     		ldr	r3, .L1101
+ 3857 0002 D3F80027 		ldr	r2, [r3, #1792]
+ 3858 0006 42F00402 		orr	r2, r2, #4
+ 3859 000a C3F80027 		str	r2, [r3, #1792]
+ 3860 000e 7047     		bx	lr
+ 3861              	.L1102:
+ 3862              		.align	2
+ 3863              	.L1101:
+ 3864 0010 00800240 		.word	1073905664
+ 3866              		.section	.text.ETH_PTPUpdateMethodConfig,"ax",%progbits
+ 3867              		.align	1
+ 3868              		.global	ETH_PTPUpdateMethodConfig
+ 3869              		.thumb
+ 3870              		.thumb_func
+ 3872              	ETH_PTPUpdateMethodConfig:
+ 3873              		@ args = 0, pretend = 0, frame = 0
+ 3874              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3875 0000 0128     		cmp	r0, #1
+ 3876 0002 10B5     		push	{r4, lr}
+ 3877 0004 0A4C     		ldr	r4, .L1109
+ 3878 0006 05D9     		bls	.L1104
+ 3879 0008 0A48     		ldr	r0, .L1109+4
+ 3880 000a 40F68231 		movw	r1, #2946
+ 3881 000e FFF7FEFF 		bl	assert_err
+ 3882 0012 00E0     		b	.L1105
+ 3883              	.L1104:
+ 3884 0014 20B1     		cbz	r0, .L1106
+ 3885              	.L1105:
+ 3886 0016 D4F80037 		ldr	r3, [r4, #1792]
+ 3887 001a 43F00203 		orr	r3, r3, #2
+ 3888 001e 03E0     		b	.L1108
+ 3889              	.L1106:
+ 3890 0020 D4F80037 		ldr	r3, [r4, #1792]
+ 3891 0024 23F00203 		bic	r3, r3, #2
+ 3892              	.L1108:
+ 3893 0028 C4F80037 		str	r3, [r4, #1792]
+ 3894 002c 10BD     		pop	{r4, pc}
+ 3895              	.L1110:
+ 3896 002e 00BF     		.align	2
+ 3897              	.L1109:
+ 3898 0030 00800240 		.word	1073905664
+ 3899 0034 00000000 		.word	.LC0
+ 3901              		.section	.text.ETH_PTPTimeStampCmd,"ax",%progbits
+ 3902              		.align	1
+ 3903              		.global	ETH_PTPTimeStampCmd
+ 3904              		.thumb
+ 3905              		.thumb_func
+ 3907              	ETH_PTPTimeStampCmd:
+ 3908              		@ args = 0, pretend = 0, frame = 0
+ 3909              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3910 0000 0128     		cmp	r0, #1
+ 3911 0002 10B5     		push	{r4, lr}
+ 3912 0004 0A4C     		ldr	r4, .L1117
+ 3913 0006 05D9     		bls	.L1112
+ 3914 0008 0A48     		ldr	r0, .L1117+4
+ 3915 000a 40F69931 		movw	r1, #2969
+ 3916 000e FFF7FEFF 		bl	assert_err
+ 3917 0012 00E0     		b	.L1113
+ 3918              	.L1112:
+ 3919 0014 20B1     		cbz	r0, .L1114
+ 3920              	.L1113:
+ 3921 0016 D4F80037 		ldr	r3, [r4, #1792]
+ 3922 001a 43F00103 		orr	r3, r3, #1
+ 3923 001e 03E0     		b	.L1116
+ 3924              	.L1114:
+ 3925 0020 D4F80037 		ldr	r3, [r4, #1792]
+ 3926 0024 23F00103 		bic	r3, r3, #1
+ 3927              	.L1116:
+ 3928 0028 C4F80037 		str	r3, [r4, #1792]
+ 3929 002c 10BD     		pop	{r4, pc}
+ 3930              	.L1118:
+ 3931 002e 00BF     		.align	2
+ 3932              	.L1117:
+ 3933 0030 00800240 		.word	1073905664
+ 3934 0034 00000000 		.word	.LC0
+ 3936              		.section	.text.ETH_GetPTPFlagStatus,"ax",%progbits
+ 3937              		.align	1
+ 3938              		.global	ETH_GetPTPFlagStatus
+ 3939              		.thumb
+ 3940              		.thumb_func
+ 3942              	ETH_GetPTPFlagStatus:
+ 3943              		@ args = 0, pretend = 0, frame = 0
+ 3944              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3945 0000 2028     		cmp	r0, #32
+ 3946 0002 10B5     		push	{r4, lr}
+ 3947 0004 0446     		mov	r4, r0
+ 3948 0006 0AD0     		beq	.L1120
+ 3949 0008 1028     		cmp	r0, #16
+ 3950 000a 08D0     		beq	.L1120
+ 3951 000c 0828     		cmp	r0, #8
+ 3952 000e 06D0     		beq	.L1120
+ 3953 0010 0428     		cmp	r0, #4
+ 3954 0012 04D0     		beq	.L1120
+ 3955 0014 0648     		ldr	r0, .L1133
+ 3956 0016 40F6B531 		movw	r1, #2997
+ 3957 001a FFF7FEFF 		bl	assert_err
+ 3958              	.L1120:
+ 3959 001e 054B     		ldr	r3, .L1133+4
+ 3960 0020 D3F80037 		ldr	r3, [r3, #1792]
+ 3961 0024 1C42     		tst	r4, r3
+ 3962 0026 0CBF     		ite	eq
+ 3963 0028 0020     		moveq	r0, #0
+ 3964 002a 0120     		movne	r0, #1
+ 3965 002c 10BD     		pop	{r4, pc}
+ 3966              	.L1134:
+ 3967 002e 00BF     		.align	2
+ 3968              	.L1133:
+ 3969 0030 00000000 		.word	.LC0
+ 3970 0034 00800240 		.word	1073905664
+ 3972              		.section	.text.ETH_SetPTPSubSecondIncrement,"ax",%progbits
+ 3973              		.align	1
+ 3974              		.global	ETH_SetPTPSubSecondIncrement
+ 3975              		.thumb
+ 3976              		.thumb_func
+ 3978              	ETH_SetPTPSubSecondIncrement:
+ 3979              		@ args = 0, pretend = 0, frame = 0
+ 3980              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3981 0000 FF28     		cmp	r0, #255
+ 3982 0002 10B5     		push	{r4, lr}
+ 3983 0004 0446     		mov	r4, r0
+ 3984 0006 04D9     		bls	.L1136
+ 3985 0008 0448     		ldr	r0, .L1137
+ 3986 000a 40F6CA31 		movw	r1, #3018
+ 3987 000e FFF7FEFF 		bl	assert_err
+ 3988              	.L1136:
+ 3989 0012 034B     		ldr	r3, .L1137+4
+ 3990 0014 C3F80447 		str	r4, [r3, #1796]
+ 3991 0018 10BD     		pop	{r4, pc}
+ 3992              	.L1138:
+ 3993 001a 00BF     		.align	2
+ 3994              	.L1137:
+ 3995 001c 00000000 		.word	.LC0
+ 3996 0020 00800240 		.word	1073905664
+ 3998              		.section	.text.ETH_SetPTPTimeStampUpdate,"ax",%progbits
+ 3999              		.align	1
+ 4000              		.global	ETH_SetPTPTimeStampUpdate
+ 4001              		.thumb
+ 4002              		.thumb_func
+ 4004              	ETH_SetPTPTimeStampUpdate:
+ 4005              		@ args = 0, pretend = 0, frame = 0
+ 4006              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4007 0000 20F00043 		bic	r3, r0, #-2147483648
+ 4008 0004 70B5     		push	{r4, r5, r6, lr}
+ 4009 0006 0546     		mov	r5, r0
+ 4010 0008 0E46     		mov	r6, r1
+ 4011 000a 1446     		mov	r4, r2
+ 4012 000c 23B1     		cbz	r3, .L1140
+ 4013 000e 0948     		ldr	r0, .L1145
+ 4014 0010 40F6DD31 		movw	r1, #3037
+ 4015 0014 FFF7FEFF 		bl	assert_err
+ 4016              	.L1140:
+ 4017 0018 002C     		cmp	r4, #0
+ 4018 001a 04DA     		bge	.L1141
+ 4019 001c 0548     		ldr	r0, .L1145
+ 4020 001e 40F6DE31 		movw	r1, #3038
+ 4021 0022 FFF7FEFF 		bl	assert_err
+ 4022              	.L1141:
+ 4023 0026 044B     		ldr	r3, .L1145+4
+ 4024 0028 2C43     		orrs	r4, r4, r5
+ 4025 002a C3F81067 		str	r6, [r3, #1808]
+ 4026 002e C3F81447 		str	r4, [r3, #1812]
+ 4027 0032 70BD     		pop	{r4, r5, r6, pc}
+ 4028              	.L1146:
+ 4029              		.align	2
+ 4030              	.L1145:
+ 4031 0034 00000000 		.word	.LC0
+ 4032 0038 00800240 		.word	1073905664
+ 4034              		.section	.text.ETH_SetPTPTimeStampAddend,"ax",%progbits
+ 4035              		.align	1
+ 4036              		.global	ETH_SetPTPTimeStampAddend
+ 4037              		.thumb
+ 4038              		.thumb_func
+ 4040              	ETH_SetPTPTimeStampAddend:
+ 4041              		@ args = 0, pretend = 0, frame = 0
+ 4042              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4043              		@ link register save eliminated.
+ 4044 0000 014B     		ldr	r3, .L1148
+ 4045 0002 C3F81807 		str	r0, [r3, #1816]
+ 4046 0006 7047     		bx	lr
+ 4047              	.L1149:
+ 4048              		.align	2
+ 4049              	.L1148:
+ 4050 0008 00800240 		.word	1073905664
+ 4052              		.section	.text.ETH_SetPTPTargetTime,"ax",%progbits
+ 4053              		.align	1
+ 4054              		.global	ETH_SetPTPTargetTime
+ 4055              		.thumb
+ 4056              		.thumb_func
+ 4058              	ETH_SetPTPTargetTime:
+ 4059              		@ args = 0, pretend = 0, frame = 0
+ 4060              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4061              		@ link register save eliminated.
+ 4062 0000 024B     		ldr	r3, .L1151
+ 4063 0002 C3F81C07 		str	r0, [r3, #1820]
+ 4064 0006 C3F82017 		str	r1, [r3, #1824]
+ 4065 000a 7047     		bx	lr
+ 4066              	.L1152:
+ 4067              		.align	2
+ 4068              	.L1151:
+ 4069 000c 00800240 		.word	1073905664
+ 4071              		.section	.text.ETH_GetPTPRegister,"ax",%progbits
+ 4072              		.align	1
+ 4073              		.global	ETH_GetPTPRegister
+ 4074              		.thumb
+ 4075              		.thumb_func
+ 4077              	ETH_GetPTPRegister:
+ 4078              		@ args = 0, pretend = 0, frame = 0
+ 4079              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4080 0000 20F00C03 		bic	r3, r0, #12
+ 4081 0004 B3F5E06F 		cmp	r3, #1792
+ 4082 0008 10B5     		push	{r4, lr}
+ 4083 000a 0446     		mov	r4, r0
+ 4084 000c 0AD0     		beq	.L1154
+ 4085 000e B3F5E26F 		cmp	r3, #1808
+ 4086 0012 07D0     		beq	.L1154
+ 4087 0014 B0F5E46F 		cmp	r0, #1824
+ 4088 0018 04D0     		beq	.L1154
+ 4089 001a 0548     		ldr	r0, .L1164
+ 4090 001c 40F61141 		movw	r1, #3089
+ 4091 0020 FFF7FEFF 		bl	assert_err
+ 4092              	.L1154:
+ 4093 0024 04F18044 		add	r4, r4, #1073741824
+ 4094 0028 04F52034 		add	r4, r4, #163840
+ 4095 002c 2068     		ldr	r0, [r4]
+ 4096 002e 10BD     		pop	{r4, pc}
+ 4097              	.L1165:
+ 4098              		.align	2
+ 4099              	.L1164:
+ 4100 0030 00000000 		.word	.LC0
+ 4102              		.section	.text.ETH_DMAPTPTxDescChainInit,"ax",%progbits
+ 4103              		.align	1
+ 4104              		.global	ETH_DMAPTPTxDescChainInit
+ 4105              		.thumb
+ 4106              		.thumb_func
+ 4108              	ETH_DMAPTPTxDescChainInit:
+ 4109              		@ args = 0, pretend = 0, frame = 0
+ 4110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4111 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 4112 0004 154C     		ldr	r4, .L1172
+ 4113 0006 0E46     		mov	r6, r1
+ 4114 0008 2060     		str	r0, [r4]
+ 4115 000a 154C     		ldr	r4, .L1172+4
+ 4116 000c 0025     		movs	r5, #0
+ 4117 000e 2160     		str	r1, [r4]
+ 4118 0010 4FF0047C 		mov	ip, #34603008
+ 4119 0014 00F11004 		add	r4, r0, #16
+ 4120 0018 4FF4BE68 		mov	r8, #1520
+ 4121 001c 03F1FF39 		add	r9, r3, #-1
+ 4122              	.L1167:
+ 4123 0020 9D42     		cmp	r5, r3
+ 4124 0022 13D0     		beq	.L1171
+ 4125 0024 08FB0527 		mla	r7, r8, r5, r2
+ 4126 0028 4D45     		cmp	r5, r9
+ 4127 002a 2CBF     		ite	cs
+ 4128 002c 8246     		movcs	r10, r0
+ 4129 002e A246     		movcc	r10, r4
+ 4130 0030 44F8087C 		str	r7, [r4, #-8]
+ 4131 0034 44F804AC 		str	r10, [r4, #-4]
+ 4132 0038 44F810CC 		str	ip, [r4, #-16]
+ 4133 003c B760     		str	r7, [r6, #8]
+ 4134 003e 54F8047C 		ldr	r7, [r4, #-4]
+ 4135 0042 0135     		adds	r5, r5, #1
+ 4136 0044 F760     		str	r7, [r6, #12]
+ 4137 0046 1034     		adds	r4, r4, #16
+ 4138 0048 1036     		adds	r6, r6, #16
+ 4139 004a E9E7     		b	.L1167
+ 4140              	.L1171:
+ 4141 004c 054B     		ldr	r3, .L1172+8
+ 4142 004e 01EB0515 		add	r5, r1, r5, lsl #4
+ 4143 0052 45F8101C 		str	r1, [r5, #-16]
+ 4144 0056 1861     		str	r0, [r3, #16]
+ 4145 0058 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 4146              	.L1173:
+ 4147              		.align	2
+ 4148              	.L1172:
+ 4149 005c 00000000 		.word	DMATxDescToSet
+ 4150 0060 00000000 		.word	DMAPTPTxDescToSet
+ 4151 0064 00900240 		.word	1073909760
+ 4153              		.section	.text.ETH_DMAPTPRxDescChainInit,"ax",%progbits
+ 4154              		.align	1
+ 4155              		.global	ETH_DMAPTPRxDescChainInit
+ 4156              		.thumb
+ 4157              		.thumb_func
+ 4159              	ETH_DMAPTPRxDescChainInit:
+ 4160              		@ args = 0, pretend = 0, frame = 0
+ 4161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4162 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 4163 0004 174C     		ldr	r4, .L1180
+ 4164 0006 0E46     		mov	r6, r1
+ 4165 0008 2060     		str	r0, [r4]
+ 4166 000a 174C     		ldr	r4, .L1180+4
+ 4167 000c 0025     		movs	r5, #0
+ 4168 000e 2160     		str	r1, [r4]
+ 4169 0010 4FF0004C 		mov	ip, #-2147483648
+ 4170 0014 00F11004 		add	r4, r0, #16
+ 4171 0018 44F2F058 		movw	r8, #17904
+ 4172 001c 4FF4BE69 		mov	r9, #1520
+ 4173 0020 03F1FF3A 		add	r10, r3, #-1
+ 4174              	.L1175:
+ 4175 0024 9D42     		cmp	r5, r3
+ 4176 0026 15D0     		beq	.L1179
+ 4177 0028 09FB0527 		mla	r7, r9, r5, r2
+ 4178 002c 5545     		cmp	r5, r10
+ 4179 002e 2CBF     		ite	cs
+ 4180 0030 8346     		movcs	fp, r0
+ 4181 0032 A346     		movcc	fp, r4
+ 4182 0034 44F8087C 		str	r7, [r4, #-8]
+ 4183 0038 44F804BC 		str	fp, [r4, #-4]
+ 4184 003c 44F810CC 		str	ip, [r4, #-16]
+ 4185 0040 44F80C8C 		str	r8, [r4, #-12]
+ 4186 0044 B760     		str	r7, [r6, #8]
+ 4187 0046 54F8047C 		ldr	r7, [r4, #-4]
+ 4188 004a 0135     		adds	r5, r5, #1
+ 4189 004c F760     		str	r7, [r6, #12]
+ 4190 004e 1034     		adds	r4, r4, #16
+ 4191 0050 1036     		adds	r6, r6, #16
+ 4192 0052 E7E7     		b	.L1175
+ 4193              	.L1179:
+ 4194 0054 054B     		ldr	r3, .L1180+8
+ 4195 0056 01EB0515 		add	r5, r1, r5, lsl #4
+ 4196 005a 45F8101C 		str	r1, [r5, #-16]
+ 4197 005e D860     		str	r0, [r3, #12]
+ 4198 0060 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 4199              	.L1181:
+ 4200              		.align	2
+ 4201              	.L1180:
+ 4202 0064 00000000 		.word	DMARxDescToGet
+ 4203 0068 00000000 		.word	DMAPTPRxDescToGet
+ 4204 006c 00900240 		.word	1073909760
+ 4206              		.section	.text.ETH_HandlePTPTxPkt,"ax",%progbits
+ 4207              		.align	1
+ 4208              		.global	ETH_HandlePTPTxPkt
+ 4209              		.thumb
+ 4210              		.thumb_func
+ 4212              	ETH_HandlePTPTxPkt:
+ 4213              		@ args = 0, pretend = 0, frame = 0
+ 4214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4215 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 4216 0002 284D     		ldr	r5, .L1197
+ 4217 0004 2B68     		ldr	r3, [r5]
+ 4218 0006 1B68     		ldr	r3, [r3]
+ 4219 0008 002B     		cmp	r3, #0
+ 4220 000a 48DB     		blt	.L1190
+ 4221 000c 264E     		ldr	r6, .L1197+4
+ 4222 000e 0023     		movs	r3, #0
+ 4223              	.L1184:
+ 4224 0010 8B42     		cmp	r3, r1
+ 4225 0012 254C     		ldr	r4, .L1197+4
+ 4226 0014 05D2     		bcs	.L1196
+ 4227 0016 3468     		ldr	r4, [r6]
+ 4228 0018 C75C     		ldrb	r7, [r0, r3]	@ zero_extendqisi2
+ 4229 001a A468     		ldr	r4, [r4, #8]
+ 4230 001c 1F55     		strb	r7, [r3, r4]
+ 4231 001e 0133     		adds	r3, r3, #1
+ 4232 0020 F6E7     		b	.L1184
+ 4233              	.L1196:
+ 4234 0022 2B68     		ldr	r3, [r5]
+ 4235 0024 C1F30C01 		ubfx	r1, r1, #0, #13
+ 4236 0028 1868     		ldr	r0, [r3]
+ 4237 002a 5960     		str	r1, [r3, #4]
+ 4238 002c 40F03041 		orr	r1, r0, #-1342177280
+ 4239 0030 1960     		str	r1, [r3]
+ 4240 0032 1E49     		ldr	r1, .L1197+8
+ 4241 0034 4E69     		ldr	r6, [r1, #20]
+ 4242 0036 7607     		lsls	r6, r6, #29
+ 4243 0038 03D5     		bpl	.L1186
+ 4244 003a 0426     		movs	r6, #4
+ 4245 003c 4E61     		str	r6, [r1, #20]
+ 4246 003e 0026     		movs	r6, #0
+ 4247 0040 4E60     		str	r6, [r1, #4]
+ 4248              	.L1186:
+ 4249 0042 9968     		ldr	r1, [r3, #8]
+ 4250 0044 20F40030 		bic	r0, r0, #131072
+ 4251 0048 40F03040 		orr	r0, r0, #-1342177280
+ 4252 004c 1860     		str	r0, [r3]
+ 4253 004e 1160     		str	r1, [r2]
+ 4254 0050 D968     		ldr	r1, [r3, #12]
+ 4255 0052 5160     		str	r1, [r2, #4]
+ 4256 0054 1A68     		ldr	r2, [r3]
+ 4257 0056 D102     		lsls	r1, r2, #11
+ 4258 0058 0AD5     		bpl	.L1187
+ 4259 005a 2368     		ldr	r3, [r4]
+ 4260 005c 124A     		ldr	r2, .L1197+4
+ 4261 005e D968     		ldr	r1, [r3, #12]
+ 4262 0060 2960     		str	r1, [r5]
+ 4263 0062 1968     		ldr	r1, [r3]
+ 4264 0064 09B1     		cbz	r1, .L1188
+ 4265 0066 1160     		str	r1, [r2]
+ 4266 0068 17E0     		b	.L1195
+ 4267              	.L1188:
+ 4268 006a 1033     		adds	r3, r3, #16
+ 4269 006c 1360     		str	r3, [r2]
+ 4270 006e 14E0     		b	.L1195
+ 4271              	.L1187:
+ 4272 0070 12F4001F 		tst	r2, #2097152
+ 4273 0074 0D4A     		ldr	r2, .L1197+8
+ 4274 0076 03D0     		beq	.L1189
+ 4275 0078 1369     		ldr	r3, [r2, #16]
+ 4276 007a 2B60     		str	r3, [r5]
+ 4277 007c 1369     		ldr	r3, [r2, #16]
+ 4278 007e 0BE0     		b	.L1194
+ 4279              	.L1189:
+ 4280 0080 1168     		ldr	r1, [r2]
+ 4281 0082 1033     		adds	r3, r3, #16
+ 4282 0084 C1F38401 		ubfx	r1, r1, #2, #5
+ 4283 0088 0B44     		add	r3, r3, r1
+ 4284 008a 2B60     		str	r3, [r5]
+ 4285 008c 1268     		ldr	r2, [r2]
+ 4286 008e 2368     		ldr	r3, [r4]
+ 4287 0090 C2F38402 		ubfx	r2, r2, #2, #5
+ 4288 0094 1033     		adds	r3, r3, #16
+ 4289 0096 1344     		add	r3, r3, r2
+ 4290              	.L1194:
+ 4291 0098 2360     		str	r3, [r4]
+ 4292              	.L1195:
+ 4293 009a 0120     		movs	r0, #1
+ 4294 009c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 4295              	.L1190:
+ 4296 009e 0020     		movs	r0, #0
+ 4297 00a0 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 4298              	.L1198:
+ 4299 00a2 00BF     		.align	2
+ 4300              	.L1197:
+ 4301 00a4 00000000 		.word	DMATxDescToSet
+ 4302 00a8 00000000 		.word	DMAPTPTxDescToSet
+ 4303 00ac 00900240 		.word	1073909760
+ 4305              		.section	.text.ETH_HandlePTPRxPkt,"ax",%progbits
+ 4306              		.align	1
+ 4307              		.global	ETH_HandlePTPRxPkt
+ 4308              		.thumb
+ 4309              		.thumb_func
+ 4311              	ETH_HandlePTPRxPkt:
+ 4312              		@ args = 0, pretend = 0, frame = 0
+ 4313              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4314 0000 244A     		ldr	r2, .L1215
+ 4315 0002 70B5     		push	{r4, r5, r6, lr}
+ 4316 0004 1368     		ldr	r3, [r2]
+ 4317 0006 1546     		mov	r5, r2
+ 4318 0008 1B68     		ldr	r3, [r3]
+ 4319 000a 002B     		cmp	r3, #0
+ 4320 000c 40DB     		blt	.L1208
+ 4321 000e 03F40342 		and	r2, r3, #33536
+ 4322 0012 B2F5407F 		cmp	r2, #768
+ 4323 0016 0CD1     		bne	.L1209
+ 4324 0018 C3F30D43 		ubfx	r3, r3, #16, #14
+ 4325 001c 1E4E     		ldr	r6, .L1215+4
+ 4326 001e 043B     		subs	r3, r3, #4
+ 4327 0020 0022     		movs	r2, #0
+ 4328              	.L1202:
+ 4329 0022 9A42     		cmp	r2, r3
+ 4330 0024 06D2     		bcs	.L1201
+ 4331 0026 3468     		ldr	r4, [r6]
+ 4332 0028 A468     		ldr	r4, [r4, #8]
+ 4333 002a 145D     		ldrb	r4, [r2, r4]	@ zero_extendqisi2
+ 4334 002c 8454     		strb	r4, [r0, r2]
+ 4335 002e 0132     		adds	r2, r2, #1
+ 4336 0030 F7E7     		b	.L1202
+ 4337              	.L1209:
+ 4338 0032 0023     		movs	r3, #0
+ 4339              	.L1201:
+ 4340 0034 194A     		ldr	r2, .L1215+8
+ 4341 0036 5069     		ldr	r0, [r2, #20]
+ 4342 0038 0606     		lsls	r6, r0, #24
+ 4343 003a 03D5     		bpl	.L1204
+ 4344 003c 8020     		movs	r0, #128
+ 4345 003e 5061     		str	r0, [r2, #20]
+ 4346 0040 0020     		movs	r0, #0
+ 4347 0042 9060     		str	r0, [r2, #8]
+ 4348              	.L1204:
+ 4349 0044 2A68     		ldr	r2, [r5]
+ 4350 0046 1348     		ldr	r0, .L1215
+ 4351 0048 9468     		ldr	r4, [r2, #8]
+ 4352 004a 0C60     		str	r4, [r1]
+ 4353 004c D468     		ldr	r4, [r2, #12]
+ 4354 004e 4C60     		str	r4, [r1, #4]
+ 4355 0050 1168     		ldr	r1, [r2]
+ 4356 0052 41F00041 		orr	r1, r1, #-2147483648
+ 4357 0056 1160     		str	r1, [r2]
+ 4358 0058 5168     		ldr	r1, [r2, #4]
+ 4359 005a 4C04     		lsls	r4, r1, #17
+ 4360 005c 0AD5     		bpl	.L1205
+ 4361 005e 0E4A     		ldr	r2, .L1215+4
+ 4362 0060 1168     		ldr	r1, [r2]
+ 4363 0062 CC68     		ldr	r4, [r1, #12]
+ 4364 0064 0460     		str	r4, [r0]
+ 4365 0066 0868     		ldr	r0, [r1]
+ 4366 0068 08B1     		cbz	r0, .L1206
+ 4367 006a 1060     		str	r0, [r2]
+ 4368 006c 08E0     		b	.L1213
+ 4369              	.L1206:
+ 4370 006e 1031     		adds	r1, r1, #16
+ 4371 0070 1160     		str	r1, [r2]
+ 4372 0072 05E0     		b	.L1213
+ 4373              	.L1205:
+ 4374 0074 11F4004F 		tst	r1, #32768
+ 4375 0078 0849     		ldr	r1, .L1215+8
+ 4376 007a 03D0     		beq	.L1207
+ 4377 007c CA68     		ldr	r2, [r1, #12]
+ 4378              	.L1214:
+ 4379 007e 0260     		str	r2, [r0]
+ 4380              	.L1213:
+ 4381 0080 1846     		mov	r0, r3
+ 4382 0082 70BD     		pop	{r4, r5, r6, pc}
+ 4383              	.L1207:
+ 4384 0084 0968     		ldr	r1, [r1]
+ 4385 0086 1032     		adds	r2, r2, #16
+ 4386 0088 C1F38401 		ubfx	r1, r1, #2, #5
+ 4387 008c 0A44     		add	r2, r2, r1
+ 4388 008e F6E7     		b	.L1214
+ 4389              	.L1208:
+ 4390 0090 0020     		movs	r0, #0
+ 4391 0092 70BD     		pop	{r4, r5, r6, pc}
+ 4392              	.L1216:
+ 4393              		.align	2
+ 4394              	.L1215:
+ 4395 0094 00000000 		.word	DMARxDescToGet
+ 4396 0098 00000000 		.word	DMAPTPRxDescToGet
+ 4397 009c 00900240 		.word	1073909760
+ 4399              		.comm	DMAPTPRxDescToGet,4,4
+ 4400              		.comm	DMAPTPTxDescToSet,4,4
+ 4401              		.comm	DMARxDescToGet,4,4
+ 4402              		.comm	DMATxDescToSet,4,4
+ 4403              		.comm	Tx_Buff,3040,1
+ 4404              		.comm	Rx_Buff,3040,1
+ 4405              		.comm	DMATxDscrTab,32,4
+ 4406              		.comm	DMARxDscrTab,32,4
+ 4407              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 4408              	.LC0:
+ 4409 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/components"
+ 4409      73657273 
+ 4409      2F647261 
+ 4409      6170686F 
+ 4409      2F446573 
+ 4410 0033 2F63706E 		.ascii	"/cpn_uip/chips/stm32_eth_uip.c\000"
+ 4410      5F756970 
+ 4410      2F636869 
+ 4410      70732F73 
+ 4410      746D3332 
+ 4411              	.LC1:
+ 4412 0052 0D0A2D2D 		.ascii	"\015\012-- stm32_eth auto negotiation start.\015\000"
+ 4412      2073746D 
+ 4412      33325F65 
+ 4412      74682061 
+ 4412      75746F20 
+ 4413              	.LC2:
+ 4414 007a 20202073 		.ascii	"   stm32_eth full duplex.\015\000"
+ 4414      746D3332 
+ 4414      5F657468 
+ 4414      2066756C 
+ 4414      6C206475 
+ 4415              	.LC3:
+ 4416 0095 20202073 		.ascii	"   stm32_eth half duplex.\015\000"
+ 4416      746D3332 
+ 4416      5F657468 
+ 4416      2068616C 
+ 4416      66206475 
+ 4417              	.LC4:
+ 4418 00b0 20202073 		.ascii	"   stm32_eth 10M speed.\015\000"
+ 4418      746D3332 
+ 4418      5F657468 
+ 4418      2031304D 
+ 4418      20737065 
+ 4419              	.LC5:
+ 4420 00c9 20202073 		.ascii	"   stm32_eth 100M speed.\015\000"
+ 4420      746D3332 
+ 4420      5F657468 
+ 4420      20313030 
+ 4420      4D207370 
+ 4421              	.LC6:
+ 4422 00e3 20202073 		.ascii	"   stm32_eth auto negotiation ok.\015\012\015\000"
+ 4422      746D3332 
+ 4422      5F657468 
+ 4422      20617574 
+ 4422      6F206E65 
+ 4423              	.LC7:
+ 4424 0108 20202073 		.ascii	"   stm32_eth init error.\015\012\015\000"
+ 4424      746D3332 
+ 4424      5F657468 
+ 4424      20696E69 
+ 4424      74206572 
+ 4425              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32_eth_uip.c
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:16     .text.GPIO_Configuration:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:21     .text.GPIO_Configuration:00000000 GPIO_Configuration
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:131    .text.GPIO_Configuration:00000168 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:137    .text.ETH_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:142    .text.ETH_DeInit:00000000 ETH_DeInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:155    .text.ETH_StructInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:160    .text.ETH_StructInit:00000000 ETH_StructInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:224    .text.ETH_HandleTxPkt:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:229    .text.ETH_HandleTxPkt:00000000 ETH_HandleTxPkt
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:289    .text.ETH_HandleTxPkt:00000068 $d
+                            *COM*:00000004 DMATxDescToSet
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:293    .text.ETH_HandleRxPkt:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:298    .text.ETH_HandleRxPkt:00000000 ETH_HandleRxPkt
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:363    .text.ETH_HandleRxPkt:00000074 $d
+                            *COM*:00000004 DMARxDescToGet
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:367    .text.ETH_GetRxPktSize:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:372    .text.ETH_GetRxPktSize:00000000 ETH_GetRxPktSize
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:392    .text.ETH_GetRxPktSize:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:395    .text.ETH_DropRxPkt:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:400    .text.ETH_DropRxPkt:00000000 ETH_DropRxPkt
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:430    .text.ETH_DropRxPkt:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:434    .text.ETH_ReadPHYRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:439    .text.ETH_ReadPHYRegister:00000000 ETH_ReadPHYRegister
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:498    .text.ETH_ReadPHYRegister:00000070 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:504    .text.stm32_eth_linked:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:509    .text.stm32_eth_linked:00000000 stm32_eth_linked
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:520    .text.ETH_WritePHYRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:525    .text.ETH_WritePHYRegister:00000000 ETH_WritePHYRegister
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:583    .text.ETH_WritePHYRegister:0000006c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:589    .text.ETH_Init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:594    .text.ETH_Init:00000000 ETH_Init
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:904    .text.ETH_Init:0000031c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:907    .text.ETH_Init:00000320 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1114   .text.ETH_Init:000004fc $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1131   .text.ETH_Init:0000053c $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1246   .text.ETH_Init:00000640 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1251   .text.ETH_PHYLoopBackCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1256   .text.ETH_PHYLoopBackCmd:00000000 ETH_PHYLoopBackCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1294   .text.ETH_PHYLoopBackCmd:00000048 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1297   .text.ETH_MACTransmissionCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1302   .text.ETH_MACTransmissionCmd:00000000 ETH_MACTransmissionCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1328   .text.ETH_MACTransmissionCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1332   .text.ETH_MACReceptionCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1337   .text.ETH_MACReceptionCmd:00000000 ETH_MACReceptionCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1363   .text.ETH_MACReceptionCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1367   .text.ETH_GetFlowControlBusyStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1372   .text.ETH_GetFlowControlBusyStatus:00000000 ETH_GetFlowControlBusyStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1383   .text.ETH_GetFlowControlBusyStatus:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1386   .text.ETH_InitiatePauseControlFrame:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1391   .text.ETH_InitiatePauseControlFrame:00000000 ETH_InitiatePauseControlFrame
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1403   .text.ETH_InitiatePauseControlFrame:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1406   .text.ETH_BackPressureActivationCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1411   .text.ETH_BackPressureActivationCmd:00000000 ETH_BackPressureActivationCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1437   .text.ETH_BackPressureActivationCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1441   .text.ETH_GetMACFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1446   .text.ETH_GetMACFlagStatus:00000000 ETH_GetMACFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1475   .text.ETH_GetMACFlagStatus:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1479   .text.ETH_GetMACITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1484   .text.ETH_GetMACITStatus:00000000 ETH_GetMACITStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1513   .text.ETH_GetMACITStatus:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1517   .text.ETH_MACITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1522   .text.ETH_MACITConfig:00000000 ETH_MACITConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1558   .text.ETH_MACITConfig:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1562   .text.ETH_MACAddressConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1567   .text.ETH_MACAddressConfig:00000000 ETH_MACAddressConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1598   .text.ETH_MACAddressConfig:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1603   .text.ETH_GetMACAddress:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1608   .text.ETH_GetMACAddress:00000000 ETH_GetMACAddress
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1638   .text.ETH_GetMACAddress:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1643   .text.ETH_MACAddressPerfectFilterCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1648   .text.ETH_MACAddressPerfectFilterCmd:00000000 ETH_MACAddressPerfectFilterCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1685   .text.ETH_MACAddressPerfectFilterCmd:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1689   .text.ETH_MACAddressFilterConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1694   .text.ETH_MACAddressFilterConfig:00000000 ETH_MACAddressFilterConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1729   .text.ETH_MACAddressFilterConfig:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1733   .text.ETH_MACAddressMaskBytesFilterConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1738   .text.ETH_MACAddressMaskBytesFilterConfig:00000000 ETH_MACAddressMaskBytesFilterConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1780   .text.ETH_MACAddressMaskBytesFilterConfig:0000005c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1784   .text.ETH_DMATxDescChainInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1789   .text.ETH_DMATxDescChainInit:00000000 ETH_DMATxDescChainInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1821   .text.ETH_DMATxDescChainInit:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1825   .text.ETH_DMATxDescRingInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1830   .text.ETH_DMATxDescRingInit:00000000 ETH_DMATxDescRingInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1862   .text.ETH_DMATxDescRingInit:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1866   .text.ETH_GetDMATxDescFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1871   .text.ETH_GetDMATxDescFlagStatus:00000000 ETH_GetDMATxDescFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1937   .text.ETH_GetDMATxDescFlagStatus:000000a0 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1940   .text.ETH_GetDMATxDescCollisionCount:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1945   .text.ETH_GetDMATxDescCollisionCount:00000000 ETH_GetDMATxDescCollisionCount
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1954   .text.ETH_SetDMATxDescOwnBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1959   .text.ETH_SetDMATxDescOwnBit:00000000 ETH_SetDMATxDescOwnBit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1969   .text.ETH_DMATxDescTransmitITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:1974   .text.ETH_DMATxDescTransmitITConfig:00000000 ETH_DMATxDescTransmitITConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2000   .text.ETH_DMATxDescTransmitITConfig:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2003   .text.ETH_DMATxDescFrameSegmentConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2008   .text.ETH_DMATxDescFrameSegmentConfig:00000000 ETH_DMATxDescFrameSegmentConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2029   .text.ETH_DMATxDescFrameSegmentConfig:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2032   .text.ETH_DMATxDescChecksumInsertionConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2037   .text.ETH_DMATxDescChecksumInsertionConfig:00000000 ETH_DMATxDescChecksumInsertionConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2056   .text.ETH_DMATxDescChecksumInsertionConfig:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2059   .text.ETH_DMATxDescCRCCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2064   .text.ETH_DMATxDescCRCCmd:00000000 ETH_DMATxDescCRCCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2090   .text.ETH_DMATxDescCRCCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2093   .text.ETH_DMATxDescEndOfRingCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2098   .text.ETH_DMATxDescEndOfRingCmd:00000000 ETH_DMATxDescEndOfRingCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2124   .text.ETH_DMATxDescEndOfRingCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2127   .text.ETH_DMATxDescSecondAddressChainedCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2132   .text.ETH_DMATxDescSecondAddressChainedCmd:00000000 ETH_DMATxDescSecondAddressChainedCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2158   .text.ETH_DMATxDescSecondAddressChainedCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2161   .text.ETH_DMATxDescShortFramePaddingCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2166   .text.ETH_DMATxDescShortFramePaddingCmd:00000000 ETH_DMATxDescShortFramePaddingCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2192   .text.ETH_DMATxDescShortFramePaddingCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2195   .text.ETH_DMATxDescTimeStampCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2200   .text.ETH_DMATxDescTimeStampCmd:00000000 ETH_DMATxDescTimeStampCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2226   .text.ETH_DMATxDescTimeStampCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2229   .text.ETH_DMATxDescBufferSizeConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2234   .text.ETH_DMATxDescBufferSizeConfig:00000000 ETH_DMATxDescBufferSizeConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2263   .text.ETH_DMATxDescBufferSizeConfig:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2266   .text.ETH_DMARxDescChainInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2271   .text.ETH_DMARxDescChainInit:00000000 ETH_DMARxDescChainInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2305   .text.ETH_DMARxDescChainInit:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2309   .text.ETH_DMARxDescRingInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2314   .text.ETH_DMARxDescRingInit:00000000 ETH_DMARxDescRingInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2349   .text.ETH_DMARxDescRingInit:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2353   .text.ETH_GetDMARxDescFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2358   .text.ETH_GetDMARxDescFlagStatus:00000000 ETH_GetDMARxDescFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2412   .text.ETH_GetDMARxDescFlagStatus:00000078 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2415   .text.ETH_SetDMARxDescOwnBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2420   .text.ETH_SetDMARxDescOwnBit:00000000 ETH_SetDMARxDescOwnBit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2430   .text.ETH_GetDMARxDescFrameLength:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2435   .text.ETH_GetDMARxDescFrameLength:00000000 ETH_GetDMARxDescFrameLength
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2444   .text.ETH_DMARxDescReceiveITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2449   .text.ETH_DMARxDescReceiveITConfig:00000000 ETH_DMARxDescReceiveITConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2475   .text.ETH_DMARxDescReceiveITConfig:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2478   .text.ETH_DMARxDescEndOfRingCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2483   .text.ETH_DMARxDescEndOfRingCmd:00000000 ETH_DMARxDescEndOfRingCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2509   .text.ETH_DMARxDescEndOfRingCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2512   .text.ETH_DMARxDescSecondAddressChainedCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2517   .text.ETH_DMARxDescSecondAddressChainedCmd:00000000 ETH_DMARxDescSecondAddressChainedCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2543   .text.ETH_DMARxDescSecondAddressChainedCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2546   .text.ETH_GetDMARxDescBufferSize:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2551   .text.ETH_GetDMARxDescBufferSize:00000000 ETH_GetDMARxDescBufferSize
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2575   .text.ETH_GetDMARxDescBufferSize:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2578   .text.ETH_SoftwareReset:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2583   .text.ETH_SoftwareReset:00000000 ETH_SoftwareReset
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2595   .text.ETH_SoftwareReset:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2598   .text.ETH_GetSoftwareResetStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2603   .text.ETH_GetSoftwareResetStatus:00000000 ETH_GetSoftwareResetStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2614   .text.ETH_GetSoftwareResetStatus:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2617   .text.ETH_GetDMAFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2622   .text.ETH_GetDMAFlagStatus:00000000 ETH_GetDMAFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2676   .text.ETH_GetDMAFlagStatus:00000078 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2680   .text.ETH_DMAClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2685   .text.ETH_DMAClearFlag:00000000 ETH_DMAClearFlag
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2705   .text.ETH_DMAClearFlag:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2710   .text.ETH_GetDMAITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2715   .text.ETH_GetDMAITStatus:00000000 ETH_GetDMAITStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2769   .text.ETH_GetDMAITStatus:00000078 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2773   .text.ETH_DMAClearITPendingBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2778   .text.ETH_DMAClearITPendingBit:00000000 ETH_DMAClearITPendingBit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2798   .text.ETH_DMAClearITPendingBit:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2803   .text.ETH_IRQHandler:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2808   .text.ETH_IRQHandler:00000000 ETH_IRQHandler
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2826   .text.ETH_IRQHandler:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2829   .text.ETH_GetTransmitProcessState:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2834   .text.ETH_GetTransmitProcessState:00000000 ETH_GetTransmitProcessState
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2845   .text.ETH_GetTransmitProcessState:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2848   .text.ETH_GetReceiveProcessState:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2853   .text.ETH_GetReceiveProcessState:00000000 ETH_GetReceiveProcessState
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2864   .text.ETH_GetReceiveProcessState:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2867   .text.ETH_FlushTransmitFIFO:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2872   .text.ETH_FlushTransmitFIFO:00000000 ETH_FlushTransmitFIFO
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2884   .text.ETH_FlushTransmitFIFO:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2887   .text.ETH_GetFlushTransmitFIFOStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2892   .text.ETH_GetFlushTransmitFIFOStatus:00000000 ETH_GetFlushTransmitFIFOStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2903   .text.ETH_GetFlushTransmitFIFOStatus:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2906   .text.ETH_DMATransmissionCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2911   .text.ETH_DMATransmissionCmd:00000000 ETH_DMATransmissionCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2937   .text.ETH_DMATransmissionCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2941   .text.ETH_DMAReceptionCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2946   .text.ETH_DMAReceptionCmd:00000000 ETH_DMAReceptionCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2972   .text.ETH_DMAReceptionCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2976   .text.ETH_Start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2981   .text.ETH_Start:00000000 ETH_Start
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:2997   .text.ETH_DMAITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3002   .text.ETH_DMAITConfig:00000000 ETH_DMAITConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3039   .text.ETH_DMAITConfig:0000003c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3044   .text.stm32_eth_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3049   .text.stm32_eth_init:00000000 stm32_eth_init
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3106   .text.stm32_eth_init:0000008c $d
+                            *COM*:00000020 DMATxDscrTab
+                            *COM*:00000be0 Tx_Buff
+                            *COM*:00000020 DMARxDscrTab
+                            *COM*:00000be0 Rx_Buff
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3113   .text.ETH_GetDMAOverflowStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3118   .text.ETH_GetDMAOverflowStatus:00000000 ETH_GetDMAOverflowStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3141   .text.ETH_GetDMAOverflowStatus:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3145   .text.ETH_GetRxOverflowMissedFrameCounter:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3150   .text.ETH_GetRxOverflowMissedFrameCounter:00000000 ETH_GetRxOverflowMissedFrameCounter
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3161   .text.ETH_GetRxOverflowMissedFrameCounter:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3164   .text.ETH_GetBufferUnavailableMissedFrameCounter:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3169   .text.ETH_GetBufferUnavailableMissedFrameCounter:00000000 ETH_GetBufferUnavailableMissedFrameCounter
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3180   .text.ETH_GetBufferUnavailableMissedFrameCounter:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3183   .text.ETH_GetCurrentTxDescStartAddress:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3188   .text.ETH_GetCurrentTxDescStartAddress:00000000 ETH_GetCurrentTxDescStartAddress
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3198   .text.ETH_GetCurrentTxDescStartAddress:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3201   .text.ETH_GetCurrentRxDescStartAddress:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3206   .text.ETH_GetCurrentRxDescStartAddress:00000000 ETH_GetCurrentRxDescStartAddress
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3216   .text.ETH_GetCurrentRxDescStartAddress:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3219   .text.ETH_GetCurrentTxBufferAddress:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3224   .text.ETH_GetCurrentTxBufferAddress:00000000 ETH_GetCurrentTxBufferAddress
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3234   .text.ETH_GetCurrentTxBufferAddress:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3237   .text.ETH_GetCurrentRxBufferAddress:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3242   .text.ETH_GetCurrentRxBufferAddress:00000000 ETH_GetCurrentRxBufferAddress
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3252   .text.ETH_GetCurrentRxBufferAddress:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3255   .text.ETH_ResumeDMATransmission:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3260   .text.ETH_ResumeDMATransmission:00000000 ETH_ResumeDMATransmission
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3271   .text.ETH_ResumeDMATransmission:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3274   .text.ETH_ResumeDMAReception:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3279   .text.ETH_ResumeDMAReception:00000000 ETH_ResumeDMAReception
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3290   .text.ETH_ResumeDMAReception:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3293   .text.ETH_ResetWakeUpFrameFilterRegisterPointer:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3298   .text.ETH_ResetWakeUpFrameFilterRegisterPointer:00000000 ETH_ResetWakeUpFrameFilterRegisterPointer
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3310   .text.ETH_ResetWakeUpFrameFilterRegisterPointer:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3313   .text.ETH_SetWakeUpFrameFilterRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3318   .text.ETH_SetWakeUpFrameFilterRegister:00000000 ETH_SetWakeUpFrameFilterRegister
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3334   .text.ETH_SetWakeUpFrameFilterRegister:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3337   .text.ETH_GlobalUnicastWakeUpCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3342   .text.ETH_GlobalUnicastWakeUpCmd:00000000 ETH_GlobalUnicastWakeUpCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3368   .text.ETH_GlobalUnicastWakeUpCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3372   .text.ETH_GetPMTFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3377   .text.ETH_GetPMTFlagStatus:00000000 ETH_GetPMTFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3400   .text.ETH_GetPMTFlagStatus:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3404   .text.ETH_WakeUpFrameDetectionCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3409   .text.ETH_WakeUpFrameDetectionCmd:00000000 ETH_WakeUpFrameDetectionCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3435   .text.ETH_WakeUpFrameDetectionCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3439   .text.ETH_MagicPacketDetectionCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3444   .text.ETH_MagicPacketDetectionCmd:00000000 ETH_MagicPacketDetectionCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3470   .text.ETH_MagicPacketDetectionCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3474   .text.ETH_PowerDownCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3479   .text.ETH_PowerDownCmd:00000000 ETH_PowerDownCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3505   .text.ETH_PowerDownCmd:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3509   .text.ETH_MMCCounterFreezeCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3514   .text.ETH_MMCCounterFreezeCmd:00000000 ETH_MMCCounterFreezeCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3540   .text.ETH_MMCCounterFreezeCmd:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3544   .text.ETH_MMCResetOnReadCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3549   .text.ETH_MMCResetOnReadCmd:00000000 ETH_MMCResetOnReadCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3575   .text.ETH_MMCResetOnReadCmd:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3579   .text.ETH_MMCCounterRolloverCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3584   .text.ETH_MMCCounterRolloverCmd:00000000 ETH_MMCCounterRolloverCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3610   .text.ETH_MMCCounterRolloverCmd:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3614   .text.ETH_MMCCountersReset:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3619   .text.ETH_MMCCountersReset:00000000 ETH_MMCCountersReset
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3631   .text.ETH_MMCCountersReset:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3634   .text.ETH_MMCITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3639   .text.ETH_MMCITConfig:00000000 ETH_MMCITConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3690   .text.ETH_MMCITConfig:00000064 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3695   .text.ETH_GetMMCITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3700   .text.ETH_GetMMCITStatus:00000000 ETH_GetMMCITStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3741   .text.ETH_GetMMCITStatus:00000054 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3747   .text.ETH_GetMMCRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3752   .text.ETH_GetMMCRegister:00000000 ETH_GetMMCRegister
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3784   .text.ETH_GetMMCRegister:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3787   .text.ETH_EnablePTPTimeStampAddend:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3792   .text.ETH_EnablePTPTimeStampAddend:00000000 ETH_EnablePTPTimeStampAddend
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3804   .text.ETH_EnablePTPTimeStampAddend:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3807   .text.ETH_EnablePTPTimeStampInterruptTrigger:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3812   .text.ETH_EnablePTPTimeStampInterruptTrigger:00000000 ETH_EnablePTPTimeStampInterruptTrigger
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3824   .text.ETH_EnablePTPTimeStampInterruptTrigger:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3827   .text.ETH_EnablePTPTimeStampUpdate:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3832   .text.ETH_EnablePTPTimeStampUpdate:00000000 ETH_EnablePTPTimeStampUpdate
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3844   .text.ETH_EnablePTPTimeStampUpdate:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3847   .text.ETH_InitializePTPTimeStamp:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3852   .text.ETH_InitializePTPTimeStamp:00000000 ETH_InitializePTPTimeStamp
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3864   .text.ETH_InitializePTPTimeStamp:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3867   .text.ETH_PTPUpdateMethodConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3872   .text.ETH_PTPUpdateMethodConfig:00000000 ETH_PTPUpdateMethodConfig
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3898   .text.ETH_PTPUpdateMethodConfig:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3902   .text.ETH_PTPTimeStampCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3907   .text.ETH_PTPTimeStampCmd:00000000 ETH_PTPTimeStampCmd
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3933   .text.ETH_PTPTimeStampCmd:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3937   .text.ETH_GetPTPFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3942   .text.ETH_GetPTPFlagStatus:00000000 ETH_GetPTPFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3969   .text.ETH_GetPTPFlagStatus:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3973   .text.ETH_SetPTPSubSecondIncrement:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3978   .text.ETH_SetPTPSubSecondIncrement:00000000 ETH_SetPTPSubSecondIncrement
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3995   .text.ETH_SetPTPSubSecondIncrement:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:3999   .text.ETH_SetPTPTimeStampUpdate:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4004   .text.ETH_SetPTPTimeStampUpdate:00000000 ETH_SetPTPTimeStampUpdate
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4031   .text.ETH_SetPTPTimeStampUpdate:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4035   .text.ETH_SetPTPTimeStampAddend:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4040   .text.ETH_SetPTPTimeStampAddend:00000000 ETH_SetPTPTimeStampAddend
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4050   .text.ETH_SetPTPTimeStampAddend:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4053   .text.ETH_SetPTPTargetTime:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4058   .text.ETH_SetPTPTargetTime:00000000 ETH_SetPTPTargetTime
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4069   .text.ETH_SetPTPTargetTime:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4072   .text.ETH_GetPTPRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4077   .text.ETH_GetPTPRegister:00000000 ETH_GetPTPRegister
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4100   .text.ETH_GetPTPRegister:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4103   .text.ETH_DMAPTPTxDescChainInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4108   .text.ETH_DMAPTPTxDescChainInit:00000000 ETH_DMAPTPTxDescChainInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4149   .text.ETH_DMAPTPTxDescChainInit:0000005c $d
+                            *COM*:00000004 DMAPTPTxDescToSet
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4154   .text.ETH_DMAPTPRxDescChainInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4159   .text.ETH_DMAPTPRxDescChainInit:00000000 ETH_DMAPTPRxDescChainInit
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4202   .text.ETH_DMAPTPRxDescChainInit:00000064 $d
+                            *COM*:00000004 DMAPTPRxDescToGet
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4207   .text.ETH_HandlePTPTxPkt:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4212   .text.ETH_HandlePTPTxPkt:00000000 ETH_HandlePTPTxPkt
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4301   .text.ETH_HandlePTPTxPkt:000000a4 $d
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4306   .text.ETH_HandlePTPRxPkt:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4311   .text.ETH_HandlePTPRxPkt:00000000 ETH_HandlePTPRxPkt
+D:\Users\draapho\AppData\Local\Temp\ccHKIlaR.s:4395   .text.ETH_HandlePTPRxPkt:00000094 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_PinRemapConfig
+GPIO_ETH_MediaInterfaceConfig
+RCC_MCOConfig
+GPIO_Init
+RCC_AHBPeriphResetCmd
+assert_err
+RCC_GetClocksFreq
+puts
+uip_chip_irq_rx
+RCC_AHBPeriphClockCmd
+NVIC_Init

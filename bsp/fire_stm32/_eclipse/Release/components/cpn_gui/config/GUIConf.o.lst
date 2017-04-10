@@ -1,0 +1,102 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIConf.c"
+  15              		.section	.text.task_gui_scan,"ax",%progbits
+  16              		.align	1
+  17              		.global	task_gui_scan
+  18              		.thumb
+  19              		.thumb_func
+  21              	task_gui_scan:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 FFF7FEFF 		bl	GUI_Exec
+  26 0006 BDE80840 		pop	{r3, lr}
+  27 000a 3220     		movs	r0, #50
+  28 000c FFF7FEBF 		b	ezos_delay
+  30              		.section	.text.GUI_X_Config,"ax",%progbits
+  31              		.align	1
+  32              		.global	GUI_X_Config
+  33              		.thumb
+  34              		.thumb_func
+  36              	GUI_X_Config:
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39 0000 08B5     		push	{r3, lr}
+  40 0002 0548     		ldr	r0, .L3
+  41 0004 4FF42041 		mov	r1, #40960
+  42 0008 FFF7FEFF 		bl	GUI_ALLOC_AssignMemory
+  43 000c BDE80840 		pop	{r3, lr}
+  44 0010 8020     		movs	r0, #128
+  45 0012 FFF7FEBF 		b	GUI_ALLOC_SetAvBlockSize
+  46              	.L4:
+  47 0016 00BF     		.align	2
+  48              	.L3:
+  49 0018 00000000 		.word	.LANCHOR0
+  51              		.section	.text.gui_main_init,"ax",%progbits
+  52              		.align	1
+  53              		.global	gui_main_init
+  54              		.thumb
+  55              		.thumb_func
+  57              	gui_main_init:
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60 0000 07B5     		push	{r0, r1, r2, lr}
+  61 0002 FFF7FEFF 		bl	lcd_init
+  62 0006 FFF7FEFF 		bl	GUI_Init
+  63 000a 0548     		ldr	r0, .L6
+  64 000c 0022     		movs	r2, #0
+  65 000e 1423     		movs	r3, #20
+  66 0010 0093     		str	r3, [sp]
+  67 0012 0146     		mov	r1, r0
+  68 0014 1346     		mov	r3, r2
+  69 0016 FFF7FEFF 		bl	ezos_add
+  70 001a 03B0     		add	sp, sp, #12
+  71              		@ sp needed
+  72 001c 5DF804FB 		ldr	pc, [sp], #4
+  73              	.L7:
+  74              		.align	2
+  75              	.L6:
+  76 0020 00000000 		.word	task_gui_scan
+  78              		.section	.bss.extMem,"aw",%nobits
+  79              		.align	2
+  80              		.set	.LANCHOR0,. + 0
+  83              	extMem:
+  84 0000 00000000 		.space	40960
+  84      00000000 
+  84      00000000 
+  84      00000000 
+  84      00000000 
+  85              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIConf.c
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:16     .text.task_gui_scan:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:21     .text.task_gui_scan:00000000 task_gui_scan
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:31     .text.GUI_X_Config:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:36     .text.GUI_X_Config:00000000 GUI_X_Config
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:49     .text.GUI_X_Config:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:52     .text.gui_main_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:57     .text.gui_main_init:00000000 gui_main_init
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:76     .text.gui_main_init:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:79     .bss.extMem:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccXm0jWM.s:83     .bss.extMem:00000000 extMem
+
+UNDEFINED SYMBOLS
+GUI_Exec
+ezos_delay
+GUI_ALLOC_AssignMemory
+GUI_ALLOC_SetAvBlockSize
+lcd_init
+GUI_Init
+ezos_add

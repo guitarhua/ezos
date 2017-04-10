@@ -1,0 +1,822 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_i2c.c"
+  15              		.section	.text.I2C_SCL_HIGH,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	I2C_SCL_HIGH:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23              		@ link register save eliminated.
+  24 0000 084B     		ldr	r3, .L8
+  25 0002 03EB4010 		add	r0, r3, r0, lsl #5
+  26 0006 4169     		ldr	r1, [r0, #20]
+  27 0008 828B     		ldrh	r2, [r0, #28]
+  28 000a 0023     		movs	r3, #0
+  29 000c 0A61     		str	r2, [r1, #16]
+  30              	.L3:
+  31 000e 8868     		ldr	r0, [r1, #8]
+  32 0010 1040     		ands	r0, r2, r0
+  33 0012 04D1     		bne	.L4
+  34 0014 0133     		adds	r3, r3, #1
+  35 0016 B3F5807F 		cmp	r3, #256
+  36 001a F8D1     		bne	.L3
+  37 001c 7047     		bx	lr
+  38              	.L4:
+  39 001e 0120     		movs	r0, #1
+  40 0020 7047     		bx	lr
+  41              	.L9:
+  42 0022 00BF     		.align	2
+  43              	.L8:
+  44 0024 00000000 		.word	.LANCHOR0
+  46              		.section	.text.I2C_SDA_HIGH,"ax",%progbits
+  47              		.align	1
+  48              		.thumb
+  49              		.thumb_func
+  51              	I2C_SDA_HIGH:
+  52              		@ args = 0, pretend = 0, frame = 0
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  54              		@ link register save eliminated.
+  55 0000 034B     		ldr	r3, .L11
+  56 0002 03EB4010 		add	r0, r3, r0, lsl #5
+  57 0006 8369     		ldr	r3, [r0, #24]
+  58 0008 C28B     		ldrh	r2, [r0, #30]
+  59 000a 1A61     		str	r2, [r3, #16]
+  60 000c 7047     		bx	lr
+  61              	.L12:
+  62 000e 00BF     		.align	2
+  63              	.L11:
+  64 0010 00000000 		.word	.LANCHOR0
+  66              		.section	.text.i2c_tx_byte_sw,"ax",%progbits
+  67              		.align	1
+  68              		.thumb
+  69              		.thumb_func
+  71              	i2c_tx_byte_sw:
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74 0000 294B     		ldr	r3, .L21
+  75 0002 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  76 0006 294E     		ldr	r6, .L21+4
+  77 0008 4701     		lsls	r7, r0, #5
+  78 000a 33F81050 		ldrh	r5, [r3, r0, lsl #1]
+  79 000e 0446     		mov	r4, r0
+  80 0010 8846     		mov	r8, r1
+  81 0012 4FF0090A 		mov	r10, #9
+  82 0016 3E44     		add	r6, r6, r7
+  83              	.L14:
+  84 0018 0AF1FF3A 		add	r10, r10, #-1
+  85 001c 1AF0FF0A 		ands	r10, r10, #255
+  86 0020 DFF88890 		ldr	r9, .L21+4
+  87 0024 1BD0     		beq	.L20
+  88 0026 18F0800F 		tst	r8, #128
+  89 002a 03D0     		beq	.L15
+  90 002c 2046     		mov	r0, r4
+  91 002e FFF7FEFF 		bl	I2C_SDA_HIGH
+  92 0032 02E0     		b	.L16
+  93              	.L15:
+  94 0034 B369     		ldr	r3, [r6, #24]
+  95 0036 F28B     		ldrh	r2, [r6, #30]
+  96 0038 5A61     		str	r2, [r3, #20]
+  97              	.L16:
+  98 003a 681C     		adds	r0, r5, #1
+  99 003c 80B2     		uxth	r0, r0
+ 100 003e FFF7FEFF 		bl	delay_us
+ 101 0042 2046     		mov	r0, r4
+ 102 0044 FFF7FEFF 		bl	I2C_SCL_HIGH
+ 103 0048 2846     		mov	r0, r5
+ 104 004a FFF7FEFF 		bl	delay_us
+ 105 004e 7369     		ldr	r3, [r6, #20]
+ 106 0050 B28B     		ldrh	r2, [r6, #28]
+ 107 0052 4FEA4808 		lsl	r8, r8, #1
+ 108 0056 5FFA88F8 		uxtb	r8, r8
+ 109 005a 5A61     		str	r2, [r3, #20]
+ 110 005c DCE7     		b	.L14
+ 111              	.L20:
+ 112 005e 2046     		mov	r0, r4
+ 113 0060 FFF7FEFF 		bl	I2C_SDA_HIGH
+ 114 0064 A81C     		adds	r0, r5, #2
+ 115 0066 80B2     		uxth	r0, r0
+ 116 0068 FFF7FEFF 		bl	delay_us
+ 117 006c 2046     		mov	r0, r4
+ 118 006e FFF7FEFF 		bl	I2C_SCL_HIGH
+ 119 0072 0128     		cmp	r0, #1
+ 120 0074 09D1     		bne	.L19
+ 121 0076 09EB0703 		add	r3, r9, r7
+ 122 007a 9A69     		ldr	r2, [r3, #24]
+ 123 007c DB8B     		ldrh	r3, [r3, #30]
+ 124 007e 9268     		ldr	r2, [r2, #8]
+ 125 0080 1342     		tst	r3, r2
+ 126 0082 0CBF     		ite	eq
+ 127 0084 0024     		moveq	r4, #0
+ 128 0086 0124     		movne	r4, #1
+ 129 0088 00E0     		b	.L18
+ 130              	.L19:
+ 131 008a 0124     		movs	r4, #1
+ 132              	.L18:
+ 133 008c 2846     		mov	r0, r5
+ 134 008e 4F44     		add	r7, r7, r9
+ 135 0090 FFF7FEFF 		bl	delay_us
+ 136 0094 7B69     		ldr	r3, [r7, #20]
+ 137 0096 BA8B     		ldrh	r2, [r7, #28]
+ 138 0098 2846     		mov	r0, r5
+ 139 009a 5A61     		str	r2, [r3, #20]
+ 140 009c FFF7FEFF 		bl	delay_us
+ 141 00a0 2046     		mov	r0, r4
+ 142 00a2 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 143              	.L22:
+ 144 00a6 00BF     		.align	2
+ 145              	.L21:
+ 146 00a8 00000000 		.word	.LANCHOR1
+ 147 00ac 00000000 		.word	.LANCHOR0
+ 149              		.section	.text.i2c_deinit,"ax",%progbits
+ 150              		.align	1
+ 151              		.global	i2c_deinit
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	i2c_deinit:
+ 156              		@ args = 0, pretend = 0, frame = 8
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158 0000 0128     		cmp	r0, #1
+ 159 0002 73B5     		push	{r0, r1, r4, r5, r6, lr}
+ 160 0004 05D9     		bls	.L24
+ 161 0006 1748     		ldr	r0, .L28
+ 162 0008 40F23D11 		movw	r1, #317
+ 163 000c FFF7FEFF 		bl	assert_err
+ 164 0010 25E0     		b	.L23
+ 165              	.L24:
+ 166 0012 154E     		ldr	r6, .L28+4
+ 167 0014 4401     		lsls	r4, r0, #5
+ 168 0016 3319     		adds	r3, r6, r4
+ 169 0018 9D68     		ldr	r5, [r3, #8]
+ 170 001a 55B1     		cbz	r5, .L27
+ 171 001c 0021     		movs	r1, #0
+ 172 001e 2846     		mov	r0, r5
+ 173 0020 FFF7FEFF 		bl	I2C_Cmd
+ 174 0024 2846     		mov	r0, r5
+ 175 0026 FFF7FEFF 		bl	I2C_DeInit
+ 176 002a 3059     		ldr	r0, [r6, r4]
+ 177 002c 0021     		movs	r1, #0
+ 178 002e FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 179              	.L27:
+ 180 0032 0423     		movs	r3, #4
+ 181 0034 3519     		adds	r5, r6, r4
+ 182 0036 8DF80730 		strb	r3, [sp, #7]
+ 183 003a 0223     		movs	r3, #2
+ 184 003c 8DF80630 		strb	r3, [sp, #6]
+ 185 0040 AB8B     		ldrh	r3, [r5, #28]
+ 186 0042 02AC     		add	r4, sp, #8
+ 187 0044 24F8043D 		strh	r3, [r4, #-4]!	@ movhi
+ 188 0048 6869     		ldr	r0, [r5, #20]
+ 189 004a 2146     		mov	r1, r4
+ 190 004c FFF7FEFF 		bl	GPIO_Init
+ 191 0050 EB8B     		ldrh	r3, [r5, #30]
+ 192 0052 A869     		ldr	r0, [r5, #24]
+ 193 0054 2146     		mov	r1, r4
+ 194 0056 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 195 005a FFF7FEFF 		bl	GPIO_Init
+ 196              	.L23:
+ 197 005e 02B0     		add	sp, sp, #8
+ 198              		@ sp needed
+ 199 0060 70BD     		pop	{r4, r5, r6, pc}
+ 200              	.L29:
+ 201 0062 00BF     		.align	2
+ 202              	.L28:
+ 203 0064 00000000 		.word	.LC0
+ 204 0068 00000000 		.word	.LANCHOR0
+ 206              		.section	.text.i2c_start,"ax",%progbits
+ 207              		.align	1
+ 208              		.global	i2c_start
+ 209              		.thumb
+ 210              		.thumb_func
+ 212              	i2c_start:
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 215 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 216 0002 204E     		ldr	r6, .L43
+ 217 0004 204B     		ldr	r3, .L43+4
+ 218 0006 06EB4016 		add	r6, r6, r0, lsl #5
+ 219 000a 0128     		cmp	r0, #1
+ 220 000c 0446     		mov	r4, r0
+ 221 000e 33F81050 		ldrh	r5, [r3, r0, lsl #1]
+ 222 0012 B768     		ldr	r7, [r6, #8]
+ 223 0014 06D9     		bls	.L31
+ 224 0016 BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 225 001a 1C48     		ldr	r0, .L43+8
+ 226 001c 4FF4AF71 		mov	r1, #350
+ 227 0020 FFF7FEBF 		b	assert_err
+ 228              	.L31:
+ 229 0024 7FB1     		cbz	r7, .L41
+ 230 0026 3846     		mov	r0, r7
+ 231 0028 0121     		movs	r1, #1
+ 232 002a FFF7FEFF 		bl	I2C_GenerateSTART
+ 233 002e C824     		movs	r4, #200
+ 234              	.L32:
+ 235 0030 3846     		mov	r0, r7
+ 236 0032 1749     		ldr	r1, .L43+12
+ 237 0034 FFF7FEFF 		bl	I2C_CheckEvent
+ 238 0038 20B9     		cbnz	r0, .L42
+ 239 003a 013C     		subs	r4, r4, #1
+ 240 003c 14F0FF04 		ands	r4, r4, #255
+ 241 0040 F6D1     		bne	.L32
+ 242 0042 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 243              	.L42:
+ 244 0044 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 245              	.L41:
+ 246 0046 2846     		mov	r0, r5
+ 247 0048 FFF7FEFF 		bl	delay_us
+ 248 004c 2046     		mov	r0, r4
+ 249 004e FFF7FEFF 		bl	I2C_SDA_HIGH
+ 250 0052 2046     		mov	r0, r4
+ 251 0054 FFF7FEFF 		bl	I2C_SCL_HIGH
+ 252 0058 06F11807 		add	r7, r6, #24
+ 253 005c 2846     		mov	r0, r5
+ 254 005e FFF7FEFF 		bl	delay_us
+ 255 0062 B369     		ldr	r3, [r6, #24]
+ 256 0064 FA88     		ldrh	r2, [r7, #6]
+ 257 0066 2846     		mov	r0, r5
+ 258 0068 5A61     		str	r2, [r3, #20]
+ 259 006a FFF7FEFF 		bl	delay_us
+ 260 006e 7369     		ldr	r3, [r6, #20]
+ 261 0070 BA88     		ldrh	r2, [r7, #4]
+ 262 0072 2046     		mov	r0, r4
+ 263 0074 5A61     		str	r2, [r3, #20]
+ 264 0076 FFF7FEFF 		bl	I2C_SDA_HIGH
+ 265 007a 2846     		mov	r0, r5
+ 266 007c BDE8F840 		pop	{r3, r4, r5, r6, r7, lr}
+ 267 0080 FFF7FEBF 		b	delay_us
+ 268              	.L44:
+ 269              		.align	2
+ 270              	.L43:
+ 271 0084 00000000 		.word	.LANCHOR0
+ 272 0088 00000000 		.word	.LANCHOR1
+ 273 008c 00000000 		.word	.LC0
+ 274 0090 01000300 		.word	196609
+ 276              		.section	.text.i2c_stop,"ax",%progbits
+ 277              		.align	1
+ 278              		.global	i2c_stop
+ 279              		.thumb
+ 280              		.thumb_func
+ 282              	i2c_stop:
+ 283              		@ args = 0, pretend = 0, frame = 0
+ 284              		@ frame_needed = 0, uses_anonymous_args = 0
+ 285 0000 38B5     		push	{r3, r4, r5, lr}
+ 286 0002 154B     		ldr	r3, .L51
+ 287 0004 0446     		mov	r4, r0
+ 288 0006 33F81050 		ldrh	r5, [r3, r0, lsl #1]
+ 289 000a 144B     		ldr	r3, .L51+4
+ 290 000c 012C     		cmp	r4, #1
+ 291 000e 03EB4013 		add	r3, r3, r0, lsl #5
+ 292 0012 9868     		ldr	r0, [r3, #8]
+ 293 0014 06D9     		bls	.L46
+ 294 0016 BDE83840 		pop	{r3, r4, r5, lr}
+ 295 001a 1148     		ldr	r0, .L51+8
+ 296 001c 4FF4C571 		mov	r1, #394
+ 297 0020 FFF7FEBF 		b	assert_err
+ 298              	.L46:
+ 299 0024 20B1     		cbz	r0, .L50
+ 300 0026 0121     		movs	r1, #1
+ 301 0028 BDE83840 		pop	{r3, r4, r5, lr}
+ 302 002c FFF7FEBF 		b	I2C_GenerateSTOP
+ 303              	.L50:
+ 304 0030 9A69     		ldr	r2, [r3, #24]
+ 305 0032 DB8B     		ldrh	r3, [r3, #30]
+ 306 0034 2846     		mov	r0, r5
+ 307 0036 5361     		str	r3, [r2, #20]
+ 308 0038 FFF7FEFF 		bl	delay_us
+ 309 003c 2046     		mov	r0, r4
+ 310 003e FFF7FEFF 		bl	I2C_SCL_HIGH
+ 311 0042 2846     		mov	r0, r5
+ 312 0044 FFF7FEFF 		bl	delay_us
+ 313 0048 2046     		mov	r0, r4
+ 314 004a FFF7FEFF 		bl	I2C_SDA_HIGH
+ 315 004e 2846     		mov	r0, r5
+ 316 0050 BDE83840 		pop	{r3, r4, r5, lr}
+ 317 0054 FFF7FEBF 		b	delay_us
+ 318              	.L52:
+ 319              		.align	2
+ 320              	.L51:
+ 321 0058 00000000 		.word	.LANCHOR1
+ 322 005c 00000000 		.word	.LANCHOR0
+ 323 0060 00000000 		.word	.LC0
+ 325              		.section	.text.i2c_init,"ax",%progbits
+ 326              		.align	1
+ 327              		.global	i2c_init
+ 328              		.thumb
+ 329              		.thumb_func
+ 331              	i2c_init:
+ 332              		@ args = 0, pretend = 0, frame = 24
+ 333              		@ frame_needed = 0, uses_anonymous_args = 0
+ 334 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 335 0004 4D4B     		ldr	r3, .L65
+ 336 0006 4501     		lsls	r5, r0, #5
+ 337 0008 5A19     		adds	r2, r3, r5
+ 338 000a 0128     		cmp	r0, #1
+ 339 000c 87B0     		sub	sp, sp, #28
+ 340 000e 0446     		mov	r4, r0
+ 341 0010 0F46     		mov	r7, r1
+ 342 0012 9668     		ldr	r6, [r2, #8]
+ 343 0014 9846     		mov	r8, r3
+ 344 0016 03D9     		bls	.L54
+ 345 0018 4948     		ldr	r0, .L65+4
+ 346 001a FF21     		movs	r1, #255
+ 347 001c FFF7FEFF 		bl	assert_err
+ 348              	.L54:
+ 349 0020 7B1E     		subs	r3, r7, #1
+ 350 0022 9BB2     		uxth	r3, r3
+ 351 0024 B3F5C87F 		cmp	r3, #400
+ 352 0028 04D3     		bcc	.L55
+ 353 002a 4548     		ldr	r0, .L65+4
+ 354 002c 4FF48071 		mov	r1, #256
+ 355 0030 FFF7FEFF 		bl	assert_err
+ 356              	.L55:
+ 357 0034 012C     		cmp	r4, #1
+ 358 0036 7ED8     		bhi	.L53
+ 359 0038 002E     		cmp	r6, #0
+ 360 003a 51D0     		beq	.L57
+ 361 003c 08EB0503 		add	r3, r8, r5
+ 362 0040 5868     		ldr	r0, [r3, #4]
+ 363 0042 DC68     		ldr	r4, [r3, #12]
+ 364 0044 D3F81090 		ldr	r9, [r3, #16]
+ 365 0048 38B1     		cbz	r0, .L58
+ 366 004a 0121     		movs	r1, #1
+ 367 004c FFF7FEFF 		bl	GPIO_PinRemapConfig
+ 368 0050 44EA0900 		orr	r0, r4, r9
+ 369 0054 40F00100 		orr	r0, r0, #1
+ 370 0058 01E0     		b	.L64
+ 371              	.L58:
+ 372 005a 49EA0400 		orr	r0, r9, r4
+ 373              	.L64:
+ 374 005e 0121     		movs	r1, #1
+ 375 0060 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 376 0064 58F80500 		ldr	r0, [r8, r5]
+ 377 0068 0121     		movs	r1, #1
+ 378 006a FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 379 006e 0323     		movs	r3, #3
+ 380 0070 08EB0509 		add	r9, r8, r5
+ 381 0074 8DF80630 		strb	r3, [sp, #6]
+ 382 0078 1C23     		movs	r3, #28
+ 383 007a 8DF80730 		strb	r3, [sp, #7]
+ 384 007e B9F81C30 		ldrh	r3, [r9, #28]
+ 385 0082 06AC     		add	r4, sp, #24
+ 386 0084 24F8143D 		strh	r3, [r4, #-20]!	@ movhi
+ 387 0088 D9F81400 		ldr	r0, [r9, #20]
+ 388 008c 2146     		mov	r1, r4
+ 389 008e FFF7FEFF 		bl	GPIO_Init
+ 390 0092 B9F81E30 		ldrh	r3, [r9, #30]
+ 391 0096 D9F81800 		ldr	r0, [r9, #24]
+ 392 009a 2146     		mov	r1, r4
+ 393 009c ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 394 00a0 FFF7FEFF 		bl	GPIO_Init
+ 395 00a4 0023     		movs	r3, #0
+ 396 00a6 ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 397 00aa ADF81030 		strh	r3, [sp, #16]	@ movhi
+ 398 00ae 4FF48063 		mov	r3, #1024
+ 399 00b2 ADF81230 		strh	r3, [sp, #18]	@ movhi
+ 400 00b6 4FF48043 		mov	r3, #16384
+ 401 00ba ADF81430 		strh	r3, [sp, #20]	@ movhi
+ 402 00be 4FF47A73 		mov	r3, #1000
+ 403 00c2 5F43     		muls	r7, r3, r7
+ 404 00c4 4BF6FF72 		movw	r2, #49151
+ 405 00c8 3046     		mov	r0, r6
+ 406 00ca 02A9     		add	r1, sp, #8
+ 407 00cc ADF80E20 		strh	r2, [sp, #14]	@ movhi
+ 408 00d0 0297     		str	r7, [sp, #8]
+ 409 00d2 FFF7FEFF 		bl	I2C_Init
+ 410 00d6 3046     		mov	r0, r6
+ 411 00d8 0121     		movs	r1, #1
+ 412 00da FFF7FEFF 		bl	I2C_Cmd
+ 413 00de 2AE0     		b	.L53
+ 414              	.L57:
+ 415 00e0 4544     		add	r5, r5, r8
+ 416 00e2 EB68     		ldr	r3, [r5, #12]
+ 417 00e4 2869     		ldr	r0, [r5, #16]
+ 418 00e6 0121     		movs	r1, #1
+ 419 00e8 1843     		orrs	r0, r0, r3
+ 420 00ea FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 421 00ee 0323     		movs	r3, #3
+ 422 00f0 8DF80A30 		strb	r3, [sp, #10]
+ 423 00f4 1423     		movs	r3, #20
+ 424 00f6 8DF80B30 		strb	r3, [sp, #11]
+ 425 00fa AB8B     		ldrh	r3, [r5, #28]
+ 426 00fc 6869     		ldr	r0, [r5, #20]
+ 427 00fe 02A9     		add	r1, sp, #8
+ 428 0100 ADF80830 		strh	r3, [sp, #8]	@ movhi
+ 429 0104 FFF7FEFF 		bl	GPIO_Init
+ 430 0108 EB8B     		ldrh	r3, [r5, #30]
+ 431 010a A869     		ldr	r0, [r5, #24]
+ 432 010c 02A9     		add	r1, sp, #8
+ 433 010e ADF80830 		strh	r3, [sp, #8]	@ movhi
+ 434 0112 FFF7FEFF 		bl	GPIO_Init
+ 435 0116 F92F     		cmp	r7, #249
+ 436 0118 0A4B     		ldr	r3, .L65+8
+ 437 011a 07D8     		bhi	.L61
+ 438 011c 4FF4FA72 		mov	r2, #500
+ 439 0120 92FBF7F7 		sdiv	r7, r2, r7
+ 440 0124 023F     		subs	r7, r7, #2
+ 441 0126 23F81470 		strh	r7, [r3, r4, lsl #1]	@ movhi
+ 442 012a 01E0     		b	.L62
+ 443              	.L61:
+ 444 012c 23F81460 		strh	r6, [r3, r4, lsl #1]	@ movhi
+ 445              	.L62:
+ 446 0130 2046     		mov	r0, r4
+ 447 0132 FFF7FEFF 		bl	i2c_stop
+ 448              	.L53:
+ 449 0136 07B0     		add	sp, sp, #28
+ 450              		@ sp needed
+ 451 0138 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 452              	.L66:
+ 453              		.align	2
+ 454              	.L65:
+ 455 013c 00000000 		.word	.LANCHOR0
+ 456 0140 00000000 		.word	.LC0
+ 457 0144 00000000 		.word	.LANCHOR1
+ 459              		.section	.text.i2c_tx_addr_wr_slaver,"ax",%progbits
+ 460              		.align	1
+ 461              		.global	i2c_tx_addr_wr_slaver
+ 462              		.thumb
+ 463              		.thumb_func
+ 465              	i2c_tx_addr_wr_slaver:
+ 466              		@ args = 0, pretend = 0, frame = 0
+ 467              		@ frame_needed = 0, uses_anonymous_args = 0
+ 468 0000 38B5     		push	{r3, r4, r5, lr}
+ 469 0002 164C     		ldr	r4, .L83
+ 470 0004 0128     		cmp	r0, #1
+ 471 0006 04EB4014 		add	r4, r4, r0, lsl #5
+ 472 000a 0A46     		mov	r2, r1
+ 473 000c A468     		ldr	r4, [r4, #8]
+ 474 000e 05D9     		bls	.L68
+ 475 0010 1348     		ldr	r0, .L83+4
+ 476 0012 40F2B111 		movw	r1, #433
+ 477 0016 FFF7FEFF 		bl	assert_err
+ 478 001a 0EE0     		b	.L72
+ 479              	.L68:
+ 480 001c C4B1     		cbz	r4, .L81
+ 481 001e 2046     		mov	r0, r4
+ 482 0020 0022     		movs	r2, #0
+ 483 0022 FFF7FEFF 		bl	I2C_Send7bitAddress
+ 484 0026 C825     		movs	r5, #200
+ 485              	.L70:
+ 486 0028 2046     		mov	r0, r4
+ 487 002a 0E49     		ldr	r1, .L83+8
+ 488 002c FFF7FEFF 		bl	I2C_CheckEvent
+ 489 0030 60B9     		cbnz	r0, .L82
+ 490 0032 013D     		subs	r5, r5, #1
+ 491 0034 15F0FF05 		ands	r5, r5, #255
+ 492 0038 01D1     		bne	.L71
+ 493              	.L72:
+ 494 003a 0120     		movs	r0, #1
+ 495 003c 38BD     		pop	{r3, r4, r5, pc}
+ 496              	.L71:
+ 497 003e 2046     		mov	r0, r4
+ 498 0040 0949     		ldr	r1, .L83+12
+ 499 0042 FFF7FEFF 		bl	I2C_GetFlagStatus
+ 500 0046 0128     		cmp	r0, #1
+ 501 0048 EED1     		bne	.L70
+ 502 004a F6E7     		b	.L72
+ 503              	.L82:
+ 504 004c 0020     		movs	r0, #0
+ 505 004e 38BD     		pop	{r3, r4, r5, pc}
+ 506              	.L81:
+ 507 0050 02F0FE01 		and	r1, r2, #254
+ 508 0054 BDE83840 		pop	{r3, r4, r5, lr}
+ 509 0058 FFF7FEBF 		b	i2c_tx_byte_sw
+ 510              	.L84:
+ 511              		.align	2
+ 512              	.L83:
+ 513 005c 00000000 		.word	.LANCHOR0
+ 514 0060 00000000 		.word	.LC0
+ 515 0064 82000700 		.word	458882
+ 516 0068 00040010 		.word	268436480
+ 518              		.section	.text.i2c_tx_addr_rd_slaver,"ax",%progbits
+ 519              		.align	1
+ 520              		.global	i2c_tx_addr_rd_slaver
+ 521              		.thumb
+ 522              		.thumb_func
+ 524              	i2c_tx_addr_rd_slaver:
+ 525              		@ args = 0, pretend = 0, frame = 0
+ 526              		@ frame_needed = 0, uses_anonymous_args = 0
+ 527 0000 38B5     		push	{r3, r4, r5, lr}
+ 528 0002 164C     		ldr	r4, .L101
+ 529 0004 0128     		cmp	r0, #1
+ 530 0006 04EB4014 		add	r4, r4, r0, lsl #5
+ 531 000a 0A46     		mov	r2, r1
+ 532 000c A468     		ldr	r4, [r4, #8]
+ 533 000e 05D9     		bls	.L86
+ 534 0010 1348     		ldr	r0, .L101+4
+ 535 0012 40F2DF11 		movw	r1, #479
+ 536 0016 FFF7FEFF 		bl	assert_err
+ 537 001a 0EE0     		b	.L90
+ 538              	.L86:
+ 539 001c C4B1     		cbz	r4, .L99
+ 540 001e 2046     		mov	r0, r4
+ 541 0020 0122     		movs	r2, #1
+ 542 0022 FFF7FEFF 		bl	I2C_Send7bitAddress
+ 543 0026 C825     		movs	r5, #200
+ 544              	.L88:
+ 545 0028 2046     		mov	r0, r4
+ 546 002a 0E49     		ldr	r1, .L101+8
+ 547 002c FFF7FEFF 		bl	I2C_CheckEvent
+ 548 0030 60B9     		cbnz	r0, .L100
+ 549 0032 013D     		subs	r5, r5, #1
+ 550 0034 15F0FF05 		ands	r5, r5, #255
+ 551 0038 01D1     		bne	.L89
+ 552              	.L90:
+ 553 003a 0120     		movs	r0, #1
+ 554 003c 38BD     		pop	{r3, r4, r5, pc}
+ 555              	.L89:
+ 556 003e 2046     		mov	r0, r4
+ 557 0040 0949     		ldr	r1, .L101+12
+ 558 0042 FFF7FEFF 		bl	I2C_GetFlagStatus
+ 559 0046 0128     		cmp	r0, #1
+ 560 0048 EED1     		bne	.L88
+ 561 004a F6E7     		b	.L90
+ 562              	.L100:
+ 563 004c 0020     		movs	r0, #0
+ 564 004e 38BD     		pop	{r3, r4, r5, pc}
+ 565              	.L99:
+ 566 0050 42F00101 		orr	r1, r2, #1
+ 567 0054 BDE83840 		pop	{r3, r4, r5, lr}
+ 568 0058 FFF7FEBF 		b	i2c_tx_byte_sw
+ 569              	.L102:
+ 570              		.align	2
+ 571              	.L101:
+ 572 005c 00000000 		.word	.LANCHOR0
+ 573 0060 00000000 		.word	.LC0
+ 574 0064 02000300 		.word	196610
+ 575 0068 00040010 		.word	268436480
+ 577              		.section	.text.i2c_tx_byte,"ax",%progbits
+ 578              		.align	1
+ 579              		.global	i2c_tx_byte
+ 580              		.thumb
+ 581              		.thumb_func
+ 583              	i2c_tx_byte:
+ 584              		@ args = 0, pretend = 0, frame = 0
+ 585              		@ frame_needed = 0, uses_anonymous_args = 0
+ 586 0000 144A     		ldr	r2, .L119
+ 587 0002 0128     		cmp	r0, #1
+ 588 0004 02EB4012 		add	r2, r2, r0, lsl #5
+ 589 0008 38B5     		push	{r3, r4, r5, lr}
+ 590 000a 9468     		ldr	r4, [r2, #8]
+ 591 000c 05D9     		bls	.L104
+ 592 000e 1248     		ldr	r0, .L119+4
+ 593 0010 40F20D21 		movw	r1, #525
+ 594 0014 FFF7FEFF 		bl	assert_err
+ 595 0018 0DE0     		b	.L108
+ 596              	.L104:
+ 597 001a BCB1     		cbz	r4, .L117
+ 598 001c 2046     		mov	r0, r4
+ 599 001e FFF7FEFF 		bl	I2C_SendData
+ 600 0022 C825     		movs	r5, #200
+ 601              	.L106:
+ 602 0024 2046     		mov	r0, r4
+ 603 0026 0D49     		ldr	r1, .L119+8
+ 604 0028 FFF7FEFF 		bl	I2C_CheckEvent
+ 605 002c 60B9     		cbnz	r0, .L118
+ 606 002e 013D     		subs	r5, r5, #1
+ 607 0030 15F0FF05 		ands	r5, r5, #255
+ 608 0034 01D1     		bne	.L107
+ 609              	.L108:
+ 610 0036 0120     		movs	r0, #1
+ 611 0038 38BD     		pop	{r3, r4, r5, pc}
+ 612              	.L107:
+ 613 003a 2046     		mov	r0, r4
+ 614 003c 0849     		ldr	r1, .L119+12
+ 615 003e FFF7FEFF 		bl	I2C_GetFlagStatus
+ 616 0042 0128     		cmp	r0, #1
+ 617 0044 EED1     		bne	.L106
+ 618 0046 F6E7     		b	.L108
+ 619              	.L118:
+ 620 0048 0020     		movs	r0, #0
+ 621 004a 38BD     		pop	{r3, r4, r5, pc}
+ 622              	.L117:
+ 623 004c BDE83840 		pop	{r3, r4, r5, lr}
+ 624 0050 FFF7FEBF 		b	i2c_tx_byte_sw
+ 625              	.L120:
+ 626              		.align	2
+ 627              	.L119:
+ 628 0054 00000000 		.word	.LANCHOR0
+ 629 0058 00000000 		.word	.LC0
+ 630 005c 84000700 		.word	458884
+ 631 0060 00040010 		.word	268436480
+ 633              		.section	.text.i2c_rx_byte,"ax",%progbits
+ 634              		.align	1
+ 635              		.global	i2c_rx_byte
+ 636              		.thumb
+ 637              		.thumb_func
+ 639              	i2c_rx_byte:
+ 640              		@ args = 0, pretend = 0, frame = 16
+ 641              		@ frame_needed = 0, uses_anonymous_args = 0
+ 642 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 643 0004 394B     		ldr	r3, .L143
+ 644 0006 85B0     		sub	sp, sp, #20
+ 645 0008 4701     		lsls	r7, r0, #5
+ 646 000a 0291     		str	r1, [sp, #8]
+ 647 000c 0128     		cmp	r0, #1
+ 648 000e 03EB0701 		add	r1, r3, r7
+ 649 0012 0446     		mov	r4, r0
+ 650 0014 8D68     		ldr	r5, [r1, #8]
+ 651 0016 9946     		mov	r9, r3
+ 652 0018 06D9     		bls	.L122
+ 653 001a 3548     		ldr	r0, .L143+4
+ 654 001c 40F23721 		movw	r1, #567
+ 655 0020 FFF7FEFF 		bl	assert_err
+ 656 0024 FF20     		movs	r0, #255
+ 657 0026 5EE0     		b	.L138
+ 658              	.L122:
+ 659 0028 9DB1     		cbz	r5, .L141
+ 660 002a 029B     		ldr	r3, [sp, #8]
+ 661 002c 2846     		mov	r0, r5
+ 662 002e 0BB9     		cbnz	r3, .L124
+ 663 0030 0121     		movs	r1, #1
+ 664 0032 00E0     		b	.L140
+ 665              	.L124:
+ 666 0034 0021     		movs	r1, #0
+ 667              	.L140:
+ 668 0036 FFF7FEFF 		bl	I2C_AcknowledgeConfig
+ 669              	.L127:
+ 670 003a 2846     		mov	r0, r5
+ 671 003c 2D49     		ldr	r1, .L143+8
+ 672 003e FFF7FEFF 		bl	I2C_CheckEvent
+ 673 0042 0028     		cmp	r0, #0
+ 674 0044 F9D0     		beq	.L127
+ 675 0046 2846     		mov	r0, r5
+ 676 0048 05B0     		add	sp, sp, #20
+ 677              		@ sp needed
+ 678 004a BDE8F04F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 679 004e FFF7FEBF 		b	I2C_ReceiveData
+ 680              	.L141:
+ 681 0052 294B     		ldr	r3, .L143+12
+ 682 0054 4FF0090B 		mov	fp, #9
+ 683 0058 33F81460 		ldrh	r6, [r3, r4, lsl #1]
+ 684 005c FFF7FEFF 		bl	I2C_SDA_HIGH
+ 685 0060 06F1010A 		add	r10, r6, #1
+ 686 0064 1FFA8AF3 		uxth	r3, r10
+ 687 0068 0393     		str	r3, [sp, #12]
+ 688 006a 8846     		mov	r8, r1
+ 689              	.L128:
+ 690 006c 0BF1FF3B 		add	fp, fp, #-1
+ 691 0070 1BF0FF0B 		ands	fp, fp, #255
+ 692 0074 1AD0     		beq	.L142
+ 693 0076 0398     		ldr	r0, [sp, #12]
+ 694 0078 FFF7FEFF 		bl	delay_us
+ 695 007c 2046     		mov	r0, r4
+ 696 007e FFF7FEFF 		bl	I2C_SCL_HIGH
+ 697 0082 D8F81820 		ldr	r2, [r8, #24]
+ 698 0086 B8F81E10 		ldrh	r1, [r8, #30]
+ 699 008a 9268     		ldr	r2, [r2, #8]
+ 700 008c 6D00     		lsls	r5, r5, #1
+ 701 008e 1142     		tst	r1, r2
+ 702 0090 EDB2     		uxtb	r5, r5
+ 703 0092 18BF     		it	ne
+ 704 0094 0135     		addne	r5, r5, #1
+ 705 0096 3046     		mov	r0, r6
+ 706 0098 18BF     		it	ne
+ 707 009a EDB2     		uxtbne	r5, r5
+ 708 009c FFF7FEFF 		bl	delay_us
+ 709 00a0 D8F81420 		ldr	r2, [r8, #20]
+ 710 00a4 B8F81C10 		ldrh	r1, [r8, #28]
+ 711 00a8 5161     		str	r1, [r2, #20]
+ 712 00aa DFE7     		b	.L128
+ 713              	.L142:
+ 714 00ac 029B     		ldr	r3, [sp, #8]
+ 715 00ae 2BB9     		cbnz	r3, .L131
+ 716 00b0 09EB0703 		add	r3, r9, r7
+ 717 00b4 9A69     		ldr	r2, [r3, #24]
+ 718 00b6 DB8B     		ldrh	r3, [r3, #30]
+ 719 00b8 5361     		str	r3, [r2, #20]
+ 720 00ba 02E0     		b	.L132
+ 721              	.L131:
+ 722 00bc 2046     		mov	r0, r4
+ 723 00be FFF7FEFF 		bl	I2C_SDA_HIGH
+ 724              	.L132:
+ 725 00c2 1FFA8AF0 		uxth	r0, r10
+ 726 00c6 FFF7FEFF 		bl	delay_us
+ 727 00ca 2046     		mov	r0, r4
+ 728 00cc FFF7FEFF 		bl	I2C_SCL_HIGH
+ 729 00d0 4F44     		add	r7, r7, r9
+ 730 00d2 3046     		mov	r0, r6
+ 731 00d4 FFF7FEFF 		bl	delay_us
+ 732 00d8 7B69     		ldr	r3, [r7, #20]
+ 733 00da BA8B     		ldrh	r2, [r7, #28]
+ 734 00dc 3046     		mov	r0, r6
+ 735 00de 5A61     		str	r2, [r3, #20]
+ 736 00e0 FFF7FEFF 		bl	delay_us
+ 737 00e4 2846     		mov	r0, r5
+ 738              	.L138:
+ 739 00e6 05B0     		add	sp, sp, #20
+ 740              		@ sp needed
+ 741 00e8 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 742              	.L144:
+ 743              		.align	2
+ 744              	.L143:
+ 745 00ec 00000000 		.word	.LANCHOR0
+ 746 00f0 00000000 		.word	.LC0
+ 747 00f4 40000300 		.word	196672
+ 748 00f8 00000000 		.word	.LANCHOR1
+ 750              		.section	.bss.i2c_para,"aw",%nobits
+ 751              		.align	1
+ 752              		.set	.LANCHOR1,. + 0
+ 755              	i2c_para:
+ 756 0000 00000000 		.space	4
+ 757              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 758              	.LC0:
+ 759 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/dr"
+ 759      73657273 
+ 759      2F647261 
+ 759      6170686F 
+ 759      2F446573 
+ 760 0033 765F6932 		.ascii	"v_i2c.c\000"
+ 760      632E6300 
+ 761              		.section	.rodata.i2c_hw,"a",%progbits
+ 762              		.align	2
+ 763              		.set	.LANCHOR0,. + 0
+ 766              	i2c_hw:
+ 767 0000 00002000 		.word	2097152
+ 768 0004 00000000 		.word	0
+ 769 0008 00540040 		.word	1073763328
+ 770 000c 08000000 		.word	8
+ 771 0010 08000000 		.word	8
+ 772 0014 000C0140 		.word	1073810432
+ 773 0018 000C0140 		.word	1073810432
+ 774 001c 4000     		.short	64
+ 775 001e 8000     		.short	128
+ 776 0020 00000000 		.word	0
+ 777 0024 00000000 		.word	0
+ 778 0028 00000000 		.word	0
+ 779 002c 08000000 		.word	8
+ 780 0030 08000000 		.word	8
+ 781 0034 000C0140 		.word	1073810432
+ 782 0038 000C0140 		.word	1073810432
+ 783 003c 4000     		.short	64
+ 784 003e 8000     		.short	128
+ 785              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_i2c.c
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:16     .text.I2C_SCL_HIGH:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:20     .text.I2C_SCL_HIGH:00000000 I2C_SCL_HIGH
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:44     .text.I2C_SCL_HIGH:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:47     .text.I2C_SDA_HIGH:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:51     .text.I2C_SDA_HIGH:00000000 I2C_SDA_HIGH
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:64     .text.I2C_SDA_HIGH:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:67     .text.i2c_tx_byte_sw:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:71     .text.i2c_tx_byte_sw:00000000 i2c_tx_byte_sw
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:146    .text.i2c_tx_byte_sw:000000a8 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:150    .text.i2c_deinit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:155    .text.i2c_deinit:00000000 i2c_deinit
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:203    .text.i2c_deinit:00000064 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:207    .text.i2c_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:212    .text.i2c_start:00000000 i2c_start
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:271    .text.i2c_start:00000084 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:277    .text.i2c_stop:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:282    .text.i2c_stop:00000000 i2c_stop
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:321    .text.i2c_stop:00000058 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:326    .text.i2c_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:331    .text.i2c_init:00000000 i2c_init
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:455    .text.i2c_init:0000013c $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:460    .text.i2c_tx_addr_wr_slaver:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:465    .text.i2c_tx_addr_wr_slaver:00000000 i2c_tx_addr_wr_slaver
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:513    .text.i2c_tx_addr_wr_slaver:0000005c $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:519    .text.i2c_tx_addr_rd_slaver:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:524    .text.i2c_tx_addr_rd_slaver:00000000 i2c_tx_addr_rd_slaver
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:572    .text.i2c_tx_addr_rd_slaver:0000005c $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:578    .text.i2c_tx_byte:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:583    .text.i2c_tx_byte:00000000 i2c_tx_byte
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:628    .text.i2c_tx_byte:00000054 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:634    .text.i2c_rx_byte:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:639    .text.i2c_rx_byte:00000000 i2c_rx_byte
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:745    .text.i2c_rx_byte:000000ec $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:751    .bss.i2c_para:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:755    .bss.i2c_para:00000000 i2c_para
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:762    .rodata.i2c_hw:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccoH8jMq.s:766    .rodata.i2c_hw:00000000 i2c_hw
+
+UNDEFINED SYMBOLS
+delay_us
+assert_err
+I2C_Cmd
+I2C_DeInit
+RCC_APB1PeriphClockCmd
+GPIO_Init
+I2C_GenerateSTART
+I2C_CheckEvent
+I2C_GenerateSTOP
+GPIO_PinRemapConfig
+RCC_APB2PeriphClockCmd
+I2C_Init
+I2C_Send7bitAddress
+I2C_GetFlagStatus
+I2C_SendData
+I2C_AcknowledgeConfig
+I2C_ReceiveData

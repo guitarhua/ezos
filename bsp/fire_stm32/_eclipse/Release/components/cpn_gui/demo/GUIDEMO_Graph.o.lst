@@ -1,0 +1,622 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO_Graph.c"
+  15              		.section	.text._AddData_Sine,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	_AddData_Sine:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 0129     		cmp	r1, #1
+  24 0002 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  25 0006 8046     		mov	r8, r0
+  26 0008 0C46     		mov	r4, r1
+  27 000a 08D0     		beq	.L6
+  28 000c 0229     		cmp	r1, #2
+  29 000e 03D0     		beq	.L4
+  30 0010 F9B9     		cbnz	r1, .L7
+  31 0012 0327     		movs	r7, #3
+  32 0014 4625     		movs	r5, #70
+  33 0016 04E0     		b	.L3
+  34              	.L4:
+  35 0018 0727     		movs	r7, #7
+  36 001a 1E25     		movs	r5, #30
+  37 001c 01E0     		b	.L3
+  38              	.L6:
+  39 001e 0F46     		mov	r7, r1
+  40 0020 3225     		movs	r5, #50
+  41              	.L3:
+  42 0022 0D4E     		ldr	r6, .L9
+  43 0024 56F82400 		ldr	r0, [r6, r4, lsl #2]
+  44 0028 FFF7FEFF 		bl	GUI__SinHQ
+  45 002c 56F82430 		ldr	r3, [r6, r4, lsl #2]
+  46 0030 4FF47A72 		mov	r2, #1000
+  47 0034 02FB0737 		mla	r7, r2, r7, r3
+  48 0038 6843     		muls	r0, r5, r0
+  49 003a 084B     		ldr	r3, .L9+4
+  50 003c 46F82470 		str	r7, [r6, r4, lsl #2]
+  51 0040 1B68     		ldr	r3, [r3]
+  52 0042 03EB2041 		add	r1, r3, r0, asr #16
+  53 0046 09B2     		sxth	r1, r1
+  54 0048 4046     		mov	r0, r8
+  55 004a BDE8F041 		pop	{r4, r5, r6, r7, r8, lr}
+  56 004e FFF7FEBF 		b	GRAPH_DATA_YT_AddValue
+  57              	.L7:
+  58 0052 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+  59              	.L10:
+  60 0056 00BF     		.align	2
+  61              	.L9:
+  62 0058 00000000 		.word	.LANCHOR0
+  63 005c 00000000 		.word	.LANCHOR1
+  65              		.section	.text._AddData_Heartbeat,"ax",%progbits
+  66              		.align	1
+  67              		.thumb
+  68              		.thumb_func
+  70              	_AddData_Heartbeat:
+  71              		@ args = 0, pretend = 0, frame = 0
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73 0000 10B5     		push	{r4, lr}
+  74 0002 094C     		ldr	r4, .L15
+  75 0004 094A     		ldr	r2, .L15+4
+  76 0006 2368     		ldr	r3, [r4]
+  77 0008 52F82310 		ldr	r1, [r2, r3, lsl #2]
+  78 000c 084B     		ldr	r3, .L15+8
+  79 000e 1B68     		ldr	r3, [r3]
+  80 0010 1944     		add	r1, r1, r3
+  81 0012 09B2     		sxth	r1, r1
+  82 0014 FFF7FEFF 		bl	GRAPH_DATA_YT_AddValue
+  83 0018 2368     		ldr	r3, [r4]
+  84 001a 0133     		adds	r3, r3, #1
+  85 001c 462B     		cmp	r3, #70
+  86 001e 08BF     		it	eq
+  87 0020 0023     		moveq	r3, #0
+  88 0022 2360     		str	r3, [r4]
+  89 0024 10BD     		pop	{r4, pc}
+  90              	.L16:
+  91 0026 00BF     		.align	2
+  92              	.L15:
+  93 0028 00000000 		.word	.LANCHOR3
+  94 002c 00000000 		.word	.LANCHOR2
+  95 0030 00000000 		.word	.LANCHOR1
+  97              		.section	.text._cbBk,"ax",%progbits
+  98              		.align	1
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	_cbBk:
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 105              		@ link register save eliminated.
+ 106 0000 0368     		ldr	r3, [r0]
+ 107 0002 0F2B     		cmp	r3, #15
+ 108 0004 02D1     		bne	.L20
+ 109 0006 0120     		movs	r0, #1
+ 110 0008 FFF7FEBF 		b	GUIDEMO_DrawBk
+ 111              	.L20:
+ 112 000c FFF7FEBF 		b	WM_DefaultProc
+ 114              		.section	.text.GUIDEMO_Graph,"ax",%progbits
+ 115              		.align	1
+ 116              		.global	GUIDEMO_Graph
+ 117              		.thumb
+ 118              		.thumb_func
+ 120              	GUIDEMO_Graph:
+ 121              		@ args = 0, pretend = 0, frame = 48
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 124 0004 B049     		ldr	r1, .L54
+ 125 0006 91B0     		sub	sp, sp, #68
+ 126 0008 B048     		ldr	r0, .L54+4
+ 127 000a FFF7FEFF 		bl	GUIDEMO_ShowIntro
+ 128 000e FFF7FEFF 		bl	GUIDEMO_ShowInfoWin
+ 129 0012 FFF7FEFF 		bl	LCD_GetXSize
+ 130 0016 8046     		mov	r8, r0
+ 131 0018 FFF7FEFF 		bl	LCD_GetYSize
+ 132 001c 0746     		mov	r7, r0
+ 133 001e AC48     		ldr	r0, .L54+8
+ 134 0020 FFF7FEFF 		bl	WIDGET_SetDefaultEffect
+ 135 0024 A7F14B06 		sub	r6, r7, #75
+ 136 0028 0990     		str	r0, [sp, #36]
+ 137 002a FFF7FEFF 		bl	WM_GetDesktopWindow
+ 138 002e A949     		ldr	r1, .L54+12
+ 139 0030 FFF7FEFF 		bl	WM_SetCallback
+ 140 0034 F22E     		cmp	r6, #242
+ 141 0036 A8F11404 		sub	r4, r8, #20
+ 142 003a 05DD     		ble	.L22
+ 143 003c B4F5DC7F 		cmp	r4, #440
+ 144 0040 A8BF     		it	ge
+ 145 0042 4FF4DC74 		movge	r4, #440
+ 146 0046 F226     		movs	r6, #242
+ 147              	.L22:
+ 148 0048 FFF7FEFF 		bl	WM_GetDesktopWindow
+ 149 004c BF1B     		subs	r7, r7, r6
+ 150 004e C4EB0809 		rsb	r9, r4, r8
+ 151 0052 7F10     		asrs	r7, r7, #1
+ 152 0054 0025     		movs	r5, #0
+ 153 0056 4FEA6909 		asr	r9, r9, #1
+ 154 005a 462F     		cmp	r7, #70
+ 155 005c B8BF     		it	lt
+ 156 005e 4627     		movlt	r7, #70
+ 157 0060 40F60203 		movw	r3, #2050
+ 158 0064 3946     		mov	r1, r7
+ 159 0066 2246     		mov	r2, r4
+ 160 0068 0090     		str	r0, [sp]
+ 161 006a 0193     		str	r3, [sp, #4]
+ 162 006c 4846     		mov	r0, r9
+ 163 006e 3346     		mov	r3, r6
+ 164 0070 0295     		str	r5, [sp, #8]
+ 165 0072 0395     		str	r5, [sp, #12]
+ 166 0074 FFF7FEFF 		bl	GRAPH_CreateEx
+ 167 0078 0923     		movs	r3, #9
+ 168 007a 0446     		mov	r4, r0
+ 169 007c 1321     		movs	r1, #19
+ 170 007e 2A46     		mov	r2, r5
+ 171 0080 0093     		str	r3, [sp]
+ 172 0082 2B46     		mov	r3, r5
+ 173 0084 FFF7FEFF 		bl	GRAPH_SetBorder
+ 174 0088 2046     		mov	r0, r4
+ 175 008a FFF7FEFF 		bl	WM_SetHasTrans
+ 176 008e 9249     		ldr	r1, .L54+16
+ 177 0090 2A46     		mov	r2, r5
+ 178 0092 2046     		mov	r0, r4
+ 179 0094 FFF7FEFF 		bl	GRAPH_SetColor
+ 180 0098 4FF40801 		mov	r1, #8912896
+ 181 009c 0122     		movs	r2, #1
+ 182 009e 2046     		mov	r0, r4
+ 183 00a0 FFF7FEFF 		bl	GRAPH_SetColor
+ 184 00a4 2946     		mov	r1, r5
+ 185 00a6 0222     		movs	r2, #2
+ 186 00a8 2046     		mov	r0, r4
+ 187 00aa FFF7FEFF 		bl	GRAPH_SetColor
+ 188 00ae 0322     		movs	r2, #3
+ 189 00b0 8A49     		ldr	r1, .L54+20
+ 190 00b2 2046     		mov	r0, r4
+ 191 00b4 FFF7FEFF 		bl	GRAPH_SetColor
+ 192 00b8 0121     		movs	r1, #1
+ 193 00ba 2046     		mov	r0, r4
+ 194 00bc FFF7FEFF 		bl	GRAPH_SetGridVis
+ 195 00c0 1921     		movs	r1, #25
+ 196 00c2 2046     		mov	r0, r4
+ 197 00c4 FFF7FEFF 		bl	GRAPH_SetGridDistX
+ 198 00c8 0A21     		movs	r1, #10
+ 199 00ca 2046     		mov	r0, r4
+ 200 00cc FFF7FEFF 		bl	GRAPH_SetGridDistY
+ 201 00d0 2046     		mov	r0, r4
+ 202 00d2 FFF7FEFF 		bl	WM_BringToBottom
+ 203 00d6 DFF81492 		ldr	r9, .L54+36
+ 204 00da 0BAF     		add	r7, sp, #44
+ 205              	.L25:
+ 206 00dc 0022     		movs	r2, #0
+ 207 00de 55F80900 		ldr	r0, [r5, r9]
+ 208 00e2 A8F12701 		sub	r1, r8, #39
+ 209 00e6 1346     		mov	r3, r2
+ 210 00e8 FFF7FEFF 		bl	GRAPH_DATA_YT_Create
+ 211 00ec 7851     		str	r0, [r7, r5]
+ 212 00ee 0435     		adds	r5, r5, #4
+ 213 00f0 142D     		cmp	r5, #20
+ 214 00f2 F3D1     		bne	.L25
+ 215 00f4 A6F10902 		sub	r2, r6, #9
+ 216 00f8 0692     		str	r2, [sp, #24]
+ 217 00fa 0C21     		movs	r1, #12
+ 218 00fc 0022     		movs	r2, #0
+ 219 00fe 1923     		movs	r3, #25
+ 220 0100 0420     		movs	r0, #4
+ 221 0102 FFF7FEFF 		bl	GRAPH_SCALE_Create
+ 222 0106 DFF8DC91 		ldr	r9, .L54+28
+ 223 010a 2B46     		mov	r3, r5
+ 224 010c 0122     		movs	r2, #1
+ 225 010e C9F80000 		str	r0, [r9]
+ 226 0112 0221     		movs	r1, #2
+ 227 0114 0920     		movs	r0, #9
+ 228 0116 FFF7FEFF 		bl	GRAPH_SCALE_Create
+ 229 011a DFF8D481 		ldr	r8, .L54+40
+ 230 011e 311F     		subs	r1, r6, #4
+ 231 0120 C8F80000 		str	r0, [r8]
+ 232 0124 D9F80000 		ldr	r0, [r9]
+ 233 0128 FFF7FEFF 		bl	GRAPH_SCALE_SetPos
+ 234 012c D9F80000 		ldr	r0, [r9]
+ 235 0130 6FF00401 		mvn	r1, #4
+ 236 0134 FFF7FEFF 		bl	GRAPH_SCALE_SetOff
+ 237 0138 694D     		ldr	r5, .L54+24
+ 238              	.L26:
+ 239 013a D5F81090 		ldr	r9, [r5, #16]
+ 240 013e B9F1000F 		cmp	r9, #0
+ 241 0142 00F09C80 		beq	.L49
+ 242 0146 2868     		ldr	r0, [r5]
+ 243 0148 FFF7FEFF 		bl	GUIDEMO_ShowInfo
+ 244 014c 654B     		ldr	r3, .L54+28
+ 245 014e 2046     		mov	r0, r4
+ 246 0150 1968     		ldr	r1, [r3]
+ 247 0152 FFF7FEFF 		bl	GRAPH_AttachScale
+ 248 0156 2046     		mov	r0, r4
+ 249 0158 D8F80010 		ldr	r1, [r8]
+ 250 015c FFF7FEFF 		bl	GRAPH_AttachScale
+ 251 0160 069A     		ldr	r2, [sp, #24]
+ 252 0162 AB68     		ldr	r3, [r5, #8]
+ 253 0164 E968     		ldr	r1, [r5, #12]
+ 254 0166 5343     		muls	r3, r2, r3
+ 255 0168 5F4A     		ldr	r2, .L54+32
+ 256 016a 5B12     		asrs	r3, r3, #9
+ 257 016c 1360     		str	r3, [r2]
+ 258 016e 069B     		ldr	r3, [sp, #24]
+ 259 0170 2046     		mov	r0, r4
+ 260 0172 5943     		muls	r1, r3, r1
+ 261 0174 4912     		asrs	r1, r1, #9
+ 262 0176 FFF7FEFF 		bl	GRAPH_SetGridOffY
+ 263 017a 6B68     		ldr	r3, [r5, #4]
+ 264 017c A6F11202 		sub	r2, r6, #18
+ 265 0180 03FB02F1 		mul	r1, r3, r2
+ 266 0184 D8F80000 		ldr	r0, [r8]
+ 267 0188 4912     		asrs	r1, r1, #9
+ 268 018a FFF7FEFF 		bl	GRAPH_SCALE_SetOff
+ 269 018e 2A69     		ldr	r2, [r5, #16]
+ 270 0190 D5F81490 		ldr	r9, [r5, #20]
+ 271 0194 0792     		str	r2, [sp, #28]
+ 272 0196 FFF7FEFF 		bl	LCD_GetXSize
+ 273 019a 4FF0000B 		mov	fp, #0
+ 274 019e A0F1270A 		sub	r10, r0, #39
+ 275              	.L27:
+ 276 01a2 CB45     		cmp	fp, r9
+ 277 01a4 07DA     		bge	.L50
+ 278 01a6 57F82B10 		ldr	r1, [r7, fp, lsl #2]
+ 279 01aa 2046     		mov	r0, r4
+ 280 01ac FFF7FEFF 		bl	GRAPH_AttachData
+ 281 01b0 0BF1010B 		add	fp, fp, #1
+ 282 01b4 F5E7     		b	.L27
+ 283              	.L50:
+ 284 01b6 0023     		movs	r3, #0
+ 285              	.L29:
+ 286 01b8 5345     		cmp	r3, r10
+ 287 01ba 0FDA     		bge	.L31
+ 288 01bc 4FF0000B 		mov	fp, #0
+ 289              	.L32:
+ 290 01c0 CB45     		cmp	fp, r9
+ 291 01c2 09DA     		bge	.L51
+ 292 01c4 57F82B00 		ldr	r0, [r7, fp, lsl #2]
+ 293 01c8 5946     		mov	r1, fp
+ 294 01ca 0593     		str	r3, [sp, #20]
+ 295 01cc 079A     		ldr	r2, [sp, #28]
+ 296 01ce 9047     		blx	r2
+ 297 01d0 0BF1010B 		add	fp, fp, #1
+ 298 01d4 059B     		ldr	r3, [sp, #20]
+ 299 01d6 F3E7     		b	.L32
+ 300              	.L51:
+ 301 01d8 0133     		adds	r3, r3, #1
+ 302 01da EDE7     		b	.L29
+ 303              	.L31:
+ 304 01dc FFF7FEFF 		bl	GUIDEMO_GetTime
+ 305 01e0 4FF0010B 		mov	fp, #1
+ 306 01e4 0890     		str	r0, [sp, #32]
+ 307              	.L40:
+ 308 01e6 FFF7FEFF 		bl	GUIDEMO_GetTime
+ 309 01ea 089B     		ldr	r3, [sp, #32]
+ 310 01ec C3EB000A 		rsb	r10, r3, r0
+ 311 01f0 0023     		movs	r3, #0
+ 312              	.L33:
+ 313 01f2 4B45     		cmp	r3, r9
+ 314 01f4 08DA     		bge	.L52
+ 315 01f6 57F82300 		ldr	r0, [r7, r3, lsl #2]
+ 316 01fa 1946     		mov	r1, r3
+ 317 01fc 0593     		str	r3, [sp, #20]
+ 318 01fe 079A     		ldr	r2, [sp, #28]
+ 319 0200 9047     		blx	r2
+ 320 0202 059B     		ldr	r3, [sp, #20]
+ 321 0204 0133     		adds	r3, r3, #1
+ 322 0206 F4E7     		b	.L33
+ 323              	.L52:
+ 324 0208 BBF1000F 		cmp	fp, #0
+ 325 020c 0ED0     		beq	.L35
+ 326 020e FFF7FEFF 		bl	GUI_Exec
+ 327 0212 344B     		ldr	r3, .L54+28
+ 328 0214 2046     		mov	r0, r4
+ 329 0216 1968     		ldr	r1, [r3]
+ 330 0218 FFF7FEFF 		bl	GRAPH_DetachScale
+ 331 021c 2046     		mov	r0, r4
+ 332 021e D8F80010 		ldr	r1, [r8]
+ 333 0222 FFF7FEFF 		bl	GRAPH_DetachScale
+ 334 0226 2046     		mov	r0, r4
+ 335 0228 FFF7FEFF 		bl	WM_ValidateWindow
+ 336              	.L35:
+ 337 022c FFF7FEFF 		bl	GUIDEMO_CheckCancel
+ 338 0230 8346     		mov	fp, r0
+ 339 0232 FFF7FEFF 		bl	GUIDEMO_GetTime
+ 340 0236 089A     		ldr	r2, [sp, #32]
+ 341 0238 801A     		subs	r0, r0, r2
+ 342 023a CAEB0003 		rsb	r3, r10, r0
+ 343 023e 0E2B     		cmp	r3, #14
+ 344 0240 04DC     		bgt	.L36
+ 345 0242 C0EB0A00 		rsb	r0, r0, r10
+ 346 0246 0F30     		adds	r0, r0, #15
+ 347 0248 FFF7FEFF 		bl	GUI_Delay
+ 348              	.L36:
+ 349 024c 41F28733 		movw	r3, #4999
+ 350 0250 9A45     		cmp	r10, r3
+ 351 0252 02DD     		ble	.L37
+ 352              	.L39:
+ 353 0254 4FF0000A 		mov	r10, #0
+ 354 0258 03E0     		b	.L38
+ 355              	.L37:
+ 356 025a BBF1000F 		cmp	fp, #0
+ 357 025e C2D0     		beq	.L40
+ 358 0260 F8E7     		b	.L39
+ 359              	.L38:
+ 360 0262 CA45     		cmp	r10, r9
+ 361 0264 07DA     		bge	.L53
+ 362 0266 57F82A10 		ldr	r1, [r7, r10, lsl #2]
+ 363 026a 2046     		mov	r0, r4
+ 364 026c FFF7FEFF 		bl	GRAPH_DetachData
+ 365 0270 0AF1010A 		add	r10, r10, #1
+ 366 0274 F5E7     		b	.L38
+ 367              	.L53:
+ 368 0276 FFF7FEFF 		bl	GUIDEMO_NotifyStartNext
+ 369 027a 1835     		adds	r5, r5, #24
+ 370 027c 5DE7     		b	.L26
+ 371              	.L49:
+ 372 027e 194A     		ldr	r2, .L54+28
+ 373 0280 2046     		mov	r0, r4
+ 374 0282 1168     		ldr	r1, [r2]
+ 375 0284 FFF7FEFF 		bl	GRAPH_DetachScale
+ 376 0288 D8F80010 		ldr	r1, [r8]
+ 377 028c 2046     		mov	r0, r4
+ 378 028e FFF7FEFF 		bl	GRAPH_DetachScale
+ 379 0292 144B     		ldr	r3, .L54+28
+ 380 0294 4D46     		mov	r5, r9
+ 381 0296 1868     		ldr	r0, [r3]
+ 382 0298 FFF7FEFF 		bl	GRAPH_SCALE_Delete
+ 383 029c D8F80000 		ldr	r0, [r8]
+ 384 02a0 FFF7FEFF 		bl	GRAPH_SCALE_Delete
+ 385              	.L44:
+ 386 02a4 7859     		ldr	r0, [r7, r5]
+ 387 02a6 0435     		adds	r5, r5, #4
+ 388 02a8 FFF7FEFF 		bl	GRAPH_DATA_YT_Delete
+ 389 02ac 142D     		cmp	r5, #20
+ 390 02ae F9D1     		bne	.L44
+ 391 02b0 2046     		mov	r0, r4
+ 392 02b2 FFF7FEFF 		bl	WM_DeleteWindow
+ 393 02b6 0998     		ldr	r0, [sp, #36]
+ 394 02b8 FFF7FEFF 		bl	WIDGET_SetDefaultEffect
+ 395 02bc 11B0     		add	sp, sp, #68
+ 396              		@ sp needed
+ 397 02be BDE8F04F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 398 02c2 FFF7FEBF 		b	GUIDEMO_NotifyStartNext
+ 399              	.L55:
+ 400 02c6 00BF     		.align	2
+ 401              	.L54:
+ 402 02c8 10000000 		.word	.LC1
+ 403 02cc 00000000 		.word	.LC0
+ 404 02d0 00000000 		.word	WIDGET_Effect_Simple
+ 405 02d4 00000000 		.word	_cbBk
+ 406 02d8 40404000 		.word	4210752
+ 407 02dc 80808000 		.word	8421504
+ 408 02e0 00000000 		.word	.LANCHOR5
+ 409 02e4 00000000 		.word	_hScaleH
+ 410 02e8 00000000 		.word	.LANCHOR1
+ 411 02ec 00000000 		.word	.LANCHOR4
+ 412 02f0 00000000 		.word	_hScaleV
+ 414              		.global	_aWave
+ 415              		.comm	_hScaleV,4,4
+ 416              		.comm	_hScaleH,4,4
+ 417              		.section	.bss.x1000.13398,"aw",%nobits
+ 418              		.align	2
+ 419              		.set	.LANCHOR0,. + 0
+ 422              	x1000.13398:
+ 423 0000 00000000 		.space	20
+ 423      00000000 
+ 423      00000000 
+ 423      00000000 
+ 423      00000000 
+ 424              		.section	.rodata._aColorData,"a",%progbits
+ 425              		.align	2
+ 426              		.set	.LANCHOR4,. + 0
+ 429              	_aColorData:
+ 430 0000 FFC05000 		.word	5292287
+ 431 0004 50C0FF00 		.word	16760912
+ 432 0008 C0FF5000 		.word	5308352
+ 433 000c 00008000 		.word	8388608
+ 434 0010 80000000 		.word	128
+ 435              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 436              	.LC0:
+ 437 0000 44726177 		.ascii	"Drawing a graph\000"
+ 437      696E6720 
+ 437      61206772 
+ 437      61706800 
+ 438              	.LC1:
+ 439 0010 4F707469 		.ascii	"Optimized drawing routine\012for drawing graph data"
+ 439      6D697A65 
+ 439      64206472 
+ 439      6177696E 
+ 439      6720726F 
+ 440 0040 00       		.ascii	"\000"
+ 441              	.LC2:
+ 442 0041 48656172 		.ascii	"Heartbeat\000"
+ 442      74626561 
+ 442      7400
+ 443              	.LC3:
+ 444 004b 53696E65 		.ascii	"Sine Waves\000"
+ 444      20576176 
+ 444      657300
+ 445              		.section	.rodata._HeartBeat,"a",%progbits
+ 446              		.align	2
+ 447              		.set	.LANCHOR2,. + 0
+ 450              	_HeartBeat:
+ 451 0000 02000000 		.word	2
+ 452 0004 04000000 		.word	4
+ 453 0008 06000000 		.word	6
+ 454 000c 08000000 		.word	8
+ 455 0010 0A000000 		.word	10
+ 456 0014 06000000 		.word	6
+ 457 0018 02000000 		.word	2
+ 458 001c 00000000 		.word	0
+ 459 0020 00000000 		.word	0
+ 460 0024 00000000 		.word	0
+ 461 0028 F8FFFFFF 		.word	-8
+ 462 002c 10000000 		.word	16
+ 463 0030 28000000 		.word	40
+ 464 0034 40000000 		.word	64
+ 465 0038 58000000 		.word	88
+ 466 003c 3A000000 		.word	58
+ 467 0040 1C000000 		.word	28
+ 468 0044 FEFFFFFF 		.word	-2
+ 469 0048 E0FFFFFF 		.word	-32
+ 470 004c E2FFFFFF 		.word	-30
+ 471 0050 ECFFFFFF 		.word	-20
+ 472 0054 F6FFFFFF 		.word	-10
+ 473 0058 00000000 		.word	0
+ 474 005c 02000000 		.word	2
+ 475 0060 02000000 		.word	2
+ 476 0064 04000000 		.word	4
+ 477 0068 04000000 		.word	4
+ 478 006c 06000000 		.word	6
+ 479 0070 06000000 		.word	6
+ 480 0074 08000000 		.word	8
+ 481 0078 08000000 		.word	8
+ 482 007c 0A000000 		.word	10
+ 483 0080 0C000000 		.word	12
+ 484 0084 0E000000 		.word	14
+ 485 0088 10000000 		.word	16
+ 486 008c 12000000 		.word	18
+ 487 0090 14000000 		.word	20
+ 488 0094 10000000 		.word	16
+ 489 0098 0C000000 		.word	12
+ 490 009c 08000000 		.word	8
+ 491 00a0 04000000 		.word	4
+ 492 00a4 02000000 		.word	2
+ 493 00a8 02000000 		.word	2
+ 494 00ac 00000000 		.word	0
+ 495 00b0 00000000 		.word	0
+ 496 00b4 00000000 		.word	0
+ 497 00b8 00000000 		.word	0
+ 498 00bc 00000000 		.word	0
+ 499 00c0 00000000 		.word	0
+ 500 00c4 00000000 		.word	0
+ 501 00c8 00000000 		.word	0
+ 502 00cc 00000000 		.word	0
+ 503 00d0 00000000 		.word	0
+ 504 00d4 00000000 		.word	0
+ 505 00d8 00000000 		.word	0
+ 506 00dc 00000000 		.word	0
+ 507 00e0 00000000 		.word	0
+ 508 00e4 00000000 		.word	0
+ 509 00e8 00000000 		.word	0
+ 510 00ec 00000000 		.word	0
+ 511 00f0 00000000 		.word	0
+ 512 00f4 00000000 		.word	0
+ 513 00f8 00000000 		.word	0
+ 514 00fc 00000000 		.word	0
+ 515 0100 00000000 		.word	0
+ 516 0104 00000000 		.word	0
+ 517 0108 00000000 		.word	0
+ 518 010c 00000000 		.word	0
+ 519 0110 00000000 		.word	0
+ 520 0114 00000000 		.word	0
+ 521              		.section	.bss._DataAdjust,"aw",%nobits
+ 522              		.align	2
+ 523              		.set	.LANCHOR1,. + 0
+ 526              	_DataAdjust:
+ 527 0000 00000000 		.space	4
+ 528              		.section	.bss.Index.13411,"aw",%nobits
+ 529              		.align	2
+ 530              		.set	.LANCHOR3,. + 0
+ 533              	Index.13411:
+ 534 0000 00000000 		.space	4
+ 535              		.section	.data._aWave,"aw",%progbits
+ 536              		.align	2
+ 537              		.set	.LANCHOR5,. + 0
+ 540              	_aWave:
+ 541 0000 41000000 		.word	.LC2
+ 542 0004 9D000000 		.word	157
+ 543 0008 98000000 		.word	152
+ 544 000c 15000000 		.word	21
+ 545 0010 00000000 		.word	_AddData_Heartbeat
+ 546 0014 01000000 		.word	1
+ 547 0018 4B000000 		.word	.LC3
+ 548 001c 09010000 		.word	265
+ 549 0020 FD000000 		.word	253
+ 550 0024 17000000 		.word	23
+ 551 0028 00000000 		.word	_AddData_Sine
+ 552 002c 03000000 		.word	3
+ 553 0030 00000000 		.word	0
+ 554 0034 00000000 		.space	20
+ 554      00000000 
+ 554      00000000 
+ 554      00000000 
+ 554      00000000 
+ 555              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO_Graph.c
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:16     .text._AddData_Sine:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:20     .text._AddData_Sine:00000000 _AddData_Sine
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:62     .text._AddData_Sine:00000058 $d
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:66     .text._AddData_Heartbeat:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:70     .text._AddData_Heartbeat:00000000 _AddData_Heartbeat
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:93     .text._AddData_Heartbeat:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:98     .text._cbBk:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:102    .text._cbBk:00000000 _cbBk
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:115    .text.GUIDEMO_Graph:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:120    .text.GUIDEMO_Graph:00000000 GUIDEMO_Graph
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:402    .text.GUIDEMO_Graph:000002c8 $d
+                            *COM*:00000004 _hScaleH
+                            *COM*:00000004 _hScaleV
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:540    .data._aWave:00000000 _aWave
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:418    .bss.x1000.13398:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:422    .bss.x1000.13398:00000000 x1000.13398
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:425    .rodata._aColorData:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:429    .rodata._aColorData:00000000 _aColorData
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:446    .rodata._HeartBeat:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:450    .rodata._HeartBeat:00000000 _HeartBeat
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:522    .bss._DataAdjust:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:526    .bss._DataAdjust:00000000 _DataAdjust
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:529    .bss.Index.13411:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:533    .bss.Index.13411:00000000 Index.13411
+D:\Users\draapho\AppData\Local\Temp\ccL9LmHZ.s:536    .data._aWave:00000000 $d
+
+UNDEFINED SYMBOLS
+GUI__SinHQ
+GRAPH_DATA_YT_AddValue
+GUIDEMO_DrawBk
+WM_DefaultProc
+GUIDEMO_ShowIntro
+GUIDEMO_ShowInfoWin
+LCD_GetXSize
+LCD_GetYSize
+WIDGET_SetDefaultEffect
+WM_GetDesktopWindow
+WM_SetCallback
+GRAPH_CreateEx
+GRAPH_SetBorder
+WM_SetHasTrans
+GRAPH_SetColor
+GRAPH_SetGridVis
+GRAPH_SetGridDistX
+GRAPH_SetGridDistY
+WM_BringToBottom
+GRAPH_DATA_YT_Create
+GRAPH_SCALE_Create
+GRAPH_SCALE_SetPos
+GRAPH_SCALE_SetOff
+GUIDEMO_ShowInfo
+GRAPH_AttachScale
+GRAPH_SetGridOffY
+GRAPH_AttachData
+GUIDEMO_GetTime
+GUI_Exec
+GRAPH_DetachScale
+WM_ValidateWindow
+GUIDEMO_CheckCancel
+GUI_Delay
+GRAPH_DetachData
+GUIDEMO_NotifyStartNext
+GRAPH_SCALE_Delete
+GRAPH_DATA_YT_Delete
+WM_DeleteWindow
+WIDGET_Effect_Simple

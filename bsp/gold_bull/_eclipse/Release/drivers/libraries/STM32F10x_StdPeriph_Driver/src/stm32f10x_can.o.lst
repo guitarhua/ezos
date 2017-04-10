@@ -1,0 +1,1894 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_can.c"
+  15              		.section	.text.CAN_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	CAN_DeInit
+  18              		.thumb
+  19              		.thumb_func
+  21              	CAN_DeInit:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 0F4B     		ldr	r3, .L6
+  26 0004 9842     		cmp	r0, r3
+  27 0006 0FD0     		beq	.L2
+  28 0008 03F58063 		add	r3, r3, #1024
+  29 000c 9842     		cmp	r0, r3
+  30 000e 03D0     		beq	.L3
+  31 0010 0C48     		ldr	r0, .L6+4
+  32 0012 7D21     		movs	r1, #125
+  33 0014 FFF7FEFF 		bl	assert_err
+  34              	.L3:
+  35 0018 4FF08060 		mov	r0, #67108864
+  36 001c 0121     		movs	r1, #1
+  37 001e FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  38 0022 4FF08060 		mov	r0, #67108864
+  39 0026 06E0     		b	.L4
+  40              	.L2:
+  41 0028 4FF00070 		mov	r0, #33554432
+  42 002c 0121     		movs	r1, #1
+  43 002e FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  44 0032 4FF00070 		mov	r0, #33554432
+  45              	.L4:
+  46 0036 0021     		movs	r1, #0
+  47 0038 BDE80840 		pop	{r3, lr}
+  48 003c FFF7FEBF 		b	RCC_APB1PeriphResetCmd
+  49              	.L7:
+  50              		.align	2
+  51              	.L6:
+  52 0040 00640040 		.word	1073767424
+  53 0044 00000000 		.word	.LC0
+  55              		.section	.text.CAN_Init,"ax",%progbits
+  56              		.align	1
+  57              		.global	CAN_Init
+  58              		.thumb
+  59              		.thumb_func
+  61              	CAN_Init:
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64 0000 38B5     		push	{r3, r4, r5, lr}
+  65 0002 634B     		ldr	r3, .L50
+  66 0004 0446     		mov	r4, r0
+  67 0006 9842     		cmp	r0, r3
+  68 0008 0D46     		mov	r5, r1
+  69 000a 07D0     		beq	.L9
+  70 000c 03F58063 		add	r3, r3, #1024
+  71 0010 9842     		cmp	r0, r3
+  72 0012 03D0     		beq	.L9
+  73 0014 5F48     		ldr	r0, .L50+4
+  74 0016 9F21     		movs	r1, #159
+  75 0018 FFF7FEFF 		bl	assert_err
+  76              	.L9:
+  77 001c AB79     		ldrb	r3, [r5, #6]	@ zero_extendqisi2
+  78 001e 012B     		cmp	r3, #1
+  79 0020 03D9     		bls	.L10
+  80 0022 5C48     		ldr	r0, .L50+4
+  81 0024 A021     		movs	r1, #160
+  82 0026 FFF7FEFF 		bl	assert_err
+  83              	.L10:
+  84 002a EB79     		ldrb	r3, [r5, #7]	@ zero_extendqisi2
+  85 002c 012B     		cmp	r3, #1
+  86 002e 03D9     		bls	.L11
+  87 0030 5848     		ldr	r0, .L50+4
+  88 0032 A121     		movs	r1, #161
+  89 0034 FFF7FEFF 		bl	assert_err
+  90              	.L11:
+  91 0038 2B7A     		ldrb	r3, [r5, #8]	@ zero_extendqisi2
+  92 003a 012B     		cmp	r3, #1
+  93 003c 03D9     		bls	.L12
+  94 003e 5548     		ldr	r0, .L50+4
+  95 0040 A221     		movs	r1, #162
+  96 0042 FFF7FEFF 		bl	assert_err
+  97              	.L12:
+  98 0046 6B7A     		ldrb	r3, [r5, #9]	@ zero_extendqisi2
+  99 0048 012B     		cmp	r3, #1
+ 100 004a 03D9     		bls	.L13
+ 101 004c 5148     		ldr	r0, .L50+4
+ 102 004e A321     		movs	r1, #163
+ 103 0050 FFF7FEFF 		bl	assert_err
+ 104              	.L13:
+ 105 0054 AB7A     		ldrb	r3, [r5, #10]	@ zero_extendqisi2
+ 106 0056 012B     		cmp	r3, #1
+ 107 0058 03D9     		bls	.L14
+ 108 005a 4E48     		ldr	r0, .L50+4
+ 109 005c A421     		movs	r1, #164
+ 110 005e FFF7FEFF 		bl	assert_err
+ 111              	.L14:
+ 112 0062 EB7A     		ldrb	r3, [r5, #11]	@ zero_extendqisi2
+ 113 0064 012B     		cmp	r3, #1
+ 114 0066 03D9     		bls	.L15
+ 115 0068 4A48     		ldr	r0, .L50+4
+ 116 006a A521     		movs	r1, #165
+ 117 006c FFF7FEFF 		bl	assert_err
+ 118              	.L15:
+ 119 0070 AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
+ 120 0072 032B     		cmp	r3, #3
+ 121 0074 03D9     		bls	.L16
+ 122 0076 4748     		ldr	r0, .L50+4
+ 123 0078 A621     		movs	r1, #166
+ 124 007a FFF7FEFF 		bl	assert_err
+ 125              	.L16:
+ 126 007e EB78     		ldrb	r3, [r5, #3]	@ zero_extendqisi2
+ 127 0080 032B     		cmp	r3, #3
+ 128 0082 03D9     		bls	.L17
+ 129 0084 4348     		ldr	r0, .L50+4
+ 130 0086 A721     		movs	r1, #167
+ 131 0088 FFF7FEFF 		bl	assert_err
+ 132              	.L17:
+ 133 008c 2B79     		ldrb	r3, [r5, #4]	@ zero_extendqisi2
+ 134 008e 0F2B     		cmp	r3, #15
+ 135 0090 03D9     		bls	.L18
+ 136 0092 4048     		ldr	r0, .L50+4
+ 137 0094 A821     		movs	r1, #168
+ 138 0096 FFF7FEFF 		bl	assert_err
+ 139              	.L18:
+ 140 009a 6B79     		ldrb	r3, [r5, #5]	@ zero_extendqisi2
+ 141 009c 072B     		cmp	r3, #7
+ 142 009e 03D9     		bls	.L19
+ 143 00a0 3C48     		ldr	r0, .L50+4
+ 144 00a2 A921     		movs	r1, #169
+ 145 00a4 FFF7FEFF 		bl	assert_err
+ 146              	.L19:
+ 147 00a8 2B88     		ldrh	r3, [r5]
+ 148 00aa 013B     		subs	r3, r3, #1
+ 149 00ac 9BB2     		uxth	r3, r3
+ 150 00ae B3F5806F 		cmp	r3, #1024
+ 151 00b2 03D3     		bcc	.L20
+ 152 00b4 3748     		ldr	r0, .L50+4
+ 153 00b6 AA21     		movs	r1, #170
+ 154 00b8 FFF7FEFF 		bl	assert_err
+ 155              	.L20:
+ 156 00bc 2368     		ldr	r3, [r4]
+ 157 00be 23F00203 		bic	r3, r3, #2
+ 158 00c2 2360     		str	r3, [r4]
+ 159 00c4 2368     		ldr	r3, [r4]
+ 160 00c6 43F00103 		orr	r3, r3, #1
+ 161 00ca 2360     		str	r3, [r4]
+ 162 00cc 4FF48033 		mov	r3, #65536
+ 163              	.L21:
+ 164 00d0 6268     		ldr	r2, [r4, #4]
+ 165 00d2 D107     		lsls	r1, r2, #31
+ 166 00d4 01D4     		bmi	.L22
+ 167 00d6 013B     		subs	r3, r3, #1
+ 168 00d8 FAD1     		bne	.L21
+ 169              	.L22:
+ 170 00da 6068     		ldr	r0, [r4, #4]
+ 171 00dc 10F00100 		ands	r0, r0, #1
+ 172 00e0 54D0     		beq	.L24
+ 173 00e2 AB79     		ldrb	r3, [r5, #6]	@ zero_extendqisi2
+ 174 00e4 012B     		cmp	r3, #1
+ 175 00e6 2368     		ldr	r3, [r4]
+ 176 00e8 0CBF     		ite	eq
+ 177 00ea 43F08003 		orreq	r3, r3, #128
+ 178 00ee 23F08003 		bicne	r3, r3, #128
+ 179 00f2 2360     		str	r3, [r4]
+ 180 00f4 EB79     		ldrb	r3, [r5, #7]	@ zero_extendqisi2
+ 181 00f6 012B     		cmp	r3, #1
+ 182 00f8 2368     		ldr	r3, [r4]
+ 183 00fa 0CBF     		ite	eq
+ 184 00fc 43F04003 		orreq	r3, r3, #64
+ 185 0100 23F04003 		bicne	r3, r3, #64
+ 186 0104 2360     		str	r3, [r4]
+ 187 0106 2B7A     		ldrb	r3, [r5, #8]	@ zero_extendqisi2
+ 188 0108 012B     		cmp	r3, #1
+ 189 010a 2368     		ldr	r3, [r4]
+ 190 010c 0CBF     		ite	eq
+ 191 010e 43F02003 		orreq	r3, r3, #32
+ 192 0112 23F02003 		bicne	r3, r3, #32
+ 193 0116 2360     		str	r3, [r4]
+ 194 0118 6B7A     		ldrb	r3, [r5, #9]	@ zero_extendqisi2
+ 195 011a 012B     		cmp	r3, #1
+ 196 011c 2368     		ldr	r3, [r4]
+ 197 011e 0CBF     		ite	eq
+ 198 0120 43F01003 		orreq	r3, r3, #16
+ 199 0124 23F01003 		bicne	r3, r3, #16
+ 200 0128 2360     		str	r3, [r4]
+ 201 012a AB7A     		ldrb	r3, [r5, #10]	@ zero_extendqisi2
+ 202 012c 012B     		cmp	r3, #1
+ 203 012e 2368     		ldr	r3, [r4]
+ 204 0130 0CBF     		ite	eq
+ 205 0132 43F00803 		orreq	r3, r3, #8
+ 206 0136 23F00803 		bicne	r3, r3, #8
+ 207 013a 2360     		str	r3, [r4]
+ 208 013c EB7A     		ldrb	r3, [r5, #11]	@ zero_extendqisi2
+ 209 013e 012B     		cmp	r3, #1
+ 210 0140 2368     		ldr	r3, [r4]
+ 211 0142 0CBF     		ite	eq
+ 212 0144 43F00403 		orreq	r3, r3, #4
+ 213 0148 23F00403 		bicne	r3, r3, #4
+ 214 014c 2360     		str	r3, [r4]
+ 215 014e AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
+ 216 0150 EA78     		ldrb	r2, [r5, #3]	@ zero_extendqisi2
+ 217 0152 9B07     		lsls	r3, r3, #30
+ 218 0154 43EA0263 		orr	r3, r3, r2, lsl #24
+ 219 0158 2A79     		ldrb	r2, [r5, #4]	@ zero_extendqisi2
+ 220 015a 43EA0243 		orr	r3, r3, r2, lsl #16
+ 221 015e 6A79     		ldrb	r2, [r5, #5]	@ zero_extendqisi2
+ 222 0160 43EA0253 		orr	r3, r3, r2, lsl #20
+ 223 0164 2A88     		ldrh	r2, [r5]
+ 224 0166 013A     		subs	r2, r2, #1
+ 225 0168 1343     		orrs	r3, r3, r2
+ 226 016a E361     		str	r3, [r4, #28]
+ 227 016c 2368     		ldr	r3, [r4]
+ 228 016e 23F00103 		bic	r3, r3, #1
+ 229 0172 2360     		str	r3, [r4]
+ 230 0174 4FF48033 		mov	r3, #65536
+ 231              	.L37:
+ 232 0178 6268     		ldr	r2, [r4, #4]
+ 233 017a D207     		lsls	r2, r2, #31
+ 234 017c 01D5     		bpl	.L38
+ 235 017e 013B     		subs	r3, r3, #1
+ 236 0180 FAD1     		bne	.L37
+ 237              	.L38:
+ 238 0182 6068     		ldr	r0, [r4, #4]
+ 239 0184 00F00100 		and	r0, r0, #1
+ 240 0188 80F00100 		eor	r0, r0, #1
+ 241              	.L24:
+ 242 018c 38BD     		pop	{r3, r4, r5, pc}
+ 243              	.L51:
+ 244 018e 00BF     		.align	2
+ 245              	.L50:
+ 246 0190 00640040 		.word	1073767424
+ 247 0194 00000000 		.word	.LC0
+ 249              		.section	.text.CAN_FilterInit,"ax",%progbits
+ 250              		.align	1
+ 251              		.global	CAN_FilterInit
+ 252              		.thumb
+ 253              		.thumb_func
+ 255              	CAN_FilterInit:
+ 256              		@ args = 0, pretend = 0, frame = 0
+ 257              		@ frame_needed = 0, uses_anonymous_args = 0
+ 258 0000 70B5     		push	{r4, r5, r6, lr}
+ 259 0002 837A     		ldrb	r3, [r0, #10]	@ zero_extendqisi2
+ 260 0004 0446     		mov	r4, r0
+ 261 0006 0D2B     		cmp	r3, #13
+ 262 0008 04D9     		bls	.L53
+ 263 000a 4848     		ldr	r0, .L66
+ 264 000c 4FF49471 		mov	r1, #296
+ 265 0010 FFF7FEFF 		bl	assert_err
+ 266              	.L53:
+ 267 0014 E37A     		ldrb	r3, [r4, #11]	@ zero_extendqisi2
+ 268 0016 012B     		cmp	r3, #1
+ 269 0018 04D9     		bls	.L54
+ 270 001a 4448     		ldr	r0, .L66
+ 271 001c 40F22911 		movw	r1, #297
+ 272 0020 FFF7FEFF 		bl	assert_err
+ 273              	.L54:
+ 274 0024 237B     		ldrb	r3, [r4, #12]	@ zero_extendqisi2
+ 275 0026 012B     		cmp	r3, #1
+ 276 0028 04D9     		bls	.L55
+ 277 002a 4048     		ldr	r0, .L66
+ 278 002c 4FF49571 		mov	r1, #298
+ 279 0030 FFF7FEFF 		bl	assert_err
+ 280              	.L55:
+ 281 0034 2389     		ldrh	r3, [r4, #8]
+ 282 0036 012B     		cmp	r3, #1
+ 283 0038 04D9     		bls	.L56
+ 284 003a 3C48     		ldr	r0, .L66
+ 285 003c 40F22B11 		movw	r1, #299
+ 286 0040 FFF7FEFF 		bl	assert_err
+ 287              	.L56:
+ 288 0044 637B     		ldrb	r3, [r4, #13]	@ zero_extendqisi2
+ 289 0046 012B     		cmp	r3, #1
+ 290 0048 04D9     		bls	.L57
+ 291 004a 3848     		ldr	r0, .L66
+ 292 004c 4FF49671 		mov	r1, #300
+ 293 0050 FFF7FEFF 		bl	assert_err
+ 294              	.L57:
+ 295 0054 A37A     		ldrb	r3, [r4, #10]	@ zero_extendqisi2
+ 296 0056 0121     		movs	r1, #1
+ 297 0058 9940     		lsls	r1, r1, r3
+ 298 005a 354B     		ldr	r3, .L66+4
+ 299 005c C843     		mvns	r0, r1
+ 300 005e D3F80022 		ldr	r2, [r3, #512]
+ 301 0062 42F00102 		orr	r2, r2, #1
+ 302 0066 C3F80022 		str	r2, [r3, #512]
+ 303 006a D3F81C22 		ldr	r2, [r3, #540]
+ 304 006e 0240     		ands	r2, r2, r0
+ 305 0070 C3F81C22 		str	r2, [r3, #540]
+ 306 0074 227B     		ldrb	r2, [r4, #12]	@ zero_extendqisi2
+ 307 0076 A2B9     		cbnz	r2, .L58
+ 308 0078 D3F80C22 		ldr	r2, [r3, #524]
+ 309 007c E688     		ldrh	r6, [r4, #6]
+ 310 007e 0240     		ands	r2, r2, r0
+ 311 0080 C3F80C22 		str	r2, [r3, #524]
+ 312 0084 A27A     		ldrb	r2, [r4, #10]	@ zero_extendqisi2
+ 313 0086 6588     		ldrh	r5, [r4, #2]
+ 314 0088 4832     		adds	r2, r2, #72
+ 315 008a 45EA0645 		orr	r5, r5, r6, lsl #16
+ 316 008e 43F83250 		str	r5, [r3, r2, lsl #3]
+ 317 0092 2388     		ldrh	r3, [r4]
+ 318 0094 A288     		ldrh	r2, [r4, #4]
+ 319 0096 A57A     		ldrb	r5, [r4, #10]	@ zero_extendqisi2
+ 320 0098 43EA0242 		orr	r2, r3, r2, lsl #16
+ 321 009c 254B     		ldr	r3, .L66+8
+ 322 009e ED00     		lsls	r5, r5, #3
+ 323 00a0 5A51     		str	r2, [r3, r5]
+ 324              	.L58:
+ 325 00a2 237B     		ldrb	r3, [r4, #12]	@ zero_extendqisi2
+ 326 00a4 012B     		cmp	r3, #1
+ 327 00a6 15D1     		bne	.L59
+ 328 00a8 214B     		ldr	r3, .L66+4
+ 329 00aa 2688     		ldrh	r6, [r4]
+ 330 00ac D3F80C22 		ldr	r2, [r3, #524]
+ 331 00b0 6588     		ldrh	r5, [r4, #2]
+ 332 00b2 0A43     		orrs	r2, r2, r1
+ 333 00b4 C3F80C22 		str	r2, [r3, #524]
+ 334 00b8 A27A     		ldrb	r2, [r4, #10]	@ zero_extendqisi2
+ 335 00ba 45EA0645 		orr	r5, r5, r6, lsl #16
+ 336 00be 4832     		adds	r2, r2, #72
+ 337 00c0 43F83250 		str	r5, [r3, r2, lsl #3]
+ 338 00c4 E388     		ldrh	r3, [r4, #6]
+ 339 00c6 A288     		ldrh	r2, [r4, #4]
+ 340 00c8 A57A     		ldrb	r5, [r4, #10]	@ zero_extendqisi2
+ 341 00ca 43EA0242 		orr	r2, r3, r2, lsl #16
+ 342 00ce 194B     		ldr	r3, .L66+8
+ 343 00d0 ED00     		lsls	r5, r5, #3
+ 344 00d2 5A51     		str	r2, [r3, r5]
+ 345              	.L59:
+ 346 00d4 E37A     		ldrb	r3, [r4, #11]	@ zero_extendqisi2
+ 347 00d6 164A     		ldr	r2, .L66+4
+ 348 00d8 1BB9     		cbnz	r3, .L60
+ 349 00da D2F80432 		ldr	r3, [r2, #516]
+ 350 00de 0340     		ands	r3, r3, r0
+ 351 00e0 02E0     		b	.L65
+ 352              	.L60:
+ 353 00e2 D2F80432 		ldr	r3, [r2, #516]
+ 354 00e6 0B43     		orrs	r3, r3, r1
+ 355              	.L65:
+ 356 00e8 2589     		ldrh	r5, [r4, #8]
+ 357 00ea C2F80432 		str	r3, [r2, #516]
+ 358 00ee 104B     		ldr	r3, .L66+4
+ 359 00f0 2DB9     		cbnz	r5, .L62
+ 360 00f2 D2F81452 		ldr	r5, [r2, #532]
+ 361 00f6 2840     		ands	r0, r0, r5
+ 362 00f8 C2F81402 		str	r0, [r2, #532]
+ 363 00fc 06E0     		b	.L63
+ 364              	.L62:
+ 365 00fe 012D     		cmp	r5, #1
+ 366 0100 04D1     		bne	.L63
+ 367 0102 D3F81422 		ldr	r2, [r3, #532]
+ 368 0106 0A43     		orrs	r2, r2, r1
+ 369 0108 C3F81422 		str	r2, [r3, #532]
+ 370              	.L63:
+ 371 010c 627B     		ldrb	r2, [r4, #13]	@ zero_extendqisi2
+ 372 010e 012A     		cmp	r2, #1
+ 373 0110 04D1     		bne	.L64
+ 374 0112 D3F81C22 		ldr	r2, [r3, #540]
+ 375 0116 1143     		orrs	r1, r1, r2
+ 376 0118 C3F81C12 		str	r1, [r3, #540]
+ 377              	.L64:
+ 378 011c D3F80022 		ldr	r2, [r3, #512]
+ 379 0120 22F00102 		bic	r2, r2, #1
+ 380 0124 C3F80022 		str	r2, [r3, #512]
+ 381 0128 70BD     		pop	{r4, r5, r6, pc}
+ 382              	.L67:
+ 383 012a 00BF     		.align	2
+ 384              	.L66:
+ 385 012c 00000000 		.word	.LC0
+ 386 0130 00640040 		.word	1073767424
+ 387 0134 44660040 		.word	1073768004
+ 389              		.section	.text.CAN_StructInit,"ax",%progbits
+ 390              		.align	1
+ 391              		.global	CAN_StructInit
+ 392              		.thumb
+ 393              		.thumb_func
+ 395              	CAN_StructInit:
+ 396              		@ args = 0, pretend = 0, frame = 0
+ 397              		@ frame_needed = 0, uses_anonymous_args = 0
+ 398              		@ link register save eliminated.
+ 399 0000 0023     		movs	r3, #0
+ 400 0002 8371     		strb	r3, [r0, #6]
+ 401 0004 C371     		strb	r3, [r0, #7]
+ 402 0006 0372     		strb	r3, [r0, #8]
+ 403 0008 4372     		strb	r3, [r0, #9]
+ 404 000a 8372     		strb	r3, [r0, #10]
+ 405 000c C372     		strb	r3, [r0, #11]
+ 406 000e 8370     		strb	r3, [r0, #2]
+ 407 0010 C370     		strb	r3, [r0, #3]
+ 408 0012 0323     		movs	r3, #3
+ 409 0014 0371     		strb	r3, [r0, #4]
+ 410 0016 0223     		movs	r3, #2
+ 411 0018 4371     		strb	r3, [r0, #5]
+ 412 001a 0123     		movs	r3, #1
+ 413 001c 0380     		strh	r3, [r0]	@ movhi
+ 414 001e 7047     		bx	lr
+ 416              		.section	.text.CAN_SlaveStartBank,"ax",%progbits
+ 417              		.align	1
+ 418              		.global	CAN_SlaveStartBank
+ 419              		.thumb
+ 420              		.thumb_func
+ 422              	CAN_SlaveStartBank:
+ 423              		@ args = 0, pretend = 0, frame = 0
+ 424              		@ frame_needed = 0, uses_anonymous_args = 0
+ 425 0000 431E     		subs	r3, r0, #1
+ 426 0002 DBB2     		uxtb	r3, r3
+ 427 0004 1A2B     		cmp	r3, #26
+ 428 0006 10B5     		push	{r4, lr}
+ 429 0008 0446     		mov	r4, r0
+ 430 000a 04D9     		bls	.L70
+ 431 000c 1048     		ldr	r0, .L71
+ 432 000e 40F2AF11 		movw	r1, #431
+ 433 0012 FFF7FEFF 		bl	assert_err
+ 434              	.L70:
+ 435 0016 0F4B     		ldr	r3, .L71+4
+ 436 0018 D3F80022 		ldr	r2, [r3, #512]
+ 437 001c 42F00102 		orr	r2, r2, #1
+ 438 0020 C3F80022 		str	r2, [r3, #512]
+ 439 0024 D3F80022 		ldr	r2, [r3, #512]
+ 440 0028 22F47C52 		bic	r2, r2, #16128
+ 441 002c 22F00E02 		bic	r2, r2, #14
+ 442 0030 C3F80022 		str	r2, [r3, #512]
+ 443 0034 D3F80022 		ldr	r2, [r3, #512]
+ 444 0038 42EA0424 		orr	r4, r2, r4, lsl #8
+ 445 003c C3F80042 		str	r4, [r3, #512]
+ 446 0040 D3F80022 		ldr	r2, [r3, #512]
+ 447 0044 22F00102 		bic	r2, r2, #1
+ 448 0048 C3F80022 		str	r2, [r3, #512]
+ 449 004c 10BD     		pop	{r4, pc}
+ 450              	.L72:
+ 451 004e 00BF     		.align	2
+ 452              	.L71:
+ 453 0050 00000000 		.word	.LC0
+ 454 0054 00640040 		.word	1073767424
+ 456              		.section	.text.CAN_DBGFreeze,"ax",%progbits
+ 457              		.align	1
+ 458              		.global	CAN_DBGFreeze
+ 459              		.thumb
+ 460              		.thumb_func
+ 462              	CAN_DBGFreeze:
+ 463              		@ args = 0, pretend = 0, frame = 0
+ 464              		@ frame_needed = 0, uses_anonymous_args = 0
+ 465 0000 38B5     		push	{r3, r4, r5, lr}
+ 466 0002 104B     		ldr	r3, .L80
+ 467 0004 0446     		mov	r4, r0
+ 468 0006 9842     		cmp	r0, r3
+ 469 0008 0D46     		mov	r5, r1
+ 470 000a 08D0     		beq	.L74
+ 471 000c 03F58063 		add	r3, r3, #1024
+ 472 0010 9842     		cmp	r0, r3
+ 473 0012 04D0     		beq	.L74
+ 474 0014 0C48     		ldr	r0, .L80+4
+ 475 0016 4FF4E371 		mov	r1, #454
+ 476 001a FFF7FEFF 		bl	assert_err
+ 477              	.L74:
+ 478 001e 012D     		cmp	r5, #1
+ 479 0020 05D9     		bls	.L75
+ 480 0022 0948     		ldr	r0, .L80+4
+ 481 0024 40F2C711 		movw	r1, #455
+ 482 0028 FFF7FEFF 		bl	assert_err
+ 483 002c 00E0     		b	.L76
+ 484              	.L75:
+ 485 002e 1DB1     		cbz	r5, .L77
+ 486              	.L76:
+ 487 0030 2368     		ldr	r3, [r4]
+ 488 0032 43F48033 		orr	r3, r3, #65536
+ 489 0036 02E0     		b	.L79
+ 490              	.L77:
+ 491 0038 2368     		ldr	r3, [r4]
+ 492 003a 23F48033 		bic	r3, r3, #65536
+ 493              	.L79:
+ 494 003e 2360     		str	r3, [r4]
+ 495 0040 38BD     		pop	{r3, r4, r5, pc}
+ 496              	.L81:
+ 497 0042 00BF     		.align	2
+ 498              	.L80:
+ 499 0044 00640040 		.word	1073767424
+ 500 0048 00000000 		.word	.LC0
+ 502              		.section	.text.CAN_TTComModeCmd,"ax",%progbits
+ 503              		.align	1
+ 504              		.global	CAN_TTComModeCmd
+ 505              		.thumb
+ 506              		.thumb_func
+ 508              	CAN_TTComModeCmd:
+ 509              		@ args = 0, pretend = 0, frame = 0
+ 510              		@ frame_needed = 0, uses_anonymous_args = 0
+ 511 0000 38B5     		push	{r3, r4, r5, lr}
+ 512 0002 214B     		ldr	r3, .L89
+ 513 0004 0446     		mov	r4, r0
+ 514 0006 9842     		cmp	r0, r3
+ 515 0008 0D46     		mov	r5, r1
+ 516 000a 08D0     		beq	.L83
+ 517 000c 03F58063 		add	r3, r3, #1024
+ 518 0010 9842     		cmp	r0, r3
+ 519 0012 04D0     		beq	.L83
+ 520 0014 1D48     		ldr	r0, .L89+4
+ 521 0016 4FF4F271 		mov	r1, #484
+ 522 001a FFF7FEFF 		bl	assert_err
+ 523              	.L83:
+ 524 001e 012D     		cmp	r5, #1
+ 525 0020 05D9     		bls	.L84
+ 526 0022 1A48     		ldr	r0, .L89+4
+ 527 0024 40F2E511 		movw	r1, #485
+ 528 0028 FFF7FEFF 		bl	assert_err
+ 529 002c 00E0     		b	.L85
+ 530              	.L84:
+ 531 002e A5B1     		cbz	r5, .L86
+ 532              	.L85:
+ 533 0030 2368     		ldr	r3, [r4]
+ 534 0032 43F08003 		orr	r3, r3, #128
+ 535 0036 2360     		str	r3, [r4]
+ 536 0038 D4F88431 		ldr	r3, [r4, #388]
+ 537 003c 43F48073 		orr	r3, r3, #256
+ 538 0040 C4F88431 		str	r3, [r4, #388]
+ 539 0044 D4F89431 		ldr	r3, [r4, #404]
+ 540 0048 43F48073 		orr	r3, r3, #256
+ 541 004c C4F89431 		str	r3, [r4, #404]
+ 542 0050 D4F8A431 		ldr	r3, [r4, #420]
+ 543 0054 43F48073 		orr	r3, r3, #256
+ 544 0058 13E0     		b	.L88
+ 545              	.L86:
+ 546 005a 2368     		ldr	r3, [r4]
+ 547 005c 23F08003 		bic	r3, r3, #128
+ 548 0060 2360     		str	r3, [r4]
+ 549 0062 D4F88431 		ldr	r3, [r4, #388]
+ 550 0066 23F48073 		bic	r3, r3, #256
+ 551 006a C4F88431 		str	r3, [r4, #388]
+ 552 006e D4F89431 		ldr	r3, [r4, #404]
+ 553 0072 23F48073 		bic	r3, r3, #256
+ 554 0076 C4F89431 		str	r3, [r4, #404]
+ 555 007a D4F8A431 		ldr	r3, [r4, #420]
+ 556 007e 23F48073 		bic	r3, r3, #256
+ 557              	.L88:
+ 558 0082 C4F8A431 		str	r3, [r4, #420]
+ 559 0086 38BD     		pop	{r3, r4, r5, pc}
+ 560              	.L90:
+ 561              		.align	2
+ 562              	.L89:
+ 563 0088 00640040 		.word	1073767424
+ 564 008c 00000000 		.word	.LC0
+ 566              		.section	.text.CAN_Transmit,"ax",%progbits
+ 567              		.align	1
+ 568              		.global	CAN_Transmit
+ 569              		.thumb
+ 570              		.thumb_func
+ 572              	CAN_Transmit:
+ 573              		@ args = 0, pretend = 0, frame = 0
+ 574              		@ frame_needed = 0, uses_anonymous_args = 0
+ 575 0000 4D4B     		ldr	r3, .L116
+ 576 0002 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 577 0006 9842     		cmp	r0, r3
+ 578 0008 0646     		mov	r6, r0
+ 579 000a 0C46     		mov	r4, r1
+ 580 000c 08D0     		beq	.L92
+ 581 000e 03F58063 		add	r3, r3, #1024
+ 582 0012 9842     		cmp	r0, r3
+ 583 0014 04D0     		beq	.L92
+ 584 0016 4948     		ldr	r0, .L116+4
+ 585 0018 40F20721 		movw	r1, #519
+ 586 001c FFF7FEFF 		bl	assert_err
+ 587              	.L92:
+ 588 0020 237A     		ldrb	r3, [r4, #8]	@ zero_extendqisi2
+ 589 0022 13F0FB0F 		tst	r3, #251
+ 590 0026 04D0     		beq	.L93
+ 591 0028 4448     		ldr	r0, .L116+4
+ 592 002a 4FF40271 		mov	r1, #520
+ 593 002e FFF7FEFF 		bl	assert_err
+ 594              	.L93:
+ 595 0032 637A     		ldrb	r3, [r4, #9]	@ zero_extendqisi2
+ 596 0034 13F0FD0F 		tst	r3, #253
+ 597 0038 04D0     		beq	.L94
+ 598 003a 4048     		ldr	r0, .L116+4
+ 599 003c 40F20921 		movw	r1, #521
+ 600 0040 FFF7FEFF 		bl	assert_err
+ 601              	.L94:
+ 602 0044 A37A     		ldrb	r3, [r4, #10]	@ zero_extendqisi2
+ 603 0046 082B     		cmp	r3, #8
+ 604 0048 04D9     		bls	.L95
+ 605 004a 3C48     		ldr	r0, .L116+4
+ 606 004c 40F20A21 		movw	r1, #522
+ 607 0050 FFF7FEFF 		bl	assert_err
+ 608              	.L95:
+ 609 0054 B368     		ldr	r3, [r6, #8]
+ 610 0056 5F01     		lsls	r7, r3, #5
+ 611 0058 07D4     		bmi	.L103
+ 612 005a B368     		ldr	r3, [r6, #8]
+ 613 005c 1D01     		lsls	r5, r3, #4
+ 614 005e 06D4     		bmi	.L104
+ 615 0060 B368     		ldr	r3, [r6, #8]
+ 616 0062 D800     		lsls	r0, r3, #3
+ 617 0064 05D4     		bmi	.L105
+ 618 0066 0427     		movs	r7, #4
+ 619 0068 63E0     		b	.L112
+ 620              	.L103:
+ 621 006a 0027     		movs	r7, #0
+ 622 006c 02E0     		b	.L96
+ 623              	.L104:
+ 624 006e 0127     		movs	r7, #1
+ 625 0070 00E0     		b	.L96
+ 626              	.L105:
+ 627 0072 0227     		movs	r7, #2
+ 628              	.L96:
+ 629 0074 4FEA0718 		lsl	r8, r7, #4
+ 630 0078 06EB0805 		add	r5, r6, r8
+ 631 007c D5F88031 		ldr	r3, [r5, #384]
+ 632 0080 03F00103 		and	r3, r3, #1
+ 633 0084 C5F88031 		str	r3, [r5, #384]
+ 634 0088 237A     		ldrb	r3, [r4, #8]	@ zero_extendqisi2
+ 635 008a 7BB9     		cbnz	r3, .L115
+ 636 008c 2368     		ldr	r3, [r4]
+ 637 008e B3F5006F 		cmp	r3, #2048
+ 638 0092 04D3     		bcc	.L98
+ 639 0094 2948     		ldr	r0, .L116+4
+ 640 0096 4FF40971 		mov	r1, #548
+ 641 009a FFF7FEFF 		bl	assert_err
+ 642              	.L98:
+ 643 009e 2368     		ldr	r3, [r4]
+ 644 00a0 617A     		ldrb	r1, [r4, #9]	@ zero_extendqisi2
+ 645 00a2 D5F88021 		ldr	r2, [r5, #384]
+ 646 00a6 41EA4353 		orr	r3, r1, r3, lsl #21
+ 647 00aa 10E0     		b	.L114
+ 648              	.L115:
+ 649 00ac 6368     		ldr	r3, [r4, #4]
+ 650 00ae B3F1005F 		cmp	r3, #536870912
+ 651 00b2 04D3     		bcc	.L100
+ 652 00b4 2148     		ldr	r0, .L116+4
+ 653 00b6 40F22A21 		movw	r1, #554
+ 654 00ba FFF7FEFF 		bl	assert_err
+ 655              	.L100:
+ 656 00be 6368     		ldr	r3, [r4, #4]
+ 657 00c0 217A     		ldrb	r1, [r4, #8]	@ zero_extendqisi2
+ 658 00c2 D5F88021 		ldr	r2, [r5, #384]
+ 659 00c6 41EAC303 		orr	r3, r1, r3, lsl #3
+ 660 00ca 1343     		orrs	r3, r3, r2
+ 661 00cc 627A     		ldrb	r2, [r4, #9]	@ zero_extendqisi2
+ 662              	.L114:
+ 663 00ce 1343     		orrs	r3, r3, r2
+ 664 00d0 C5F88031 		str	r3, [r5, #384]
+ 665 00d4 A37A     		ldrb	r3, [r4, #10]	@ zero_extendqisi2
+ 666 00d6 4644     		add	r6, r6, r8
+ 667 00d8 03F00F03 		and	r3, r3, #15
+ 668 00dc A372     		strb	r3, [r4, #10]
+ 669 00de D5F88431 		ldr	r3, [r5, #388]
+ 670 00e2 23F00F03 		bic	r3, r3, #15
+ 671 00e6 C5F88431 		str	r3, [r5, #388]
+ 672 00ea D5F88431 		ldr	r3, [r5, #388]
+ 673 00ee A27A     		ldrb	r2, [r4, #10]	@ zero_extendqisi2
+ 674 00f0 1343     		orrs	r3, r3, r2
+ 675 00f2 C5F88431 		str	r3, [r5, #388]
+ 676 00f6 627B     		ldrb	r2, [r4, #13]	@ zero_extendqisi2
+ 677 00f8 A37B     		ldrb	r3, [r4, #14]	@ zero_extendqisi2
+ 678 00fa 1204     		lsls	r2, r2, #16
+ 679 00fc 42EA0362 		orr	r2, r2, r3, lsl #24
+ 680 0100 E37A     		ldrb	r3, [r4, #11]	@ zero_extendqisi2
+ 681 0102 1A43     		orrs	r2, r2, r3
+ 682 0104 237B     		ldrb	r3, [r4, #12]	@ zero_extendqisi2
+ 683 0106 42EA0322 		orr	r2, r2, r3, lsl #8
+ 684 010a C6F88821 		str	r2, [r6, #392]
+ 685 010e 627C     		ldrb	r2, [r4, #17]	@ zero_extendqisi2
+ 686 0110 A17C     		ldrb	r1, [r4, #18]	@ zero_extendqisi2
+ 687 0112 1204     		lsls	r2, r2, #16
+ 688 0114 42EA0162 		orr	r2, r2, r1, lsl #24
+ 689 0118 E17B     		ldrb	r1, [r4, #15]	@ zero_extendqisi2
+ 690 011a 0A43     		orrs	r2, r2, r1
+ 691 011c 217C     		ldrb	r1, [r4, #16]	@ zero_extendqisi2
+ 692 011e 42EA0122 		orr	r2, r2, r1, lsl #8
+ 693 0122 C6F88C21 		str	r2, [r6, #396]
+ 694 0126 D5F88031 		ldr	r3, [r5, #384]
+ 695 012a 43F00103 		orr	r3, r3, #1
+ 696 012e C5F88031 		str	r3, [r5, #384]
+ 697              	.L112:
+ 698 0132 3846     		mov	r0, r7
+ 699 0134 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 700              	.L117:
+ 701              		.align	2
+ 702              	.L116:
+ 703 0138 00640040 		.word	1073767424
+ 704 013c 00000000 		.word	.LC0
+ 706              		.section	.text.CAN_TransmitStatus,"ax",%progbits
+ 707              		.align	1
+ 708              		.global	CAN_TransmitStatus
+ 709              		.thumb
+ 710              		.thumb_func
+ 712              	CAN_TransmitStatus:
+ 713              		@ args = 0, pretend = 0, frame = 0
+ 714              		@ frame_needed = 0, uses_anonymous_args = 0
+ 715 0000 38B5     		push	{r3, r4, r5, lr}
+ 716 0002 1A4B     		ldr	r3, .L135
+ 717 0004 0446     		mov	r4, r0
+ 718 0006 9842     		cmp	r0, r3
+ 719 0008 0D46     		mov	r5, r1
+ 720 000a 08D0     		beq	.L119
+ 721 000c 03F58063 		add	r3, r3, #1024
+ 722 0010 9842     		cmp	r0, r3
+ 723 0012 04D0     		beq	.L119
+ 724 0014 1648     		ldr	r0, .L135+4
+ 725 0016 40F25221 		movw	r1, #594
+ 726 001a FFF7FEFF 		bl	assert_err
+ 727              	.L119:
+ 728 001e 022D     		cmp	r5, #2
+ 729 0020 04D9     		bls	.L120
+ 730 0022 1348     		ldr	r0, .L135+4
+ 731 0024 40F25321 		movw	r1, #595
+ 732 0028 FFF7FEFF 		bl	assert_err
+ 733              	.L120:
+ 734 002c 012D     		cmp	r5, #1
+ 735 002e 08D0     		beq	.L122
+ 736 0030 04D3     		bcc	.L123
+ 737 0032 022D     		cmp	r5, #2
+ 738 0034 16D1     		bne	.L133
+ 739 0036 A268     		ldr	r2, [r4, #8]
+ 740 0038 0E4B     		ldr	r3, .L135+8
+ 741 003a 04E0     		b	.L134
+ 742              	.L123:
+ 743 003c A268     		ldr	r2, [r4, #8]
+ 744 003e 0E4B     		ldr	r3, .L135+12
+ 745 0040 01E0     		b	.L134
+ 746              	.L122:
+ 747 0042 A268     		ldr	r2, [r4, #8]
+ 748 0044 0D4B     		ldr	r3, .L135+16
+ 749              	.L134:
+ 750 0046 1340     		ands	r3, r3, r2
+ 751 0048 0B4A     		ldr	r2, .L135+12
+ 752 004a 9342     		cmp	r3, r2
+ 753 004c 08D0     		beq	.L130
+ 754 004e 01D8     		bhi	.L127
+ 755 0050 53B9     		cbnz	r3, .L132
+ 756 0052 07E0     		b	.L133
+ 757              	.L127:
+ 758 0054 094A     		ldr	r2, .L135+16
+ 759 0056 9342     		cmp	r3, r2
+ 760 0058 02D0     		beq	.L130
+ 761 005a 064A     		ldr	r2, .L135+8
+ 762 005c 9342     		cmp	r3, r2
+ 763 005e 03D1     		bne	.L132
+ 764              	.L130:
+ 765 0060 0120     		movs	r0, #1
+ 766 0062 38BD     		pop	{r3, r4, r5, pc}
+ 767              	.L133:
+ 768 0064 0220     		movs	r0, #2
+ 769 0066 38BD     		pop	{r3, r4, r5, pc}
+ 770              	.L132:
+ 771 0068 0020     		movs	r0, #0
+ 772 006a 38BD     		pop	{r3, r4, r5, pc}
+ 773              	.L136:
+ 774              		.align	2
+ 775              	.L135:
+ 776 006c 00640040 		.word	1073767424
+ 777 0070 00000000 		.word	.LC0
+ 778 0074 00000310 		.word	268632064
+ 779 0078 03000004 		.word	67108867
+ 780 007c 00030008 		.word	134218496
+ 782              		.section	.text.CAN_CancelTransmit,"ax",%progbits
+ 783              		.align	1
+ 784              		.global	CAN_CancelTransmit
+ 785              		.thumb
+ 786              		.thumb_func
+ 788              	CAN_CancelTransmit:
+ 789              		@ args = 0, pretend = 0, frame = 0
+ 790              		@ frame_needed = 0, uses_anonymous_args = 0
+ 791 0000 38B5     		push	{r3, r4, r5, lr}
+ 792 0002 144B     		ldr	r3, .L145
+ 793 0004 0446     		mov	r4, r0
+ 794 0006 9842     		cmp	r0, r3
+ 795 0008 0D46     		mov	r5, r1
+ 796 000a 08D0     		beq	.L138
+ 797 000c 03F58063 		add	r3, r3, #1024
+ 798 0010 9842     		cmp	r0, r3
+ 799 0012 04D0     		beq	.L138
+ 800 0014 1048     		ldr	r0, .L145+4
+ 801 0016 40F28621 		movw	r1, #646
+ 802 001a FFF7FEFF 		bl	assert_err
+ 803              	.L138:
+ 804 001e 022D     		cmp	r5, #2
+ 805 0020 04D9     		bls	.L139
+ 806 0022 0D48     		ldr	r0, .L145+4
+ 807 0024 40F28721 		movw	r1, #647
+ 808 0028 FFF7FEFF 		bl	assert_err
+ 809              	.L139:
+ 810 002c 012D     		cmp	r5, #1
+ 811 002e 07D0     		beq	.L141
+ 812 0030 02D3     		bcc	.L142
+ 813 0032 022D     		cmp	r5, #2
+ 814 0034 08D0     		beq	.L143
+ 815 0036 38BD     		pop	{r3, r4, r5, pc}
+ 816              	.L142:
+ 817 0038 A368     		ldr	r3, [r4, #8]
+ 818 003a 43F08003 		orr	r3, r3, #128
+ 819 003e 06E0     		b	.L144
+ 820              	.L141:
+ 821 0040 A368     		ldr	r3, [r4, #8]
+ 822 0042 43F40043 		orr	r3, r3, #32768
+ 823 0046 02E0     		b	.L144
+ 824              	.L143:
+ 825 0048 A368     		ldr	r3, [r4, #8]
+ 826 004a 43F40003 		orr	r3, r3, #8388608
+ 827              	.L144:
+ 828 004e A360     		str	r3, [r4, #8]
+ 829 0050 38BD     		pop	{r3, r4, r5, pc}
+ 830              	.L146:
+ 831 0052 00BF     		.align	2
+ 832              	.L145:
+ 833 0054 00640040 		.word	1073767424
+ 834 0058 00000000 		.word	.LC0
+ 836              		.section	.text.CAN_Receive,"ax",%progbits
+ 837              		.align	1
+ 838              		.global	CAN_Receive
+ 839              		.thumb
+ 840              		.thumb_func
+ 842              	CAN_Receive:
+ 843              		@ args = 0, pretend = 0, frame = 0
+ 844              		@ frame_needed = 0, uses_anonymous_args = 0
+ 845 0000 2F4B     		ldr	r3, .L154
+ 846 0002 70B5     		push	{r4, r5, r6, lr}
+ 847 0004 9842     		cmp	r0, r3
+ 848 0006 0546     		mov	r5, r0
+ 849 0008 0E46     		mov	r6, r1
+ 850 000a 1446     		mov	r4, r2
+ 851 000c 08D0     		beq	.L148
+ 852 000e 03F58063 		add	r3, r3, #1024
+ 853 0012 9842     		cmp	r0, r3
+ 854 0014 04D0     		beq	.L148
+ 855 0016 2B48     		ldr	r0, .L154+4
+ 856 0018 40F2A221 		movw	r1, #674
+ 857 001c FFF7FEFF 		bl	assert_err
+ 858              	.L148:
+ 859 0020 012E     		cmp	r6, #1
+ 860 0022 04D9     		bls	.L149
+ 861 0024 2748     		ldr	r0, .L154+4
+ 862 0026 40F2A321 		movw	r1, #675
+ 863 002a FFF7FEFF 		bl	assert_err
+ 864              	.L149:
+ 865 002e 3201     		lsls	r2, r6, #4
+ 866 0030 AB18     		adds	r3, r5, r2
+ 867 0032 D3F8B011 		ldr	r1, [r3, #432]
+ 868 0036 01F00401 		and	r1, r1, #4
+ 869 003a C9B2     		uxtb	r1, r1
+ 870 003c 2172     		strb	r1, [r4, #8]
+ 871 003e 21B9     		cbnz	r1, .L150
+ 872 0040 D3F8B011 		ldr	r1, [r3, #432]
+ 873 0044 490D     		lsrs	r1, r1, #21
+ 874 0046 2160     		str	r1, [r4]
+ 875 0048 03E0     		b	.L151
+ 876              	.L150:
+ 877 004a D3F8B011 		ldr	r1, [r3, #432]
+ 878 004e C908     		lsrs	r1, r1, #3
+ 879 0050 6160     		str	r1, [r4, #4]
+ 880              	.L151:
+ 881 0052 D3F8B011 		ldr	r1, [r3, #432]
+ 882 0056 01F00201 		and	r1, r1, #2
+ 883 005a 6172     		strb	r1, [r4, #9]
+ 884 005c D3F8B411 		ldr	r1, [r3, #436]
+ 885 0060 01F00F01 		and	r1, r1, #15
+ 886 0064 A172     		strb	r1, [r4, #10]
+ 887 0066 D3F8B431 		ldr	r3, [r3, #436]
+ 888 006a 1B0A     		lsrs	r3, r3, #8
+ 889 006c E374     		strb	r3, [r4, #19]
+ 890 006e AB18     		adds	r3, r5, r2
+ 891 0070 D3F8B811 		ldr	r1, [r3, #440]
+ 892 0074 03F5DC72 		add	r2, r3, #440
+ 893 0078 E172     		strb	r1, [r4, #11]
+ 894 007a D3F8B811 		ldr	r1, [r3, #440]
+ 895 007e 090A     		lsrs	r1, r1, #8
+ 896 0080 2173     		strb	r1, [r4, #12]
+ 897 0082 D3F8B811 		ldr	r1, [r3, #440]
+ 898 0086 090C     		lsrs	r1, r1, #16
+ 899 0088 6173     		strb	r1, [r4, #13]
+ 900 008a D3F8B831 		ldr	r3, [r3, #440]
+ 901 008e 1B0E     		lsrs	r3, r3, #24
+ 902 0090 A373     		strb	r3, [r4, #14]
+ 903 0092 5368     		ldr	r3, [r2, #4]
+ 904 0094 E373     		strb	r3, [r4, #15]
+ 905 0096 5368     		ldr	r3, [r2, #4]
+ 906 0098 1B0A     		lsrs	r3, r3, #8
+ 907 009a 2374     		strb	r3, [r4, #16]
+ 908 009c 5368     		ldr	r3, [r2, #4]
+ 909 009e 1B0C     		lsrs	r3, r3, #16
+ 910 00a0 6374     		strb	r3, [r4, #17]
+ 911 00a2 5368     		ldr	r3, [r2, #4]
+ 912 00a4 1B0E     		lsrs	r3, r3, #24
+ 913 00a6 A374     		strb	r3, [r4, #18]
+ 914 00a8 26B9     		cbnz	r6, .L152
+ 915 00aa EB68     		ldr	r3, [r5, #12]
+ 916 00ac 43F02003 		orr	r3, r3, #32
+ 917 00b0 EB60     		str	r3, [r5, #12]
+ 918 00b2 70BD     		pop	{r4, r5, r6, pc}
+ 919              	.L152:
+ 920 00b4 2B69     		ldr	r3, [r5, #16]
+ 921 00b6 43F02003 		orr	r3, r3, #32
+ 922 00ba 2B61     		str	r3, [r5, #16]
+ 923 00bc 70BD     		pop	{r4, r5, r6, pc}
+ 924              	.L155:
+ 925 00be 00BF     		.align	2
+ 926              	.L154:
+ 927 00c0 00640040 		.word	1073767424
+ 928 00c4 00000000 		.word	.LC0
+ 930              		.section	.text.CAN_FIFORelease,"ax",%progbits
+ 931              		.align	1
+ 932              		.global	CAN_FIFORelease
+ 933              		.thumb
+ 934              		.thumb_func
+ 936              	CAN_FIFORelease:
+ 937              		@ args = 0, pretend = 0, frame = 0
+ 938              		@ frame_needed = 0, uses_anonymous_args = 0
+ 939 0000 38B5     		push	{r3, r4, r5, lr}
+ 940 0002 104B     		ldr	r3, .L161
+ 941 0004 0446     		mov	r4, r0
+ 942 0006 9842     		cmp	r0, r3
+ 943 0008 0D46     		mov	r5, r1
+ 944 000a 08D0     		beq	.L157
+ 945 000c 03F58063 		add	r3, r3, #1024
+ 946 0010 9842     		cmp	r0, r3
+ 947 0012 04D0     		beq	.L157
+ 948 0014 0C48     		ldr	r0, .L161+4
+ 949 0016 40F2D321 		movw	r1, #723
+ 950 001a FFF7FEFF 		bl	assert_err
+ 951              	.L157:
+ 952 001e 012D     		cmp	r5, #1
+ 953 0020 05D9     		bls	.L158
+ 954 0022 0948     		ldr	r0, .L161+4
+ 955 0024 4FF43571 		mov	r1, #724
+ 956 0028 FFF7FEFF 		bl	assert_err
+ 957 002c 05E0     		b	.L159
+ 958              	.L158:
+ 959 002e 25B9     		cbnz	r5, .L159
+ 960 0030 E368     		ldr	r3, [r4, #12]
+ 961 0032 43F02003 		orr	r3, r3, #32
+ 962 0036 E360     		str	r3, [r4, #12]
+ 963 0038 38BD     		pop	{r3, r4, r5, pc}
+ 964              	.L159:
+ 965 003a 2369     		ldr	r3, [r4, #16]
+ 966 003c 43F02003 		orr	r3, r3, #32
+ 967 0040 2361     		str	r3, [r4, #16]
+ 968 0042 38BD     		pop	{r3, r4, r5, pc}
+ 969              	.L162:
+ 970              		.align	2
+ 971              	.L161:
+ 972 0044 00640040 		.word	1073767424
+ 973 0048 00000000 		.word	.LC0
+ 975              		.section	.text.CAN_MessagePending,"ax",%progbits
+ 976              		.align	1
+ 977              		.global	CAN_MessagePending
+ 978              		.thumb
+ 979              		.thumb_func
+ 981              	CAN_MessagePending:
+ 982              		@ args = 0, pretend = 0, frame = 0
+ 983              		@ frame_needed = 0, uses_anonymous_args = 0
+ 984 0000 38B5     		push	{r3, r4, r5, lr}
+ 985 0002 104B     		ldr	r3, .L170
+ 986 0004 0446     		mov	r4, r0
+ 987 0006 9842     		cmp	r0, r3
+ 988 0008 0D46     		mov	r5, r1
+ 989 000a 08D0     		beq	.L164
+ 990 000c 03F58063 		add	r3, r3, #1024
+ 991 0010 9842     		cmp	r0, r3
+ 992 0012 04D0     		beq	.L164
+ 993 0014 0C48     		ldr	r0, .L170+4
+ 994 0016 40F2EB21 		movw	r1, #747
+ 995 001a FFF7FEFF 		bl	assert_err
+ 996              	.L164:
+ 997 001e 012D     		cmp	r5, #1
+ 998 0020 05D9     		bls	.L165
+ 999 0022 0948     		ldr	r0, .L170+4
+ 1000 0024 4FF43B71 		mov	r1, #748
+ 1001 0028 FFF7FEFF 		bl	assert_err
+ 1002 002c 08E0     		b	.L168
+ 1003              	.L165:
+ 1004 002e 0DB9     		cbnz	r5, .L167
+ 1005 0030 E068     		ldr	r0, [r4, #12]
+ 1006 0032 02E0     		b	.L169
+ 1007              	.L167:
+ 1008 0034 012D     		cmp	r5, #1
+ 1009 0036 03D1     		bne	.L168
+ 1010 0038 2069     		ldr	r0, [r4, #16]
+ 1011              	.L169:
+ 1012 003a 00F00300 		and	r0, r0, #3
+ 1013 003e 38BD     		pop	{r3, r4, r5, pc}
+ 1014              	.L168:
+ 1015 0040 0020     		movs	r0, #0
+ 1016 0042 38BD     		pop	{r3, r4, r5, pc}
+ 1017              	.L171:
+ 1018              		.align	2
+ 1019              	.L170:
+ 1020 0044 00640040 		.word	1073767424
+ 1021 0048 00000000 		.word	.LC0
+ 1023              		.section	.text.CAN_OperatingModeRequest,"ax",%progbits
+ 1024              		.align	1
+ 1025              		.global	CAN_OperatingModeRequest
+ 1026              		.thumb
+ 1027              		.thumb_func
+ 1029              	CAN_OperatingModeRequest:
+ 1030              		@ args = 0, pretend = 0, frame = 0
+ 1031              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1032 0000 38B5     		push	{r3, r4, r5, lr}
+ 1033 0002 2D4B     		ldr	r3, .L198
+ 1034 0004 0446     		mov	r4, r0
+ 1035 0006 9842     		cmp	r0, r3
+ 1036 0008 0D46     		mov	r5, r1
+ 1037 000a 08D0     		beq	.L173
+ 1038 000c 03F58063 		add	r3, r3, #1024
+ 1039 0010 9842     		cmp	r0, r3
+ 1040 0012 04D0     		beq	.L173
+ 1041 0014 2948     		ldr	r0, .L198+4
+ 1042 0016 40F20E31 		movw	r1, #782
+ 1043 001a FFF7FEFF 		bl	assert_err
+ 1044              	.L173:
+ 1045 001e 022D     		cmp	r5, #2
+ 1046 0020 05D9     		bls	.L174
+ 1047 0022 2648     		ldr	r0, .L198+4
+ 1048 0024 40F20F31 		movw	r1, #783
+ 1049 0028 FFF7FEFF 		bl	assert_err
+ 1050 002c 28E0     		b	.L175
+ 1051              	.L174:
+ 1052 002e 9DB9     		cbnz	r5, .L176
+ 1053 0030 2368     		ldr	r3, [r4]
+ 1054 0032 23F00303 		bic	r3, r3, #3
+ 1055 0036 43F00103 		orr	r3, r3, #1
+ 1056 003a 2360     		str	r3, [r4]
+ 1057 003c 4FF48033 		mov	r3, #65536
+ 1058              	.L177:
+ 1059 0040 6268     		ldr	r2, [r4, #4]
+ 1060 0042 02F00302 		and	r2, r2, #3
+ 1061 0046 012A     		cmp	r2, #1
+ 1062 0048 01D0     		beq	.L178
+ 1063 004a 013B     		subs	r3, r3, #1
+ 1064 004c F8D1     		bne	.L177
+ 1065              	.L178:
+ 1066 004e 6068     		ldr	r0, [r4, #4]
+ 1067 0050 00F00300 		and	r0, r0, #3
+ 1068 0054 0128     		cmp	r0, #1
+ 1069 0056 28E0     		b	.L197
+ 1070              	.L176:
+ 1071 0058 012D     		cmp	r5, #1
+ 1072 005a 11D1     		bne	.L175
+ 1073 005c 2368     		ldr	r3, [r4]
+ 1074 005e 23F00303 		bic	r3, r3, #3
+ 1075 0062 2360     		str	r3, [r4]
+ 1076 0064 4FF48033 		mov	r3, #65536
+ 1077              	.L181:
+ 1078 0068 6268     		ldr	r2, [r4, #4]
+ 1079 006a 9207     		lsls	r2, r2, #30
+ 1080 006c 01D0     		beq	.L182
+ 1081 006e 013B     		subs	r3, r3, #1
+ 1082 0070 FAD1     		bne	.L181
+ 1083              	.L182:
+ 1084 0072 6368     		ldr	r3, [r4, #4]
+ 1085 0074 13F0030F 		tst	r3, #3
+ 1086 0078 14BF     		ite	ne
+ 1087 007a 0020     		movne	r0, #0
+ 1088 007c 0120     		moveq	r0, #1
+ 1089 007e 38BD     		pop	{r3, r4, r5, pc}
+ 1090              	.L175:
+ 1091 0080 022D     		cmp	r5, #2
+ 1092 0082 16D1     		bne	.L187
+ 1093 0084 2368     		ldr	r3, [r4]
+ 1094 0086 23F00303 		bic	r3, r3, #3
+ 1095 008a 43F00203 		orr	r3, r3, #2
+ 1096 008e 2360     		str	r3, [r4]
+ 1097 0090 4FF48033 		mov	r3, #65536
+ 1098              	.L184:
+ 1099 0094 6268     		ldr	r2, [r4, #4]
+ 1100 0096 02F00302 		and	r2, r2, #3
+ 1101 009a 022A     		cmp	r2, #2
+ 1102 009c 01D0     		beq	.L185
+ 1103 009e 013B     		subs	r3, r3, #1
+ 1104 00a0 F8D1     		bne	.L184
+ 1105              	.L185:
+ 1106 00a2 6068     		ldr	r0, [r4, #4]
+ 1107 00a4 00F00300 		and	r0, r0, #3
+ 1108 00a8 0228     		cmp	r0, #2
+ 1109              	.L197:
+ 1110 00aa 14BF     		ite	ne
+ 1111 00ac 0020     		movne	r0, #0
+ 1112 00ae 0120     		moveq	r0, #1
+ 1113 00b0 38BD     		pop	{r3, r4, r5, pc}
+ 1114              	.L187:
+ 1115 00b2 0020     		movs	r0, #0
+ 1116 00b4 38BD     		pop	{r3, r4, r5, pc}
+ 1117              	.L199:
+ 1118 00b6 00BF     		.align	2
+ 1119              	.L198:
+ 1120 00b8 00640040 		.word	1073767424
+ 1121 00bc 00000000 		.word	.LC0
+ 1123              		.section	.text.CAN_Sleep,"ax",%progbits
+ 1124              		.align	1
+ 1125              		.global	CAN_Sleep
+ 1126              		.thumb
+ 1127              		.thumb_func
+ 1129              	CAN_Sleep:
+ 1130              		@ args = 0, pretend = 0, frame = 0
+ 1131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1132 0000 0D4B     		ldr	r3, .L202
+ 1133 0002 10B5     		push	{r4, lr}
+ 1134 0004 9842     		cmp	r0, r3
+ 1135 0006 0446     		mov	r4, r0
+ 1136 0008 08D0     		beq	.L201
+ 1137 000a 03F58063 		add	r3, r3, #1024
+ 1138 000e 9842     		cmp	r0, r3
+ 1139 0010 04D0     		beq	.L201
+ 1140 0012 0A48     		ldr	r0, .L202+4
+ 1141 0014 40F25D31 		movw	r1, #861
+ 1142 0018 FFF7FEFF 		bl	assert_err
+ 1143              	.L201:
+ 1144 001c 2368     		ldr	r3, [r4]
+ 1145 001e 23F00303 		bic	r3, r3, #3
+ 1146 0022 43F00203 		orr	r3, r3, #2
+ 1147 0026 2360     		str	r3, [r4]
+ 1148 0028 6068     		ldr	r0, [r4, #4]
+ 1149 002a 00F00300 		and	r0, r0, #3
+ 1150 002e 811E     		subs	r1, r0, #2
+ 1151 0030 4842     		rsbs	r0, r1, #0
+ 1152 0032 4841     		adcs	r0, r0, r1
+ 1153 0034 10BD     		pop	{r4, pc}
+ 1154              	.L203:
+ 1155 0036 00BF     		.align	2
+ 1156              	.L202:
+ 1157 0038 00640040 		.word	1073767424
+ 1158 003c 00000000 		.word	.LC0
+ 1160              		.section	.text.CAN_WakeUp,"ax",%progbits
+ 1161              		.align	1
+ 1162              		.global	CAN_WakeUp
+ 1163              		.thumb
+ 1164              		.thumb_func
+ 1166              	CAN_WakeUp:
+ 1167              		@ args = 0, pretend = 0, frame = 0
+ 1168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1169 0000 0F4B     		ldr	r3, .L212
+ 1170 0002 10B5     		push	{r4, lr}
+ 1171 0004 9842     		cmp	r0, r3
+ 1172 0006 0446     		mov	r4, r0
+ 1173 0008 08D0     		beq	.L205
+ 1174 000a 03F58063 		add	r3, r3, #1024
+ 1175 000e 9842     		cmp	r0, r3
+ 1176 0010 04D0     		beq	.L205
+ 1177 0012 0C48     		ldr	r0, .L212+4
+ 1178 0014 4FF45E71 		mov	r1, #888
+ 1179 0018 FFF7FEFF 		bl	assert_err
+ 1180              	.L205:
+ 1181 001c 2368     		ldr	r3, [r4]
+ 1182 001e 23F00203 		bic	r3, r3, #2
+ 1183 0022 2360     		str	r3, [r4]
+ 1184 0024 4FF48033 		mov	r3, #65536
+ 1185              	.L206:
+ 1186 0028 6268     		ldr	r2, [r4, #4]
+ 1187 002a 9007     		lsls	r0, r2, #30
+ 1188 002c 01D5     		bpl	.L207
+ 1189 002e 013B     		subs	r3, r3, #1
+ 1190 0030 FAD1     		bne	.L206
+ 1191              	.L207:
+ 1192 0032 6068     		ldr	r0, [r4, #4]
+ 1193 0034 80F00200 		eor	r0, r0, #2
+ 1194 0038 C0F34000 		ubfx	r0, r0, #1, #1
+ 1195 003c 10BD     		pop	{r4, pc}
+ 1196              	.L213:
+ 1197 003e 00BF     		.align	2
+ 1198              	.L212:
+ 1199 0040 00640040 		.word	1073767424
+ 1200 0044 00000000 		.word	.LC0
+ 1202              		.section	.text.CAN_GetLastErrorCode,"ax",%progbits
+ 1203              		.align	1
+ 1204              		.global	CAN_GetLastErrorCode
+ 1205              		.thumb
+ 1206              		.thumb_func
+ 1208              	CAN_GetLastErrorCode:
+ 1209              		@ args = 0, pretend = 0, frame = 0
+ 1210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1211 0000 084B     		ldr	r3, .L216
+ 1212 0002 10B5     		push	{r4, lr}
+ 1213 0004 9842     		cmp	r0, r3
+ 1214 0006 0446     		mov	r4, r0
+ 1215 0008 08D0     		beq	.L215
+ 1216 000a 03F58063 		add	r3, r3, #1024
+ 1217 000e 9842     		cmp	r0, r3
+ 1218 0010 04D0     		beq	.L215
+ 1219 0012 0548     		ldr	r0, .L216+4
+ 1220 0014 40F29F31 		movw	r1, #927
+ 1221 0018 FFF7FEFF 		bl	assert_err
+ 1222              	.L215:
+ 1223 001c A069     		ldr	r0, [r4, #24]
+ 1224 001e 00F07000 		and	r0, r0, #112
+ 1225 0022 10BD     		pop	{r4, pc}
+ 1226              	.L217:
+ 1227              		.align	2
+ 1228              	.L216:
+ 1229 0024 00640040 		.word	1073767424
+ 1230 0028 00000000 		.word	.LC0
+ 1232              		.section	.text.CAN_GetReceiveErrorCounter,"ax",%progbits
+ 1233              		.align	1
+ 1234              		.global	CAN_GetReceiveErrorCounter
+ 1235              		.thumb
+ 1236              		.thumb_func
+ 1238              	CAN_GetReceiveErrorCounter:
+ 1239              		@ args = 0, pretend = 0, frame = 0
+ 1240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1241 0000 084B     		ldr	r3, .L220
+ 1242 0002 10B5     		push	{r4, lr}
+ 1243 0004 9842     		cmp	r0, r3
+ 1244 0006 0446     		mov	r4, r0
+ 1245 0008 08D0     		beq	.L219
+ 1246 000a 03F58063 		add	r3, r3, #1024
+ 1247 000e 9842     		cmp	r0, r3
+ 1248 0010 04D0     		beq	.L219
+ 1249 0012 0548     		ldr	r0, .L220+4
+ 1250 0014 40F2B731 		movw	r1, #951
+ 1251 0018 FFF7FEFF 		bl	assert_err
+ 1252              	.L219:
+ 1253 001c A069     		ldr	r0, [r4, #24]
+ 1254 001e 000E     		lsrs	r0, r0, #24
+ 1255 0020 10BD     		pop	{r4, pc}
+ 1256              	.L221:
+ 1257 0022 00BF     		.align	2
+ 1258              	.L220:
+ 1259 0024 00640040 		.word	1073767424
+ 1260 0028 00000000 		.word	.LC0
+ 1262              		.section	.text.CAN_GetLSBTransmitErrorCounter,"ax",%progbits
+ 1263              		.align	1
+ 1264              		.global	CAN_GetLSBTransmitErrorCounter
+ 1265              		.thumb
+ 1266              		.thumb_func
+ 1268              	CAN_GetLSBTransmitErrorCounter:
+ 1269              		@ args = 0, pretend = 0, frame = 0
+ 1270              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1271 0000 084B     		ldr	r3, .L224
+ 1272 0002 10B5     		push	{r4, lr}
+ 1273 0004 9842     		cmp	r0, r3
+ 1274 0006 0446     		mov	r4, r0
+ 1275 0008 08D0     		beq	.L223
+ 1276 000a 03F58063 		add	r3, r3, #1024
+ 1277 000e 9842     		cmp	r0, r3
+ 1278 0010 04D0     		beq	.L223
+ 1279 0012 0548     		ldr	r0, .L224+4
+ 1280 0014 40F2CB31 		movw	r1, #971
+ 1281 0018 FFF7FEFF 		bl	assert_err
+ 1282              	.L223:
+ 1283 001c A069     		ldr	r0, [r4, #24]
+ 1284 001e C0F30740 		ubfx	r0, r0, #16, #8
+ 1285 0022 10BD     		pop	{r4, pc}
+ 1286              	.L225:
+ 1287              		.align	2
+ 1288              	.L224:
+ 1289 0024 00640040 		.word	1073767424
+ 1290 0028 00000000 		.word	.LC0
+ 1292              		.section	.text.CAN_ITConfig,"ax",%progbits
+ 1293              		.align	1
+ 1294              		.global	CAN_ITConfig
+ 1295              		.thumb
+ 1296              		.thumb_func
+ 1298              	CAN_ITConfig:
+ 1299              		@ args = 0, pretend = 0, frame = 0
+ 1300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1301 0000 234B     		ldr	r3, .L270
+ 1302 0002 70B5     		push	{r4, r5, r6, lr}
+ 1303 0004 9842     		cmp	r0, r3
+ 1304 0006 0546     		mov	r5, r0
+ 1305 0008 0C46     		mov	r4, r1
+ 1306 000a 1646     		mov	r6, r2
+ 1307 000c 08D0     		beq	.L227
+ 1308 000e 03F58063 		add	r3, r3, #1024
+ 1309 0012 9842     		cmp	r0, r3
+ 1310 0014 04D0     		beq	.L227
+ 1311 0016 1F48     		ldr	r0, .L270+4
+ 1312 0018 40F2EE31 		movw	r1, #1006
+ 1313 001c FFF7FEFF 		bl	assert_err
+ 1314              	.L227:
+ 1315 0020 631E     		subs	r3, r4, #1
+ 1316 0022 012B     		cmp	r3, #1
+ 1317 0024 23D9     		bls	.L228
+ 1318 0026 042C     		cmp	r4, #4
+ 1319 0028 21D0     		beq	.L228
+ 1320 002a 082C     		cmp	r4, #8
+ 1321 002c 1FD0     		beq	.L228
+ 1322 002e 102C     		cmp	r4, #16
+ 1323 0030 1DD0     		beq	.L228
+ 1324 0032 202C     		cmp	r4, #32
+ 1325 0034 1BD0     		beq	.L228
+ 1326 0036 402C     		cmp	r4, #64
+ 1327 0038 19D0     		beq	.L228
+ 1328 003a B4F5807F 		cmp	r4, #256
+ 1329 003e 16D0     		beq	.L228
+ 1330 0040 B4F5007F 		cmp	r4, #512
+ 1331 0044 13D0     		beq	.L228
+ 1332 0046 B4F5806F 		cmp	r4, #1024
+ 1333 004a 10D0     		beq	.L228
+ 1334 004c B4F5006F 		cmp	r4, #2048
+ 1335 0050 0DD0     		beq	.L228
+ 1336 0052 B4F5004F 		cmp	r4, #32768
+ 1337 0056 0AD0     		beq	.L228
+ 1338 0058 B4F5803F 		cmp	r4, #65536
+ 1339 005c 07D0     		beq	.L228
+ 1340 005e B4F5003F 		cmp	r4, #131072
+ 1341 0062 04D0     		beq	.L228
+ 1342 0064 0B48     		ldr	r0, .L270+4
+ 1343 0066 40F2EF31 		movw	r1, #1007
+ 1344 006a FFF7FEFF 		bl	assert_err
+ 1345              	.L228:
+ 1346 006e 012E     		cmp	r6, #1
+ 1347 0070 05D9     		bls	.L229
+ 1348 0072 0848     		ldr	r0, .L270+4
+ 1349 0074 4FF47C71 		mov	r1, #1008
+ 1350 0078 FFF7FEFF 		bl	assert_err
+ 1351 007c 00E0     		b	.L230
+ 1352              	.L229:
+ 1353 007e 16B1     		cbz	r6, .L231
+ 1354              	.L230:
+ 1355 0080 6B69     		ldr	r3, [r5, #20]
+ 1356 0082 1C43     		orrs	r4, r4, r3
+ 1357 0084 02E0     		b	.L269
+ 1358              	.L231:
+ 1359 0086 6B69     		ldr	r3, [r5, #20]
+ 1360 0088 23EA0404 		bic	r4, r3, r4
+ 1361              	.L269:
+ 1362 008c 6C61     		str	r4, [r5, #20]
+ 1363 008e 70BD     		pop	{r4, r5, r6, pc}
+ 1364              	.L271:
+ 1365              		.align	2
+ 1366              	.L270:
+ 1367 0090 00640040 		.word	1073767424
+ 1368 0094 00000000 		.word	.LC0
+ 1370              		.section	.text.CAN_GetFlagStatus,"ax",%progbits
+ 1371              		.align	1
+ 1372              		.global	CAN_GetFlagStatus
+ 1373              		.thumb
+ 1374              		.thumb_func
+ 1376              	CAN_GetFlagStatus:
+ 1377              		@ args = 0, pretend = 0, frame = 0
+ 1378              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1379 0000 38B5     		push	{r3, r4, r5, lr}
+ 1380 0002 2B4B     		ldr	r3, .L281
+ 1381 0004 0546     		mov	r5, r0
+ 1382 0006 9842     		cmp	r0, r3
+ 1383 0008 0C46     		mov	r4, r1
+ 1384 000a 08D0     		beq	.L273
+ 1385 000c 03F58063 		add	r3, r3, #1024
+ 1386 0010 9842     		cmp	r0, r3
+ 1387 0012 04D0     		beq	.L273
+ 1388 0014 2748     		ldr	r0, .L281+4
+ 1389 0016 4FF48361 		mov	r1, #1048
+ 1390 001a FFF7FEFF 		bl	assert_err
+ 1391              	.L273:
+ 1392 001e 264B     		ldr	r3, .L281+8
+ 1393 0020 9C42     		cmp	r4, r3
+ 1394 0022 2DD0     		beq	.L274
+ 1395 0024 254B     		ldr	r3, .L281+12
+ 1396 0026 9C42     		cmp	r4, r3
+ 1397 0028 2AD0     		beq	.L274
+ 1398 002a 254B     		ldr	r3, .L281+16
+ 1399 002c 2344     		add	r3, r3, r4
+ 1400 002e 012B     		cmp	r3, #1
+ 1401 0030 26D9     		bls	.L274
+ 1402 0032 244B     		ldr	r3, .L281+20
+ 1403 0034 9C42     		cmp	r4, r3
+ 1404 0036 23D0     		beq	.L274
+ 1405 0038 234B     		ldr	r3, .L281+24
+ 1406 003a 9C42     		cmp	r4, r3
+ 1407 003c 20D0     		beq	.L274
+ 1408 003e 083B     		subs	r3, r3, #8
+ 1409 0040 9C42     		cmp	r4, r3
+ 1410 0042 1DD0     		beq	.L274
+ 1411 0044 214B     		ldr	r3, .L281+28
+ 1412 0046 9C42     		cmp	r4, r3
+ 1413 0048 1AD0     		beq	.L274
+ 1414 004a 214B     		ldr	r3, .L281+32
+ 1415 004c 9C42     		cmp	r4, r3
+ 1416 004e 17D0     		beq	.L274
+ 1417 0050 083B     		subs	r3, r3, #8
+ 1418 0052 9C42     		cmp	r4, r3
+ 1419 0054 14D0     		beq	.L274
+ 1420 0056 1F4B     		ldr	r3, .L281+36
+ 1421 0058 9C42     		cmp	r4, r3
+ 1422 005a 11D0     		beq	.L274
+ 1423 005c 1E4B     		ldr	r3, .L281+40
+ 1424 005e 9C42     		cmp	r4, r3
+ 1425 0060 0ED0     		beq	.L274
+ 1426 0062 A3F57F43 		sub	r3, r3, #65280
+ 1427 0066 9C42     		cmp	r4, r3
+ 1428 0068 0AD0     		beq	.L274
+ 1429 006a FF3B     		subs	r3, r3, #255
+ 1430 006c 9C42     		cmp	r4, r3
+ 1431 006e 07D0     		beq	.L274
+ 1432 0070 1A4B     		ldr	r3, .L281+44
+ 1433 0072 9C42     		cmp	r4, r3
+ 1434 0074 04D0     		beq	.L274
+ 1435 0076 0F48     		ldr	r0, .L281+4
+ 1436 0078 40F21941 		movw	r1, #1049
+ 1437 007c FFF7FEFF 		bl	assert_err
+ 1438              	.L274:
+ 1439 0080 14F4700F 		tst	r4, #15728640
+ 1440 0084 01D0     		beq	.L275
+ 1441 0086 AB69     		ldr	r3, [r5, #24]
+ 1442 0088 0BE0     		b	.L280
+ 1443              	.L275:
+ 1444 008a E101     		lsls	r1, r4, #7
+ 1445 008c 01D5     		bpl	.L277
+ 1446 008e 6B68     		ldr	r3, [r5, #4]
+ 1447 0090 07E0     		b	.L280
+ 1448              	.L277:
+ 1449 0092 2201     		lsls	r2, r4, #4
+ 1450 0094 01D5     		bpl	.L278
+ 1451 0096 AB68     		ldr	r3, [r5, #8]
+ 1452 0098 03E0     		b	.L280
+ 1453              	.L278:
+ 1454 009a A301     		lsls	r3, r4, #6
+ 1455 009c 4CBF     		ite	mi
+ 1456 009e EB68     		ldrmi	r3, [r5, #12]
+ 1457 00a0 2B69     		ldrpl	r3, [r5, #16]
+ 1458              	.L280:
+ 1459 00a2 C3F31303 		ubfx	r3, r3, #0, #20
+ 1460 00a6 2342     		tst	r3, r4
+ 1461 00a8 0CBF     		ite	eq
+ 1462 00aa 0020     		moveq	r0, #0
+ 1463 00ac 0120     		movne	r0, #1
+ 1464 00ae 38BD     		pop	{r3, r4, r5, pc}
+ 1465              	.L282:
+ 1466              		.align	2
+ 1467              	.L281:
+ 1468 00b0 00640040 		.word	1073767424
+ 1469 00b4 00000000 		.word	.LC0
+ 1470 00b8 7000F030 		.word	821035120
+ 1471 00bc 0400F010 		.word	284164100
+ 1472 00c0 FFFF0FEF 		.word	-284164097
+ 1473 00c4 08000031 		.word	822083592
+ 1474 00c8 10000032 		.word	838860816
+ 1475 00cc 03000012 		.word	301989891
+ 1476 00d0 10000034 		.word	872415248
+ 1477 00d4 03000014 		.word	335544323
+ 1478 00d8 00000138 		.word	939589632
+ 1479 00dc 12000031 		.word	822083602
+ 1481              		.section	.text.CAN_ClearFlag,"ax",%progbits
+ 1482              		.align	1
+ 1483              		.global	CAN_ClearFlag
+ 1484              		.thumb
+ 1485              		.thumb_func
+ 1487              	CAN_ClearFlag:
+ 1488              		@ args = 0, pretend = 0, frame = 0
+ 1489              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1490 0000 38B5     		push	{r3, r4, r5, lr}
+ 1491 0002 224B     		ldr	r3, .L293
+ 1492 0004 0546     		mov	r5, r0
+ 1493 0006 9842     		cmp	r0, r3
+ 1494 0008 0C46     		mov	r4, r1
+ 1495 000a 08D0     		beq	.L284
+ 1496 000c 03F58063 		add	r3, r3, #1024
+ 1497 0010 9842     		cmp	r0, r3
+ 1498 0012 04D0     		beq	.L284
+ 1499 0014 1E48     		ldr	r0, .L293+4
+ 1500 0016 40F27B41 		movw	r1, #1147
+ 1501 001a FFF7FEFF 		bl	assert_err
+ 1502              	.L284:
+ 1503 001e 1D4B     		ldr	r3, .L293+8
+ 1504 0020 9C42     		cmp	r4, r3
+ 1505 0022 21D0     		beq	.L285
+ 1506 0024 1C4B     		ldr	r3, .L293+12
+ 1507 0026 9C42     		cmp	r4, r3
+ 1508 0028 21D0     		beq	.L286
+ 1509 002a A3F57F43 		sub	r3, r3, #65280
+ 1510 002e 9C42     		cmp	r4, r3
+ 1511 0030 1DD0     		beq	.L286
+ 1512 0032 FF3B     		subs	r3, r3, #255
+ 1513 0034 9C42     		cmp	r4, r3
+ 1514 0036 1AD0     		beq	.L286
+ 1515 0038 184B     		ldr	r3, .L293+16
+ 1516 003a 9C42     		cmp	r4, r3
+ 1517 003c 17D0     		beq	.L286
+ 1518 003e 0833     		adds	r3, r3, #8
+ 1519 0040 9C42     		cmp	r4, r3
+ 1520 0042 14D0     		beq	.L286
+ 1521 0044 164B     		ldr	r3, .L293+20
+ 1522 0046 9C42     		cmp	r4, r3
+ 1523 0048 11D0     		beq	.L286
+ 1524 004a 0833     		adds	r3, r3, #8
+ 1525 004c 9C42     		cmp	r4, r3
+ 1526 004e 0ED0     		beq	.L286
+ 1527 0050 144B     		ldr	r3, .L293+24
+ 1528 0052 9C42     		cmp	r4, r3
+ 1529 0054 0BD0     		beq	.L286
+ 1530 0056 0A33     		adds	r3, r3, #10
+ 1531 0058 9C42     		cmp	r4, r3
+ 1532 005a 08D0     		beq	.L286
+ 1533 005c 0C48     		ldr	r0, .L293+4
+ 1534 005e 40F27C41 		movw	r1, #1148
+ 1535 0062 FFF7FEFF 		bl	assert_err
+ 1536 0066 02E0     		b	.L286
+ 1537              	.L285:
+ 1538 0068 0023     		movs	r3, #0
+ 1539 006a AB61     		str	r3, [r5, #24]
+ 1540 006c 38BD     		pop	{r3, r4, r5, pc}
+ 1541              	.L286:
+ 1542 006e A001     		lsls	r0, r4, #6
+ 1543 0070 C4F31303 		ubfx	r3, r4, #0, #20
+ 1544 0074 01D5     		bpl	.L292
+ 1545 0076 EB60     		str	r3, [r5, #12]
+ 1546 0078 38BD     		pop	{r3, r4, r5, pc}
+ 1547              	.L292:
+ 1548 007a 6201     		lsls	r2, r4, #5
+ 1549 007c 01D5     		bpl	.L288
+ 1550 007e 2B61     		str	r3, [r5, #16]
+ 1551 0080 38BD     		pop	{r3, r4, r5, pc}
+ 1552              	.L288:
+ 1553 0082 2401     		lsls	r4, r4, #4
+ 1554 0084 4CBF     		ite	mi
+ 1555 0086 AB60     		strmi	r3, [r5, #8]
+ 1556 0088 6B60     		strpl	r3, [r5, #4]
+ 1557 008a 38BD     		pop	{r3, r4, r5, pc}
+ 1558              	.L294:
+ 1559              		.align	2
+ 1560              	.L293:
+ 1561 008c 00640040 		.word	1073767424
+ 1562 0090 00000000 		.word	.LC0
+ 1563 0094 7000F030 		.word	821035120
+ 1564 0098 00000138 		.word	939589632
+ 1565 009c 08000032 		.word	838860808
+ 1566 00a0 08000034 		.word	872415240
+ 1567 00a4 08000031 		.word	822083592
+ 1569              		.section	.text.CAN_GetITStatus,"ax",%progbits
+ 1570              		.align	1
+ 1571              		.global	CAN_GetITStatus
+ 1572              		.thumb
+ 1573              		.thumb_func
+ 1575              	CAN_GetITStatus:
+ 1576              		@ args = 0, pretend = 0, frame = 0
+ 1577              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1578 0000 38B5     		push	{r3, r4, r5, lr}
+ 1579 0002 4B4B     		ldr	r3, .L358
+ 1580 0004 0546     		mov	r5, r0
+ 1581 0006 9842     		cmp	r0, r3
+ 1582 0008 0C46     		mov	r4, r1
+ 1583 000a 08D0     		beq	.L296
+ 1584 000c 03F58063 		add	r3, r3, #1024
+ 1585 0010 9842     		cmp	r0, r3
+ 1586 0012 04D0     		beq	.L296
+ 1587 0014 4748     		ldr	r0, .L358+4
+ 1588 0016 40F2B741 		movw	r1, #1207
+ 1589 001a FFF7FEFF 		bl	assert_err
+ 1590              	.L296:
+ 1591 001e 631E     		subs	r3, r4, #1
+ 1592 0020 012B     		cmp	r3, #1
+ 1593 0022 23D9     		bls	.L297
+ 1594 0024 042C     		cmp	r4, #4
+ 1595 0026 21D0     		beq	.L297
+ 1596 0028 082C     		cmp	r4, #8
+ 1597 002a 1FD0     		beq	.L297
+ 1598 002c 102C     		cmp	r4, #16
+ 1599 002e 1DD0     		beq	.L297
+ 1600 0030 202C     		cmp	r4, #32
+ 1601 0032 1BD0     		beq	.L297
+ 1602 0034 402C     		cmp	r4, #64
+ 1603 0036 19D0     		beq	.L297
+ 1604 0038 B4F5807F 		cmp	r4, #256
+ 1605 003c 16D0     		beq	.L297
+ 1606 003e B4F5007F 		cmp	r4, #512
+ 1607 0042 13D0     		beq	.L297
+ 1608 0044 B4F5806F 		cmp	r4, #1024
+ 1609 0048 10D0     		beq	.L297
+ 1610 004a B4F5006F 		cmp	r4, #2048
+ 1611 004e 0DD0     		beq	.L297
+ 1612 0050 B4F5004F 		cmp	r4, #32768
+ 1613 0054 0AD0     		beq	.L297
+ 1614 0056 B4F5803F 		cmp	r4, #65536
+ 1615 005a 07D0     		beq	.L297
+ 1616 005c B4F5003F 		cmp	r4, #131072
+ 1617 0060 04D0     		beq	.L297
+ 1618 0062 3448     		ldr	r0, .L358+4
+ 1619 0064 4FF49761 		mov	r1, #1208
+ 1620 0068 FFF7FEFF 		bl	assert_err
+ 1621              	.L297:
+ 1622 006c 6869     		ldr	r0, [r5, #20]
+ 1623 006e 2040     		ands	r0, r4, r0
+ 1624 0070 5DD0     		beq	.L298
+ 1625 0072 402C     		cmp	r4, #64
+ 1626 0074 42D0     		beq	.L299
+ 1627 0076 10D8     		bhi	.L300
+ 1628 0078 042C     		cmp	r4, #4
+ 1629 007a 33D0     		beq	.L301
+ 1630 007c 05D8     		bhi	.L302
+ 1631 007e 012C     		cmp	r4, #1
+ 1632 0080 27D0     		beq	.L303
+ 1633 0082 022C     		cmp	r4, #2
+ 1634 0084 52D1     		bne	.L317
+ 1635 0086 E868     		ldr	r0, [r5, #12]
+ 1636 0088 2FE0     		b	.L355
+ 1637              	.L302:
+ 1638 008a 102C     		cmp	r4, #16
+ 1639 008c 2CD0     		beq	.L305
+ 1640 008e 202C     		cmp	r4, #32
+ 1641 0090 30D0     		beq	.L306
+ 1642 0092 082C     		cmp	r4, #8
+ 1643 0094 4AD1     		bne	.L317
+ 1644 0096 E868     		ldr	r0, [r5, #12]
+ 1645 0098 35E0     		b	.L357
+ 1646              	.L300:
+ 1647 009a B4F5006F 		cmp	r4, #2048
+ 1648 009e 3BD0     		beq	.L308
+ 1649 00a0 0CD8     		bhi	.L309
+ 1650 00a2 B4F5007F 		cmp	r4, #512
+ 1651 00a6 31D0     		beq	.L310
+ 1652 00a8 B4F5806F 		cmp	r4, #1024
+ 1653 00ac 32D0     		beq	.L311
+ 1654 00ae B4F5807F 		cmp	r4, #256
+ 1655 00b2 3BD1     		bne	.L317
+ 1656 00b4 A869     		ldr	r0, [r5, #24]
+ 1657 00b6 00F00100 		and	r0, r0, #1
+ 1658 00ba 38BD     		pop	{r3, r4, r5, pc}
+ 1659              	.L309:
+ 1660 00bc B4F5803F 		cmp	r4, #65536
+ 1661 00c0 1ED0     		beq	.L313
+ 1662 00c2 B4F5003F 		cmp	r4, #131072
+ 1663 00c6 1DD0     		beq	.L314
+ 1664 00c8 B4F5004F 		cmp	r4, #32768
+ 1665 00cc 2ED1     		bne	.L317
+ 1666 00ce 6868     		ldr	r0, [r5, #4]
+ 1667 00d0 29E0     		b	.L354
+ 1668              	.L303:
+ 1669 00d2 A868     		ldr	r0, [r5, #8]
+ 1670 00d4 00F00130 		and	r0, r0, #16843009
+ 1671 00d8 20F08070 		bic	r0, r0, #16777216
+ 1672 00dc 0030     		adds	r0, r0, #0
+ 1673 00de 18BF     		it	ne
+ 1674 00e0 0120     		movne	r0, #1
+ 1675 00e2 38BD     		pop	{r3, r4, r5, pc}
+ 1676              	.L301:
+ 1677 00e4 E868     		ldr	r0, [r5, #12]
+ 1678 00e6 06E0     		b	.L356
+ 1679              	.L305:
+ 1680 00e8 2869     		ldr	r0, [r5, #16]
+ 1681              	.L355:
+ 1682 00ea 10F00300 		ands	r0, r0, #3
+ 1683 00ee 18BF     		it	ne
+ 1684 00f0 0120     		movne	r0, #1
+ 1685 00f2 38BD     		pop	{r3, r4, r5, pc}
+ 1686              	.L306:
+ 1687 00f4 2869     		ldr	r0, [r5, #16]
+ 1688              	.L356:
+ 1689 00f6 C0F3C000 		ubfx	r0, r0, #3, #1
+ 1690 00fa 38BD     		pop	{r3, r4, r5, pc}
+ 1691              	.L299:
+ 1692 00fc 2869     		ldr	r0, [r5, #16]
+ 1693 00fe 02E0     		b	.L357
+ 1694              	.L313:
+ 1695 0100 6868     		ldr	r0, [r5, #4]
+ 1696 0102 F8E7     		b	.L356
+ 1697              	.L314:
+ 1698 0104 6868     		ldr	r0, [r5, #4]
+ 1699              	.L357:
+ 1700 0106 C0F30010 		ubfx	r0, r0, #4, #1
+ 1701 010a 38BD     		pop	{r3, r4, r5, pc}
+ 1702              	.L310:
+ 1703 010c A869     		ldr	r0, [r5, #24]
+ 1704 010e C0F34000 		ubfx	r0, r0, #1, #1
+ 1705 0112 38BD     		pop	{r3, r4, r5, pc}
+ 1706              	.L311:
+ 1707 0114 A869     		ldr	r0, [r5, #24]
+ 1708 0116 06E0     		b	.L354
+ 1709              	.L308:
+ 1710 0118 AB69     		ldr	r3, [r5, #24]
+ 1711 011a 13F0700F 		tst	r3, #112
+ 1712 011e 0CBF     		ite	eq
+ 1713 0120 0020     		moveq	r0, #0
+ 1714 0122 0120     		movne	r0, #1
+ 1715 0124 38BD     		pop	{r3, r4, r5, pc}
+ 1716              	.L354:
+ 1717 0126 C0F38000 		ubfx	r0, r0, #2, #1
+ 1718 012a 38BD     		pop	{r3, r4, r5, pc}
+ 1719              	.L317:
+ 1720 012c 0020     		movs	r0, #0
+ 1721              	.L298:
+ 1722 012e 38BD     		pop	{r3, r4, r5, pc}
+ 1723              	.L359:
+ 1724              		.align	2
+ 1725              	.L358:
+ 1726 0130 00640040 		.word	1073767424
+ 1727 0134 00000000 		.word	.LC0
+ 1729              		.section	.text.CAN_ClearITPendingBit,"ax",%progbits
+ 1730              		.align	1
+ 1731              		.global	CAN_ClearITPendingBit
+ 1732              		.thumb
+ 1733              		.thumb_func
+ 1735              	CAN_ClearITPendingBit:
+ 1736              		@ args = 0, pretend = 0, frame = 0
+ 1737              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1738 0000 38B5     		push	{r3, r4, r5, lr}
+ 1739 0002 354B     		ldr	r3, .L448
+ 1740 0004 0546     		mov	r5, r0
+ 1741 0006 9842     		cmp	r0, r3
+ 1742 0008 0C46     		mov	r4, r1
+ 1743 000a 08D0     		beq	.L361
+ 1744 000c 03F58063 		add	r3, r3, #1024
+ 1745 0010 9842     		cmp	r0, r3
+ 1746 0012 04D0     		beq	.L361
+ 1747 0014 3148     		ldr	r0, .L448+4
+ 1748 0016 40F21D51 		movw	r1, #1309
+ 1749 001a FFF7FEFF 		bl	assert_err
+ 1750              	.L361:
+ 1751 001e 012C     		cmp	r4, #1
+ 1752 0020 44D0     		beq	.L362
+ 1753 0022 042C     		cmp	r4, #4
+ 1754 0024 45D0     		beq	.L363
+ 1755 0026 082C     		cmp	r4, #8
+ 1756 0028 45D0     		beq	.L364
+ 1757 002a 202C     		cmp	r4, #32
+ 1758 002c 46D0     		beq	.L365
+ 1759 002e 402C     		cmp	r4, #64
+ 1760 0030 46D0     		beq	.L366
+ 1761 0032 B4F5807F 		cmp	r4, #256
+ 1762 0036 4CD0     		beq	.L444
+ 1763 0038 B4F5007F 		cmp	r4, #512
+ 1764 003c 49D0     		beq	.L444
+ 1765 003e B4F5806F 		cmp	r4, #1024
+ 1766 0042 46D0     		beq	.L444
+ 1767 0044 B4F5006F 		cmp	r4, #2048
+ 1768 0048 41D0     		beq	.L371
+ 1769 004a B4F5004F 		cmp	r4, #32768
+ 1770 004e 3ED0     		beq	.L371
+ 1771 0050 B4F5803F 		cmp	r4, #65536
+ 1772 0054 37D0     		beq	.L372
+ 1773 0056 B4F5003F 		cmp	r4, #131072
+ 1774 005a 36D0     		beq	.L373
+ 1775 005c 1F48     		ldr	r0, .L448+4
+ 1776 005e 40F21E51 		movw	r1, #1310
+ 1777 0062 FFF7FEFF 		bl	assert_err
+ 1778 0066 B4F5807F 		cmp	r4, #256
+ 1779 006a 32D0     		beq	.L444
+ 1780 006c 0CD8     		bhi	.L375
+ 1781 006e 082C     		cmp	r4, #8
+ 1782 0070 21D0     		beq	.L364
+ 1783 0072 04D8     		bhi	.L376
+ 1784 0074 012C     		cmp	r4, #1
+ 1785 0076 19D0     		beq	.L362
+ 1786 0078 042C     		cmp	r4, #4
+ 1787 007a 2CD1     		bne	.L360
+ 1788 007c 19E0     		b	.L363
+ 1789              	.L376:
+ 1790 007e 202C     		cmp	r4, #32
+ 1791 0080 1CD0     		beq	.L365
+ 1792 0082 402C     		cmp	r4, #64
+ 1793 0084 27D1     		bne	.L360
+ 1794 0086 1BE0     		b	.L366
+ 1795              	.L375:
+ 1796 0088 B4F5006F 		cmp	r4, #2048
+ 1797 008c 1FD0     		beq	.L371
+ 1798 008e 06D8     		bhi	.L377
+ 1799 0090 B4F5007F 		cmp	r4, #512
+ 1800 0094 1DD0     		beq	.L444
+ 1801 0096 B4F5806F 		cmp	r4, #1024
+ 1802 009a 1CD1     		bne	.L360
+ 1803 009c 19E0     		b	.L444
+ 1804              	.L377:
+ 1805 009e B4F5004F 		cmp	r4, #32768
+ 1806 00a2 14D0     		beq	.L371
+ 1807 00a4 B4F5803F 		cmp	r4, #65536
+ 1808 00a8 15D1     		bne	.L360
+ 1809 00aa 0CE0     		b	.L372
+ 1810              	.L362:
+ 1811 00ac 0C4B     		ldr	r3, .L448+8
+ 1812 00ae AB60     		str	r3, [r5, #8]
+ 1813 00b0 38BD     		pop	{r3, r4, r5, pc}
+ 1814              	.L363:
+ 1815 00b2 0823     		movs	r3, #8
+ 1816 00b4 00E0     		b	.L446
+ 1817              	.L364:
+ 1818 00b6 1023     		movs	r3, #16
+ 1819              	.L446:
+ 1820 00b8 EB60     		str	r3, [r5, #12]
+ 1821 00ba 38BD     		pop	{r3, r4, r5, pc}
+ 1822              	.L365:
+ 1823 00bc 0823     		movs	r3, #8
+ 1824 00be 00E0     		b	.L447
+ 1825              	.L366:
+ 1826 00c0 1023     		movs	r3, #16
+ 1827              	.L447:
+ 1828 00c2 2B61     		str	r3, [r5, #16]
+ 1829 00c4 38BD     		pop	{r3, r4, r5, pc}
+ 1830              	.L372:
+ 1831 00c6 0823     		movs	r3, #8
+ 1832 00c8 04E0     		b	.L445
+ 1833              	.L373:
+ 1834 00ca 1023     		movs	r3, #16
+ 1835 00cc 02E0     		b	.L445
+ 1836              	.L371:
+ 1837 00ce 0023     		movs	r3, #0
+ 1838 00d0 AB61     		str	r3, [r5, #24]
+ 1839              	.L444:
+ 1840 00d2 0423     		movs	r3, #4
+ 1841              	.L445:
+ 1842 00d4 6B60     		str	r3, [r5, #4]
+ 1843              	.L360:
+ 1844 00d6 38BD     		pop	{r3, r4, r5, pc}
+ 1845              	.L449:
+ 1846              		.align	2
+ 1847              	.L448:
+ 1848 00d8 00640040 		.word	1073767424
+ 1849 00dc 00000000 		.word	.LC0
+ 1850 00e0 01010100 		.word	65793
+ 1852              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 1853              	.LC0:
+ 1854 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 1854      73657273 
+ 1854      2F647261 
+ 1854      6170686F 
+ 1854      2F446573 
+ 1855 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_ca"
+ 1855      6965732F 
+ 1855      53544D33 
+ 1855      32463130 
+ 1855      785F5374 
+ 1856 0066 6E2E6300 		.ascii	"n.c\000"
+ 1857              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_can.c
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:16     .text.CAN_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:21     .text.CAN_DeInit:00000000 CAN_DeInit
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:52     .text.CAN_DeInit:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:56     .text.CAN_Init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:61     .text.CAN_Init:00000000 CAN_Init
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:246    .text.CAN_Init:00000190 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:250    .text.CAN_FilterInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:255    .text.CAN_FilterInit:00000000 CAN_FilterInit
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:385    .text.CAN_FilterInit:0000012c $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:390    .text.CAN_StructInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:395    .text.CAN_StructInit:00000000 CAN_StructInit
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:417    .text.CAN_SlaveStartBank:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:422    .text.CAN_SlaveStartBank:00000000 CAN_SlaveStartBank
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:453    .text.CAN_SlaveStartBank:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:457    .text.CAN_DBGFreeze:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:462    .text.CAN_DBGFreeze:00000000 CAN_DBGFreeze
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:499    .text.CAN_DBGFreeze:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:503    .text.CAN_TTComModeCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:508    .text.CAN_TTComModeCmd:00000000 CAN_TTComModeCmd
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:563    .text.CAN_TTComModeCmd:00000088 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:567    .text.CAN_Transmit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:572    .text.CAN_Transmit:00000000 CAN_Transmit
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:703    .text.CAN_Transmit:00000138 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:707    .text.CAN_TransmitStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:712    .text.CAN_TransmitStatus:00000000 CAN_TransmitStatus
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:776    .text.CAN_TransmitStatus:0000006c $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:783    .text.CAN_CancelTransmit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:788    .text.CAN_CancelTransmit:00000000 CAN_CancelTransmit
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:833    .text.CAN_CancelTransmit:00000054 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:837    .text.CAN_Receive:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:842    .text.CAN_Receive:00000000 CAN_Receive
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:927    .text.CAN_Receive:000000c0 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:931    .text.CAN_FIFORelease:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:936    .text.CAN_FIFORelease:00000000 CAN_FIFORelease
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:972    .text.CAN_FIFORelease:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:976    .text.CAN_MessagePending:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:981    .text.CAN_MessagePending:00000000 CAN_MessagePending
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1020   .text.CAN_MessagePending:00000044 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1024   .text.CAN_OperatingModeRequest:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1029   .text.CAN_OperatingModeRequest:00000000 CAN_OperatingModeRequest
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1120   .text.CAN_OperatingModeRequest:000000b8 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1124   .text.CAN_Sleep:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1129   .text.CAN_Sleep:00000000 CAN_Sleep
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1157   .text.CAN_Sleep:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1161   .text.CAN_WakeUp:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1166   .text.CAN_WakeUp:00000000 CAN_WakeUp
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1199   .text.CAN_WakeUp:00000040 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1203   .text.CAN_GetLastErrorCode:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1208   .text.CAN_GetLastErrorCode:00000000 CAN_GetLastErrorCode
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1229   .text.CAN_GetLastErrorCode:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1233   .text.CAN_GetReceiveErrorCounter:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1238   .text.CAN_GetReceiveErrorCounter:00000000 CAN_GetReceiveErrorCounter
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1259   .text.CAN_GetReceiveErrorCounter:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1263   .text.CAN_GetLSBTransmitErrorCounter:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1268   .text.CAN_GetLSBTransmitErrorCounter:00000000 CAN_GetLSBTransmitErrorCounter
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1289   .text.CAN_GetLSBTransmitErrorCounter:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1293   .text.CAN_ITConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1298   .text.CAN_ITConfig:00000000 CAN_ITConfig
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1367   .text.CAN_ITConfig:00000090 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1371   .text.CAN_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1376   .text.CAN_GetFlagStatus:00000000 CAN_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1468   .text.CAN_GetFlagStatus:000000b0 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1482   .text.CAN_ClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1487   .text.CAN_ClearFlag:00000000 CAN_ClearFlag
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1561   .text.CAN_ClearFlag:0000008c $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1570   .text.CAN_GetITStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1575   .text.CAN_GetITStatus:00000000 CAN_GetITStatus
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1726   .text.CAN_GetITStatus:00000130 $d
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1730   .text.CAN_ClearITPendingBit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1735   .text.CAN_ClearITPendingBit:00000000 CAN_ClearITPendingBit
+D:\Users\draapho\AppData\Local\Temp\ccDqWXzu.s:1848   .text.CAN_ClearITPendingBit:000000d8 $d
+
+UNDEFINED SYMBOLS
+assert_err
+RCC_APB1PeriphResetCmd

@@ -1,0 +1,266 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO_Speed.c"
+  15              		.section	.text.GUIDEMO_Speed,"ax",%progbits
+  16              		.align	1
+  17              		.global	GUIDEMO_Speed
+  18              		.thumb
+  19              		.thumb_func
+  21              	GUIDEMO_Speed:
+  22              		@ args = 0, pretend = 0, frame = 96
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  25 0004 99B0     		sub	sp, sp, #100
+  26 0006 0021     		movs	r1, #0
+  27 0008 2822     		movs	r2, #40
+  28 000a 0EA8     		add	r0, sp, #56
+  29 000c FFF7FEFF 		bl	memset
+  30 0010 FFF7FEFF 		bl	LCD_GetXSize
+  31 0014 0546     		mov	r5, r0
+  32 0016 FFF7FEFF 		bl	LCD_GetYSize
+  33 001a 0446     		mov	r4, r0
+  34 001c FFF7FEFF 		bl	LCD_GetVYSize
+  35 0020 0646     		mov	r6, r0
+  36 0022 FFF7FEFF 		bl	GUI_CURSOR_Hide
+  37 0026 A642     		cmp	r6, r4
+  38 0028 0BDD     		ble	.L2
+  39 002a 0023     		movs	r3, #0
+  40 002c 04A8     		add	r0, sp, #16
+  41 002e ADF81030 		strh	r3, [sp, #16]	@ movhi
+  42 0032 ADF81230 		strh	r3, [sp, #18]	@ movhi
+  43 0036 ADF81450 		strh	r5, [sp, #20]	@ movhi
+  44 003a ADF81640 		strh	r4, [sp, #22]	@ movhi
+  45 003e FFF7FEFF 		bl	GUI_SetClipRect
+  46              	.L2:
+  47 0042 6748     		ldr	r0, .L12
+  48 0044 6749     		ldr	r1, .L12+4
+  49 0046 FFF7FEFF 		bl	GUIDEMO_ShowIntro
+  50 004a 674F     		ldr	r7, .L12+8
+  51 004c 0026     		movs	r6, #0
+  52              	.L4:
+  53 004e F059     		ldr	r0, [r6, r7]
+  54 0050 FFF7FEFF 		bl	GUI_Color2Index
+  55 0054 06AB     		add	r3, sp, #24
+  56 0056 9851     		str	r0, [r3, r6]
+  57 0058 0436     		adds	r6, r6, #4
+  58 005a 202E     		cmp	r6, #32
+  59 005c F7D1     		bne	.L4
+  60 005e FFF7FEFF 		bl	GUIDEMO_GetTime
+  61 0062 0223     		movs	r3, #2
+  62 0064 95FBF3F2 		sdiv	r2, r5, r3
+  63 0068 94FBF3F3 		sdiv	r3, r4, r3
+  64 006c 5242     		negs	r2, r2
+  65 006e 5B42     		negs	r3, r3
+  66 0070 8046     		mov	r8, r0
+  67 0072 1FFA82F9 		uxth	r9, r2
+  68 0076 1FFA83FA 		uxth	r10, r3
+  69 007a 0026     		movs	r6, #0
+  70 007c 41F2873B 		movw	fp, #4999
+  71              	.L5:
+  72 0080 FFF7FEFF 		bl	GUIDEMO_GetTime
+  73 0084 C8EB0000 		rsb	r0, r8, r0
+  74 0088 5845     		cmp	r0, fp
+  75 008a 1BDD     		ble	.L6
+  76              	.L9:
+  77 008c FFF7FEFF 		bl	GUIDEMO_NotifyStartNext
+  78 0090 FFF7FEFF 		bl	LCD_GetXSize
+  79 0094 8046     		mov	r8, r0
+  80 0096 FFF7FEFF 		bl	LCD_GetYSize
+  81 009a 8146     		mov	r9, r0
+  82 009c A0F13D0A 		sub	r10, r0, #61
+  83 00a0 FFF7FEFF 		bl	GUI_GetColor
+  84 00a4 0390     		str	r0, [sp, #12]
+  85 00a6 FFF7FEFF 		bl	GUI_GetBkColor
+  86 00aa FFF7FEFF 		bl	GUI_SetColor
+  87 00ae FFF7FEFF 		bl	GUIDEMO_GetTime
+  88 00b2 6FF0630C 		mvn	ip, #99
+  89 00b6 08F1FF3B 		add	fp, r8, #-1
+  90 00ba 0746     		mov	r7, r0
+  91 00bc 0026     		movs	r6, #0
+  92 00be C0EB0C0C 		rsb	ip, r0, ip
+  93 00c2 3DE0     		b	.L7
+  94              	.L6:
+  95 00c4 FFF7FEFF 		bl	GUIDEMO_CheckCancel
+  96 00c8 0028     		cmp	r0, #0
+  97 00ca DFD1     		bne	.L9
+  98 00cc 18AA     		add	r2, sp, #96
+  99 00ce 06F00703 		and	r3, r6, #7
+ 100 00d2 02EB8303 		add	r3, r2, r3, lsl #2
+ 101 00d6 53F8480C 		ldr	r0, [r3, #-72]
+ 102 00da FFF7FEFF 		bl	GUI_SetColorIndex
+ 103 00de FFF7FEFF 		bl	rand
+ 104 00e2 90FBF5F1 		sdiv	r1, r0, r5
+ 105 00e6 01FB1500 		mls	r0, r1, r5, r0
+ 106 00ea 09EB0001 		add	r1, r9, r0
+ 107 00ee 89B2     		uxth	r1, r1
+ 108 00f0 0291     		str	r1, [sp, #8]
+ 109 00f2 FFF7FEFF 		bl	rand
+ 110 00f6 90FBF4F7 		sdiv	r7, r0, r4
+ 111 00fa 07FB1400 		mls	r0, r7, r4, r0
+ 112 00fe 0AEB0007 		add	r7, r10, r0
+ 113 0102 FFF7FEFF 		bl	rand
+ 114 0106 0190     		str	r0, [sp, #4]
+ 115 0108 FFF7FEFF 		bl	rand
+ 116 010c 019B     		ldr	r3, [sp, #4]
+ 117 010e 0299     		ldr	r1, [sp, #8]
+ 118 0110 93FBF5F2 		sdiv	r2, r3, r5
+ 119 0114 05FB1232 		mls	r2, r5, r2, r3
+ 120 0118 90FBF4F3 		sdiv	r3, r0, r4
+ 121 011c 03FB1400 		mls	r0, r3, r4, r0
+ 122 0120 BFB2     		uxth	r7, r7
+ 123 0122 00F11403 		add	r3, r0, #20
+ 124 0126 1432     		adds	r2, r2, #20
+ 125 0128 0A44     		add	r2, r2, r1
+ 126 012a 3B44     		add	r3, r3, r7
+ 127 012c 08B2     		sxth	r0, r1
+ 128 012e 12B2     		sxth	r2, r2
+ 129 0130 39B2     		sxth	r1, r7
+ 130 0132 1BB2     		sxth	r3, r3
+ 131 0134 FFF7FEFF 		bl	GUI_FillRect
+ 132 0138 0136     		adds	r6, r6, #1
+ 133 013a FFF7FEFF 		bl	GUI_Exec
+ 134 013e 9FE7     		b	.L5
+ 135              	.L7:
+ 136 0140 5A46     		mov	r2, fp
+ 137 0142 5346     		mov	r3, r10
+ 138 0144 0020     		movs	r0, #0
+ 139 0146 4121     		movs	r1, #65
+ 140 0148 CDF808C0 		str	ip, [sp, #8]
+ 141 014c FFF7FEFF 		bl	GUI_FillRect
+ 142 0150 FFF7FEFF 		bl	GUIDEMO_GetTime
+ 143 0154 DDF808C0 		ldr	ip, [sp, #8]
+ 144 0158 0136     		adds	r6, r6, #1
+ 145 015a 00EB0C02 		add	r2, r0, ip
+ 146 015e 002A     		cmp	r2, #0
+ 147 0160 0346     		mov	r3, r0
+ 148 0162 EDDD     		ble	.L7
+ 149 0164 0398     		ldr	r0, [sp, #12]
+ 150 0166 0193     		str	r3, [sp, #4]
+ 151 0168 FFF7FEFF 		bl	GUI_SetColor
+ 152 016c 0020     		movs	r0, #0
+ 153 016e FFF7FEFF 		bl	GUI_SetClipRect
+ 154 0172 0020     		movs	r0, #0
+ 155 0174 FFF7FEFF 		bl	GUIDEMO_DrawBk
+ 156 0178 A9F17D09 		sub	r9, r9, #125
+ 157 017c 6FF07F40 		mvn	r0, #-16777216
+ 158 0180 FFF7FEFF 		bl	GUI_SetColor
+ 159 0184 08FB09F8 		mul	r8, r8, r9
+ 160 0188 0220     		movs	r0, #2
+ 161 018a FFF7FEFF 		bl	GUI_SetTextMode
+ 162 018e 1748     		ldr	r0, .L12+12
+ 163 0190 FFF7FEFF 		bl	GUI_SetFont
+ 164 0194 0521     		movs	r1, #5
+ 165 0196 0A46     		mov	r2, r1
+ 166 0198 1548     		ldr	r0, .L12+16
+ 167 019a FFF7FEFF 		bl	GUI_DrawBitmap
+ 168 019e 06FB08F6 		mul	r6, r6, r8
+ 169 01a2 0EA8     		add	r0, sp, #56
+ 170 01a4 1349     		ldr	r1, .L12+20
+ 171 01a6 FFF7FEFF 		bl	GUIDEMO_AddStringToString
+ 172 01aa 019B     		ldr	r3, [sp, #4]
+ 173 01ac 4FF47A71 		mov	r1, #1000
+ 174 01b0 DF1B     		subs	r7, r3, r7
+ 175 01b2 B6FBF7F3 		udiv	r3, r6, r7
+ 176 01b6 5943     		muls	r1, r3, r1
+ 177 01b8 0EA8     		add	r0, sp, #56
+ 178 01ba FFF7FEFF 		bl	GUIDEMO_AddIntToString
+ 179 01be FFF7FEFF 		bl	GUI_GetFontSizeY
+ 180 01c2 221A     		subs	r2, r4, r0
+ 181 01c4 6910     		asrs	r1, r5, #1
+ 182 01c6 5210     		asrs	r2, r2, #1
+ 183 01c8 0EA8     		add	r0, sp, #56
+ 184 01ca FFF7FEFF 		bl	GUI_DispStringHCenterAt
+ 185 01ce 4FF47A60 		mov	r0, #4000
+ 186 01d2 FFF7FEFF 		bl	GUIDEMO_Delay
+ 187 01d6 FFF7FEFF 		bl	GUI_CURSOR_Show
+ 188 01da 19B0     		add	sp, sp, #100
+ 189              		@ sp needed
+ 190 01dc BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 191              	.L13:
+ 192              		.align	2
+ 193              	.L12:
+ 194 01e0 00000000 		.word	.LC0
+ 195 01e4 0B000000 		.word	.LC1
+ 196 01e8 00000000 		.word	.LANCHOR0
+ 197 01ec 00000000 		.word	GUI_FontRounded22
+ 198 01f0 00000000 		.word	bmSTLogo70x35
+ 199 01f4 39000000 		.word	.LC2
+ 201              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 202              	.LC0:
+ 203 0000 48696768 		.ascii	"High speed\000"
+ 203      20737065 
+ 203      656400
+ 204              	.LC1:
+ 205 000b 4D756C74 		.ascii	"Multi layer clipping\012Highly optimized drivers\000"
+ 205      69206C61 
+ 205      79657220 
+ 205      636C6970 
+ 205      70696E67 
+ 206              	.LC2:
+ 207 0039 50697865 		.ascii	"Pixels/sec: \000"
+ 207      6C732F73 
+ 207      65633A20 
+ 207      00
+ 208              		.section	.rodata._aColor,"a",%progbits
+ 209              		.align	2
+ 210              		.set	.LANCHOR0,. + 0
+ 213              	_aColor:
+ 214 0000 00000000 		.word	0
+ 215 0004 FF000000 		.word	255
+ 216 0008 00FF0000 		.word	65280
+ 217 000c FFFF0000 		.word	65535
+ 218 0010 0000FF00 		.word	16711680
+ 219 0014 FF00FF00 		.word	16711935
+ 220 0018 00FFFF00 		.word	16776960
+ 221 001c FFFFFF00 		.word	16777215
+ 222              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO_Speed.c
+D:\Users\draapho\AppData\Local\Temp\ccSiiFif.s:16     .text.GUIDEMO_Speed:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccSiiFif.s:21     .text.GUIDEMO_Speed:00000000 GUIDEMO_Speed
+D:\Users\draapho\AppData\Local\Temp\ccSiiFif.s:194    .text.GUIDEMO_Speed:000001e0 $d
+D:\Users\draapho\AppData\Local\Temp\ccSiiFif.s:209    .rodata._aColor:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccSiiFif.s:213    .rodata._aColor:00000000 _aColor
+
+UNDEFINED SYMBOLS
+memset
+LCD_GetXSize
+LCD_GetYSize
+LCD_GetVYSize
+GUI_CURSOR_Hide
+GUI_SetClipRect
+GUIDEMO_ShowIntro
+GUI_Color2Index
+GUIDEMO_GetTime
+GUIDEMO_NotifyStartNext
+GUI_GetColor
+GUI_GetBkColor
+GUI_SetColor
+GUIDEMO_CheckCancel
+GUI_SetColorIndex
+rand
+GUI_FillRect
+GUI_Exec
+GUIDEMO_DrawBk
+GUI_SetTextMode
+GUI_SetFont
+GUI_DrawBitmap
+GUIDEMO_AddStringToString
+GUIDEMO_AddIntToString
+GUI_GetFontSizeY
+GUI_DispStringHCenterAt
+GUIDEMO_Delay
+GUI_CURSOR_Show
+GUI_FontRounded22
+bmSTLogo70x35

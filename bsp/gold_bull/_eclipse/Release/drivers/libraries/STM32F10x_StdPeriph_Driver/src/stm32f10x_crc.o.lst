@@ -1,0 +1,145 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_crc.c"
+  15              		.section	.text.CRC_ResetDR,"ax",%progbits
+  16              		.align	1
+  17              		.global	CRC_ResetDR
+  18              		.thumb
+  19              		.thumb_func
+  21              	CRC_ResetDR:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 014B     		ldr	r3, .L2
+  26 0002 0122     		movs	r2, #1
+  27 0004 9A60     		str	r2, [r3, #8]
+  28 0006 7047     		bx	lr
+  29              	.L3:
+  30              		.align	2
+  31              	.L2:
+  32 0008 00300240 		.word	1073885184
+  34              		.section	.text.CRC_CalcCRC,"ax",%progbits
+  35              		.align	1
+  36              		.global	CRC_CalcCRC
+  37              		.thumb
+  38              		.thumb_func
+  40              	CRC_CalcCRC:
+  41              		@ args = 0, pretend = 0, frame = 0
+  42              		@ frame_needed = 0, uses_anonymous_args = 0
+  43              		@ link register save eliminated.
+  44 0000 014B     		ldr	r3, .L5
+  45 0002 1860     		str	r0, [r3]
+  46 0004 1868     		ldr	r0, [r3]
+  47 0006 7047     		bx	lr
+  48              	.L6:
+  49              		.align	2
+  50              	.L5:
+  51 0008 00300240 		.word	1073885184
+  53              		.section	.text.CRC_CalcBlockCRC,"ax",%progbits
+  54              		.align	1
+  55              		.global	CRC_CalcBlockCRC
+  56              		.thumb
+  57              		.thumb_func
+  59              	CRC_CalcBlockCRC:
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62 0000 10B5     		push	{r4, lr}
+  63 0002 064C     		ldr	r4, .L12
+  64 0004 0023     		movs	r3, #0
+  65              	.L8:
+  66 0006 8B42     		cmp	r3, r1
+  67 0008 04D0     		beq	.L11
+  68 000a 50F82320 		ldr	r2, [r0, r3, lsl #2]
+  69 000e 0133     		adds	r3, r3, #1
+  70 0010 2260     		str	r2, [r4]
+  71 0012 F8E7     		b	.L8
+  72              	.L11:
+  73 0014 014B     		ldr	r3, .L12
+  74 0016 1868     		ldr	r0, [r3]
+  75 0018 10BD     		pop	{r4, pc}
+  76              	.L13:
+  77 001a 00BF     		.align	2
+  78              	.L12:
+  79 001c 00300240 		.word	1073885184
+  81              		.section	.text.CRC_GetCRC,"ax",%progbits
+  82              		.align	1
+  83              		.global	CRC_GetCRC
+  84              		.thumb
+  85              		.thumb_func
+  87              	CRC_GetCRC:
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		@ link register save eliminated.
+  91 0000 014B     		ldr	r3, .L15
+  92 0002 1868     		ldr	r0, [r3]
+  93 0004 7047     		bx	lr
+  94              	.L16:
+  95 0006 00BF     		.align	2
+  96              	.L15:
+  97 0008 00300240 		.word	1073885184
+  99              		.section	.text.CRC_SetIDRegister,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	CRC_SetIDRegister
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	CRC_SetIDRegister:
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109 0000 014B     		ldr	r3, .L18
+ 110 0002 1871     		strb	r0, [r3, #4]
+ 111 0004 7047     		bx	lr
+ 112              	.L19:
+ 113 0006 00BF     		.align	2
+ 114              	.L18:
+ 115 0008 00300240 		.word	1073885184
+ 117              		.section	.text.CRC_GetIDRegister,"ax",%progbits
+ 118              		.align	1
+ 119              		.global	CRC_GetIDRegister
+ 120              		.thumb
+ 121              		.thumb_func
+ 123              	CRC_GetIDRegister:
+ 124              		@ args = 0, pretend = 0, frame = 0
+ 125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126              		@ link register save eliminated.
+ 127 0000 014B     		ldr	r3, .L21
+ 128 0002 1879     		ldrb	r0, [r3, #4]	@ zero_extendqisi2
+ 129 0004 7047     		bx	lr
+ 130              	.L22:
+ 131 0006 00BF     		.align	2
+ 132              	.L21:
+ 133 0008 00300240 		.word	1073885184
+ 135              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_crc.c
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:16     .text.CRC_ResetDR:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:21     .text.CRC_ResetDR:00000000 CRC_ResetDR
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:32     .text.CRC_ResetDR:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:35     .text.CRC_CalcCRC:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:40     .text.CRC_CalcCRC:00000000 CRC_CalcCRC
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:51     .text.CRC_CalcCRC:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:54     .text.CRC_CalcBlockCRC:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:59     .text.CRC_CalcBlockCRC:00000000 CRC_CalcBlockCRC
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:79     .text.CRC_CalcBlockCRC:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:82     .text.CRC_GetCRC:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:87     .text.CRC_GetCRC:00000000 CRC_GetCRC
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:97     .text.CRC_GetCRC:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:100    .text.CRC_SetIDRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:105    .text.CRC_SetIDRegister:00000000 CRC_SetIDRegister
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:115    .text.CRC_SetIDRegister:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:118    .text.CRC_GetIDRegister:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:123    .text.CRC_GetIDRegister:00000000 CRC_GetIDRegister
+D:\Users\draapho\AppData\Local\Temp\ccN7Cvjd.s:133    .text.CRC_GetIDRegister:00000008 $d
+
+NO UNDEFINED SYMBOLS

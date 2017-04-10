@@ -1,0 +1,268 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_sdcard.c"
+  15              		.section	.text.sdcard_port_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	sdcard_port_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	sdcard_port_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 FFF7FEBF 		b	SD_Port_Init
+  27              		.section	.text.sdcard_power_on,"ax",%progbits
+  28              		.align	1
+  29              		.global	sdcard_power_on
+  30              		.thumb
+  31              		.thumb_func
+  33              	sdcard_power_on:
+  34              		@ args = 0, pretend = 0, frame = 0
+  35              		@ frame_needed = 0, uses_anonymous_args = 0
+  36              		@ link register save eliminated.
+  37 0000 7047     		bx	lr
+  39              		.section	.text.sdcard_power_off,"ax",%progbits
+  40              		.align	1
+  41              		.global	sdcard_power_off
+  42              		.thumb
+  43              		.thumb_func
+  45              	sdcard_power_off:
+  46              		@ args = 0, pretend = 0, frame = 0
+  47              		@ frame_needed = 0, uses_anonymous_args = 0
+  48              		@ link register save eliminated.
+  49 0000 FFF7FEBF 		b	SD_PowerOFF
+  51              		.section	.text.sdcard_init,"ax",%progbits
+  52              		.align	1
+  53              		.global	sdcard_init
+  54              		.thumb
+  55              		.thumb_func
+  57              	sdcard_init:
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60 0000 08B5     		push	{r3, lr}
+  61              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  62 0002 00BF     		nop
+  63              	@ 0 "" 2
+  64              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  65 0004 00BF     		nop
+  66              	@ 0 "" 2
+  67              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  68 0006 00BF     		nop
+  69              	@ 0 "" 2
+  70              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  71 0008 00BF     		nop
+  72              	@ 0 "" 2
+  73              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  74 000a 00BF     		nop
+  75              	@ 0 "" 2
+  76              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  77 000c 00BF     		nop
+  78              	@ 0 "" 2
+  79              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  80 000e 00BF     		nop
+  81              	@ 0 "" 2
+  82              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  83 0010 00BF     		nop
+  84              	@ 0 "" 2
+  85              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  86 0012 00BF     		nop
+  87              	@ 0 "" 2
+  88              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+  89 0014 00BF     		nop
+  90              	@ 0 "" 2
+  91              		.thumb
+  92 0016 4FF40070 		mov	r0, #512
+  93 001a FFF7FEFF 		bl	SD_Init
+  94 001e 0030     		adds	r0, r0, #0
+  95 0020 18BF     		it	ne
+  96 0022 0120     		movne	r0, #1
+  97 0024 08BD     		pop	{r3, pc}
+  99              		.section	.text.sdcard_present,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	sdcard_present
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	sdcard_present:
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109 0000 0120     		movs	r0, #1
+ 110 0002 7047     		bx	lr
+ 112              		.section	.text.sdcard_get_info,"ax",%progbits
+ 113              		.align	1
+ 114              		.global	sdcard_get_info
+ 115              		.thumb
+ 116              		.thumb_func
+ 118              	sdcard_get_info:
+ 119              		@ args = 0, pretend = 0, frame = 80
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121 0000 10B5     		push	{r4, lr}
+ 122 0002 94B0     		sub	sp, sp, #80
+ 123 0004 0446     		mov	r4, r0
+ 124 0006 6846     		mov	r0, sp
+ 125 0008 FFF7FEFF 		bl	SD_GetCardInfo
+ 126 000c F0B9     		cbnz	r0, .L7
+ 127 000e 9DF84E30 		ldrb	r3, [sp, #78]	@ zero_extendqisi2
+ 128 0012 012B     		cmp	r3, #1
+ 129 0014 06D0     		beq	.L15
+ 130 0016 03D3     		bcc	.L10
+ 131 0018 022B     		cmp	r3, #2
+ 132 001a 03D0     		beq	.L15
+ 133 001c FF23     		movs	r3, #255
+ 134 001e 01E0     		b	.L15
+ 135              	.L10:
+ 136 0020 2070     		strb	r0, [r4]
+ 137 0022 00E0     		b	.L12
+ 138              	.L15:
+ 139 0024 2370     		strb	r3, [r4]
+ 140              	.L12:
+ 141 0026 9DF83530 		ldrb	r3, [sp, #53]	@ zero_extendqisi2
+ 142 002a 119A     		ldr	r2, [sp, #68]
+ 143 002c 6370     		strb	r3, [r4, #1]
+ 144 002e 0E9B     		ldr	r3, [sp, #56]
+ 145 0030 0020     		movs	r0, #0
+ 146 0032 6360     		str	r3, [r4, #4]
+ 147 0034 BDF83E30 		ldrh	r3, [sp, #62]
+ 148 0038 C3F30723 		ubfx	r3, r3, #8, #8
+ 149 003c 2372     		strb	r3, [r4, #8]
+ 150 003e BDF83E30 		ldrh	r3, [sp, #62]
+ 151 0042 6372     		strb	r3, [r4, #9]
+ 152 0044 0023     		movs	r3, #0
+ 153 0046 C4E90423 		strd	r2, [r4, #16]
+ 154 004a 06E0     		b	.L13
+ 155              	.L7:
+ 156 004c FF23     		movs	r3, #255
+ 157 004e 2370     		strb	r3, [r4]
+ 158 0050 0022     		movs	r2, #0
+ 159 0052 0023     		movs	r3, #0
+ 160 0054 C4E90423 		strd	r2, [r4, #16]
+ 161 0058 0120     		movs	r0, #1
+ 162              	.L13:
+ 163 005a 14B0     		add	sp, sp, #80
+ 164              		@ sp needed
+ 165 005c 10BD     		pop	{r4, pc}
+ 167              		.section	.text.sdcard_read_blocks,"ax",%progbits
+ 168              		.align	1
+ 169              		.global	sdcard_read_blocks
+ 170              		.thumb
+ 171              		.thumb_func
+ 173              	sdcard_read_blocks:
+ 174              		@ args = 0, pretend = 0, frame = 0
+ 175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 176 0000 012A     		cmp	r2, #1
+ 177 0002 70B5     		push	{r4, r5, r6, lr}
+ 178 0004 0446     		mov	r4, r0
+ 179 0006 0D46     		mov	r5, r1
+ 180 0008 1646     		mov	r6, r2
+ 181 000a 0BD9     		bls	.L18
+ 182 000c FFF7FEFF 		bl	SD_WaitOperation
+ 183 0010 2928     		cmp	r0, #41
+ 184 0012 01D1     		bne	.L19
+ 185              	.L21:
+ 186 0014 0120     		movs	r0, #1
+ 187 0016 70BD     		pop	{r4, r5, r6, pc}
+ 188              	.L19:
+ 189 0018 2046     		mov	r0, r4
+ 190 001a 2946     		mov	r1, r5
+ 191 001c 3246     		mov	r2, r6
+ 192 001e FFF7FEFF 		bl	SD_ReadMultiBlocks
+ 193 0022 08E0     		b	.L26
+ 194              	.L18:
+ 195 0024 0BD1     		bne	.L22
+ 196 0026 FFF7FEFF 		bl	SD_WaitOperation
+ 197 002a 2928     		cmp	r0, #41
+ 198 002c F2D0     		beq	.L21
+ 199 002e 2046     		mov	r0, r4
+ 200 0030 2946     		mov	r1, r5
+ 201 0032 FFF7FEFF 		bl	SD_ReadBlock
+ 202              	.L26:
+ 203 0036 0030     		adds	r0, r0, #0
+ 204 0038 18BF     		it	ne
+ 205 003a 0120     		movne	r0, #1
+ 206 003c 70BD     		pop	{r4, r5, r6, pc}
+ 207              	.L22:
+ 208 003e 0020     		movs	r0, #0
+ 209 0040 70BD     		pop	{r4, r5, r6, pc}
+ 211              		.section	.text.sdcard_write_blocks,"ax",%progbits
+ 212              		.align	1
+ 213              		.global	sdcard_write_blocks
+ 214              		.thumb
+ 215              		.thumb_func
+ 217              	sdcard_write_blocks:
+ 218              		@ args = 0, pretend = 0, frame = 0
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+ 220 0000 012A     		cmp	r2, #1
+ 221 0002 70B5     		push	{r4, r5, r6, lr}
+ 222 0004 0446     		mov	r4, r0
+ 223 0006 0D46     		mov	r5, r1
+ 224 0008 1646     		mov	r6, r2
+ 225 000a 0BD9     		bls	.L28
+ 226 000c FFF7FEFF 		bl	SD_WaitOperation
+ 227 0010 2928     		cmp	r0, #41
+ 228 0012 01D1     		bne	.L29
+ 229              	.L31:
+ 230 0014 0120     		movs	r0, #1
+ 231 0016 70BD     		pop	{r4, r5, r6, pc}
+ 232              	.L29:
+ 233 0018 2046     		mov	r0, r4
+ 234 001a 2946     		mov	r1, r5
+ 235 001c 3246     		mov	r2, r6
+ 236 001e FFF7FEFF 		bl	SD_WriteMultiBlocks
+ 237 0022 08E0     		b	.L36
+ 238              	.L28:
+ 239 0024 0BD1     		bne	.L32
+ 240 0026 FFF7FEFF 		bl	SD_WaitOperation
+ 241 002a 2928     		cmp	r0, #41
+ 242 002c F2D0     		beq	.L31
+ 243 002e 2046     		mov	r0, r4
+ 244 0030 2946     		mov	r1, r5
+ 245 0032 FFF7FEFF 		bl	SD_WriteBlock
+ 246              	.L36:
+ 247 0036 0030     		adds	r0, r0, #0
+ 248 0038 18BF     		it	ne
+ 249 003a 0120     		movne	r0, #1
+ 250 003c 70BD     		pop	{r4, r5, r6, pc}
+ 251              	.L32:
+ 252 003e 0020     		movs	r0, #0
+ 253 0040 70BD     		pop	{r4, r5, r6, pc}
+ 255              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_sdcard.c
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:16     .text.sdcard_port_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:21     .text.sdcard_port_init:00000000 sdcard_port_init
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:28     .text.sdcard_power_on:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:33     .text.sdcard_power_on:00000000 sdcard_power_on
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:40     .text.sdcard_power_off:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:45     .text.sdcard_power_off:00000000 sdcard_power_off
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:52     .text.sdcard_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:57     .text.sdcard_init:00000000 sdcard_init
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:100    .text.sdcard_present:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:105    .text.sdcard_present:00000000 sdcard_present
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:113    .text.sdcard_get_info:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:118    .text.sdcard_get_info:00000000 sdcard_get_info
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:168    .text.sdcard_read_blocks:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:173    .text.sdcard_read_blocks:00000000 sdcard_read_blocks
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:212    .text.sdcard_write_blocks:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccGxUtMJ.s:217    .text.sdcard_write_blocks:00000000 sdcard_write_blocks
+
+UNDEFINED SYMBOLS
+SD_Port_Init
+SD_PowerOFF
+SD_Init
+SD_GetCardInfo
+SD_WaitOperation
+SD_ReadMultiBlocks
+SD_ReadBlock
+SD_WriteMultiBlocks
+SD_WriteBlock

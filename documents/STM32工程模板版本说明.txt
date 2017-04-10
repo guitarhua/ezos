@@ -1,0 +1,112 @@
+-V2.4.0   2015.1.7, mousie-yu
+          - 升级 drv_systick 驱动到V2.1.0, 消除delay_us函数的严重错误(总版本V2.3.0时引入了错误).
+          - 升级 drv_sdcard 部分驱动文件, 增加稳定性.
+          - 升级 drv_rtc_time 驱动到V2.0.1, 增加初始化超时功能.
+          - 升级 drv_key 驱动到V2.1.1, 增加多按键复合操作判断.
+          - 升级 drv_flash 独立出FLASH解锁函数, 提高Flash操作安全性.
+          - 加入 USMART V2.1 组件, 便于使用串口调试代码.
+          - 加入 drv_flash 驱动, 版本V1.0.0, 用于内部flash读写操作.
+          - 移动 startup_stm32f10x_XX.s 到 configures 中, 避免不同项目相互影响.
+          - 修改默认的调试烧录方式为 SWD (仅需占用2个IO口)
+            若用户需要正常使用别的JTAG IO口, 需禁用JTAG. 调用:
+                RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
+                GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+          - cpn_lib 中加入 md5 算法.
+
+-V2.3.0   2014.3.6, mousie-yu
+          - 加入 eclipse 工程模板, 便于代码书写和阅读.
+          - 升级 ezos 内核, 版本V2.3.0
+          - 新增 emWIN 图形化组件, 版本V5.20d.
+          - 移除 drv_lcd 驱动, 并入 emWIN 组件中, 并修正一些底层驱动bug
+          - 新增 drv_adc1 数模转换驱动, 版本 V1.0.0
+          - 加入 触摸屏驱动 到emWIN中, 但只是搭建了架构, 代码仅供参考.
+          - 加入 cpn_ring 播放组件于 cpn_tone 中, 版本V1.0.0
+          - 升级 cpn_tone 曲谱播放组件, 版本 V2.0.0
+          - 升级 drv_key 驱动, 版本V2.1.0
+          - sdcard 驱动加入 sd_sdspidma 通讯模式, 版本V1.0.0
+
+-V2.2.0   2013.2.27, mousie-yu
+          - 升级 drv_uart 驱动, 版本V2.1.1, 修正一个会导致死机的错误
+          - 升级 ezos 内核, 版本V2.2.0
+          - bsp 文件内, 新增 configures 文件夹, 配置放在此处
+          - fatfs 组件版本从 R0.09 升级为 R0.09b
+          - uip 网络组件升级, 使用 contiki-2.6 内的源码
+          - 完善 uip apps 层的应用, 提供更友好的接口. 屏蔽 uip 底层
+          - 新增 cpn_lib 文件夹, 将常用的数据结构及编解码放入其中
+
+-V2.1.0   2012.12.7, mousie-yu
+          - 对components内的文件及文件夹, 增加 cpn_ 前缀.
+          - 新增 tone 曲谱播放组件, 版本V1.0.0
+          - 新增 uip 网络组件, 版本V1.0
+          - 升级 debug 驱动, 版本V2.1.0. 实现assert_printf
+          - 升级 ezos 内核, 版本V2.1.0
+
+-V2.0.0   2011.12.14, mousie-yu
+          - 命名按 K&R 风格书写, 格式采用MS风格
+          - 修改目录结构, 引入bsp(board support package)板级支持包
+          - 将组件层 modules 改名为 components
+          - ezos进化为协作式RTOS, 支持优先级和信号量
+          - drv_systick 的 delay_us() 函数进行重大升级
+          - drv_spi 模拟SPI的 baud_rate 可为0
+          - 取消若干驱动, 原有驱动文件全部升级至V2.0.0
+          - fatfs 组件版本从 R0.07e 升级为 R0.09
+          - 新增 drv_sdcard、drv_spiflash、drv_lcd 文件夹
+          - 新增 drv_sdio 驱动
+          - 新增 drv_extint 驱动
+          - 新增 drv_spiflash 驱动
+          - 新增 drv_lcd 驱动
+
+V1.5.0    - 2011.12.22, mousie-yu
+          - 增加了drv_watchdog 驱动
+          - 增加了drv_spiflash 4线模式驱动，测试芯片为MX25L128。
+          - 将部分驱动的配置参数改为const属性
+          - 升级 STM32F10x_StdPeriph_Driver 软件库至V3.5.0
+          - drv_systick升级到V1.1.0，将延时函数改写为可重入函数.
+          - ezos_kernel升级到V1.3.1，修改了中断函数的宏定义方式.
+          - drv_uart升级到了V1.1.1, 修改了中断函数的宏定义方式.
+          - drv_sd升级到V1.2.0。增加了等待延时，支持创见SD_V2的卡. 修改CMD
+
+-V1.3.0   2011.9.16, mousie-yu
+          - drv_uart升级到V1.1.0。在写入写缓存时加了禁用中断。
+          - ezos_kernel增加了 EzosCheck() 函数，版本升级到V1.3.0。
+          - STM32F10x 固件库升级到V3.5.0
+
+-V1.2.2   2011.8.22, mousie-yu
+          - 该模板移植到项目ITT70使用过程中，发现Uart通讯不稳定。
+            drv_uart升级到V1.0.3。修正了写缓存与中断方式。
+          - 读取Cypress触摸芯片数据时时，I2C通讯出现bug。
+            drv_i2c升级到V1.0.3。修正了硬件I2C读数据后的应答，修正了软件模拟I2C，使其符合I2C规范。
+          - 修正了范例代码通过COM1口通讯显示的问题。
+          - 增加了drv_capsense 驱动。
+
+-V1.2.0   2010.11.1, mousie-yu
+          - 为了使移植第三方固件库更简单, 更改了一些目录文件. 尽量保证不需要去修改第三方的源代码.
+          - 改善了文件包含的形式
+          - 升级了底层驱动文件, 允许配置文件将驱动个数设置为0, 表示不使用该驱动模块
+            如可直接设置 #define KEY_NUM 0, 已禁用KEY驱动模块
+          - 升级 STM32F10x_StdPeriph_Driver 软件库至V3.4.0
+          - 必须在预定义宏中增加 USE_STDPERIPH_DRIVER 的宏定义
+
+-V1.1.2   2010.6.13, mousie-yu
+          - drv_screen升级到V1.0.1, 增加了快速刷屏的显示方式
+          - 当复用SPI时, 由于上层驱动使用的SPI速率不同, 固增加了SPI是否复用的宏定义选项
+            使能SPI复用一定不会出现功能错误, 但会略微影响性能
+          - 在Modules中增加了music文件, 支持部分MP3, WMA, MIDI, WAV音频格式, 解码使用VS1003b芯片
+          - 在Modules中增加了picture文件, 支持部分BMP, JPG图片格式, 使用STM32软件解码, 边解码边显示
+
+-V1.1.0   2010.6.6, mousie-yu
+          - 使用 STM32F10x_StdPeriph_Lib_V3.3.0
+          - 修改过 CMSIS 库中的 stm32f10x.h 文件. 搜索"此处修改过源文件"
+          - 增加 types.h 用于类型定义. configure.h 用于硬件配置
+          - 提供 RVMDK 和 IAR 的工程模板
+          - 提供 Uart, I2C, SPI, KEY, LED, CtrlPort, SysTick, RTC 驱动
+          - 提供 EEPROM, DataFlash, Screen 驱动
+          - 修改了 SD 卡的驱动, 支持所有类型的SD卡, 包括SDHC卡
+          - 提供 FAT 文件系统驱动. 使用 fatfs V0.7e 开源软件
+          - 提供 ezOS V1.2.1
+
+-V1.0.0   2010.3.25, mousie-yu
+          - 该模板属于最为基础的模板,
+            底层驱动的升级更新都将在此模板内维护
+          - 说明了STM32工程模板的层次结构
+          - 定义了各层的功能和权限

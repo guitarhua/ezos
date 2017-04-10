@@ -1,0 +1,341 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"GUIDEMO_ColorBar.c"
+  15              		.section	.text.GUIDEMO_ColorBar,"ax",%progbits
+  16              		.align	1
+  17              		.global	GUIDEMO_ColorBar
+  18              		.thumb
+  19              		.thumb_func
+  21              	GUIDEMO_ColorBar:
+  22              		@ args = 0, pretend = 0, frame = 80
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  25 0004 96B0     		sub	sp, sp, #88
+  26 0006 5022     		movs	r2, #80
+  27 0008 0021     		movs	r1, #0
+  28 000a 02A8     		add	r0, sp, #8
+  29 000c FFF7FEFF 		bl	memset
+  30 0010 FFF7FEFF 		bl	LCD_GetXSize
+  31 0014 0446     		mov	r4, r0
+  32 0016 FFF7FEFF 		bl	LCD_GetYSize
+  33 001a 8549     		ldr	r1, .L13
+  34 001c 0646     		mov	r6, r0
+  35 001e 8548     		ldr	r0, .L13+4
+  36 0020 FFF7FEFF 		bl	GUIDEMO_ShowIntro
+  37 0024 0120     		movs	r0, #1
+  38 0026 FFF7FEFF 		bl	GUIDEMO_DrawBk
+  39 002a 6FF07F40 		mvn	r0, #-16777216
+  40 002e FFF7FEFF 		bl	GUI_SetColor
+  41 0032 8148     		ldr	r0, .L13+8
+  42 0034 FFF7FEFF 		bl	GUI_SetFont
+  43 0038 6110     		asrs	r1, r4, #1
+  44 003a 0C22     		movs	r2, #12
+  45 003c 7F48     		ldr	r0, .L13+12
+  46 003e FFF7FEFF 		bl	GUI_DispStringHCenterAt
+  47 0042 7F48     		ldr	r0, .L13+16
+  48 0044 FFF7FEFF 		bl	GUI_SetFont
+  49 0048 7E48     		ldr	r0, .L13+20
+  50 004a 0121     		movs	r1, #1
+  51 004c 2B22     		movs	r2, #43
+  52 004e FFF7FEFF 		bl	GUI_DispStringAt
+  53 0052 7D48     		ldr	r0, .L13+24
+  54 0054 0121     		movs	r1, #1
+  55 0056 3F22     		movs	r2, #63
+  56 0058 FFF7FEFF 		bl	GUI_DispStringAt
+  57 005c 7B48     		ldr	r0, .L13+28
+  58 005e 0121     		movs	r1, #1
+  59 0060 5322     		movs	r2, #83
+  60 0062 FFF7FEFF 		bl	GUI_DispStringAt
+  61 0066 7A48     		ldr	r0, .L13+32
+  62 0068 0121     		movs	r1, #1
+  63 006a 6222     		movs	r2, #98
+  64 006c FFF7FEFF 		bl	GUI_DispStringAt
+  65 0070 7848     		ldr	r0, .L13+36
+  66 0072 0121     		movs	r1, #1
+  67 0074 7122     		movs	r2, #113
+  68 0076 FFF7FEFF 		bl	GUI_DispStringAt
+  69 007a 7748     		ldr	r0, .L13+40
+  70 007c 0121     		movs	r1, #1
+  71 007e 8522     		movs	r2, #133
+  72 0080 FFF7FEFF 		bl	GUI_DispStringAt
+  73 0084 9922     		movs	r2, #153
+  74 0086 0121     		movs	r1, #1
+  75 0088 7448     		ldr	r0, .L13+44
+  76 008a FFF7FEFF 		bl	GUI_DispStringAt
+  77 008e 7448     		ldr	r0, .L13+48
+  78 0090 FFF7FEFF 		bl	GUI_SetFont
+  79 0094 FFF7FEFF 		bl	LCD_GetBitsPerPixel
+  80 0098 0146     		mov	r1, r0
+  81 009a 02A8     		add	r0, sp, #8
+  82 009c FFF7FEFF 		bl	GUIDEMO_AddIntToString
+  83 00a0 02A8     		add	r0, sp, #8
+  84 00a2 7049     		ldr	r1, .L13+52
+  85 00a4 FFF7FEFF 		bl	GUIDEMO_AddStringToString
+  86 00a8 0920     		movs	r0, #9
+  87 00aa FFF7FEFF 		bl	LCD_GetDevCap
+  88 00ae 0546     		mov	r5, r0
+  89 00b0 58B1     		cbz	r0, .L2
+  90 00b2 02A8     		add	r0, sp, #8
+  91 00b4 6C49     		ldr	r1, .L13+56
+  92 00b6 FFF7FEFF 		bl	GUIDEMO_AddStringToString
+  93 00ba 02A8     		add	r0, sp, #8
+  94 00bc 2946     		mov	r1, r5
+  95 00be FFF7FEFF 		bl	GUIDEMO_AddIntToString
+  96 00c2 02A8     		add	r0, sp, #8
+  97 00c4 6949     		ldr	r1, .L13+60
+  98 00c6 FFF7FEFF 		bl	GUIDEMO_AddStringToString
+  99              	.L2:
+ 100 00ca 02A8     		add	r0, sp, #8
+ 101 00cc 0C21     		movs	r1, #12
+ 102 00ce A6F11902 		sub	r2, r6, #25
+ 103 00d2 FFF7FEFF 		bl	GUI_DispStringAt
+ 104 00d6 FFF7FEFF 		bl	GUIDEMO_GetTime
+ 105 00da DFF8A0A1 		ldr	r10, .L13+76
+ 106 00de 8046     		mov	r8, r0
+ 107 00e0 41F26F79 		movw	r9, #5999
+ 108              	.L3:
+ 109 00e4 4FF4FA66 		mov	r6, #2000
+ 110 00e8 4FF47A77 		mov	r7, #1000
+ 111              	.L5:
+ 112 00ec FFF7FEFF 		bl	GUIDEMO_GetTime
+ 113 00f0 C8EB0000 		rsb	r0, r8, r0
+ 114 00f4 4845     		cmp	r0, r9
+ 115 00f6 00F39880 		bgt	.L1
+ 116 00fa FFF7FEFF 		bl	GUIDEMO_CheckCancel
+ 117 00fe 0028     		cmp	r0, #0
+ 118 0100 40F09380 		bne	.L1
+ 119 0104 FFF7FEFF 		bl	GUIDEMO_GetTime
+ 120 0108 C8EB0000 		rsb	r0, r8, r0
+ 121 010c 90FBF6F5 		sdiv	r5, r0, r6
+ 122 0110 06FB1505 		mls	r5, r6, r5, r0
+ 123 0114 564A     		ldr	r2, .L13+64
+ 124 0116 95FBF7F3 		sdiv	r3, r5, r7
+ 125 011a 02FB0355 		mla	r5, r2, r3, r5
+ 126 011e B5F5FA7F 		cmp	r5, #500
+ 127 0122 E3DC     		bgt	.L5
+ 128 0124 FF27     		movs	r7, #255
+ 129 0126 7D43     		muls	r5, r7, r5
+ 130 0128 7B43     		muls	r3, r7, r3
+ 131 012a 4FF4FA72 		mov	r2, #500
+ 132 012e 95FBF2F5 		sdiv	r5, r5, r2
+ 133 0132 5D40     		eors	r5, r5, r3
+ 134 0134 0AFB05F5 		mul	r5, r10, r5
+ 135 0138 C5F1FF16 		rsb	r6, r5, #16711935
+ 136 013c 06F57F46 		add	r6, r6, #65280
+ 137 0140 0097     		str	r7, [sp]
+ 138 0142 2246     		mov	r2, r4
+ 139 0144 0195     		str	r5, [sp, #4]
+ 140 0146 3C20     		movs	r0, #60
+ 141 0148 2B21     		movs	r1, #43
+ 142 014a 3423     		movs	r3, #52
+ 143 014c FFF7FEFF 		bl	GUI_DrawGradientH
+ 144 0150 0097     		str	r7, [sp]
+ 145 0152 2246     		mov	r2, r4
+ 146 0154 4FF47F47 		mov	r7, #65280
+ 147 0158 0196     		str	r6, [sp, #4]
+ 148 015a 3C20     		movs	r0, #60
+ 149 015c 3521     		movs	r1, #53
+ 150 015e 3E23     		movs	r3, #62
+ 151 0160 FFF7FEFF 		bl	GUI_DrawGradientH
+ 152 0164 0097     		str	r7, [sp]
+ 153 0166 2246     		mov	r2, r4
+ 154 0168 0195     		str	r5, [sp, #4]
+ 155 016a 3C20     		movs	r0, #60
+ 156 016c 3F21     		movs	r1, #63
+ 157 016e 4823     		movs	r3, #72
+ 158 0170 FFF7FEFF 		bl	GUI_DrawGradientH
+ 159 0174 0097     		str	r7, [sp]
+ 160 0176 2246     		mov	r2, r4
+ 161 0178 4FF47F07 		mov	r7, #16711680
+ 162 017c 0196     		str	r6, [sp, #4]
+ 163 017e 3C20     		movs	r0, #60
+ 164 0180 4921     		movs	r1, #73
+ 165 0182 5223     		movs	r3, #82
+ 166 0184 FFF7FEFF 		bl	GUI_DrawGradientH
+ 167 0188 0097     		str	r7, [sp]
+ 168 018a 2246     		mov	r2, r4
+ 169 018c 0195     		str	r5, [sp, #4]
+ 170 018e 3C20     		movs	r0, #60
+ 171 0190 5321     		movs	r1, #83
+ 172 0192 5C23     		movs	r3, #92
+ 173 0194 FFF7FEFF 		bl	GUI_DrawGradientH
+ 174 0198 0097     		str	r7, [sp]
+ 175 019a 2246     		mov	r2, r4
+ 176 019c 0196     		str	r6, [sp, #4]
+ 177 019e 3C20     		movs	r0, #60
+ 178 01a0 5D21     		movs	r1, #93
+ 179 01a2 6623     		movs	r3, #102
+ 180 01a4 FFF7FEFF 		bl	GUI_DrawGradientH
+ 181 01a8 324B     		ldr	r3, .L13+68
+ 182 01aa 2246     		mov	r2, r4
+ 183 01ac 8DE82800 		stmia	sp, {r3, r5}
+ 184 01b0 4FF6FF77 		movw	r7, #65535
+ 185 01b4 3C20     		movs	r0, #60
+ 186 01b6 6721     		movs	r1, #103
+ 187 01b8 7023     		movs	r3, #112
+ 188 01ba FFF7FEFF 		bl	GUI_DrawGradientH
+ 189 01be 0097     		str	r7, [sp]
+ 190 01c0 2246     		mov	r2, r4
+ 191 01c2 0196     		str	r6, [sp, #4]
+ 192 01c4 3C20     		movs	r0, #60
+ 193 01c6 7121     		movs	r1, #113
+ 194 01c8 7A23     		movs	r3, #122
+ 195 01ca FFF7FEFF 		bl	GUI_DrawGradientH
+ 196 01ce 0097     		str	r7, [sp]
+ 197 01d0 294F     		ldr	r7, .L13+72
+ 198 01d2 2246     		mov	r2, r4
+ 199 01d4 0195     		str	r5, [sp, #4]
+ 200 01d6 3C20     		movs	r0, #60
+ 201 01d8 7B21     		movs	r1, #123
+ 202 01da 8423     		movs	r3, #132
+ 203 01dc FFF7FEFF 		bl	GUI_DrawGradientH
+ 204 01e0 0097     		str	r7, [sp]
+ 205 01e2 2246     		mov	r2, r4
+ 206 01e4 0196     		str	r6, [sp, #4]
+ 207 01e6 3C20     		movs	r0, #60
+ 208 01e8 8521     		movs	r1, #133
+ 209 01ea 8E23     		movs	r3, #142
+ 210 01ec FFF7FEFF 		bl	GUI_DrawGradientH
+ 211 01f0 0097     		str	r7, [sp]
+ 212 01f2 2246     		mov	r2, r4
+ 213 01f4 4FF0FF17 		mov	r7, #16711935
+ 214 01f8 0195     		str	r5, [sp, #4]
+ 215 01fa 3C20     		movs	r0, #60
+ 216 01fc 8F21     		movs	r1, #143
+ 217 01fe 9823     		movs	r3, #152
+ 218 0200 FFF7FEFF 		bl	GUI_DrawGradientH
+ 219 0204 2246     		mov	r2, r4
+ 220 0206 0097     		str	r7, [sp]
+ 221 0208 0196     		str	r6, [sp, #4]
+ 222 020a 3C20     		movs	r0, #60
+ 223 020c 9921     		movs	r1, #153
+ 224 020e A223     		movs	r3, #162
+ 225 0210 FFF7FEFF 		bl	GUI_DrawGradientH
+ 226 0214 A321     		movs	r1, #163
+ 227 0216 2246     		mov	r2, r4
+ 228 0218 AC23     		movs	r3, #172
+ 229 021a 0097     		str	r7, [sp]
+ 230 021c 0195     		str	r5, [sp, #4]
+ 231 021e 3C20     		movs	r0, #60
+ 232 0220 FFF7FEFF 		bl	GUI_DrawGradientH
+ 233 0224 FFF7FEFF 		bl	GUI_Exec
+ 234 0228 5CE7     		b	.L3
+ 235              	.L1:
+ 236 022a 16B0     		add	sp, sp, #88
+ 237              		@ sp needed
+ 238 022c BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 239              	.L14:
+ 240              		.align	2
+ 241              	.L13:
+ 242 0230 0A000000 		.word	.LC1
+ 243 0234 00000000 		.word	.LC0
+ 244 0238 00000000 		.word	GUI_FontRounded22
+ 245 023c 83000000 		.word	.LC2
+ 246 0240 00000000 		.word	GUI_Font16_ASCII
+ 247 0244 8E000000 		.word	.LC3
+ 248 0248 92000000 		.word	.LC4
+ 249 024c 98000000 		.word	.LC5
+ 250 0250 9D000000 		.word	.LC6
+ 251 0254 A2000000 		.word	.LC7
+ 252 0258 A9000000 		.word	.LC8
+ 253 025c AE000000 		.word	.LC9
+ 254 0260 00000000 		.word	GUI_Font8_ASCII
+ 255 0264 B6000000 		.word	.LC10
+ 256 0268 BB000000 		.word	.LC11
+ 257 026c BE000000 		.word	.LC12
+ 258 0270 18FCFFFF 		.word	-1000
+ 259 0274 80808000 		.word	8421504
+ 260 0278 00FFFF00 		.word	16776960
+ 261 027c 01010100 		.word	65793
+ 263              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 264              	.LC0:
+ 265 0000 436F6C6F 		.ascii	"Color bar\000"
+ 265      72206261 
+ 265      7200
+ 266              	.LC1:
+ 267 000a 5354656D 		.ascii	"STemWin features an integrated\012color management "
+ 267      57696E20 
+ 267      66656174 
+ 267      75726573 
+ 267      20616E20 
+ 268 003a 77686963 		.ascii	"which automatically finds\012the best available col"
+ 268      68206175 
+ 268      746F6D61 
+ 268      74696361 
+ 268      6C6C7920 
+ 269 006a 6F722066 		.ascii	"or for any logical color\000"
+ 269      6F722061 
+ 269      6E79206C 
+ 269      6F676963 
+ 269      616C2063 
+ 270              	.LC2:
+ 271 0083 436F6C6F 		.ascii	"Color bars\000"
+ 271      72206261 
+ 271      727300
+ 272              	.LC3:
+ 273 008e 52656400 		.ascii	"Red\000"
+ 274              	.LC4:
+ 275 0092 47726565 		.ascii	"Green\000"
+ 275      6E00
+ 276              	.LC5:
+ 277 0098 426C7565 		.ascii	"Blue\000"
+ 277      00
+ 278              	.LC6:
+ 279 009d 47726579 		.ascii	"Grey\000"
+ 279      00
+ 280              	.LC7:
+ 281 00a2 59656C6C 		.ascii	"Yellow\000"
+ 281      6F7700
+ 282              	.LC8:
+ 283 00a9 4379616E 		.ascii	"Cyan\000"
+ 283      00
+ 284              	.LC9:
+ 285 00ae 4D616765 		.ascii	"Magenta\000"
+ 285      6E746100 
+ 286              	.LC10:
+ 287 00b6 20627070 		.ascii	" bpp\000"
+ 287      00
+ 288              	.LC11:
+ 289 00bb 2C2000   		.ascii	", \000"
+ 290              	.LC12:
+ 291 00be 20636F6C 		.ascii	" colors\000"
+ 291      6F727300 
+ 292              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 GUIDEMO_ColorBar.c
+D:\Users\draapho\AppData\Local\Temp\ccQI4ina.s:16     .text.GUIDEMO_ColorBar:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQI4ina.s:21     .text.GUIDEMO_ColorBar:00000000 GUIDEMO_ColorBar
+D:\Users\draapho\AppData\Local\Temp\ccQI4ina.s:242    .text.GUIDEMO_ColorBar:00000230 $d
+
+UNDEFINED SYMBOLS
+memset
+LCD_GetXSize
+LCD_GetYSize
+GUIDEMO_ShowIntro
+GUIDEMO_DrawBk
+GUI_SetColor
+GUI_SetFont
+GUI_DispStringHCenterAt
+GUI_DispStringAt
+LCD_GetBitsPerPixel
+GUIDEMO_AddIntToString
+GUIDEMO_AddStringToString
+LCD_GetDevCap
+GUIDEMO_GetTime
+GUIDEMO_CheckCancel
+GUI_DrawGradientH
+GUI_Exec
+GUI_FontRounded22
+GUI_Font16_ASCII
+GUI_Font8_ASCII

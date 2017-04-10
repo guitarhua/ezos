@@ -1,0 +1,252 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_fatfs.c"
+  15              		.section	.text.task_fatfs_test,"ax",%progbits
+  16              		.align	1
+  17              		.global	task_fatfs_test
+  18              		.thumb
+  19              		.thumb_func
+  21              	task_fatfs_test:
+  22              		@ args = 0, pretend = 0, frame = 648
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 70B5     		push	{r4, r5, r6, lr}
+  25 0002 4FF48060 		mov	r0, #1024
+  26 0006 ADF5227D 		sub	sp, sp, #648
+  27 000a FFF7FEFF 		bl	malloc
+  28 000e 0546     		mov	r5, r0
+  29 0010 0028     		cmp	r0, #0
+  30 0012 77D0     		beq	.L2
+  31 0014 3F49     		ldr	r1, .L14
+  32 0016 0020     		movs	r0, #0
+  33 0018 FFF7FEFF 		bl	uart_printf
+  34 001c FFF7FEFF 		bl	sdcard_init
+  35 0020 14A9     		add	r1, sp, #80
+  36 0022 0020     		movs	r0, #0
+  37 0024 FFF7FEFF 		bl	f_mount
+  38 0028 3B49     		ldr	r1, .L14+4
+  39 002a 0246     		mov	r2, r0
+  40 002c 0020     		movs	r0, #0
+  41 002e FFF7FEFF 		bl	uart_printf
+  42 0032 0020     		movs	r0, #0
+  43 0034 3949     		ldr	r1, .L14+8
+  44 0036 FFF7FEFF 		bl	uart_printf
+  45 003a 0121     		movs	r1, #1
+  46 003c 4FF48052 		mov	r2, #4096
+  47 0040 0020     		movs	r0, #0
+  48 0042 FFF7FEFF 		bl	f_mkfs
+  49 0046 3649     		ldr	r1, .L14+12
+  50 0048 0246     		mov	r2, r0
+  51 004a 0020     		movs	r0, #0
+  52 004c FFF7FEFF 		bl	uart_printf
+  53 0050 3448     		ldr	r0, .L14+16
+  54 0052 FFF7FEFF 		bl	f_mkdir
+  55 0056 3449     		ldr	r1, .L14+20
+  56 0058 0246     		mov	r2, r0
+  57 005a 0020     		movs	r0, #0
+  58 005c FFF7FEFF 		bl	uart_printf
+  59 0060 3249     		ldr	r1, .L14+24
+  60 0062 0A22     		movs	r2, #10
+  61 0064 0BA8     		add	r0, sp, #44
+  62 0066 FFF7FEFF 		bl	f_open
+  63 006a 3149     		ldr	r1, .L14+28
+  64 006c 0246     		mov	r2, r0
+  65 006e 0020     		movs	r0, #0
+  66 0070 FFF7FEFF 		bl	uart_printf
+  67 0074 0023     		movs	r3, #0
+  68              	.L4:
+  69 0076 EB54     		strb	r3, [r5, r3]
+  70 0078 0133     		adds	r3, r3, #1
+  71 007a B3F5806F 		cmp	r3, #1024
+  72 007e FAD1     		bne	.L4
+  73 0080 FFF7FEFF 		bl	delay_tick_get
+  74 0084 6424     		movs	r4, #100
+  75 0086 0646     		mov	r6, r0
+  76              	.L6:
+  77 0088 0BA8     		add	r0, sp, #44
+  78 008a 2946     		mov	r1, r5
+  79 008c 4FF48062 		mov	r2, #1024
+  80 0090 01AB     		add	r3, sp, #4
+  81 0092 FFF7FEFF 		bl	f_write
+  82 0096 013C     		subs	r4, r4, #1
+  83 0098 F6D1     		bne	.L6
+  84 009a FFF7FEFF 		bl	delay_tick_get
+  85 009e 2549     		ldr	r1, .L14+32
+  86 00a0 821B     		subs	r2, r0, r6
+  87 00a2 2046     		mov	r0, r4
+  88 00a4 FFF7FEFF 		bl	uart_printf
+  89 00a8 0BA8     		add	r0, sp, #44
+  90 00aa FFF7FEFF 		bl	f_close
+  91 00ae 2249     		ldr	r1, .L14+36
+  92 00b0 0246     		mov	r2, r0
+  93 00b2 2046     		mov	r0, r4
+  94 00b4 FFF7FEFF 		bl	uart_printf
+  95 00b8 1C49     		ldr	r1, .L14+24
+  96 00ba 0122     		movs	r2, #1
+  97 00bc 02A8     		add	r0, sp, #8
+  98 00be FFF7FEFF 		bl	f_open
+  99 00c2 1B49     		ldr	r1, .L14+28
+ 100 00c4 0246     		mov	r2, r0
+ 101 00c6 2046     		mov	r0, r4
+ 102 00c8 FFF7FEFF 		bl	uart_printf
+ 103 00cc FFF7FEFF 		bl	delay_tick_get
+ 104 00d0 6424     		movs	r4, #100
+ 105 00d2 0646     		mov	r6, r0
+ 106              	.L8:
+ 107 00d4 02A8     		add	r0, sp, #8
+ 108 00d6 2946     		mov	r1, r5
+ 109 00d8 4FF48062 		mov	r2, #1024
+ 110 00dc 01AB     		add	r3, sp, #4
+ 111 00de FFF7FEFF 		bl	f_read
+ 112 00e2 013C     		subs	r4, r4, #1
+ 113 00e4 F6D1     		bne	.L8
+ 114 00e6 FFF7FEFF 		bl	delay_tick_get
+ 115 00ea 1449     		ldr	r1, .L14+40
+ 116 00ec 821B     		subs	r2, r0, r6
+ 117 00ee 2046     		mov	r0, r4
+ 118 00f0 FFF7FEFF 		bl	uart_printf
+ 119 00f4 02A8     		add	r0, sp, #8
+ 120 00f6 FFF7FEFF 		bl	f_close
+ 121 00fa 0F49     		ldr	r1, .L14+36
+ 122 00fc 0246     		mov	r2, r0
+ 123 00fe 2046     		mov	r0, r4
+ 124 0100 FFF7FEFF 		bl	uart_printf
+ 125              	.L2:
+ 126 0104 2846     		mov	r0, r5
+ 127 0106 0DF5227D 		add	sp, sp, #648
+ 128              		@ sp needed
+ 129 010a BDE87040 		pop	{r4, r5, r6, lr}
+ 130 010e FFF7FEBF 		b	free
+ 131              	.L15:
+ 132 0112 00BF     		.align	2
+ 133              	.L14:
+ 134 0114 00000000 		.word	.LC0
+ 135 0118 1D000000 		.word	.LC1
+ 136 011c 2B000000 		.word	.LC2
+ 137 0120 4D000000 		.word	.LC3
+ 138 0124 5A000000 		.word	.LC4
+ 139 0128 63000000 		.word	.LC5
+ 140 012c 73000000 		.word	.LC6
+ 141 0130 85000000 		.word	.LC7
+ 142 0134 92000000 		.word	.LC8
+ 143 0138 B6000000 		.word	.LC9
+ 144 013c C6000000 		.word	.LC10
+ 146              		.section	.text.fatfs_start,"ax",%progbits
+ 147              		.align	1
+ 148              		.global	fatfs_start
+ 149              		.thumb
+ 150              		.thumb_func
+ 152              	fatfs_start:
+ 153              		@ args = 0, pretend = 0, frame = 0
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155 0000 07B5     		push	{r0, r1, r2, lr}
+ 156 0002 FFF7FEFF 		bl	sdcard_port_init
+ 157 0006 0548     		ldr	r0, .L17
+ 158 0008 0022     		movs	r2, #0
+ 159 000a 0223     		movs	r3, #2
+ 160 000c 0093     		str	r3, [sp]
+ 161 000e 0146     		mov	r1, r0
+ 162 0010 1346     		mov	r3, r2
+ 163 0012 FFF7FEFF 		bl	ezos_add
+ 164 0016 03B0     		add	sp, sp, #12
+ 165              		@ sp needed
+ 166 0018 5DF804FB 		ldr	pc, [sp], #4
+ 167              	.L18:
+ 168              		.align	2
+ 169              	.L17:
+ 170 001c 00000000 		.word	task_fatfs_test
+ 172              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 173              	.LC0:
+ 174 0000 0D0A0D0A 		.ascii	"\015\012\015\012===== fatfs test =====\015\012\000"
+ 174      3D3D3D3D 
+ 174      3D206661 
+ 174      74667320 
+ 174      74657374 
+ 175              	.LC1:
+ 176 001d 665F6D6F 		.ascii	"f_mount: %u\015\012\000"
+ 176      756E743A 
+ 176      2025750D 
+ 176      0A00
+ 177              	.LC2:
+ 178 002b 73746172 		.ascii	"start format sd, please wait...\015\012\000"
+ 178      7420666F 
+ 178      726D6174 
+ 178      2073642C 
+ 178      20706C65 
+ 179              	.LC3:
+ 180 004d 665F6D6B 		.ascii	"f_mkfs: %u\015\012\000"
+ 180      66733A20 
+ 180      25750D0A 
+ 180      00
+ 181              	.LC4:
+ 182 005a 303A2F68 		.ascii	"0:/hello\000"
+ 182      656C6C6F 
+ 182      00
+ 183              	.LC5:
+ 184 0063 665F6D6B 		.ascii	"f_mkdir: %u\015\012\015\012\000"
+ 184      6469723A 
+ 184      2025750D 
+ 184      0A0D0A00 
+ 185              	.LC6:
+ 186 0073 303A2F68 		.ascii	"0:/hello/test.bin\000"
+ 186      656C6C6F 
+ 186      2F746573 
+ 186      742E6269 
+ 186      6E00
+ 187              	.LC7:
+ 188 0085 665F6F70 		.ascii	"f_open: %u\015\012\000"
+ 188      656E3A20 
+ 188      25750D0A 
+ 188      00
+ 189              	.LC8:
+ 190 0092 66617466 		.ascii	"fatfs write 100K bytes used %u ms\015\012\000"
+ 190      73207772 
+ 190      69746520 
+ 190      3130304B 
+ 190      20627974 
+ 191              	.LC9:
+ 192 00b6 665F636C 		.ascii	"f_close: %u\015\012\015\012\000"
+ 192      6F73653A 
+ 192      2025750D 
+ 192      0A0D0A00 
+ 193              	.LC10:
+ 194 00c6 66617466 		.ascii	"fatfs read 100K bytes used %u ms\015\012\000"
+ 194      73207265 
+ 194      61642031 
+ 194      30304B20 
+ 194      62797465 
+ 195              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_fatfs.c
+D:\Users\draapho\AppData\Local\Temp\ccUNHVZj.s:16     .text.task_fatfs_test:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccUNHVZj.s:21     .text.task_fatfs_test:00000000 task_fatfs_test
+D:\Users\draapho\AppData\Local\Temp\ccUNHVZj.s:134    .text.task_fatfs_test:00000114 $d
+D:\Users\draapho\AppData\Local\Temp\ccUNHVZj.s:147    .text.fatfs_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccUNHVZj.s:152    .text.fatfs_start:00000000 fatfs_start
+D:\Users\draapho\AppData\Local\Temp\ccUNHVZj.s:170    .text.fatfs_start:0000001c $d
+
+UNDEFINED SYMBOLS
+malloc
+uart_printf
+sdcard_init
+f_mount
+f_mkfs
+f_mkdir
+f_open
+delay_tick_get
+f_write
+f_close
+f_read
+free
+sdcard_port_init
+ezos_add

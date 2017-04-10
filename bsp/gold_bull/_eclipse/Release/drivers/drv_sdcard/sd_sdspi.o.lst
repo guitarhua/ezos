@@ -1,0 +1,947 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"sd_sdspi.c"
+  15              		.section	.text.sd_cs_disable,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	sd_cs_disable:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23              		@ link register save eliminated.
+  24 0000 0148     		ldr	r0, .L2
+  25 0002 1021     		movs	r1, #16
+  26 0004 FFF7FEBF 		b	GPIO_SetBits
+  27              	.L3:
+  28              		.align	2
+  29              	.L2:
+  30 0008 00080140 		.word	1073809408
+  32              		.section	.text.sd_cs_enable,"ax",%progbits
+  33              		.align	1
+  34              		.thumb
+  35              		.thumb_func
+  37              	sd_cs_enable:
+  38              		@ args = 0, pretend = 0, frame = 0
+  39              		@ frame_needed = 0, uses_anonymous_args = 0
+  40              		@ link register save eliminated.
+  41 0000 0148     		ldr	r0, .L5
+  42 0002 1021     		movs	r1, #16
+  43 0004 FFF7FEBF 		b	GPIO_ResetBits
+  44              	.L6:
+  45              		.align	2
+  46              	.L5:
+  47 0008 00080140 		.word	1073809408
+  49              		.section	.text.sd_spi_tx_rx_byte,"ax",%progbits
+  50              		.align	1
+  51              		.thumb
+  52              		.thumb_func
+  54              	sd_spi_tx_rx_byte:
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57              		@ link register save eliminated.
+  58 0000 0146     		mov	r1, r0
+  59 0002 0020     		movs	r0, #0
+  60 0004 FFF7FEBF 		b	spi_tx_rx_byte
+  62              		.section	.text.sd_send_cmd,"ax",%progbits
+  63              		.align	1
+  64              		.thumb
+  65              		.thumb_func
+  67              	sd_send_cmd:
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70 0000 38B5     		push	{r3, r4, r5, lr}
+  71 0002 0546     		mov	r5, r0
+  72 0004 FF20     		movs	r0, #255
+  73 0006 0C46     		mov	r4, r1
+  74 0008 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+  75 000c 45F04000 		orr	r0, r5, #64
+  76 0010 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+  77 0014 200E     		lsrs	r0, r4, #24
+  78 0016 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+  79 001a C4F30740 		ubfx	r0, r4, #16, #8
+  80 001e FFF7FEFF 		bl	sd_spi_tx_rx_byte
+  81 0022 C4F30720 		ubfx	r0, r4, #8, #8
+  82 0026 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+  83 002a E0B2     		uxtb	r0, r4
+  84 002c FFF7FEFF 		bl	sd_spi_tx_rx_byte
+  85 0030 1DB1     		cbz	r5, .L10
+  86 0032 082D     		cmp	r5, #8
+  87 0034 06D1     		bne	.L19
+  88 0036 8720     		movs	r0, #135
+  89 0038 00E0     		b	.L17
+  90              	.L10:
+  91 003a 9520     		movs	r0, #149
+  92              	.L17:
+  93 003c FFF7FEFF 		bl	sd_spi_tx_rx_byte
+  94 0040 0A24     		movs	r4, #10
+  95 0042 05E0     		b	.L12
+  96              	.L19:
+  97 0044 FF20     		movs	r0, #255
+  98 0046 F9E7     		b	.L17
+  99              	.L20:
+ 100 0048 013C     		subs	r4, r4, #1
+ 101 004a 14F0FF04 		ands	r4, r4, #255
+ 102 004e 04D0     		beq	.L14
+ 103              	.L12:
+ 104 0050 FF20     		movs	r0, #255
+ 105 0052 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 106 0056 FF28     		cmp	r0, #255
+ 107 0058 F6D0     		beq	.L20
+ 108              	.L14:
+ 109 005a 38BD     		pop	{r3, r4, r5, pc}
+ 111              		.section	.text.sdspi_port_init,"ax",%progbits
+ 112              		.align	1
+ 113              		.global	sdspi_port_init
+ 114              		.thumb
+ 115              		.thumb_func
+ 117              	sdspi_port_init:
+ 118              		@ args = 0, pretend = 0, frame = 8
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120 0000 07B5     		push	{r0, r1, r2, lr}
+ 121 0002 3822     		movs	r2, #56
+ 122 0004 0020     		movs	r0, #0
+ 123 0006 8621     		movs	r1, #134
+ 124 0008 FFF7FEFF 		bl	spi_init
+ 125 000c 0420     		movs	r0, #4
+ 126 000e 0121     		movs	r1, #1
+ 127 0010 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 128 0014 1023     		movs	r3, #16
+ 129 0016 02A9     		add	r1, sp, #8
+ 130 0018 0322     		movs	r2, #3
+ 131 001a 21F8043D 		strh	r3, [r1, #-4]!	@ movhi
+ 132 001e 0648     		ldr	r0, .L22
+ 133 0020 8DF80730 		strb	r3, [sp, #7]
+ 134 0024 8DF80620 		strb	r2, [sp, #6]
+ 135 0028 FFF7FEFF 		bl	GPIO_Init
+ 136 002c FFF7FEFF 		bl	sd_cs_disable
+ 137 0030 03B0     		add	sp, sp, #12
+ 138              		@ sp needed
+ 139 0032 5DF804FB 		ldr	pc, [sp], #4
+ 140              	.L23:
+ 141 0036 00BF     		.align	2
+ 142              	.L22:
+ 143 0038 00080140 		.word	1073809408
+ 145              		.section	.text.sdspi_init,"ax",%progbits
+ 146              		.align	1
+ 147              		.global	sdspi_init
+ 148              		.thumb
+ 149              		.thumb_func
+ 151              	sdspi_init:
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 154 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 155 0004 0346     		mov	r3, r0
+ 156 0006 644D     		ldr	r5, .L65
+ 157 0008 C0F30800 		ubfx	r0, r0, #0, #9
+ 158 000c 0422     		movs	r2, #4
+ 159 000e 80B2     		uxth	r0, r0
+ 160 0010 2A70     		strb	r2, [r5]
+ 161 0012 0028     		cmp	r0, #0
+ 162 0014 4AD1     		bne	.L49
+ 163 0016 B3F5006F 		cmp	r3, #2048
+ 164 001a 47D8     		bhi	.L49
+ 165 001c 5F4F     		ldr	r7, .L65+4
+ 166 001e 604A     		ldr	r2, .L65+8
+ 167 0020 3B80     		strh	r3, [r7]	@ movhi
+ 168 0022 5B0A     		lsrs	r3, r3, #9
+ 169 0024 0833     		adds	r3, r3, #8
+ 170 0026 1370     		strb	r3, [r2]
+ 171 0028 8621     		movs	r1, #134
+ 172 002a 3822     		movs	r2, #56
+ 173 002c FFF7FEFF 		bl	spi_init
+ 174 0030 0A24     		movs	r4, #10
+ 175              	.L27:
+ 176 0032 013C     		subs	r4, r4, #1
+ 177 0034 FF20     		movs	r0, #255
+ 178 0036 A4B2     		uxth	r4, r4
+ 179 0038 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 180 003c 002C     		cmp	r4, #0
+ 181 003e F8D1     		bne	.L27
+ 182 0040 FFF7FEFF 		bl	sd_cs_enable
+ 183 0044 4FF4FA76 		mov	r6, #500
+ 184              	.L31:
+ 185 0048 0120     		movs	r0, #1
+ 186 004a FFF7FEFF 		bl	delay_ms
+ 187 004e 0020     		movs	r0, #0
+ 188 0050 0146     		mov	r1, r0
+ 189 0052 FFF7FEFF 		bl	sd_send_cmd
+ 190 0056 0128     		cmp	r0, #1
+ 191 0058 0446     		mov	r4, r0
+ 192 005a 04D0     		beq	.L28
+ 193 005c 013E     		subs	r6, r6, #1
+ 194 005e B6B2     		uxth	r6, r6
+ 195 0060 002E     		cmp	r6, #0
+ 196 0062 F1D1     		bne	.L31
+ 197 0064 16E0     		b	.L62
+ 198              	.L28:
+ 199 0066 0820     		movs	r0, #8
+ 200 0068 4FF4D571 		mov	r1, #426
+ 201 006c FFF7FEFF 		bl	sd_send_cmd
+ 202 0070 0128     		cmp	r0, #1
+ 203 0072 1DD0     		beq	.L40
+ 204 0074 0528     		cmp	r0, #5
+ 205 0076 0ED1     		bne	.L30
+ 206 0078 FF20     		movs	r0, #255
+ 207 007a FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 208 007e 4FF4FA76 		mov	r6, #500
+ 209              	.L36:
+ 210 0082 0120     		movs	r0, #1
+ 211 0084 FFF7FEFF 		bl	delay_ms
+ 212 0088 3720     		movs	r0, #55
+ 213 008a 0021     		movs	r1, #0
+ 214 008c FFF7FEFF 		bl	sd_send_cmd
+ 215 0090 0128     		cmp	r0, #1
+ 216 0092 5CD0     		beq	.L64
+ 217              	.L62:
+ 218 0094 0124     		movs	r4, #1
+ 219              	.L30:
+ 220 0096 FFF7FEFF 		bl	sd_cs_disable
+ 221 009a FF20     		movs	r0, #255
+ 222 009c FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 223 00a0 0020     		movs	r0, #0
+ 224 00a2 8621     		movs	r1, #134
+ 225 00a4 0822     		movs	r2, #8
+ 226 00a6 FFF7FEFF 		bl	spi_init
+ 227 00aa 71E0     		b	.L58
+ 228              	.L49:
+ 229 00ac 0124     		movs	r4, #1
+ 230 00ae 6FE0     		b	.L58
+ 231              	.L40:
+ 232 00b0 FF20     		movs	r0, #255
+ 233 00b2 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 234 00b6 FF20     		movs	r0, #255
+ 235 00b8 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 236 00bc FF20     		movs	r0, #255
+ 237 00be FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 238 00c2 0002     		lsls	r0, r0, #8
+ 239 00c4 84B2     		uxth	r4, r0
+ 240 00c6 FF20     		movs	r0, #255
+ 241 00c8 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 242 00cc 2043     		orrs	r0, r0, r4
+ 243 00ce 84B2     		uxth	r4, r0
+ 244 00d0 B4F5D57F 		cmp	r4, #426
+ 245 00d4 DED1     		bne	.L62
+ 246 00d6 4FF4FA74 		mov	r4, #500
+ 247              	.L44:
+ 248 00da 0120     		movs	r0, #1
+ 249 00dc FFF7FEFF 		bl	delay_ms
+ 250 00e0 3720     		movs	r0, #55
+ 251 00e2 0021     		movs	r1, #0
+ 252 00e4 FFF7FEFF 		bl	sd_send_cmd
+ 253 00e8 0128     		cmp	r0, #1
+ 254 00ea 0646     		mov	r6, r0
+ 255 00ec D2D1     		bne	.L62
+ 256 00ee 4FF08041 		mov	r1, #1073741824
+ 257 00f2 2920     		movs	r0, #41
+ 258 00f4 FFF7FEFF 		bl	sd_send_cmd
+ 259 00f8 0146     		mov	r1, r0
+ 260 00fa 28B1     		cbz	r0, .L41
+ 261 00fc 013C     		subs	r4, r4, #1
+ 262 00fe A4B2     		uxth	r4, r4
+ 263 0100 002C     		cmp	r4, #0
+ 264 0102 EAD1     		bne	.L44
+ 265              	.L47:
+ 266 0104 0124     		movs	r4, #1
+ 267 0106 19E0     		b	.L43
+ 268              	.L41:
+ 269 0108 3A20     		movs	r0, #58
+ 270 010a FFF7FEFF 		bl	sd_send_cmd
+ 271 010e 0446     		mov	r4, r0
+ 272 0110 0028     		cmp	r0, #0
+ 273 0112 F7D1     		bne	.L47
+ 274 0114 FF20     		movs	r0, #255
+ 275 0116 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 276 011a 8046     		mov	r8, r0
+ 277 011c FF20     		movs	r0, #255
+ 278 011e FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 279 0122 FF20     		movs	r0, #255
+ 280 0124 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 281 0128 FF20     		movs	r0, #255
+ 282 012a FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 283 012e 08F04000 		and	r0, r8, #64
+ 284 0132 00F0FF03 		and	r3, r0, #255
+ 285 0136 40B3     		cbz	r0, .L45
+ 286 0138 0223     		movs	r3, #2
+ 287 013a 2B70     		strb	r3, [r5]
+ 288              	.L43:
+ 289 013c 1020     		movs	r0, #16
+ 290 013e 3988     		ldrh	r1, [r7]
+ 291 0140 FFF7FEFF 		bl	sd_send_cmd
+ 292 0144 0028     		cmp	r0, #0
+ 293 0146 A6D0     		beq	.L30
+ 294 0148 0423     		movs	r3, #4
+ 295 014a 2B70     		strb	r3, [r5]
+ 296 014c A2E7     		b	.L62
+ 297              	.L64:
+ 298 014e 2920     		movs	r0, #41
+ 299 0150 0021     		movs	r1, #0
+ 300 0152 FFF7FEFF 		bl	sd_send_cmd
+ 301 0156 90B1     		cbz	r0, .L34
+ 302 0158 013E     		subs	r6, r6, #1
+ 303 015a B6B2     		uxth	r6, r6
+ 304 015c 002E     		cmp	r6, #0
+ 305 015e 90D1     		bne	.L36
+ 306 0160 4FF4FA76 		mov	r6, #500
+ 307              	.L39:
+ 308 0164 0120     		movs	r0, #1
+ 309 0166 FFF7FEFF 		bl	delay_ms
+ 310 016a 0120     		movs	r0, #1
+ 311 016c 0021     		movs	r1, #0
+ 312 016e FFF7FEFF 		bl	sd_send_cmd
+ 313 0172 30B1     		cbz	r0, .L37
+ 314 0174 013E     		subs	r6, r6, #1
+ 315 0176 B6B2     		uxth	r6, r6
+ 316 0178 002E     		cmp	r6, #0
+ 317 017a F3D1     		bne	.L39
+ 318 017c C2E7     		b	.L47
+ 319              	.L34:
+ 320 017e 2870     		strb	r0, [r5]
+ 321 0180 01E0     		b	.L60
+ 322              	.L37:
+ 323 0182 0323     		movs	r3, #3
+ 324 0184 2B70     		strb	r3, [r5]
+ 325              	.L60:
+ 326 0186 0446     		mov	r4, r0
+ 327 0188 D8E7     		b	.L43
+ 328              	.L45:
+ 329 018a 2E70     		strb	r6, [r5]
+ 330 018c 1C46     		mov	r4, r3
+ 331 018e D5E7     		b	.L43
+ 332              	.L58:
+ 333 0190 2046     		mov	r0, r4
+ 334 0192 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 335              	.L66:
+ 336 0196 00BF     		.align	2
+ 337              	.L65:
+ 338 0198 00000000 		.word	.LANCHOR0
+ 339 019c 00000000 		.word	.LANCHOR1
+ 340 01a0 00000000 		.word	.LANCHOR2
+ 342              		.global	__aeabi_llsl
+ 343              		.section	.text.sdspi_get_info,"ax",%progbits
+ 344              		.align	1
+ 345              		.global	sdspi_get_info
+ 346              		.thumb
+ 347              		.thumb_func
+ 349              	sdspi_get_info:
+ 350              		@ args = 0, pretend = 0, frame = 0
+ 351              		@ frame_needed = 0, uses_anonymous_args = 0
+ 352 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 353 0004 5A4B     		ldr	r3, .L112
+ 354 0006 0446     		mov	r4, r0
+ 355 0008 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 356 000a 9846     		mov	r8, r3
+ 357 000c 042A     		cmp	r2, #4
+ 358 000e 47D0     		beq	.L69
+ 359 0010 FFF7FEFF 		bl	sd_cs_enable
+ 360 0014 0A20     		movs	r0, #10
+ 361 0016 0021     		movs	r1, #0
+ 362 0018 FFF7FEFF 		bl	sd_send_cmd
+ 363 001c 0028     		cmp	r0, #0
+ 364 001e 3FD1     		bne	.L69
+ 365 0020 4FF4FA75 		mov	r5, #500
+ 366              	.L71:
+ 367 0024 0120     		movs	r0, #1
+ 368 0026 FFF7FEFF 		bl	delay_ms
+ 369 002a FF20     		movs	r0, #255
+ 370 002c FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 371 0030 FE28     		cmp	r0, #254
+ 372 0032 04D0     		beq	.L70
+ 373 0034 013D     		subs	r5, r5, #1
+ 374 0036 ADB2     		uxth	r5, r5
+ 375 0038 002D     		cmp	r5, #0
+ 376 003a F3D1     		bne	.L71
+ 377 003c 30E0     		b	.L69
+ 378              	.L70:
+ 379 003e 2546     		mov	r5, r4
+ 380 0040 6026     		movs	r6, #96
+ 381              	.L82:
+ 382 0042 2F1B     		subs	r7, r5, r4
+ 383 0044 BFB2     		uxth	r7, r7
+ 384 0046 FF20     		movs	r0, #255
+ 385 0048 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 386 004c 0E2F     		cmp	r7, #14
+ 387 004e 20D8     		bhi	.L72
+ 388 0050 DFE807F0 		tbb	[pc, r7]
+ 389              	.L74:
+ 390 0054 08       		.byte	(.L73-.L74)/2
+ 391 0055 0A       		.byte	(.L75-.L74)/2
+ 392 0056 0A       		.byte	(.L75-.L74)/2
+ 393 0057 0C       		.byte	(.L76-.L74)/2
+ 394 0058 0C       		.byte	(.L76-.L74)/2
+ 395 0059 0C       		.byte	(.L76-.L74)/2
+ 396 005a 0C       		.byte	(.L76-.L74)/2
+ 397 005b 0C       		.byte	(.L76-.L74)/2
+ 398 005c 0E       		.byte	(.L77-.L74)/2
+ 399 005d 10       		.byte	(.L78-.L74)/2
+ 400 005e 10       		.byte	(.L78-.L74)/2
+ 401 005f 10       		.byte	(.L78-.L74)/2
+ 402 0060 10       		.byte	(.L78-.L74)/2
+ 403 0061 15       		.byte	(.L79-.L74)/2
+ 404 0062 18       		.byte	(.L80-.L74)/2
+ 405 0063 00       		.align	1
+ 406              	.L73:
+ 407 0064 6070     		strb	r0, [r4, #1]
+ 408 0066 14E0     		b	.L72
+ 409              	.L75:
+ 410 0068 6870     		strb	r0, [r5, #1]
+ 411 006a 12E0     		b	.L72
+ 412              	.L76:
+ 413 006c A870     		strb	r0, [r5, #2]
+ 414 006e 10E0     		b	.L72
+ 415              	.L77:
+ 416 0070 E072     		strb	r0, [r4, #11]
+ 417 0072 0EE0     		b	.L72
+ 418              	.L78:
+ 419 0074 B040     		lsls	r0, r0, r6
+ 420 0076 E368     		ldr	r3, [r4, #12]
+ 421 0078 0343     		orrs	r3, r3, r0
+ 422 007a E360     		str	r3, [r4, #12]
+ 423 007c 09E0     		b	.L72
+ 424              	.L79:
+ 425 007e 0001     		lsls	r0, r0, #4
+ 426 0080 2074     		strb	r0, [r4, #16]
+ 427 0082 06E0     		b	.L72
+ 428              	.L80:
+ 429 0084 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
+ 430 0086 43EA1013 		orr	r3, r3, r0, lsr #4
+ 431 008a 00F00F00 		and	r0, r0, #15
+ 432 008e 2374     		strb	r3, [r4, #16]
+ 433 0090 6074     		strb	r0, [r4, #17]
+ 434              	.L72:
+ 435 0092 083E     		subs	r6, r6, #8
+ 436 0094 16F1300F 		cmn	r6, #48
+ 437 0098 05F10105 		add	r5, r5, #1
+ 438 009c D1D1     		bne	.L82
+ 439 009e 02E0     		b	.L108
+ 440              	.L69:
+ 441 00a0 0120     		movs	r0, #1
+ 442 00a2 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 443              	.L108:
+ 444 00a6 0920     		movs	r0, #9
+ 445 00a8 0021     		movs	r1, #0
+ 446 00aa FFF7FEFF 		bl	sd_send_cmd
+ 447 00ae 60B3     		cbz	r0, .L109
+ 448              	.L99:
+ 449 00b0 0120     		movs	r0, #1
+ 450 00b2 25E0     		b	.L85
+ 451              	.L110:
+ 452 00b4 013D     		subs	r5, r5, #1
+ 453 00b6 ADB2     		uxth	r5, r5
+ 454 00b8 002D     		cmp	r5, #0
+ 455 00ba F9D0     		beq	.L99
+ 456              	.L100:
+ 457 00bc 0120     		movs	r0, #1
+ 458 00be FFF7FEFF 		bl	delay_ms
+ 459 00c2 FF20     		movs	r0, #255
+ 460 00c4 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 461 00c8 FE28     		cmp	r0, #254
+ 462 00ca F3D1     		bne	.L110
+ 463 00cc 0026     		movs	r6, #0
+ 464 00ce 3546     		mov	r5, r6
+ 465 00d0 3746     		mov	r7, r6
+ 466 00d2 B146     		mov	r9, r6
+ 467              	.L98:
+ 468 00d4 FF20     		movs	r0, #255
+ 469 00d6 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 470 00da 98F80030 		ldrb	r3, [r8]	@ zero_extendqisi2
+ 471 00de 022B     		cmp	r3, #2
+ 472 00e0 1DD1     		bne	.L86
+ 473 00e2 082E     		cmp	r6, #8
+ 474 00e4 19D0     		beq	.L88
+ 475 00e6 092E     		cmp	r6, #9
+ 476 00e8 12D1     		bne	.L111
+ 477 00ea 0543     		orrs	r5, r5, r0
+ 478 00ec 0135     		adds	r5, r5, #1
+ 479 00ee 6B0B     		lsrs	r3, r5, #13
+ 480 00f0 E361     		str	r3, [r4, #28]
+ 481 00f2 EB04     		lsls	r3, r5, #19
+ 482 00f4 A361     		str	r3, [r4, #24]
+ 483              	.L87:
+ 484 00f6 0136     		adds	r6, r6, #1
+ 485 00f8 B6B2     		uxth	r6, r6
+ 486 00fa 122E     		cmp	r6, #18
+ 487 00fc EAD1     		bne	.L98
+ 488 00fe 0020     		movs	r0, #0
+ 489              	.L85:
+ 490 0100 98F80030 		ldrb	r3, [r8]	@ zero_extendqisi2
+ 491 0104 2370     		strb	r3, [r4]
+ 492 0106 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 493              	.L109:
+ 494 010a 4FF4FA75 		mov	r5, #500
+ 495 010e D5E7     		b	.L100
+ 496              	.L111:
+ 497 0110 072E     		cmp	r6, #7
+ 498 0112 F0D1     		bne	.L87
+ 499 0114 00F03F05 		and	r5, r0, #63
+ 500 0118 0EE0     		b	.L107
+ 501              	.L88:
+ 502 011a 0543     		orrs	r5, r5, r0
+ 503 011c 0CE0     		b	.L107
+ 504              	.L86:
+ 505 011e 731F     		subs	r3, r6, #5
+ 506 0120 052B     		cmp	r3, #5
+ 507 0122 E8D8     		bhi	.L87
+ 508 0124 DFE803F0 		tbb	[pc, r3]
+ 509              	.L92:
+ 510 0128 03       		.byte	(.L91-.L92)/2
+ 511 0129 06       		.byte	(.L93-.L92)/2
+ 512 012a 0A       		.byte	(.L94-.L92)/2
+ 513 012b 0D       		.byte	(.L95-.L92)/2
+ 514 012c 12       		.byte	(.L96-.L92)/2
+ 515 012d 16       		.byte	(.L97-.L92)/2
+ 516              		.align	1
+ 517              	.L91:
+ 518 012e 00F00F09 		and	r9, r0, #15
+ 519 0132 E0E7     		b	.L87
+ 520              	.L93:
+ 521 0134 00F00305 		and	r5, r0, #3
+ 522              	.L107:
+ 523 0138 2D02     		lsls	r5, r5, #8
+ 524 013a DCE7     		b	.L87
+ 525              	.L94:
+ 526 013c 0543     		orrs	r5, r5, r0
+ 527 013e AD00     		lsls	r5, r5, #2
+ 528 0140 D9E7     		b	.L87
+ 529              	.L95:
+ 530 0142 C0F38710 		ubfx	r0, r0, #6, #8
+ 531 0146 0543     		orrs	r5, r5, r0
+ 532 0148 0135     		adds	r5, r5, #1
+ 533 014a D4E7     		b	.L87
+ 534              	.L96:
+ 535 014c 00F00300 		and	r0, r0, #3
+ 536 0150 4700     		lsls	r7, r0, #1
+ 537 0152 D0E7     		b	.L87
+ 538              	.L97:
+ 539 0154 47EAD017 		orr	r7, r7, r0, lsr #7
+ 540 0158 FFB2     		uxtb	r7, r7
+ 541 015a 07EB0902 		add	r2, r7, r9
+ 542 015e 2846     		mov	r0, r5
+ 543 0160 0021     		movs	r1, #0
+ 544 0162 0232     		adds	r2, r2, #2
+ 545 0164 FFF7FEFF 		bl	__aeabi_llsl
+ 546 0168 C4E90601 		strd	r0, [r4, #24]
+ 547 016c C3E7     		b	.L87
+ 548              	.L113:
+ 549 016e 00BF     		.align	2
+ 550              	.L112:
+ 551 0170 00000000 		.word	.LANCHOR0
+ 553              		.section	.text.sdspi_read_block,"ax",%progbits
+ 554              		.align	1
+ 555              		.global	sdspi_read_block
+ 556              		.thumb
+ 557              		.thumb_func
+ 559              	sdspi_read_block:
+ 560              		@ args = 0, pretend = 0, frame = 0
+ 561              		@ frame_needed = 0, uses_anonymous_args = 0
+ 562 0000 38B5     		push	{r3, r4, r5, lr}
+ 563 0002 1E4B     		ldr	r3, .L133
+ 564 0004 0546     		mov	r5, r0
+ 565 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 566 0008 0C46     		mov	r4, r1
+ 567 000a 042B     		cmp	r3, #4
+ 568 000c 25D0     		beq	.L124
+ 569 000e 022B     		cmp	r3, #2
+ 570 0010 03D0     		beq	.L116
+ 571 0012 1B4B     		ldr	r3, .L133+4
+ 572 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 573 0016 01FA03F4 		lsl	r4, r1, r3
+ 574              	.L116:
+ 575 001a FFF7FEFF 		bl	sd_cs_enable
+ 576 001e 1120     		movs	r0, #17
+ 577 0020 2146     		mov	r1, r4
+ 578 0022 FFF7FEFF 		bl	sd_send_cmd
+ 579 0026 08B1     		cbz	r0, .L117
+ 580              	.L120:
+ 581 0028 0124     		movs	r4, #1
+ 582 002a 10E0     		b	.L118
+ 583              	.L117:
+ 584 002c 44F62064 		movw	r4, #20000
+ 585              	.L121:
+ 586 0030 FF20     		movs	r0, #255
+ 587 0032 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 588 0036 FE28     		cmp	r0, #254
+ 589 0038 11D0     		beq	.L119
+ 590 003a 013C     		subs	r4, r4, #1
+ 591 003c A4B2     		uxth	r4, r4
+ 592 003e 002C     		cmp	r4, #0
+ 593 0040 F6D1     		bne	.L121
+ 594 0042 F1E7     		b	.L120
+ 595              	.L132:
+ 596 0044 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 597 0048 FF20     		movs	r0, #255
+ 598 004a FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 599              	.L118:
+ 600 004e FFF7FEFF 		bl	sd_cs_disable
+ 601 0052 FF20     		movs	r0, #255
+ 602 0054 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 603 0058 0DE0     		b	.L131
+ 604              	.L124:
+ 605 005a 0124     		movs	r4, #1
+ 606 005c 0BE0     		b	.L131
+ 607              	.L119:
+ 608 005e 094B     		ldr	r3, .L133+8
+ 609 0060 1C88     		ldrh	r4, [r3]
+ 610              	.L123:
+ 611 0062 FF20     		movs	r0, #255
+ 612 0064 002C     		cmp	r4, #0
+ 613 0066 EDD0     		beq	.L132
+ 614 0068 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 615 006c 013C     		subs	r4, r4, #1
+ 616 006e 05F8010B 		strb	r0, [r5], #1
+ 617 0072 A4B2     		uxth	r4, r4
+ 618 0074 F5E7     		b	.L123
+ 619              	.L131:
+ 620 0076 2046     		mov	r0, r4
+ 621 0078 38BD     		pop	{r3, r4, r5, pc}
+ 622              	.L134:
+ 623 007a 00BF     		.align	2
+ 624              	.L133:
+ 625 007c 00000000 		.word	.LANCHOR0
+ 626 0080 00000000 		.word	.LANCHOR2
+ 627 0084 00000000 		.word	.LANCHOR1
+ 629              		.section	.text.sdspi_read_multi_blocks,"ax",%progbits
+ 630              		.align	1
+ 631              		.global	sdspi_read_multi_blocks
+ 632              		.thumb
+ 633              		.thumb_func
+ 635              	sdspi_read_multi_blocks:
+ 636              		@ args = 0, pretend = 0, frame = 0
+ 637              		@ frame_needed = 0, uses_anonymous_args = 0
+ 638 0000 244B     		ldr	r3, .L157
+ 639 0002 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 640 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 641 0008 0546     		mov	r5, r0
+ 642 000a 042B     		cmp	r3, #4
+ 643 000c 0C46     		mov	r4, r1
+ 644 000e 1646     		mov	r6, r2
+ 645 0010 29D0     		beq	.L148
+ 646 0012 012A     		cmp	r2, #1
+ 647 0014 27D9     		bls	.L148
+ 648 0016 022B     		cmp	r3, #2
+ 649 0018 03D0     		beq	.L137
+ 650 001a 1F4B     		ldr	r3, .L157+4
+ 651 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 652 001e 01FA03F4 		lsl	r4, r1, r3
+ 653              	.L137:
+ 654 0022 FFF7FEFF 		bl	sd_cs_enable
+ 655 0026 1220     		movs	r0, #18
+ 656 0028 2146     		mov	r1, r4
+ 657 002a FFF7FEFF 		bl	sd_send_cmd
+ 658 002e 08B1     		cbz	r0, .L138
+ 659 0030 0124     		movs	r4, #1
+ 660 0032 0EE0     		b	.L139
+ 661              	.L138:
+ 662 0034 DFF86480 		ldr	r8, .L157+8
+ 663 0038 0446     		mov	r4, r0
+ 664              	.L146:
+ 665 003a 44F62067 		movw	r7, #20000
+ 666              	.L144:
+ 667 003e FF20     		movs	r0, #255
+ 668 0040 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 669 0044 FE28     		cmp	r0, #254
+ 670 0046 10D0     		beq	.L140
+ 671 0048 013F     		subs	r7, r7, #1
+ 672 004a F8D1     		bne	.L144
+ 673 004c 0124     		movs	r4, #1
+ 674              	.L142:
+ 675 004e 013E     		subs	r6, r6, #1
+ 676 0050 F3D1     		bne	.L146
+ 677              	.L139:
+ 678 0052 0021     		movs	r1, #0
+ 679 0054 0C20     		movs	r0, #12
+ 680 0056 FFF7FEFF 		bl	sd_send_cmd
+ 681 005a FFF7FEFF 		bl	sd_cs_disable
+ 682 005e FF20     		movs	r0, #255
+ 683 0060 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 684 0064 13E0     		b	.L155
+ 685              	.L148:
+ 686 0066 0124     		movs	r4, #1
+ 687 0068 11E0     		b	.L155
+ 688              	.L140:
+ 689 006a B8F80070 		ldrh	r7, [r8]
+ 690 006e 2F44     		add	r7, r7, r5
+ 691              	.L145:
+ 692 0070 BD42     		cmp	r5, r7
+ 693 0072 4FF0FF00 		mov	r0, #255
+ 694 0076 04D0     		beq	.L156
+ 695 0078 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 696 007c 05F8010B 		strb	r0, [r5], #1
+ 697 0080 F6E7     		b	.L145
+ 698              	.L156:
+ 699 0082 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 700 0086 FF20     		movs	r0, #255
+ 701 0088 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 702 008c DFE7     		b	.L142
+ 703              	.L155:
+ 704 008e 2046     		mov	r0, r4
+ 705 0090 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 706              	.L158:
+ 707              		.align	2
+ 708              	.L157:
+ 709 0094 00000000 		.word	.LANCHOR0
+ 710 0098 00000000 		.word	.LANCHOR2
+ 711 009c 00000000 		.word	.LANCHOR1
+ 713              		.section	.text.sdspi_write_block,"ax",%progbits
+ 714              		.align	1
+ 715              		.global	sdspi_write_block
+ 716              		.thumb
+ 717              		.thumb_func
+ 719              	sdspi_write_block:
+ 720              		@ args = 0, pretend = 0, frame = 0
+ 721              		@ frame_needed = 0, uses_anonymous_args = 0
+ 722 0000 38B5     		push	{r3, r4, r5, lr}
+ 723 0002 224B     		ldr	r3, .L177
+ 724 0004 0446     		mov	r4, r0
+ 725 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 726 0008 0D46     		mov	r5, r1
+ 727 000a 042B     		cmp	r3, #4
+ 728 000c 3BD0     		beq	.L168
+ 729 000e 022B     		cmp	r3, #2
+ 730 0010 03D0     		beq	.L161
+ 731 0012 1F4B     		ldr	r3, .L177+4
+ 732 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 733 0016 01FA03F5 		lsl	r5, r1, r3
+ 734              	.L161:
+ 735 001a FFF7FEFF 		bl	sd_cs_enable
+ 736 001e 1820     		movs	r0, #24
+ 737 0020 2946     		mov	r1, r5
+ 738 0022 FFF7FEFF 		bl	sd_send_cmd
+ 739 0026 08B1     		cbz	r0, .L162
+ 740              	.L166:
+ 741 0028 0124     		movs	r4, #1
+ 742 002a 26E0     		b	.L163
+ 743              	.L162:
+ 744 002c FF20     		movs	r0, #255
+ 745 002e FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 746 0032 FE20     		movs	r0, #254
+ 747 0034 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 748 0038 164B     		ldr	r3, .L177+8
+ 749 003a 1D88     		ldrh	r5, [r3]
+ 750 003c 2544     		add	r5, r5, r4
+ 751              	.L164:
+ 752 003e AC42     		cmp	r4, r5
+ 753 0040 04D0     		beq	.L176
+ 754 0042 14F8010B 		ldrb	r0, [r4], #1	@ zero_extendqisi2
+ 755 0046 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 756 004a F8E7     		b	.L164
+ 757              	.L176:
+ 758 004c FF20     		movs	r0, #255
+ 759 004e FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 760 0052 FF20     		movs	r0, #255
+ 761 0054 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 762 0058 FF20     		movs	r0, #255
+ 763 005a FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 764 005e 00F01F00 		and	r0, r0, #31
+ 765 0062 0528     		cmp	r0, #5
+ 766 0064 E0D1     		bne	.L166
+ 767 0066 0C4C     		ldr	r4, .L177+12
+ 768              	.L167:
+ 769 0068 FF20     		movs	r0, #255
+ 770 006a FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 771 006e FF28     		cmp	r0, #255
+ 772 0070 02D0     		beq	.L169
+ 773 0072 013C     		subs	r4, r4, #1
+ 774 0074 F8D1     		bne	.L167
+ 775 0076 D7E7     		b	.L166
+ 776              	.L169:
+ 777 0078 0024     		movs	r4, #0
+ 778              	.L163:
+ 779 007a FFF7FEFF 		bl	sd_cs_disable
+ 780 007e FF20     		movs	r0, #255
+ 781 0080 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 782 0084 00E0     		b	.L160
+ 783              	.L168:
+ 784 0086 0124     		movs	r4, #1
+ 785              	.L160:
+ 786 0088 2046     		mov	r0, r4
+ 787 008a 38BD     		pop	{r3, r4, r5, pc}
+ 788              	.L178:
+ 789              		.align	2
+ 790              	.L177:
+ 791 008c 00000000 		.word	.LANCHOR0
+ 792 0090 00000000 		.word	.LANCHOR2
+ 793 0094 00000000 		.word	.LANCHOR1
+ 794 0098 400D0300 		.word	200000
+ 796              		.section	.text.sdspi_write_multi_blocks,"ax",%progbits
+ 797              		.align	1
+ 798              		.global	sdspi_write_multi_blocks
+ 799              		.thumb
+ 800              		.thumb_func
+ 802              	sdspi_write_multi_blocks:
+ 803              		@ args = 0, pretend = 0, frame = 0
+ 804              		@ frame_needed = 0, uses_anonymous_args = 0
+ 805 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 806 0004 1546     		mov	r5, r2
+ 807 0006 2F4A     		ldr	r2, .L218
+ 808 0008 0646     		mov	r6, r0
+ 809 000a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 810 000c 0C46     		mov	r4, r1
+ 811 000e 042B     		cmp	r3, #4
+ 812 0010 1746     		mov	r7, r2
+ 813 0012 53D0     		beq	.L193
+ 814 0014 012D     		cmp	r5, #1
+ 815 0016 51D9     		bls	.L193
+ 816 0018 022B     		cmp	r3, #2
+ 817 001a 03D0     		beq	.L181
+ 818 001c 2A4B     		ldr	r3, .L218+4
+ 819 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 820 0020 01FA03F4 		lsl	r4, r1, r3
+ 821              	.L181:
+ 822 0024 FFF7FEFF 		bl	sd_cs_enable
+ 823 0028 3B78     		ldrb	r3, [r7]	@ zero_extendqisi2
+ 824 002a 032B     		cmp	r3, #3
+ 825 002c 03D0     		beq	.L182
+ 826 002e 1720     		movs	r0, #23
+ 827 0030 2946     		mov	r1, r5
+ 828 0032 FFF7FEFF 		bl	sd_send_cmd
+ 829              	.L182:
+ 830 0036 1920     		movs	r0, #25
+ 831 0038 2146     		mov	r1, r4
+ 832 003a FFF7FEFF 		bl	sd_send_cmd
+ 833 003e 58BB     		cbnz	r0, .L194
+ 834 0040 DFF88C80 		ldr	r8, .L218+12
+ 835 0044 0446     		mov	r4, r0
+ 836              	.L189:
+ 837 0046 FF20     		movs	r0, #255
+ 838 0048 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 839 004c FC20     		movs	r0, #252
+ 840 004e FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 841 0052 B8F80070 		ldrh	r7, [r8]
+ 842 0056 3744     		add	r7, r7, r6
+ 843              	.L184:
+ 844 0058 BE42     		cmp	r6, r7
+ 845 005a 04D0     		beq	.L217
+ 846 005c 16F8010B 		ldrb	r0, [r6], #1	@ zero_extendqisi2
+ 847 0060 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 848 0064 F8E7     		b	.L184
+ 849              	.L217:
+ 850 0066 FF20     		movs	r0, #255
+ 851 0068 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 852 006c FF20     		movs	r0, #255
+ 853 006e FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 854 0072 FF20     		movs	r0, #255
+ 855 0074 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 856 0078 00F01F00 		and	r0, r0, #31
+ 857 007c 0528     		cmp	r0, #5
+ 858 007e 07D1     		bne	.L186
+ 859 0080 124F     		ldr	r7, .L218+8
+ 860              	.L188:
+ 861 0082 FF20     		movs	r0, #255
+ 862 0084 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 863 0088 FF28     		cmp	r0, #255
+ 864 008a 02D0     		beq	.L187
+ 865 008c 013F     		subs	r7, r7, #1
+ 866 008e F8D1     		bne	.L188
+ 867              	.L186:
+ 868 0090 0124     		movs	r4, #1
+ 869              	.L187:
+ 870 0092 013D     		subs	r5, r5, #1
+ 871 0094 D7D1     		bne	.L189
+ 872 0096 00E0     		b	.L183
+ 873              	.L194:
+ 874 0098 0124     		movs	r4, #1
+ 875              	.L183:
+ 876 009a FD20     		movs	r0, #253
+ 877 009c FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 878 00a0 0A4D     		ldr	r5, .L218+8
+ 879              	.L191:
+ 880 00a2 FF20     		movs	r0, #255
+ 881 00a4 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 882 00a8 FF28     		cmp	r0, #255
+ 883 00aa 01D0     		beq	.L190
+ 884 00ac 013D     		subs	r5, r5, #1
+ 885 00ae F8D1     		bne	.L191
+ 886              	.L190:
+ 887 00b0 FFF7FEFF 		bl	sd_cs_disable
+ 888 00b4 FF20     		movs	r0, #255
+ 889 00b6 FFF7FEFF 		bl	sd_spi_tx_rx_byte
+ 890 00ba 00E0     		b	.L216
+ 891              	.L193:
+ 892 00bc 0124     		movs	r4, #1
+ 893              	.L216:
+ 894 00be 2046     		mov	r0, r4
+ 895 00c0 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 896              	.L219:
+ 897              		.align	2
+ 898              	.L218:
+ 899 00c4 00000000 		.word	.LANCHOR0
+ 900 00c8 00000000 		.word	.LANCHOR2
+ 901 00cc 400D0300 		.word	200000
+ 902 00d0 00000000 		.word	.LANCHOR1
+ 904              		.section	.data.sd_type,"aw",%progbits
+ 905              		.set	.LANCHOR0,. + 0
+ 908              	sd_type:
+ 909 0000 04       		.byte	4
+ 910              		.section	.data.sd_power,"aw",%progbits
+ 911              		.set	.LANCHOR2,. + 0
+ 914              	sd_power:
+ 915 0000 09       		.byte	9
+ 916              		.section	.data.sd_block_size,"aw",%progbits
+ 917              		.align	1
+ 918              		.set	.LANCHOR1,. + 0
+ 921              	sd_block_size:
+ 922 0000 0002     		.short	512
+ 923              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 sd_sdspi.c
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:16     .text.sd_cs_disable:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:20     .text.sd_cs_disable:00000000 sd_cs_disable
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:30     .text.sd_cs_disable:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:33     .text.sd_cs_enable:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:37     .text.sd_cs_enable:00000000 sd_cs_enable
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:47     .text.sd_cs_enable:00000008 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:50     .text.sd_spi_tx_rx_byte:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:54     .text.sd_spi_tx_rx_byte:00000000 sd_spi_tx_rx_byte
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:63     .text.sd_send_cmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:67     .text.sd_send_cmd:00000000 sd_send_cmd
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:112    .text.sdspi_port_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:117    .text.sdspi_port_init:00000000 sdspi_port_init
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:143    .text.sdspi_port_init:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:146    .text.sdspi_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:151    .text.sdspi_init:00000000 sdspi_init
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:338    .text.sdspi_init:00000198 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:344    .text.sdspi_get_info:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:349    .text.sdspi_get_info:00000000 sdspi_get_info
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:390    .text.sdspi_get_info:00000054 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:510    .text.sdspi_get_info:00000128 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:516    .text.sdspi_get_info:0000012e $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:551    .text.sdspi_get_info:00000170 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:554    .text.sdspi_read_block:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:559    .text.sdspi_read_block:00000000 sdspi_read_block
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:625    .text.sdspi_read_block:0000007c $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:630    .text.sdspi_read_multi_blocks:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:635    .text.sdspi_read_multi_blocks:00000000 sdspi_read_multi_blocks
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:709    .text.sdspi_read_multi_blocks:00000094 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:714    .text.sdspi_write_block:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:719    .text.sdspi_write_block:00000000 sdspi_write_block
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:791    .text.sdspi_write_block:0000008c $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:797    .text.sdspi_write_multi_blocks:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:802    .text.sdspi_write_multi_blocks:00000000 sdspi_write_multi_blocks
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:899    .text.sdspi_write_multi_blocks:000000c4 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:908    .data.sd_type:00000000 sd_type
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:914    .data.sd_power:00000000 sd_power
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:917    .data.sd_block_size:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:921    .data.sd_block_size:00000000 sd_block_size
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:405    .text.sdspi_get_info:00000063 $d
+D:\Users\draapho\AppData\Local\Temp\ccOkwKVd.s:405    .text.sdspi_get_info:00000064 $t
+
+UNDEFINED SYMBOLS
+GPIO_SetBits
+GPIO_ResetBits
+spi_tx_rx_byte
+spi_init
+RCC_APB2PeriphClockCmd
+GPIO_Init
+delay_ms
+__aeabi_llsl

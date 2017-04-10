@@ -1,0 +1,183 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"diskio.c"
+  15              		.section	.text.disk_initialize,"ax",%progbits
+  16              		.align	1
+  17              		.global	disk_initialize
+  18              		.thumb
+  19              		.thumb_func
+  21              	disk_initialize:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 28B9     		cbnz	r0, .L5
+  26 0004 FFF7FEFF 		bl	sdcard_init
+  27 0008 0030     		adds	r0, r0, #0
+  28 000a 18BF     		it	ne
+  29 000c 0120     		movne	r0, #1
+  30 000e 08BD     		pop	{r3, pc}
+  31              	.L5:
+  32 0010 0120     		movs	r0, #1
+  33 0012 08BD     		pop	{r3, pc}
+  35              		.section	.text.disk_status,"ax",%progbits
+  36              		.align	1
+  37              		.global	disk_status
+  38              		.thumb
+  39              		.thumb_func
+  41              	disk_status:
+  42              		@ args = 0, pretend = 0, frame = 0
+  43              		@ frame_needed = 0, uses_anonymous_args = 0
+  44 0000 08B5     		push	{r3, lr}
+  45 0002 30B9     		cbnz	r0, .L11
+  46 0004 FFF7FEFF 		bl	sdcard_present
+  47 0008 D0F10100 		rsbs	r0, r0, #1
+  48 000c 38BF     		it	cc
+  49 000e 0020     		movcc	r0, #0
+  50 0010 08BD     		pop	{r3, pc}
+  51              	.L11:
+  52 0012 0120     		movs	r0, #1
+  53 0014 08BD     		pop	{r3, pc}
+  55              		.section	.text.disk_read,"ax",%progbits
+  56              		.align	1
+  57              		.global	disk_read
+  58              		.thumb
+  59              		.thumb_func
+  61              	disk_read:
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64 0000 08B5     		push	{r3, lr}
+  65 0002 40B9     		cbnz	r0, .L16
+  66 0004 0846     		mov	r0, r1
+  67 0006 1146     		mov	r1, r2
+  68 0008 1A46     		mov	r2, r3
+  69 000a FFF7FEFF 		bl	sdcard_read_blocks
+  70 000e 0030     		adds	r0, r0, #0
+  71 0010 18BF     		it	ne
+  72 0012 0120     		movne	r0, #1
+  73 0014 08BD     		pop	{r3, pc}
+  74              	.L16:
+  75 0016 0420     		movs	r0, #4
+  76 0018 08BD     		pop	{r3, pc}
+  78              		.section	.text.disk_write,"ax",%progbits
+  79              		.align	1
+  80              		.global	disk_write
+  81              		.thumb
+  82              		.thumb_func
+  84              	disk_write:
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87 0000 08B5     		push	{r3, lr}
+  88 0002 40B9     		cbnz	r0, .L21
+  89 0004 0846     		mov	r0, r1
+  90 0006 1146     		mov	r1, r2
+  91 0008 1A46     		mov	r2, r3
+  92 000a FFF7FEFF 		bl	sdcard_write_blocks
+  93 000e 0030     		adds	r0, r0, #0
+  94 0010 18BF     		it	ne
+  95 0012 0120     		movne	r0, #1
+  96 0014 08BD     		pop	{r3, pc}
+  97              	.L21:
+  98 0016 0420     		movs	r0, #4
+  99 0018 08BD     		pop	{r3, pc}
+ 101              		.section	.text.disk_ioctl,"ax",%progbits
+ 102              		.align	1
+ 103              		.global	disk_ioctl
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	disk_ioctl:
+ 108              		@ args = 0, pretend = 0, frame = 24
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 110 0000 30B5     		push	{r4, r5, lr}
+ 111 0002 0C46     		mov	r4, r1
+ 112 0004 87B0     		sub	sp, sp, #28
+ 113 0006 1546     		mov	r5, r2
+ 114 0008 98B9     		cbnz	r0, .L32
+ 115 000a 0129     		cmp	r1, #1
+ 116 000c 06D0     		beq	.L25
+ 117 000e 13D3     		bcc	.L23
+ 118 0010 0329     		cmp	r1, #3
+ 119 0012 0ED1     		bne	.L32
+ 120 0014 4FF40073 		mov	r3, #512
+ 121 0018 1380     		strh	r3, [r2]	@ movhi
+ 122 001a 0DE0     		b	.L23
+ 123              	.L25:
+ 124 001c 6846     		mov	r0, sp
+ 125 001e FFF7FEFF 		bl	sdcard_get_info
+ 126 0022 40B9     		cbnz	r0, .L30
+ 127 0024 049B     		ldr	r3, [sp, #16]
+ 128 0026 059A     		ldr	r2, [sp, #20]
+ 129 0028 5B0A     		lsrs	r3, r3, #9
+ 130 002a 43EAC253 		orr	r3, r3, r2, lsl #23
+ 131 002e 2B60     		str	r3, [r5]
+ 132 0030 02E0     		b	.L23
+ 133              	.L32:
+ 134 0032 0420     		movs	r0, #4
+ 135 0034 00E0     		b	.L23
+ 136              	.L30:
+ 137 0036 2046     		mov	r0, r4
+ 138              	.L23:
+ 139 0038 07B0     		add	sp, sp, #28
+ 140              		@ sp needed
+ 141 003a 30BD     		pop	{r4, r5, pc}
+ 143              		.section	.text.get_fattime,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	get_fattime
+ 146              		.thumb
+ 147              		.thumb_func
+ 149              	get_fattime:
+ 150              		@ args = 0, pretend = 0, frame = 48
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152 0000 00B5     		push	{lr}
+ 153 0002 8DB0     		sub	sp, sp, #52
+ 154 0004 01A8     		add	r0, sp, #4
+ 155 0006 FFF7FEFF 		bl	time_get_calendar
+ 156 000a 059B     		ldr	r3, [sp, #20]
+ 157 000c 5A05     		lsls	r2, r3, #21
+ 158 000e 049B     		ldr	r3, [sp, #16]
+ 159 0010 42EA0342 		orr	r2, r2, r3, lsl #16
+ 160 0014 039B     		ldr	r3, [sp, #12]
+ 161 0016 42EAC322 		orr	r2, r2, r3, lsl #11
+ 162 001a 029B     		ldr	r3, [sp, #8]
+ 163 001c 42EA4312 		orr	r2, r2, r3, lsl #5
+ 164 0020 019B     		ldr	r3, [sp, #4]
+ 165 0022 42EA6300 		orr	r0, r2, r3, asr #1
+ 166 0026 069B     		ldr	r3, [sp, #24]
+ 167 0028 A3F2BC73 		subw	r3, r3, #1980
+ 168 002c 40EA4360 		orr	r0, r0, r3, lsl #25
+ 169 0030 0DB0     		add	sp, sp, #52
+ 170              		@ sp needed
+ 171 0032 5DF804FB 		ldr	pc, [sp], #4
+ 173              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 diskio.c
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:16     .text.disk_initialize:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:21     .text.disk_initialize:00000000 disk_initialize
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:36     .text.disk_status:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:41     .text.disk_status:00000000 disk_status
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:56     .text.disk_read:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:61     .text.disk_read:00000000 disk_read
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:79     .text.disk_write:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:84     .text.disk_write:00000000 disk_write
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:102    .text.disk_ioctl:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:107    .text.disk_ioctl:00000000 disk_ioctl
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:144    .text.get_fattime:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccwoGvQS.s:149    .text.get_fattime:00000000 get_fattime
+
+UNDEFINED SYMBOLS
+sdcard_init
+sdcard_present
+sdcard_read_blocks
+sdcard_write_blocks
+sdcard_get_info
+time_get_calendar

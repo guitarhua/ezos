@@ -1,0 +1,138 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"memb.c"
+  15              		.section	.text.memb_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	memb_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	memb_init:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 10B5     		push	{r4, lr}
+  25 0002 0446     		mov	r4, r0
+  26 0004 6288     		ldrh	r2, [r4, #2]
+  27 0006 0021     		movs	r1, #0
+  28 0008 4068     		ldr	r0, [r0, #4]
+  29 000a FFF7FEFF 		bl	memset
+  30 000e 2388     		ldrh	r3, [r4]
+  31 0010 6288     		ldrh	r2, [r4, #2]
+  32 0012 A068     		ldr	r0, [r4, #8]
+  33 0014 0021     		movs	r1, #0
+  34 0016 5A43     		muls	r2, r3, r2
+  35 0018 BDE81040 		pop	{r4, lr}
+  36 001c FFF7FEBF 		b	memset
+  38              		.section	.text.memb_alloc,"ax",%progbits
+  39              		.align	1
+  40              		.global	memb_alloc
+  41              		.thumb
+  42              		.thumb_func
+  44              	memb_alloc:
+  45              		@ args = 0, pretend = 0, frame = 0
+  46              		@ frame_needed = 0, uses_anonymous_args = 0
+  47 0000 10B5     		push	{r4, lr}
+  48 0002 4188     		ldrh	r1, [r0, #2]
+  49 0004 0023     		movs	r3, #0
+  50              	.L3:
+  51 0006 8B42     		cmp	r3, r1
+  52 0008 0CDA     		bge	.L8
+  53 000a 4268     		ldr	r2, [r0, #4]
+  54 000c D418     		adds	r4, r2, r3
+  55 000e D25C     		ldrb	r2, [r2, r3]	@ zero_extendqisi2
+  56 0010 32B9     		cbnz	r2, .L4
+  57 0012 0122     		movs	r2, #1
+  58 0014 2270     		strb	r2, [r4]
+  59 0016 0188     		ldrh	r1, [r0]
+  60 0018 8268     		ldr	r2, [r0, #8]
+  61 001a 01FB0320 		mla	r0, r1, r3, r2
+  62 001e 10BD     		pop	{r4, pc}
+  63              	.L4:
+  64 0020 0133     		adds	r3, r3, #1
+  65 0022 F0E7     		b	.L3
+  66              	.L8:
+  67 0024 0020     		movs	r0, #0
+  68 0026 10BD     		pop	{r4, pc}
+  70              		.section	.text.memb_free,"ax",%progbits
+  71              		.align	1
+  72              		.global	memb_free
+  73              		.thumb
+  74              		.thumb_func
+  76              	memb_free:
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79 0000 30B5     		push	{r4, r5, lr}
+  80 0002 8268     		ldr	r2, [r0, #8]
+  81 0004 4488     		ldrh	r4, [r0, #2]
+  82 0006 0023     		movs	r3, #0
+  83              	.L10:
+  84 0008 A342     		cmp	r3, r4
+  85 000a 0DDA     		bge	.L18
+  86 000c 8A42     		cmp	r2, r1
+  87 000e 07D1     		bne	.L11
+  88 0010 4268     		ldr	r2, [r0, #4]
+  89 0012 D15C     		ldrb	r1, [r2, r3]	@ zero_extendqisi2
+  90 0014 09B1     		cbz	r1, .L12
+  91 0016 0139     		subs	r1, r1, #1
+  92 0018 D154     		strb	r1, [r2, r3]
+  93              	.L12:
+  94 001a 4268     		ldr	r2, [r0, #4]
+  95 001c D05C     		ldrb	r0, [r2, r3]	@ zero_extendqisi2
+  96 001e 04E0     		b	.L13
+  97              	.L11:
+  98 0020 0588     		ldrh	r5, [r0]
+  99 0022 0133     		adds	r3, r3, #1
+ 100 0024 2A44     		add	r2, r2, r5
+ 101 0026 EFE7     		b	.L10
+ 102              	.L18:
+ 103 0028 FF20     		movs	r0, #255
+ 104              	.L13:
+ 105 002a 40B2     		sxtb	r0, r0
+ 106 002c 30BD     		pop	{r4, r5, pc}
+ 108              		.section	.text.memb_inmemb,"ax",%progbits
+ 109              		.align	1
+ 110              		.global	memb_inmemb
+ 111              		.thumb
+ 112              		.thumb_func
+ 114              	memb_inmemb:
+ 115              		@ args = 0, pretend = 0, frame = 0
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117              		@ link register save eliminated.
+ 118 0000 8368     		ldr	r3, [r0, #8]
+ 119 0002 9942     		cmp	r1, r3
+ 120 0004 08D3     		bcc	.L21
+ 121 0006 4288     		ldrh	r2, [r0, #2]
+ 122 0008 0088     		ldrh	r0, [r0]
+ 123 000a 00FB0230 		mla	r0, r0, r2, r3
+ 124 000e 8142     		cmp	r1, r0
+ 125 0010 2CBF     		ite	cs
+ 126 0012 0020     		movcs	r0, #0
+ 127 0014 0120     		movcc	r0, #1
+ 128 0016 7047     		bx	lr
+ 129              	.L21:
+ 130 0018 0020     		movs	r0, #0
+ 131 001a 7047     		bx	lr
+ 133              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 memb.c
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:16     .text.memb_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:21     .text.memb_init:00000000 memb_init
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:39     .text.memb_alloc:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:44     .text.memb_alloc:00000000 memb_alloc
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:71     .text.memb_free:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:76     .text.memb_free:00000000 memb_free
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:109    .text.memb_inmemb:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccVRqNia.s:114    .text.memb_inmemb:00000000 memb_inmemb
+
+UNDEFINED SYMBOLS
+memset

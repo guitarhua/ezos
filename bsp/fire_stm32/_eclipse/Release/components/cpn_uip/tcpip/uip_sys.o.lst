@@ -1,0 +1,367 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"uip_sys.c"
+  15              		.section	.text.task_uipsys_100ms,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_uipsys_100ms:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+  24 0004 274E     		ldr	r6, .L26
+  25              	.L15:
+  26 0006 284D     		ldr	r5, .L26+4
+  27              	.L14:
+  28 0008 2848     		ldr	r0, .L26+8
+  29 000a 4FF0FF31 		mov	r1, #-1
+  30 000e FFF7FEFF 		bl	ezos_sem_take
+  31 0012 0828     		cmp	r0, #8
+  32 0014 43D0     		beq	.L1
+  33 0016 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+  34 0018 0133     		adds	r3, r3, #1
+  35 001a 2B70     		strb	r3, [r5]
+  36 001c FFF7FEFF 		bl	uip_tcp_udp_time
+  37 0020 2A78     		ldrb	r2, [r5]	@ zero_extendqisi2
+  38 0022 0523     		movs	r3, #5
+  39 0024 B2FBF3F1 		udiv	r1, r2, r3
+  40 0028 03FB1123 		mls	r3, r3, r1, r2
+  41 002c 13F0FF0F 		tst	r3, #255
+  42 0030 09D0     		beq	.L3
+  43              	.L12:
+  44 0032 1D4B     		ldr	r3, .L26+4
+  45 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  46 0036 632B     		cmp	r3, #99
+  47 0038 E6D9     		bls	.L14
+  48 003a FFF7FEFF 		bl	uip_arp_timer
+  49 003e 1A4B     		ldr	r3, .L26+4
+  50 0040 0022     		movs	r2, #0
+  51 0042 1A70     		strb	r2, [r3]
+  52 0044 DFE7     		b	.L15
+  53              	.L3:
+  54 0046 1A4C     		ldr	r4, .L26+12
+  55 0048 1A4F     		ldr	r7, .L26+16
+  56 004a DFF87080 		ldr	r8, .L26+24
+  57              	.L10:
+  58 004e 637E     		ldrb	r3, [r4, #25]	@ zero_extendqisi2
+  59 0050 53B1     		cbz	r3, .L7
+  60 0052 0220     		movs	r0, #2
+  61 0054 3C60     		str	r4, [r7]
+  62 0056 FFF7FEFF 		bl	uip_process
+  63 005a B8F80030 		ldrh	r3, [r8]
+  64 005e 1BB1     		cbz	r3, .L7
+  65 0060 FFF7FEFF 		bl	uip_arp_out
+  66 0064 FFF7FEFF 		bl	tapdev_send
+  67              	.L7:
+  68 0068 3834     		adds	r4, r4, #56
+  69 006a B442     		cmp	r4, r6
+  70 006c EFD1     		bne	.L10
+  71 006e 124F     		ldr	r7, .L26+20
+  72 0070 DFF84C80 		ldr	r8, .L26+28
+  73 0074 DFF84490 		ldr	r9, .L26+24
+  74 0078 0024     		movs	r4, #0
+  75              	.L13:
+  76 007a 04EB0803 		add	r3, r4, r8
+  77 007e 0520     		movs	r0, #5
+  78 0080 3B60     		str	r3, [r7]
+  79 0082 FFF7FEFF 		bl	uip_process
+  80 0086 B9F80030 		ldrh	r3, [r9]
+  81 008a 1BB1     		cbz	r3, .L11
+  82 008c FFF7FEFF 		bl	uip_arp_out
+  83 0090 FFF7FEFF 		bl	tapdev_send
+  84              	.L11:
+  85 0094 2834     		adds	r4, r4, #40
+  86 0096 B4F5C87F 		cmp	r4, #400
+  87 009a EED1     		bne	.L13
+  88 009c C9E7     		b	.L12
+  89              	.L1:
+  90 009e BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+  91              	.L27:
+  92 00a2 00BF     		.align	2
+  93              	.L26:
+  94 00a4 30020000 		.word	uip_conns+560
+  95 00a8 00000000 		.word	.LANCHOR1
+  96 00ac 00000000 		.word	.LANCHOR0
+  97 00b0 00000000 		.word	uip_conns
+  98 00b4 00000000 		.word	uip_conn
+  99 00b8 00000000 		.word	uip_udp_conn
+ 100 00bc 00000000 		.word	uip_len
+ 101 00c0 00000000 		.word	uip_udp_conns
+ 103              		.section	.text.task_uipsys_rx,"ax",%progbits
+ 104              		.align	1
+ 105              		.thumb
+ 106              		.thumb_func
+ 108              	task_uipsys_rx:
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111 0000 10B5     		push	{r4, lr}
+ 112 0002 1348     		ldr	r0, .L41
+ 113 0004 4FF47A71 		mov	r1, #1000
+ 114 0008 FFF7FEFF 		bl	ezos_sem_take
+ 115 000c 0828     		cmp	r0, #8
+ 116 000e 1ED0     		beq	.L28
+ 117 0010 FFF7FEFF 		bl	tapdev_read
+ 118 0014 0F4C     		ldr	r4, .L41+4
+ 119 0016 2080     		strh	r0, [r4]	@ movhi
+ 120 0018 A0B1     		cbz	r0, .L31
+ 121 001a 0F4B     		ldr	r3, .L41+8
+ 122 001c 9B89     		ldrh	r3, [r3, #12]
+ 123 001e 082B     		cmp	r3, #8
+ 124 0020 07D1     		bne	.L32
+ 125 0022 0120     		movs	r0, #1
+ 126 0024 FFF7FEFF 		bl	uip_process
+ 127 0028 2388     		ldrh	r3, [r4]
+ 128 002a 5BB1     		cbz	r3, .L31
+ 129 002c FFF7FEFF 		bl	uip_arp_out
+ 130 0030 06E0     		b	.L40
+ 131              	.L32:
+ 132 0032 B3F5C16F 		cmp	r3, #1544
+ 133 0036 05D1     		bne	.L31
+ 134 0038 FFF7FEFF 		bl	uip_arp_arpin
+ 135 003c 2388     		ldrh	r3, [r4]
+ 136 003e 0BB1     		cbz	r3, .L31
+ 137              	.L40:
+ 138 0040 FFF7FEFF 		bl	tapdev_send
+ 139              	.L31:
+ 140 0044 BDE81040 		pop	{r4, lr}
+ 141 0048 0020     		movs	r0, #0
+ 142 004a FFF7FEBF 		b	ezos_delay
+ 143              	.L28:
+ 144 004e 10BD     		pop	{r4, pc}
+ 145              	.L42:
+ 146              		.align	2
+ 147              	.L41:
+ 148 0050 00000000 		.word	.LANCHOR2
+ 149 0054 00000000 		.word	uip_len
+ 150 0058 00000000 		.word	uip_aligned_buf
+ 152              		.section	.text.uipsys_init,"ax",%progbits
+ 153              		.align	1
+ 154              		.global	uipsys_init
+ 155              		.thumb
+ 156              		.thumb_func
+ 158              	uipsys_init:
+ 159              		@ args = 0, pretend = 0, frame = 8
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161 0000 1FB5     		push	{r0, r1, r2, r3, r4, lr}
+ 162 0002 04AB     		add	r3, sp, #16
+ 163 0004 03E90300 		stmdb	r3, {r0, r1}
+ 164 0008 0021     		movs	r1, #0
+ 165 000a 1D48     		ldr	r0, .L44
+ 166 000c FFF7FEFF 		bl	ezos_sem_add
+ 167 0010 0021     		movs	r1, #0
+ 168 0012 1C48     		ldr	r0, .L44+4
+ 169 0014 FFF7FEFF 		bl	ezos_sem_add
+ 170 0018 1B4B     		ldr	r3, .L44+8
+ 171 001a 9DF80820 		ldrb	r2, [sp, #8]	@ zero_extendqisi2
+ 172 001e 1A70     		strb	r2, [r3]
+ 173 0020 9DF80920 		ldrb	r2, [sp, #9]	@ zero_extendqisi2
+ 174 0024 5A70     		strb	r2, [r3, #1]
+ 175 0026 9DF80A20 		ldrb	r2, [sp, #10]	@ zero_extendqisi2
+ 176 002a 9A70     		strb	r2, [r3, #2]
+ 177 002c 9DF80B20 		ldrb	r2, [sp, #11]	@ zero_extendqisi2
+ 178 0030 DA70     		strb	r2, [r3, #3]
+ 179 0032 9DF80C20 		ldrb	r2, [sp, #12]	@ zero_extendqisi2
+ 180 0036 1A71     		strb	r2, [r3, #4]
+ 181 0038 9DF80D20 		ldrb	r2, [sp, #13]	@ zero_extendqisi2
+ 182 003c 5A71     		strb	r2, [r3, #5]
+ 183 003e FFF7FEFF 		bl	tapdev_init
+ 184 0042 1420     		movs	r0, #20
+ 185 0044 FFF7FEFF 		bl	delay_ms
+ 186 0048 FFF7FEFF 		bl	uip_init
+ 187 004c FFF7FEFF 		bl	uip_tcp_udp_init
+ 188 0050 FFF7FEFF 		bl	dhcp_start
+ 189 0054 FFF7FEFF 		bl	dns_clear
+ 190 0058 0C48     		ldr	r0, .L44+12
+ 191 005a 0022     		movs	r2, #0
+ 192 005c 0223     		movs	r3, #2
+ 193 005e 0093     		str	r3, [sp]
+ 194 0060 0146     		mov	r1, r0
+ 195 0062 1346     		mov	r3, r2
+ 196 0064 FFF7FEFF 		bl	ezos_add
+ 197 0068 0948     		ldr	r0, .L44+16
+ 198 006a 0022     		movs	r2, #0
+ 199 006c 0123     		movs	r3, #1
+ 200 006e 0093     		str	r3, [sp]
+ 201 0070 0146     		mov	r1, r0
+ 202 0072 1346     		mov	r3, r2
+ 203 0074 FFF7FEFF 		bl	ezos_add
+ 204 0078 05B0     		add	sp, sp, #20
+ 205              		@ sp needed
+ 206 007a 5DF804FB 		ldr	pc, [sp], #4
+ 207              	.L45:
+ 208 007e 00BF     		.align	2
+ 209              	.L44:
+ 210 0080 00000000 		.word	.LANCHOR0
+ 211 0084 00000000 		.word	.LANCHOR2
+ 212 0088 00000000 		.word	uip_ethaddr
+ 213 008c 00000000 		.word	task_uipsys_100ms
+ 214 0090 00000000 		.word	task_uipsys_rx
+ 216              		.section	.text.uipsys_scan_1ms,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	uipsys_scan_1ms
+ 219              		.thumb
+ 220              		.thumb_func
+ 222              	uipsys_scan_1ms:
+ 223              		@ args = 0, pretend = 0, frame = 0
+ 224              		@ frame_needed = 0, uses_anonymous_args = 0
+ 225 0000 10B5     		push	{r4, lr}
+ 226 0002 064C     		ldr	r4, .L48
+ 227 0004 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 228 0006 0133     		adds	r3, r3, #1
+ 229 0008 DBB2     		uxtb	r3, r3
+ 230 000a 632B     		cmp	r3, #99
+ 231 000c 2370     		strb	r3, [r4]
+ 232 000e 04D9     		bls	.L46
+ 233 0010 0348     		ldr	r0, .L48+4
+ 234 0012 FFF7FEFF 		bl	ezos_sem_release
+ 235 0016 0023     		movs	r3, #0
+ 236 0018 2370     		strb	r3, [r4]
+ 237              	.L46:
+ 238 001a 10BD     		pop	{r4, pc}
+ 239              	.L49:
+ 240              		.align	2
+ 241              	.L48:
+ 242 001c 00000000 		.word	.LANCHOR3
+ 243 0020 00000000 		.word	.LANCHOR0
+ 245              		.section	.text.uipsys_check,"ax",%progbits
+ 246              		.align	1
+ 247              		.global	uipsys_check
+ 248              		.thumb
+ 249              		.thumb_func
+ 251              	uipsys_check:
+ 252              		@ args = 0, pretend = 0, frame = 0
+ 253              		@ frame_needed = 0, uses_anonymous_args = 0
+ 254 0000 08B5     		push	{r3, lr}
+ 255 0002 FFF7FEFF 		bl	tapdev_linked
+ 256 0006 78B1     		cbz	r0, .L53
+ 257 0008 FFF7FEFF 		bl	dhcp_get
+ 258 000c 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 259 000e 0128     		cmp	r0, #1
+ 260 0010 0CD0     		beq	.L54
+ 261 0012 0228     		cmp	r0, #2
+ 262 0014 03D1     		bne	.L52
+ 263 0016 FFF7FEFF 		bl	dhcp_stop
+ 264 001a 1220     		movs	r0, #18
+ 265 001c 08BD     		pop	{r3, pc}
+ 266              	.L52:
+ 267 001e 0328     		cmp	r0, #3
+ 268 0020 14BF     		ite	ne
+ 269 0022 F220     		movne	r0, #242
+ 270 0024 1120     		moveq	r0, #17
+ 271 0026 08BD     		pop	{r3, pc}
+ 272              	.L53:
+ 273 0028 0120     		movs	r0, #1
+ 274 002a 08BD     		pop	{r3, pc}
+ 275              	.L54:
+ 276 002c F120     		movs	r0, #241
+ 277 002e 08BD     		pop	{r3, pc}
+ 279              		.section	.text.uip_chip_irq_rx,"ax",%progbits
+ 280              		.align	1
+ 281              		.global	uip_chip_irq_rx
+ 282              		.thumb
+ 283              		.thumb_func
+ 285              	uip_chip_irq_rx:
+ 286              		@ args = 0, pretend = 0, frame = 0
+ 287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288              		@ link register save eliminated.
+ 289 0000 0148     		ldr	r0, .L57
+ 290 0002 FFF7FEBF 		b	ezos_sem_release
+ 291              	.L58:
+ 292 0006 00BF     		.align	2
+ 293              	.L57:
+ 294 0008 00000000 		.word	.LANCHOR2
+ 296              		.comm	uip_dnsaddr,4,2
+ 297              		.section	.bss.uipsys_100ms_sem,"aw",%nobits
+ 298              		.align	2
+ 299              		.set	.LANCHOR0,. + 0
+ 302              	uipsys_100ms_sem:
+ 303 0000 00000000 		.space	16
+ 303      00000000 
+ 303      00000000 
+ 303      00000000 
+ 304              		.section	.bss.uipsys_rx_sem,"aw",%nobits
+ 305              		.align	2
+ 306              		.set	.LANCHOR2,. + 0
+ 309              	uipsys_rx_sem:
+ 310 0000 00000000 		.space	16
+ 310      00000000 
+ 310      00000000 
+ 310      00000000 
+ 311              		.section	.bss.uip_timer.6575,"aw",%nobits
+ 312              		.set	.LANCHOR3,. + 0
+ 315              	uip_timer.6575:
+ 316 0000 00       		.space	1
+ 317              		.section	.bss.timer.6594,"aw",%nobits
+ 318              		.set	.LANCHOR1,. + 0
+ 321              	timer.6594:
+ 322 0000 00       		.space	1
+ 323              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 uip_sys.c
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:16     .text.task_uipsys_100ms:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:20     .text.task_uipsys_100ms:00000000 task_uipsys_100ms
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:94     .text.task_uipsys_100ms:000000a4 $d
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:104    .text.task_uipsys_rx:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:108    .text.task_uipsys_rx:00000000 task_uipsys_rx
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:148    .text.task_uipsys_rx:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:153    .text.uipsys_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:158    .text.uipsys_init:00000000 uipsys_init
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:210    .text.uipsys_init:00000080 $d
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:217    .text.uipsys_scan_1ms:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:222    .text.uipsys_scan_1ms:00000000 uipsys_scan_1ms
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:242    .text.uipsys_scan_1ms:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:246    .text.uipsys_check:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:251    .text.uipsys_check:00000000 uipsys_check
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:280    .text.uip_chip_irq_rx:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:285    .text.uip_chip_irq_rx:00000000 uip_chip_irq_rx
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:294    .text.uip_chip_irq_rx:00000008 $d
+                            *COM*:00000004 uip_dnsaddr
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:298    .bss.uipsys_100ms_sem:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:302    .bss.uipsys_100ms_sem:00000000 uipsys_100ms_sem
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:305    .bss.uipsys_rx_sem:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:309    .bss.uipsys_rx_sem:00000000 uipsys_rx_sem
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:315    .bss.uip_timer.6575:00000000 uip_timer.6575
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:316    .bss.uip_timer.6575:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:321    .bss.timer.6594:00000000 timer.6594
+D:\Users\draapho\AppData\Local\Temp\ccmyPMxM.s:322    .bss.timer.6594:00000000 $d
+
+UNDEFINED SYMBOLS
+ezos_sem_take
+uip_tcp_udp_time
+uip_arp_timer
+uip_process
+uip_arp_out
+tapdev_send
+uip_conns
+uip_conn
+uip_udp_conn
+uip_len
+uip_udp_conns
+tapdev_read
+uip_arp_arpin
+ezos_delay
+uip_aligned_buf
+ezos_sem_add
+tapdev_init
+delay_ms
+uip_init
+uip_tcp_udp_init
+dhcp_start
+dns_clear
+ezos_add
+uip_ethaddr
+ezos_sem_release
+tapdev_linked
+dhcp_get
+dhcp_stop

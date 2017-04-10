@@ -1,0 +1,184 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_sem.c"
+  15              		.section	.text.task_key,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_key:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 08B5     		push	{r3, lr}
+  24 0002 FFF7FEFF 		bl	key_scan_10ms
+  25 0006 084B     		ldr	r3, .L7
+  26 0008 5B88     		ldrh	r3, [r3, #2]
+  27 000a 9BB2     		uxth	r3, r3
+  28 000c 012B     		cmp	r3, #1
+  29 000e 03D0     		beq	.L3
+  30 0010 022B     		cmp	r3, #2
+  31 0012 04D1     		bne	.L2
+  32 0014 0548     		ldr	r0, .L7+4
+  33 0016 00E0     		b	.L5
+  34              	.L3:
+  35 0018 0548     		ldr	r0, .L7+8
+  36              	.L5:
+  37 001a FFF7FEFF 		bl	ezos_sem_release
+  38              	.L2:
+  39 001e BDE80840 		pop	{r3, lr}
+  40 0022 0A20     		movs	r0, #10
+  41 0024 FFF7FEBF 		b	ezos_delay
+  42              	.L8:
+  43              		.align	2
+  44              	.L7:
+  45 0028 00000000 		.word	key_status
+  46 002c 00000000 		.word	key2
+  47 0030 00000000 		.word	key1
+  49              		.section	.text.task_led,"ax",%progbits
+  50              		.align	1
+  51              		.thumb
+  52              		.thumb_func
+  54              	task_led:
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57 0000 10B5     		push	{r4, lr}
+  58 0002 0C78     		ldrb	r4, [r1]	@ zero_extendqisi2
+  59 0004 84B9     		cbnz	r4, .L10
+  60 0006 4FF0FF31 		mov	r1, #-1
+  61 000a 1048     		ldr	r0, .L22
+  62 000c FFF7FEFF 		bl	ezos_sem_take
+  63 0010 0828     		cmp	r0, #8
+  64 0012 0146     		mov	r1, r0
+  65 0014 19D0     		beq	.L9
+  66 0016 98B1     		cbz	r0, .L20
+  67 0018 0D48     		ldr	r0, .L22+4
+  68              	.L21:
+  69 001a FFF7FEFF 		bl	printf
+  70              	.L14:
+  71 001e BDE81040 		pop	{r4, lr}
+  72 0022 0020     		movs	r0, #0
+  73 0024 FFF7FEBF 		b	ezos_delay
+  74              	.L10:
+  75 0028 012C     		cmp	r4, #1
+  76 002a 0ED1     		bne	.L9
+  77 002c 4FF0FF31 		mov	r1, #-1
+  78 0030 0848     		ldr	r0, .L22+8
+  79 0032 FFF7FEFF 		bl	ezos_sem_take
+  80 0036 0828     		cmp	r0, #8
+  81 0038 0146     		mov	r1, r0
+  82 003a 06D0     		beq	.L9
+  83 003c 18B9     		cbnz	r0, .L16
+  84 003e 2046     		mov	r0, r4
+  85              	.L20:
+  86 0040 FFF7FEFF 		bl	led_toggle_gradual
+  87 0044 EBE7     		b	.L14
+  88              	.L16:
+  89 0046 0448     		ldr	r0, .L22+12
+  90 0048 E7E7     		b	.L21
+  91              	.L9:
+  92 004a 10BD     		pop	{r4, pc}
+  93              	.L23:
+  94              		.align	2
+  95              	.L22:
+  96 004c 00000000 		.word	key1
+  97 0050 00000000 		.word	.LC0
+  98 0054 00000000 		.word	key2
+  99 0058 0F000000 		.word	.LC1
+ 101              		.section	.text.sem_start,"ax",%progbits
+ 102              		.align	1
+ 103              		.global	sem_start
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	sem_start:
+ 108              		@ args = 0, pretend = 0, frame = 0
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 110 0000 37B5     		push	{r0, r1, r2, r4, r5, lr}
+ 111 0002 FFF7FEFF 		bl	led_init_all
+ 112 0006 FFF7FEFF 		bl	key_init_all
+ 113 000a 0021     		movs	r1, #0
+ 114 000c 1048     		ldr	r0, .L25
+ 115 000e FFF7FEFF 		bl	ezos_sem_add
+ 116 0012 0021     		movs	r1, #0
+ 117 0014 0F48     		ldr	r0, .L25+4
+ 118 0016 FFF7FEFF 		bl	ezos_sem_add
+ 119 001a 0F48     		ldr	r0, .L25+8
+ 120 001c 0022     		movs	r2, #0
+ 121 001e 0323     		movs	r3, #3
+ 122 0020 0E4C     		ldr	r4, .L25+12
+ 123 0022 0093     		str	r3, [sp]
+ 124 0024 0146     		mov	r1, r0
+ 125 0026 1346     		mov	r3, r2
+ 126 0028 FFF7FEFF 		bl	ezos_add
+ 127 002c 0825     		movs	r5, #8
+ 128 002e 0022     		movs	r2, #0
+ 129 0030 2146     		mov	r1, r4
+ 130 0032 1346     		mov	r3, r2
+ 131 0034 0095     		str	r5, [sp]
+ 132 0036 2046     		mov	r0, r4
+ 133 0038 FFF7FEFF 		bl	ezos_add
+ 134 003c 0095     		str	r5, [sp]
+ 135 003e 601C     		adds	r0, r4, #1
+ 136 0040 2146     		mov	r1, r4
+ 137 0042 0122     		movs	r2, #1
+ 138 0044 0023     		movs	r3, #0
+ 139 0046 FFF7FEFF 		bl	ezos_add
+ 140 004a 03B0     		add	sp, sp, #12
+ 141              		@ sp needed
+ 142 004c 30BD     		pop	{r4, r5, pc}
+ 143              	.L26:
+ 144 004e 00BF     		.align	2
+ 145              	.L25:
+ 146 0050 00000000 		.word	key1
+ 147 0054 00000000 		.word	key2
+ 148 0058 00000000 		.word	task_key
+ 149 005c 00000000 		.word	task_led
+ 151              		.comm	key2,16,4
+ 152              		.comm	key1,16,4
+ 153              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 154              	.LC0:
+ 155 0000 73656D20 		.ascii	"sem key1: %d\015\012\000"
+ 155      6B657931 
+ 155      3A202564 
+ 155      0D0A00
+ 156              	.LC1:
+ 157 000f 73656D20 		.ascii	"sem key2: %d\015\012\000"
+ 157      6B657932 
+ 157      3A202564 
+ 157      0D0A00
+ 158              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_sem.c
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:16     .text.task_key:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:20     .text.task_key:00000000 task_key
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:45     .text.task_key:00000028 $d
+                            *COM*:00000010 key2
+                            *COM*:00000010 key1
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:50     .text.task_led:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:54     .text.task_led:00000000 task_led
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:96     .text.task_led:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:102    .text.sem_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:107    .text.sem_start:00000000 sem_start
+D:\Users\draapho\AppData\Local\Temp\ccJa3u3H.s:146    .text.sem_start:00000050 $d
+
+UNDEFINED SYMBOLS
+key_scan_10ms
+ezos_sem_release
+ezos_delay
+key_status
+ezos_sem_take
+printf
+led_toggle_gradual
+led_init_all
+key_init_all
+ezos_sem_add
+ezos_add

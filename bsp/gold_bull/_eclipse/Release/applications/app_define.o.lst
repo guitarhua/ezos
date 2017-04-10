@@ -1,0 +1,265 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_define.c"
+  15              		.section	.text.quick_add,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	quick_add:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 07B5     		push	{r0, r1, r2, lr}
+  24 0002 0022     		movs	r2, #0
+  25 0004 0091     		str	r1, [sp]
+  26 0006 1346     		mov	r3, r2
+  27 0008 0146     		mov	r1, r0
+  28 000a FFF7FEFF 		bl	ezos_add
+  29 000e 03B0     		add	sp, sp, #12
+  30              		@ sp needed
+  31 0010 5DF804FB 		ldr	pc, [sp], #4
+  33              		.section	.text.task_define_sem,"ax",%progbits
+  34              		.align	1
+  35              		.global	task_define_sem
+  36              		.thumb
+  37              		.thumb_func
+  39              	task_define_sem:
+  40              		@ args = 0, pretend = 0, frame = 0
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42 0000 38B5     		push	{r3, r4, r5, lr}
+  43 0002 0388     		ldrh	r3, [r0]
+  44 0004 E3B9     		cbnz	r3, .L8
+  45 0006 0F4C     		ldr	r4, .L11
+  46              	.L5:
+  47 0008 0E48     		ldr	r0, .L11
+  48 000a 4FF0FF31 		mov	r1, #-1
+  49 000e FFF7FEFF 		bl	ezos_sem_take
+  50 0012 0546     		mov	r5, r0
+  51 0014 FFF7FEFF 		bl	EZOS_WAIT_SUB
+  52 0018 6DB9     		cbnz	r5, .L6
+  53 001a 2846     		mov	r0, r5
+  54 001c FFF7FEFF 		bl	led_toggle
+  55 0020 0120     		movs	r0, #1
+  56 0022 FFF7FEFF 		bl	led_toggle
+  57 0026 0220     		movs	r0, #2
+  58 0028 FFF7FEFF 		bl	led_toggle
+  59 002c 0320     		movs	r0, #3
+  60 002e FFF7FEFF 		bl	led_toggle
+  61 0032 0548     		ldr	r0, .L11+4
+  62 0034 00E0     		b	.L9
+  63              	.L6:
+  64 0036 0548     		ldr	r0, .L11+8
+  65              	.L9:
+  66 0038 217B     		ldrb	r1, [r4, #12]	@ zero_extendqisi2
+  67 003a FFF7FEFF 		bl	printf
+  68 003e E3E7     		b	.L5
+  69              	.L8:
+  70 0040 38BD     		pop	{r3, r4, r5, pc}
+  71              	.L12:
+  72 0042 00BF     		.align	2
+  73              	.L11:
+  74 0044 00000000 		.word	sem
+  75 0048 00000000 		.word	.LC0
+  76 004c 13000000 		.word	.LC1
+  78              		.section	.text.task_define_led,"ax",%progbits
+  79              		.align	1
+  80              		.global	task_define_led
+  81              		.thumb
+  82              		.thumb_func
+  84              	task_define_led:
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87 0000 10B5     		push	{r4, lr}
+  88 0002 0446     		mov	r4, r0
+  89 0004 0088     		ldrh	r0, [r0]
+  90 0006 2528     		cmp	r0, #37
+  91 0008 25D0     		beq	.L15
+  92 000a 03D8     		bhi	.L16
+  93 000c 48B1     		cbz	r0, .L17
+  94 000e 2028     		cmp	r0, #32
+  95 0010 18D0     		beq	.L18
+  96 0012 10BD     		pop	{r4, pc}
+  97              	.L16:
+  98 0014 2928     		cmp	r0, #41
+  99 0016 30D0     		beq	.L19
+ 100 0018 2B28     		cmp	r0, #43
+ 101 001a 13D0     		beq	.L18
+ 102 001c 2728     		cmp	r0, #39
+ 103 001e 23D0     		beq	.L20
+ 104 0020 10BD     		pop	{r4, pc}
+ 105              	.L17:
+ 106 0022 FFF7FEFF 		bl	led_off
+ 107 0026 0120     		movs	r0, #1
+ 108 0028 FFF7FEFF 		bl	led_off
+ 109 002c 0220     		movs	r0, #2
+ 110 002e FFF7FEFF 		bl	led_off
+ 111 0032 0320     		movs	r0, #3
+ 112 0034 FFF7FEFF 		bl	led_off
+ 113 0038 4FF47A70 		mov	r0, #1000
+ 114 003c FFF7FEFF 		bl	ezos_delay
+ 115 0040 2023     		movs	r3, #32
+ 116 0042 22E0     		b	.L27
+ 117              	.L18:
+ 118 0044 0020     		movs	r0, #0
+ 119 0046 FFF7FEFF 		bl	led_toggle_gradual
+ 120 004a 4FF47A70 		mov	r0, #1000
+ 121 004e FFF7FEFF 		bl	ezos_delay
+ 122 0052 2523     		movs	r3, #37
+ 123 0054 19E0     		b	.L27
+ 124              	.L15:
+ 125 0056 0120     		movs	r0, #1
+ 126 0058 FFF7FEFF 		bl	led_toggle_gradual
+ 127 005c 4FF47A70 		mov	r0, #1000
+ 128 0060 FFF7FEFF 		bl	ezos_delay
+ 129 0064 2723     		movs	r3, #39
+ 130 0066 10E0     		b	.L27
+ 131              	.L20:
+ 132 0068 0220     		movs	r0, #2
+ 133 006a FFF7FEFF 		bl	led_toggle_gradual
+ 134 006e 4FF47A70 		mov	r0, #1000
+ 135 0072 FFF7FEFF 		bl	ezos_delay
+ 136 0076 2923     		movs	r3, #41
+ 137 0078 07E0     		b	.L27
+ 138              	.L19:
+ 139 007a 0320     		movs	r0, #3
+ 140 007c FFF7FEFF 		bl	led_toggle_gradual
+ 141 0080 4FF47A70 		mov	r0, #1000
+ 142 0084 FFF7FEFF 		bl	ezos_delay
+ 143 0088 2B23     		movs	r3, #43
+ 144              	.L27:
+ 145 008a 2380     		strh	r3, [r4]	@ movhi
+ 146 008c 10BD     		pop	{r4, pc}
+ 148              		.section	.text.task_define_key,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	task_define_key
+ 151              		.thumb
+ 152              		.thumb_func
+ 154              	task_define_key:
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157 0000 38B5     		push	{r3, r4, r5, lr}
+ 158 0002 0388     		ldrh	r3, [r0]
+ 159 0004 0446     		mov	r4, r0
+ 160 0006 0BB1     		cbz	r3, .L30
+ 161 0008 402B     		cmp	r3, #64
+ 162 000a 13D1     		bne	.L28
+ 163              	.L30:
+ 164 000c FFF7FEFF 		bl	key_scan_10ms
+ 165 0010 094B     		ldr	r3, .L39
+ 166 0012 5B88     		ldrh	r3, [r3, #2]
+ 167 0014 9BB2     		uxth	r3, r3
+ 168 0016 012B     		cmp	r3, #1
+ 169 0018 07D1     		bne	.L31
+ 170 001a 084D     		ldr	r5, .L39+4
+ 171 001c 2846     		mov	r0, r5
+ 172 001e FFF7FEFF 		bl	ezos_sem_release
+ 173 0022 0748     		ldr	r0, .L39+8
+ 174 0024 297B     		ldrb	r1, [r5, #12]	@ zero_extendqisi2
+ 175 0026 FFF7FEFF 		bl	printf
+ 176              	.L31:
+ 177 002a 0A20     		movs	r0, #10
+ 178 002c FFF7FEFF 		bl	ezos_delay
+ 179 0030 4023     		movs	r3, #64
+ 180 0032 2380     		strh	r3, [r4]	@ movhi
+ 181              	.L28:
+ 182 0034 38BD     		pop	{r3, r4, r5, pc}
+ 183              	.L40:
+ 184 0036 00BF     		.align	2
+ 185              	.L39:
+ 186 0038 00000000 		.word	key_status
+ 187 003c 00000000 		.word	sem
+ 188 0040 26000000 		.word	.LC2
+ 190              		.section	.text.define_start,"ax",%progbits
+ 191              		.align	1
+ 192              		.global	define_start
+ 193              		.thumb
+ 194              		.thumb_func
+ 196              	define_start:
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199 0000 08B5     		push	{r3, lr}
+ 200 0002 FFF7FEFF 		bl	led_init_all
+ 201 0006 FFF7FEFF 		bl	key_init_all
+ 202 000a 0021     		movs	r1, #0
+ 203 000c 0848     		ldr	r0, .L42
+ 204 000e FFF7FEFF 		bl	ezos_sem_add
+ 205 0012 0A21     		movs	r1, #10
+ 206 0014 0748     		ldr	r0, .L42+4
+ 207 0016 FFF7FEFF 		bl	quick_add
+ 208 001a 0321     		movs	r1, #3
+ 209 001c 0648     		ldr	r0, .L42+8
+ 210 001e FFF7FEFF 		bl	quick_add
+ 211 0022 BDE80840 		pop	{r3, lr}
+ 212 0026 0548     		ldr	r0, .L42+12
+ 213 0028 0A21     		movs	r1, #10
+ 214 002a FFF7FEBF 		b	quick_add
+ 215              	.L43:
+ 216 002e 00BF     		.align	2
+ 217              	.L42:
+ 218 0030 00000000 		.word	sem
+ 219 0034 00000000 		.word	task_define_led
+ 220 0038 00000000 		.word	task_define_key
+ 221 003c 00000000 		.word	task_define_sem
+ 223              		.comm	sem,16,4
+ 224              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 225              	.LC0:
+ 226 0000 73656D20 		.ascii	"sem taked:    %d\015\012\000"
+ 226      74616B65 
+ 226      643A2020 
+ 226      20202564 
+ 226      0D0A00
+ 227              	.LC1:
+ 228 0013 73656D20 		.ascii	"sem exception:%d\015\012\000"
+ 228      65786365 
+ 228      7074696F 
+ 228      6E3A2564 
+ 228      0D0A00
+ 229              	.LC2:
+ 230 0026 73656D20 		.ascii	"sem released: %d\015\012\000"
+ 230      72656C65 
+ 230      61736564 
+ 230      3A202564 
+ 230      0D0A00
+ 231              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_define.c
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:16     .text.quick_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:20     .text.quick_add:00000000 quick_add
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:34     .text.task_define_sem:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:39     .text.task_define_sem:00000000 task_define_sem
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:74     .text.task_define_sem:00000044 $d
+                            *COM*:00000010 sem
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:79     .text.task_define_led:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:84     .text.task_define_led:00000000 task_define_led
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:149    .text.task_define_key:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:154    .text.task_define_key:00000000 task_define_key
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:186    .text.task_define_key:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:191    .text.define_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:196    .text.define_start:00000000 define_start
+D:\Users\draapho\AppData\Local\Temp\ccQBhBoO.s:218    .text.define_start:00000030 $d
+
+UNDEFINED SYMBOLS
+ezos_add
+ezos_sem_take
+EZOS_WAIT_SUB
+led_toggle
+printf
+led_off
+ezos_delay
+led_toggle_gradual
+key_scan_10ms
+ezos_sem_release
+key_status
+led_init_all
+key_init_all
+ezos_sem_add

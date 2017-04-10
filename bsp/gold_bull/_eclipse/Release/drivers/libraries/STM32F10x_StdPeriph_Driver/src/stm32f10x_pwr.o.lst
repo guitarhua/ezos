@@ -1,0 +1,322 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_pwr.c"
+  15              		.section	.text.PWR_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	PWR_DeInit
+  18              		.thumb
+  19              		.thumb_func
+  21              	PWR_DeInit:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 4FF08050 		mov	r0, #268435456
+  26 0006 0121     		movs	r1, #1
+  27 0008 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  28 000c BDE80840 		pop	{r3, lr}
+  29 0010 4FF08050 		mov	r0, #268435456
+  30 0014 0021     		movs	r1, #0
+  31 0016 FFF7FEBF 		b	RCC_APB1PeriphResetCmd
+  33              		.section	.text.PWR_BackupAccessCmd,"ax",%progbits
+  34              		.align	1
+  35              		.global	PWR_BackupAccessCmd
+  36              		.thumb
+  37              		.thumb_func
+  39              	PWR_BackupAccessCmd:
+  40              		@ args = 0, pretend = 0, frame = 0
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42 0000 0128     		cmp	r0, #1
+  43 0002 10B5     		push	{r4, lr}
+  44 0004 0446     		mov	r4, r0
+  45 0006 03D9     		bls	.L3
+  46 0008 0348     		ldr	r0, .L5
+  47 000a 7F21     		movs	r1, #127
+  48 000c FFF7FEFF 		bl	assert_err
+  49              	.L3:
+  50 0010 024B     		ldr	r3, .L5+4
+  51 0012 1C60     		str	r4, [r3]
+  52 0014 10BD     		pop	{r4, pc}
+  53              	.L6:
+  54 0016 00BF     		.align	2
+  55              	.L5:
+  56 0018 00000000 		.word	.LC0
+  57 001c 20000E42 		.word	1108213792
+  59              		.section	.text.PWR_PVDCmd,"ax",%progbits
+  60              		.align	1
+  61              		.global	PWR_PVDCmd
+  62              		.thumb
+  63              		.thumb_func
+  65              	PWR_PVDCmd:
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68 0000 0128     		cmp	r0, #1
+  69 0002 10B5     		push	{r4, lr}
+  70 0004 0446     		mov	r4, r0
+  71 0006 03D9     		bls	.L8
+  72 0008 0348     		ldr	r0, .L9
+  73 000a 8C21     		movs	r1, #140
+  74 000c FFF7FEFF 		bl	assert_err
+  75              	.L8:
+  76 0010 024B     		ldr	r3, .L9+4
+  77 0012 1C60     		str	r4, [r3]
+  78 0014 10BD     		pop	{r4, pc}
+  79              	.L10:
+  80 0016 00BF     		.align	2
+  81              	.L9:
+  82 0018 00000000 		.word	.LC0
+  83 001c 10000E42 		.word	1108213776
+  85              		.section	.text.PWR_PVDLevelConfig,"ax",%progbits
+  86              		.align	1
+  87              		.global	PWR_PVDLevelConfig
+  88              		.thumb
+  89              		.thumb_func
+  91              	PWR_PVDLevelConfig:
+  92              		@ args = 0, pretend = 0, frame = 0
+  93              		@ frame_needed = 0, uses_anonymous_args = 0
+  94 0000 30F06003 		bics	r3, r0, #96
+  95 0004 10B5     		push	{r4, lr}
+  96 0006 0446     		mov	r4, r0
+  97 0008 05D0     		beq	.L12
+  98 000a 802B     		cmp	r3, #128
+  99 000c 03D0     		beq	.L12
+ 100 000e 0548     		ldr	r0, .L19
+ 101 0010 A221     		movs	r1, #162
+ 102 0012 FFF7FEFF 		bl	assert_err
+ 103              	.L12:
+ 104 0016 044B     		ldr	r3, .L19+4
+ 105 0018 1A68     		ldr	r2, [r3]
+ 106 001a 22F0E002 		bic	r2, r2, #224
+ 107 001e 1443     		orrs	r4, r4, r2
+ 108 0020 1C60     		str	r4, [r3]
+ 109 0022 10BD     		pop	{r4, pc}
+ 110              	.L20:
+ 111              		.align	2
+ 112              	.L19:
+ 113 0024 00000000 		.word	.LC0
+ 114 0028 00700040 		.word	1073770496
+ 116              		.section	.text.PWR_WakeUpPinCmd,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	PWR_WakeUpPinCmd
+ 119              		.thumb
+ 120              		.thumb_func
+ 122              	PWR_WakeUpPinCmd:
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125 0000 0128     		cmp	r0, #1
+ 126 0002 10B5     		push	{r4, lr}
+ 127 0004 0446     		mov	r4, r0
+ 128 0006 03D9     		bls	.L22
+ 129 0008 0348     		ldr	r0, .L23
+ 130 000a B521     		movs	r1, #181
+ 131 000c FFF7FEFF 		bl	assert_err
+ 132              	.L22:
+ 133 0010 024B     		ldr	r3, .L23+4
+ 134 0012 1C60     		str	r4, [r3]
+ 135 0014 10BD     		pop	{r4, pc}
+ 136              	.L24:
+ 137 0016 00BF     		.align	2
+ 138              	.L23:
+ 139 0018 00000000 		.word	.LC0
+ 140 001c A0000E42 		.word	1108213920
+ 142              		.section	.text.PWR_EnterSTOPMode,"ax",%progbits
+ 143              		.align	1
+ 144              		.global	PWR_EnterSTOPMode
+ 145              		.thumb
+ 146              		.thumb_func
+ 148              	PWR_EnterSTOPMode:
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151 0000 0128     		cmp	r0, #1
+ 152 0002 38B5     		push	{r3, r4, r5, lr}
+ 153 0004 0546     		mov	r5, r0
+ 154 0006 0C46     		mov	r4, r1
+ 155 0008 03D9     		bls	.L26
+ 156 000a 1148     		ldr	r0, .L30
+ 157 000c C921     		movs	r1, #201
+ 158 000e FFF7FEFF 		bl	assert_err
+ 159              	.L26:
+ 160 0012 631E     		subs	r3, r4, #1
+ 161 0014 DBB2     		uxtb	r3, r3
+ 162 0016 012B     		cmp	r3, #1
+ 163 0018 03D9     		bls	.L27
+ 164 001a 0D48     		ldr	r0, .L30
+ 165 001c CA21     		movs	r1, #202
+ 166 001e FFF7FEFF 		bl	assert_err
+ 167              	.L27:
+ 168 0022 0C4B     		ldr	r3, .L30+4
+ 169 0024 012C     		cmp	r4, #1
+ 170 0026 1A68     		ldr	r2, [r3]
+ 171 0028 22F00302 		bic	r2, r2, #3
+ 172 002c 45EA0205 		orr	r5, r5, r2
+ 173 0030 1D60     		str	r5, [r3]
+ 174 0032 094B     		ldr	r3, .L30+8
+ 175 0034 1A69     		ldr	r2, [r3, #16]
+ 176 0036 42F00402 		orr	r2, r2, #4
+ 177 003a 1A61     		str	r2, [r3, #16]
+ 178 003c 01D1     		bne	.L28
+ 179              	@ 1211 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 180 003e 30BF     		wfi
+ 181              	@ 0 "" 2
+ 182              		.thumb
+ 183 0040 00E0     		b	.L29
+ 184              	.L28:
+ 185              	@ 1212 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 186 0042 20BF     		wfe
+ 187              	@ 0 "" 2
+ 188              		.thumb
+ 189              	.L29:
+ 190 0044 1A69     		ldr	r2, [r3, #16]
+ 191 0046 22F00402 		bic	r2, r2, #4
+ 192 004a 1A61     		str	r2, [r3, #16]
+ 193 004c 38BD     		pop	{r3, r4, r5, pc}
+ 194              	.L31:
+ 195 004e 00BF     		.align	2
+ 196              	.L30:
+ 197 0050 00000000 		.word	.LC0
+ 198 0054 00700040 		.word	1073770496
+ 199 0058 00ED00E0 		.word	-536810240
+ 201              		.section	.text.PWR_EnterSTANDBYMode,"ax",%progbits
+ 202              		.align	1
+ 203              		.global	PWR_EnterSTANDBYMode
+ 204              		.thumb
+ 205              		.thumb_func
+ 207              	PWR_EnterSTANDBYMode:
+ 208              		@ args = 0, pretend = 0, frame = 0
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+ 210              		@ link register save eliminated.
+ 211 0000 074B     		ldr	r3, .L33
+ 212 0002 1A68     		ldr	r2, [r3]
+ 213 0004 42F00402 		orr	r2, r2, #4
+ 214 0008 1A60     		str	r2, [r3]
+ 215 000a 1A68     		ldr	r2, [r3]
+ 216 000c 42F00202 		orr	r2, r2, #2
+ 217 0010 1A60     		str	r2, [r3]
+ 218 0012 044B     		ldr	r3, .L33+4
+ 219 0014 1A69     		ldr	r2, [r3, #16]
+ 220 0016 42F00402 		orr	r2, r2, #4
+ 221 001a 1A61     		str	r2, [r3, #16]
+ 222              	@ 1211 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 223 001c 30BF     		wfi
+ 224              	@ 0 "" 2
+ 225              		.thumb
+ 226 001e 7047     		bx	lr
+ 227              	.L34:
+ 228              		.align	2
+ 229              	.L33:
+ 230 0020 00700040 		.word	1073770496
+ 231 0024 00ED00E0 		.word	-536810240
+ 233              		.section	.text.PWR_GetFlagStatus,"ax",%progbits
+ 234              		.align	1
+ 235              		.global	PWR_GetFlagStatus
+ 236              		.thumb
+ 237              		.thumb_func
+ 239              	PWR_GetFlagStatus:
+ 240              		@ args = 0, pretend = 0, frame = 0
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242 0000 431E     		subs	r3, r0, #1
+ 243 0002 012B     		cmp	r3, #1
+ 244 0004 10B5     		push	{r4, lr}
+ 245 0006 0446     		mov	r4, r0
+ 246 0008 06D9     		bls	.L36
+ 247 000a 0428     		cmp	r0, #4
+ 248 000c 04D0     		beq	.L36
+ 249 000e 0648     		ldr	r0, .L40
+ 250 0010 40F20911 		movw	r1, #265
+ 251 0014 FFF7FEFF 		bl	assert_err
+ 252              	.L36:
+ 253 0018 044B     		ldr	r3, .L40+4
+ 254 001a 5B68     		ldr	r3, [r3, #4]
+ 255 001c 1C42     		tst	r4, r3
+ 256 001e 0CBF     		ite	eq
+ 257 0020 0020     		moveq	r0, #0
+ 258 0022 0120     		movne	r0, #1
+ 259 0024 10BD     		pop	{r4, pc}
+ 260              	.L41:
+ 261 0026 00BF     		.align	2
+ 262              	.L40:
+ 263 0028 00000000 		.word	.LC0
+ 264 002c 00700040 		.word	1073770496
+ 266              		.section	.text.PWR_ClearFlag,"ax",%progbits
+ 267              		.align	1
+ 268              		.global	PWR_ClearFlag
+ 269              		.thumb
+ 270              		.thumb_func
+ 272              	PWR_ClearFlag:
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275 0000 431E     		subs	r3, r0, #1
+ 276 0002 012B     		cmp	r3, #1
+ 277 0004 10B5     		push	{r4, lr}
+ 278 0006 0446     		mov	r4, r0
+ 279 0008 04D9     		bls	.L43
+ 280 000a 0548     		ldr	r0, .L44
+ 281 000c 4FF49171 		mov	r1, #290
+ 282 0010 FFF7FEFF 		bl	assert_err
+ 283              	.L43:
+ 284 0014 034B     		ldr	r3, .L44+4
+ 285 0016 1A68     		ldr	r2, [r3]
+ 286 0018 42EA8404 		orr	r4, r2, r4, lsl #2
+ 287 001c 1C60     		str	r4, [r3]
+ 288 001e 10BD     		pop	{r4, pc}
+ 289              	.L45:
+ 290              		.align	2
+ 291              	.L44:
+ 292 0020 00000000 		.word	.LC0
+ 293 0024 00700040 		.word	1073770496
+ 295              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 296              	.LC0:
+ 297 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 297      73657273 
+ 297      2F647261 
+ 297      6170686F 
+ 297      2F446573 
+ 298 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_pw"
+ 298      6965732F 
+ 298      53544D33 
+ 298      32463130 
+ 298      785F5374 
+ 299 0066 722E6300 		.ascii	"r.c\000"
+ 300              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_pwr.c
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:16     .text.PWR_DeInit:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:21     .text.PWR_DeInit:00000000 PWR_DeInit
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:34     .text.PWR_BackupAccessCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:39     .text.PWR_BackupAccessCmd:00000000 PWR_BackupAccessCmd
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:56     .text.PWR_BackupAccessCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:60     .text.PWR_PVDCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:65     .text.PWR_PVDCmd:00000000 PWR_PVDCmd
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:82     .text.PWR_PVDCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:86     .text.PWR_PVDLevelConfig:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:91     .text.PWR_PVDLevelConfig:00000000 PWR_PVDLevelConfig
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:113    .text.PWR_PVDLevelConfig:00000024 $d
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:117    .text.PWR_WakeUpPinCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:122    .text.PWR_WakeUpPinCmd:00000000 PWR_WakeUpPinCmd
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:139    .text.PWR_WakeUpPinCmd:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:143    .text.PWR_EnterSTOPMode:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:148    .text.PWR_EnterSTOPMode:00000000 PWR_EnterSTOPMode
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:197    .text.PWR_EnterSTOPMode:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:202    .text.PWR_EnterSTANDBYMode:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:207    .text.PWR_EnterSTANDBYMode:00000000 PWR_EnterSTANDBYMode
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:230    .text.PWR_EnterSTANDBYMode:00000020 $d
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:234    .text.PWR_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:239    .text.PWR_GetFlagStatus:00000000 PWR_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:263    .text.PWR_GetFlagStatus:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:267    .text.PWR_ClearFlag:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:272    .text.PWR_ClearFlag:00000000 PWR_ClearFlag
+D:\Users\draapho\AppData\Local\Temp\cc8wzD9J.s:292    .text.PWR_ClearFlag:00000020 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd
+assert_err

@@ -1,0 +1,284 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"drv_sdcard.c"
+  15              		.section	.text.sdcard_port_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	sdcard_port_init
+  18              		.thumb
+  19              		.thumb_func
+  21              	sdcard_port_init:
+  22              		@ args = 0, pretend = 0, frame = 8
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 07B5     		push	{r0, r1, r2, lr}
+  25 0002 0020     		movs	r0, #0
+  26 0004 FFF7FEFF 		bl	ctrlport_init
+  27 0008 0820     		movs	r0, #8
+  28 000a 0121     		movs	r1, #1
+  29 000c FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  30 0010 4823     		movs	r3, #72
+  31 0012 02A9     		add	r1, sp, #8
+  32 0014 8DF80730 		strb	r3, [sp, #7]
+  33 0018 4FF48043 		mov	r3, #16384
+  34 001c 21F8043D 		strh	r3, [r1, #-4]!	@ movhi
+  35 0020 0348     		ldr	r0, .L2
+  36 0022 FFF7FEFF 		bl	GPIO_Init
+  37 0026 FFF7FEFF 		bl	sdspi_port_init
+  38 002a 03B0     		add	sp, sp, #12
+  39              		@ sp needed
+  40 002c 5DF804FB 		ldr	pc, [sp], #4
+  41              	.L3:
+  42              		.align	2
+  43              	.L2:
+  44 0030 000C0140 		.word	1073810432
+  46              		.section	.text.sdcard_power_on,"ax",%progbits
+  47              		.align	1
+  48              		.global	sdcard_power_on
+  49              		.thumb
+  50              		.thumb_func
+  52              	sdcard_power_on:
+  53              		@ args = 0, pretend = 0, frame = 0
+  54              		@ frame_needed = 0, uses_anonymous_args = 0
+  55              		@ link register save eliminated.
+  56 0000 0020     		movs	r0, #0
+  57 0002 FFF7FEBF 		b	ctrlport_on
+  59              		.section	.text.sdcard_power_off,"ax",%progbits
+  60              		.align	1
+  61              		.global	sdcard_power_off
+  62              		.thumb
+  63              		.thumb_func
+  65              	sdcard_power_off:
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  69 0000 0020     		movs	r0, #0
+  70 0002 FFF7FEBF 		b	ctrlport_off
+  72              		.section	.text.sdcard_present,"ax",%progbits
+  73              		.align	1
+  74              		.global	sdcard_present
+  75              		.thumb
+  76              		.thumb_func
+  78              	sdcard_present:
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+  82 0000 034B     		ldr	r3, .L7
+  83 0002 9868     		ldr	r0, [r3, #8]
+  84 0004 80F48040 		eor	r0, r0, #16384
+  85 0008 C0F38030 		ubfx	r0, r0, #14, #1
+  86 000c 7047     		bx	lr
+  87              	.L8:
+  88 000e 00BF     		.align	2
+  89              	.L7:
+  90 0010 000C0140 		.word	1073810432
+  92              		.section	.text.sdcard_init,"ax",%progbits
+  93              		.align	1
+  94              		.global	sdcard_init
+  95              		.thumb
+  96              		.thumb_func
+  98              	sdcard_init:
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101 0000 08B5     		push	{r3, lr}
+ 102 0002 0020     		movs	r0, #0
+ 103 0004 FFF7FEFF 		bl	ctrlport_on
+ 104              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 105 0008 00BF     		nop
+ 106              	@ 0 "" 2
+ 107              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 108 000a 00BF     		nop
+ 109              	@ 0 "" 2
+ 110              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 111 000c 00BF     		nop
+ 112              	@ 0 "" 2
+ 113              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 114 000e 00BF     		nop
+ 115              	@ 0 "" 2
+ 116              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 117 0010 00BF     		nop
+ 118              	@ 0 "" 2
+ 119              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 120 0012 00BF     		nop
+ 121              	@ 0 "" 2
+ 122              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 123 0014 00BF     		nop
+ 124              	@ 0 "" 2
+ 125              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 126 0016 00BF     		nop
+ 127              	@ 0 "" 2
+ 128              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 129 0018 00BF     		nop
+ 130              	@ 0 "" 2
+ 131              	@ 1210 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 132 001a 00BF     		nop
+ 133              	@ 0 "" 2
+ 134              		.thumb
+ 135 001c FFF7FEFF 		bl	sdcard_present
+ 136 0020 38B1     		cbz	r0, .L11
+ 137 0022 4FF40070 		mov	r0, #512
+ 138 0026 FFF7FEFF 		bl	sdspi_init
+ 139 002a 0030     		adds	r0, r0, #0
+ 140 002c 18BF     		it	ne
+ 141 002e 0120     		movne	r0, #1
+ 142 0030 08BD     		pop	{r3, pc}
+ 143              	.L11:
+ 144 0032 0120     		movs	r0, #1
+ 145 0034 08BD     		pop	{r3, pc}
+ 147              		.section	.text.sdcard_get_info,"ax",%progbits
+ 148              		.align	1
+ 149              		.global	sdcard_get_info
+ 150              		.thumb
+ 151              		.thumb_func
+ 153              	sdcard_get_info:
+ 154              		@ args = 0, pretend = 0, frame = 32
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156 0000 10B5     		push	{r4, lr}
+ 157 0002 88B0     		sub	sp, sp, #32
+ 158 0004 0446     		mov	r4, r0
+ 159 0006 6846     		mov	r0, sp
+ 160 0008 FFF7FEFF 		bl	sdspi_get_info
+ 161 000c 10BB     		cbnz	r0, .L14
+ 162 000e 9DF80030 		ldrb	r3, [sp]	@ zero_extendqisi2
+ 163 0012 032B     		cmp	r3, #3
+ 164 0014 0BD8     		bhi	.L15
+ 165 0016 DFE803F0 		tbb	[pc, r3]
+ 166              	.L17:
+ 167 001a 02       		.byte	(.L16-.L17)/2
+ 168 001b 04       		.byte	(.L18-.L17)/2
+ 169 001c 06       		.byte	(.L19-.L17)/2
+ 170 001d 08       		.byte	(.L20-.L17)/2
+ 171              		.align	1
+ 172              	.L16:
+ 173 001e 0023     		movs	r3, #0
+ 174 0020 06E0     		b	.L23
+ 175              	.L18:
+ 176 0022 0123     		movs	r3, #1
+ 177 0024 04E0     		b	.L23
+ 178              	.L19:
+ 179 0026 0223     		movs	r3, #2
+ 180 0028 02E0     		b	.L23
+ 181              	.L20:
+ 182 002a 0323     		movs	r3, #3
+ 183 002c 00E0     		b	.L23
+ 184              	.L15:
+ 185 002e FF23     		movs	r3, #255
+ 186              	.L23:
+ 187 0030 2370     		strb	r3, [r4]
+ 188 0032 9DF80B30 		ldrb	r3, [sp, #11]	@ zero_extendqisi2
+ 189 0036 0020     		movs	r0, #0
+ 190 0038 6370     		strb	r3, [r4, #1]
+ 191 003a 039B     		ldr	r3, [sp, #12]
+ 192 003c 6360     		str	r3, [r4, #4]
+ 193 003e 9DF81030 		ldrb	r3, [sp, #16]	@ zero_extendqisi2
+ 194 0042 2372     		strb	r3, [r4, #8]
+ 195 0044 9DF81130 		ldrb	r3, [sp, #17]	@ zero_extendqisi2
+ 196 0048 6372     		strb	r3, [r4, #9]
+ 197 004a DDE90623 		ldrd	r2, [sp, #24]
+ 198 004e C4E90423 		strd	r2, [r4, #16]
+ 199 0052 06E0     		b	.L22
+ 200              	.L14:
+ 201 0054 FF23     		movs	r3, #255
+ 202 0056 2370     		strb	r3, [r4]
+ 203 0058 0022     		movs	r2, #0
+ 204 005a 0023     		movs	r3, #0
+ 205 005c C4E90423 		strd	r2, [r4, #16]
+ 206 0060 0120     		movs	r0, #1
+ 207              	.L22:
+ 208 0062 08B0     		add	sp, sp, #32
+ 209              		@ sp needed
+ 210 0064 10BD     		pop	{r4, pc}
+ 212              		.section	.text.sdcard_read_blocks,"ax",%progbits
+ 213              		.align	1
+ 214              		.global	sdcard_read_blocks
+ 215              		.thumb
+ 216              		.thumb_func
+ 218              	sdcard_read_blocks:
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 221 0000 012A     		cmp	r2, #1
+ 222 0002 08B5     		push	{r3, lr}
+ 223 0004 02D9     		bls	.L25
+ 224 0006 FFF7FEFF 		bl	sdspi_read_multi_blocks
+ 225 000a 02E0     		b	.L28
+ 226              	.L25:
+ 227 000c 05D1     		bne	.L27
+ 228 000e FFF7FEFF 		bl	sdspi_read_block
+ 229              	.L28:
+ 230 0012 0030     		adds	r0, r0, #0
+ 231 0014 18BF     		it	ne
+ 232 0016 0120     		movne	r0, #1
+ 233 0018 08BD     		pop	{r3, pc}
+ 234              	.L27:
+ 235 001a 0020     		movs	r0, #0
+ 236 001c 08BD     		pop	{r3, pc}
+ 238              		.section	.text.sdcard_write_blocks,"ax",%progbits
+ 239              		.align	1
+ 240              		.global	sdcard_write_blocks
+ 241              		.thumb
+ 242              		.thumb_func
+ 244              	sdcard_write_blocks:
+ 245              		@ args = 0, pretend = 0, frame = 0
+ 246              		@ frame_needed = 0, uses_anonymous_args = 0
+ 247 0000 012A     		cmp	r2, #1
+ 248 0002 08B5     		push	{r3, lr}
+ 249 0004 02D9     		bls	.L30
+ 250 0006 FFF7FEFF 		bl	sdspi_write_multi_blocks
+ 251 000a 02E0     		b	.L33
+ 252              	.L30:
+ 253 000c 05D1     		bne	.L32
+ 254 000e FFF7FEFF 		bl	sdspi_write_block
+ 255              	.L33:
+ 256 0012 0030     		adds	r0, r0, #0
+ 257 0014 18BF     		it	ne
+ 258 0016 0120     		movne	r0, #1
+ 259 0018 08BD     		pop	{r3, pc}
+ 260              	.L32:
+ 261 001a 0020     		movs	r0, #0
+ 262 001c 08BD     		pop	{r3, pc}
+ 264              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_sdcard.c
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:16     .text.sdcard_port_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:21     .text.sdcard_port_init:00000000 sdcard_port_init
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:44     .text.sdcard_port_init:00000030 $d
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:47     .text.sdcard_power_on:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:52     .text.sdcard_power_on:00000000 sdcard_power_on
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:60     .text.sdcard_power_off:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:65     .text.sdcard_power_off:00000000 sdcard_power_off
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:73     .text.sdcard_present:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:78     .text.sdcard_present:00000000 sdcard_present
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:90     .text.sdcard_present:00000010 $d
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:93     .text.sdcard_init:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:98     .text.sdcard_init:00000000 sdcard_init
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:148    .text.sdcard_get_info:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:153    .text.sdcard_get_info:00000000 sdcard_get_info
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:167    .text.sdcard_get_info:0000001a $d
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:171    .text.sdcard_get_info:0000001e $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:213    .text.sdcard_read_blocks:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:218    .text.sdcard_read_blocks:00000000 sdcard_read_blocks
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:239    .text.sdcard_write_blocks:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccsdgJYD.s:244    .text.sdcard_write_blocks:00000000 sdcard_write_blocks
+
+UNDEFINED SYMBOLS
+ctrlport_init
+RCC_APB2PeriphClockCmd
+GPIO_Init
+sdspi_port_init
+ctrlport_on
+ctrlport_off
+sdspi_init
+sdspi_get_info
+sdspi_read_multi_blocks
+sdspi_read_block
+sdspi_write_multi_blocks
+sdspi_write_block

@@ -1,0 +1,37 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_gui.c"
+  15              		.section	.text.gui_start,"ax",%progbits
+  16              		.align	1
+  17              		.global	gui_start
+  18              		.thumb
+  19              		.thumb_func
+  21              	gui_start:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 08B5     		push	{r3, lr}
+  25 0002 FFF7FEFF 		bl	lcd_init
+  26 0006 FFF7FEFF 		bl	touch_init
+  27 000a BDE80840 		pop	{r3, lr}
+  28 000e FFF7FEBF 		b	MainTask
+  30              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_gui.c
+D:\Users\draapho\AppData\Local\Temp\ccUhSmyL.s:16     .text.gui_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccUhSmyL.s:21     .text.gui_start:00000000 gui_start
+
+UNDEFINED SYMBOLS
+lcd_init
+touch_init
+MainTask

@@ -1,0 +1,1532 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"ezos_ipc.c"
+  15              		.section	.text.ezos_ipc_add,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	ezos_ipc_add:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 10B5     		push	{r4, lr}
+  24 0002 094C     		ldr	r4, .L8
+  25 0004 2368     		ldr	r3, [r4]
+  26              	.L2:
+  27 0006 5A68     		ldr	r2, [r3, #4]
+  28 0008 22B1     		cbz	r2, .L7
+  29 000a 8242     		cmp	r2, r0
+  30 000c 09D0     		beq	.L5
+  31 000e 1C46     		mov	r4, r3
+  32 0010 1B68     		ldr	r3, [r3]
+  33 0012 F8E7     		b	.L2
+  34              	.L7:
+  35 0014 2368     		ldr	r3, [r4]
+  36 0016 0360     		str	r3, [r0]
+  37 0018 2060     		str	r0, [r4]
+  38 001a 4060     		str	r0, [r0, #4]
+  39 001c 0172     		strb	r1, [r0, #8]
+  40 001e 1046     		mov	r0, r2
+  41 0020 10BD     		pop	{r4, pc}
+  42              	.L5:
+  43 0022 0320     		movs	r0, #3
+  44 0024 10BD     		pop	{r4, pc}
+  45              	.L9:
+  46 0026 00BF     		.align	2
+  47              	.L8:
+  48 0028 00000000 		.word	ipc
+  50              		.section	.text.ezos_ipc_delete,"ax",%progbits
+  51              		.align	1
+  52              		.thumb
+  53              		.thumb_func
+  55              	ezos_ipc_delete:
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		@ link register save eliminated.
+  59 0000 0949     		ldr	r1, .L16
+  60 0002 0B68     		ldr	r3, [r1]
+  61              	.L11:
+  62 0004 5A68     		ldr	r2, [r3, #4]
+  63 0006 62B1     		cbz	r2, .L15
+  64 0008 8242     		cmp	r2, r0
+  65 000a 07D1     		bne	.L12
+  66 000c 1A68     		ldr	r2, [r3]
+  67 000e 0020     		movs	r0, #0
+  68 0010 0A60     		str	r2, [r1]
+  69 0012 0722     		movs	r2, #7
+  70 0014 1860     		str	r0, [r3]
+  71 0016 5860     		str	r0, [r3, #4]
+  72 0018 1A72     		strb	r2, [r3, #8]
+  73 001a 7047     		bx	lr
+  74              	.L12:
+  75 001c 1946     		mov	r1, r3
+  76 001e 1B68     		ldr	r3, [r3]
+  77 0020 F0E7     		b	.L11
+  78              	.L15:
+  79 0022 0120     		movs	r0, #1
+  80 0024 7047     		bx	lr
+  81              	.L17:
+  82 0026 00BF     		.align	2
+  83              	.L16:
+  84 0028 00000000 		.word	ipc
+  86              		.section	.text.ezos_sem_add,"ax",%progbits
+  87              		.align	1
+  88              		.global	ezos_sem_add
+  89              		.thumb
+  90              		.thumb_func
+  92              	ezos_sem_add:
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 0, uses_anonymous_args = 0
+  95 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  96 0002 0F46     		mov	r7, r1
+  97 0004 0446     		mov	r4, r0
+  98 0006 78B1     		cbz	r0, .L21
+  99 0008 FFF7FEFF 		bl	__get_PRIMASK
+ 100 000c 0646     		mov	r6, r0
+ 101              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 102 000e 72B6     		cpsid i
+ 103              	@ 0 "" 2
+ 104              		.thumb
+ 105 0010 0A21     		movs	r1, #10
+ 106 0012 2046     		mov	r0, r4
+ 107 0014 FFF7FEFF 		bl	ezos_ipc_add
+ 108 0018 0546     		mov	r5, r0
+ 109 001a 00B9     		cbnz	r0, .L20
+ 110 001c 2773     		strb	r7, [r4, #12]
+ 111              	.L20:
+ 112 001e 3046     		mov	r0, r6
+ 113 0020 FFF7FEFF 		bl	__set_PRIMASK
+ 114 0024 2846     		mov	r0, r5
+ 115 0026 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 116              	.L21:
+ 117 0028 0120     		movs	r0, #1
+ 118 002a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 120              		.section	.text.ezos_sem_delete,"ax",%progbits
+ 121              		.align	1
+ 122              		.global	ezos_sem_delete
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	ezos_sem_delete:
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129 0000 38B5     		push	{r3, r4, r5, lr}
+ 130 0002 0446     		mov	r4, r0
+ 131 0004 60B1     		cbz	r0, .L24
+ 132 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 133 000a 0546     		mov	r5, r0
+ 134              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 135 000c 72B6     		cpsid i
+ 136              	@ 0 "" 2
+ 137              		.thumb
+ 138 000e 2046     		mov	r0, r4
+ 139 0010 FFF7FEFF 		bl	ezos_ipc_delete
+ 140 0014 0446     		mov	r4, r0
+ 141 0016 2846     		mov	r0, r5
+ 142 0018 FFF7FEFF 		bl	__set_PRIMASK
+ 143 001c 2046     		mov	r0, r4
+ 144 001e 38BD     		pop	{r3, r4, r5, pc}
+ 145              	.L24:
+ 146 0020 0120     		movs	r0, #1
+ 147 0022 38BD     		pop	{r3, r4, r5, pc}
+ 149              		.section	.text.ezos_sem_take,"ax",%progbits
+ 150              		.align	1
+ 151              		.global	ezos_sem_take
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	ezos_sem_take:
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 159 0002 0C46     		mov	r4, r1
+ 160 0004 0546     		mov	r5, r0
+ 161 0006 0028     		cmp	r0, #0
+ 162 0008 34D0     		beq	.L36
+ 163 000a 1C4E     		ldr	r6, .L40
+ 164 000c 3368     		ldr	r3, [r6]
+ 165 000e 002B     		cmp	r3, #0
+ 166 0010 30D0     		beq	.L36
+ 167 0012 FFF7FEFF 		bl	__get_PRIMASK
+ 168 0016 0746     		mov	r7, r0
+ 169              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 170 0018 72B6     		cpsid i
+ 171              	@ 0 "" 2
+ 172              		.thumb
+ 173 001a 194B     		ldr	r3, .L40+4
+ 174              	.L28:
+ 175 001c 1B68     		ldr	r3, [r3]
+ 176 001e 5A68     		ldr	r2, [r3, #4]
+ 177 0020 1AB3     		cbz	r2, .L37
+ 178 0022 AA42     		cmp	r2, r5
+ 179 0024 FAD1     		bne	.L28
+ 180 0026 1A7A     		ldrb	r2, [r3, #8]	@ zero_extendqisi2
+ 181 0028 0A2A     		cmp	r2, #10
+ 182 002a 1ED1     		bne	.L37
+ 183 002c 1A7B     		ldrb	r2, [r3, #12]	@ zero_extendqisi2
+ 184 002e 32B1     		cbz	r2, .L30
+ 185 0030 013A     		subs	r2, r2, #1
+ 186 0032 1A73     		strb	r2, [r3, #12]
+ 187 0034 3368     		ldr	r3, [r6]
+ 188 0036 0024     		movs	r4, #0
+ 189 0038 DC60     		str	r4, [r3, #12]
+ 190 003a 1C61     		str	r4, [r3, #16]
+ 191 003c 16E0     		b	.L29
+ 192              	.L30:
+ 193 003e 3268     		ldr	r2, [r6]
+ 194 0040 D168     		ldr	r1, [r2, #12]
+ 195 0042 9942     		cmp	r1, r3
+ 196 0044 08D0     		beq	.L31
+ 197 0046 14B9     		cbnz	r4, .L32
+ 198 0048 D460     		str	r4, [r2, #12]
+ 199 004a 1461     		str	r4, [r2, #16]
+ 200 004c 07E0     		b	.L38
+ 201              	.L32:
+ 202 004e D360     		str	r3, [r2, #12]
+ 203 0050 2046     		mov	r0, r4
+ 204 0052 FFF7FEFF 		bl	ezos_delay
+ 205 0056 06E0     		b	.L39
+ 206              	.L31:
+ 207 0058 1369     		ldr	r3, [r2, #16]
+ 208 005a 13B9     		cbnz	r3, .L33
+ 209 005c D360     		str	r3, [r2, #12]
+ 210              	.L38:
+ 211 005e 0924     		movs	r4, #9
+ 212 0060 04E0     		b	.L29
+ 213              	.L33:
+ 214 0062 0623     		movs	r3, #6
+ 215 0064 9376     		strb	r3, [r2, #26]
+ 216              	.L39:
+ 217 0066 0824     		movs	r4, #8
+ 218 0068 00E0     		b	.L29
+ 219              	.L37:
+ 220 006a 0124     		movs	r4, #1
+ 221              	.L29:
+ 222 006c 3846     		mov	r0, r7
+ 223 006e FFF7FEFF 		bl	__set_PRIMASK
+ 224 0072 00E0     		b	.L26
+ 225              	.L36:
+ 226 0074 0124     		movs	r4, #1
+ 227              	.L26:
+ 228 0076 2046     		mov	r0, r4
+ 229 0078 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 230              	.L41:
+ 231 007a 00BF     		.align	2
+ 232              	.L40:
+ 233 007c 00000000 		.word	run
+ 234 0080 00000000 		.word	ipc
+ 236              		.section	.text.ezos_sem_release,"ax",%progbits
+ 237              		.align	1
+ 238              		.global	ezos_sem_release
+ 239              		.thumb
+ 240              		.thumb_func
+ 242              	ezos_sem_release:
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245 0000 38B5     		push	{r3, r4, r5, lr}
+ 246 0002 0446     		mov	r4, r0
+ 247 0004 00B3     		cbz	r0, .L51
+ 248 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 249              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 250 000a 72B6     		cpsid i
+ 251              	@ 0 "" 2
+ 252              		.thumb
+ 253 000c 104B     		ldr	r3, .L55
+ 254 000e 1A68     		ldr	r2, [r3]
+ 255 0010 104B     		ldr	r3, .L55+4
+ 256              	.L45:
+ 257 0012 1B68     		ldr	r3, [r3]
+ 258 0014 5968     		ldr	r1, [r3, #4]
+ 259 0016 99B1     		cbz	r1, .L52
+ 260 0018 A142     		cmp	r1, r4
+ 261 001a FAD1     		bne	.L45
+ 262 001c 197A     		ldrb	r1, [r3, #8]	@ zero_extendqisi2
+ 263 001e 0A29     		cmp	r1, #10
+ 264 0020 0ED1     		bne	.L52
+ 265 0022 0525     		movs	r5, #5
+ 266              	.L47:
+ 267 0024 5468     		ldr	r4, [r2, #4]
+ 268 0026 2CB1     		cbz	r4, .L54
+ 269 0028 D168     		ldr	r1, [r2, #12]
+ 270 002a 9942     		cmp	r1, r3
+ 271 002c 08BF     		it	eq
+ 272 002e 9576     		strbeq	r5, [r2, #26]
+ 273 0030 1268     		ldr	r2, [r2]
+ 274 0032 F7E7     		b	.L47
+ 275              	.L54:
+ 276 0034 1A7B     		ldrb	r2, [r3, #12]	@ zero_extendqisi2
+ 277 0036 FF2A     		cmp	r2, #255
+ 278 0038 03D0     		beq	.L46
+ 279 003a 0132     		adds	r2, r2, #1
+ 280 003c 1A73     		strb	r2, [r3, #12]
+ 281 003e 00E0     		b	.L46
+ 282              	.L52:
+ 283 0040 0124     		movs	r4, #1
+ 284              	.L46:
+ 285 0042 FFF7FEFF 		bl	__set_PRIMASK
+ 286 0046 00E0     		b	.L43
+ 287              	.L51:
+ 288 0048 0124     		movs	r4, #1
+ 289              	.L43:
+ 290 004a 2046     		mov	r0, r4
+ 291 004c 38BD     		pop	{r3, r4, r5, pc}
+ 292              	.L56:
+ 293 004e 00BF     		.align	2
+ 294              	.L55:
+ 295 0050 00000000 		.word	idle
+ 296 0054 00000000 		.word	ipc
+ 298              		.section	.text.ezos_sem_clear,"ax",%progbits
+ 299              		.align	1
+ 300              		.global	ezos_sem_clear
+ 301              		.thumb
+ 302              		.thumb_func
+ 304              	ezos_sem_clear:
+ 305              		@ args = 0, pretend = 0, frame = 0
+ 306              		@ frame_needed = 0, uses_anonymous_args = 0
+ 307 0000 10B5     		push	{r4, lr}
+ 308 0002 0446     		mov	r4, r0
+ 309 0004 90B1     		cbz	r0, .L63
+ 310 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 311              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 312 000a 72B6     		cpsid i
+ 313              	@ 0 "" 2
+ 314              		.thumb
+ 315 000c 094B     		ldr	r3, .L65
+ 316              	.L60:
+ 317 000e 1B68     		ldr	r3, [r3]
+ 318 0010 5A68     		ldr	r2, [r3, #4]
+ 319 0012 3AB1     		cbz	r2, .L64
+ 320 0014 A242     		cmp	r2, r4
+ 321 0016 FAD1     		bne	.L60
+ 322 0018 1A7A     		ldrb	r2, [r3, #8]	@ zero_extendqisi2
+ 323 001a 0A2A     		cmp	r2, #10
+ 324 001c 02D1     		bne	.L64
+ 325 001e 0024     		movs	r4, #0
+ 326 0020 1C73     		strb	r4, [r3, #12]
+ 327 0022 00E0     		b	.L61
+ 328              	.L64:
+ 329 0024 0124     		movs	r4, #1
+ 330              	.L61:
+ 331 0026 FFF7FEFF 		bl	__set_PRIMASK
+ 332 002a 00E0     		b	.L58
+ 333              	.L63:
+ 334 002c 0124     		movs	r4, #1
+ 335              	.L58:
+ 336 002e 2046     		mov	r0, r4
+ 337 0030 10BD     		pop	{r4, pc}
+ 338              	.L66:
+ 339 0032 00BF     		.align	2
+ 340              	.L65:
+ 341 0034 00000000 		.word	ipc
+ 343              		.section	.text.ezos_mutex_add,"ax",%progbits
+ 344              		.align	1
+ 345              		.global	ezos_mutex_add
+ 346              		.thumb
+ 347              		.thumb_func
+ 349              	ezos_mutex_add:
+ 350              		@ args = 0, pretend = 0, frame = 0
+ 351              		@ frame_needed = 0, uses_anonymous_args = 0
+ 352 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 353 0002 0F46     		mov	r7, r1
+ 354 0004 0446     		mov	r4, r0
+ 355 0006 78B1     		cbz	r0, .L70
+ 356 0008 FFF7FEFF 		bl	__get_PRIMASK
+ 357 000c 0646     		mov	r6, r0
+ 358              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 359 000e 72B6     		cpsid i
+ 360              	@ 0 "" 2
+ 361              		.thumb
+ 362 0010 0B21     		movs	r1, #11
+ 363 0012 2046     		mov	r0, r4
+ 364 0014 FFF7FEFF 		bl	ezos_ipc_add
+ 365 0018 0546     		mov	r5, r0
+ 366 001a 00B9     		cbnz	r0, .L69
+ 367 001c 2773     		strb	r7, [r4, #12]
+ 368              	.L69:
+ 369 001e 3046     		mov	r0, r6
+ 370 0020 FFF7FEFF 		bl	__set_PRIMASK
+ 371 0024 2846     		mov	r0, r5
+ 372 0026 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 373              	.L70:
+ 374 0028 0120     		movs	r0, #1
+ 375 002a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 377              		.section	.text.ezos_mutex_delete,"ax",%progbits
+ 378              		.align	1
+ 379              		.global	ezos_mutex_delete
+ 380              		.thumb
+ 381              		.thumb_func
+ 383              	ezos_mutex_delete:
+ 384              		@ args = 0, pretend = 0, frame = 0
+ 385              		@ frame_needed = 0, uses_anonymous_args = 0
+ 386 0000 38B5     		push	{r3, r4, r5, lr}
+ 387 0002 0446     		mov	r4, r0
+ 388 0004 60B1     		cbz	r0, .L73
+ 389 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 390 000a 0546     		mov	r5, r0
+ 391              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 392 000c 72B6     		cpsid i
+ 393              	@ 0 "" 2
+ 394              		.thumb
+ 395 000e 2046     		mov	r0, r4
+ 396 0010 FFF7FEFF 		bl	ezos_ipc_delete
+ 397 0014 0446     		mov	r4, r0
+ 398 0016 2846     		mov	r0, r5
+ 399 0018 FFF7FEFF 		bl	__set_PRIMASK
+ 400 001c 2046     		mov	r0, r4
+ 401 001e 38BD     		pop	{r3, r4, r5, pc}
+ 402              	.L73:
+ 403 0020 0120     		movs	r0, #1
+ 404 0022 38BD     		pop	{r3, r4, r5, pc}
+ 406              		.section	.text.ezos_mutex_take,"ax",%progbits
+ 407              		.align	1
+ 408              		.global	ezos_mutex_take
+ 409              		.thumb
+ 410              		.thumb_func
+ 412              	ezos_mutex_take:
+ 413              		@ args = 0, pretend = 0, frame = 0
+ 414              		@ frame_needed = 0, uses_anonymous_args = 0
+ 415 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 416 0002 0C46     		mov	r4, r1
+ 417 0004 0546     		mov	r5, r0
+ 418 0006 0028     		cmp	r0, #0
+ 419 0008 33D0     		beq	.L85
+ 420 000a 1B4E     		ldr	r6, .L89
+ 421 000c 3368     		ldr	r3, [r6]
+ 422 000e 002B     		cmp	r3, #0
+ 423 0010 2FD0     		beq	.L85
+ 424 0012 FFF7FEFF 		bl	__get_PRIMASK
+ 425 0016 0746     		mov	r7, r0
+ 426              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 427 0018 72B6     		cpsid i
+ 428              	@ 0 "" 2
+ 429              		.thumb
+ 430 001a 184B     		ldr	r3, .L89+4
+ 431              	.L77:
+ 432 001c 1B68     		ldr	r3, [r3]
+ 433 001e 5A68     		ldr	r2, [r3, #4]
+ 434 0020 12B3     		cbz	r2, .L86
+ 435 0022 AA42     		cmp	r2, r5
+ 436 0024 FAD1     		bne	.L77
+ 437 0026 1A7A     		ldrb	r2, [r3, #8]	@ zero_extendqisi2
+ 438 0028 0B2A     		cmp	r2, #11
+ 439 002a 1DD1     		bne	.L86
+ 440 002c 1A7B     		ldrb	r2, [r3, #12]	@ zero_extendqisi2
+ 441 002e 2AB1     		cbz	r2, .L79
+ 442 0030 0024     		movs	r4, #0
+ 443 0032 1C73     		strb	r4, [r3, #12]
+ 444 0034 3368     		ldr	r3, [r6]
+ 445 0036 DC60     		str	r4, [r3, #12]
+ 446 0038 1C61     		str	r4, [r3, #16]
+ 447 003a 16E0     		b	.L78
+ 448              	.L79:
+ 449 003c 3268     		ldr	r2, [r6]
+ 450 003e D168     		ldr	r1, [r2, #12]
+ 451 0040 9942     		cmp	r1, r3
+ 452 0042 08D0     		beq	.L80
+ 453 0044 14B9     		cbnz	r4, .L81
+ 454 0046 D460     		str	r4, [r2, #12]
+ 455 0048 1461     		str	r4, [r2, #16]
+ 456 004a 07E0     		b	.L87
+ 457              	.L81:
+ 458 004c D360     		str	r3, [r2, #12]
+ 459 004e 2046     		mov	r0, r4
+ 460 0050 FFF7FEFF 		bl	ezos_delay
+ 461 0054 06E0     		b	.L88
+ 462              	.L80:
+ 463 0056 1369     		ldr	r3, [r2, #16]
+ 464 0058 13B9     		cbnz	r3, .L82
+ 465 005a D360     		str	r3, [r2, #12]
+ 466              	.L87:
+ 467 005c 0924     		movs	r4, #9
+ 468 005e 04E0     		b	.L78
+ 469              	.L82:
+ 470 0060 0623     		movs	r3, #6
+ 471 0062 9376     		strb	r3, [r2, #26]
+ 472              	.L88:
+ 473 0064 0824     		movs	r4, #8
+ 474 0066 00E0     		b	.L78
+ 475              	.L86:
+ 476 0068 0124     		movs	r4, #1
+ 477              	.L78:
+ 478 006a 3846     		mov	r0, r7
+ 479 006c FFF7FEFF 		bl	__set_PRIMASK
+ 480 0070 00E0     		b	.L75
+ 481              	.L85:
+ 482 0072 0124     		movs	r4, #1
+ 483              	.L75:
+ 484 0074 2046     		mov	r0, r4
+ 485 0076 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 486              	.L90:
+ 487              		.align	2
+ 488              	.L89:
+ 489 0078 00000000 		.word	run
+ 490 007c 00000000 		.word	ipc
+ 492              		.section	.text.ezos_mutex_release,"ax",%progbits
+ 493              		.align	1
+ 494              		.global	ezos_mutex_release
+ 495              		.thumb
+ 496              		.thumb_func
+ 498              	ezos_mutex_release:
+ 499              		@ args = 0, pretend = 0, frame = 0
+ 500              		@ frame_needed = 0, uses_anonymous_args = 0
+ 501 0000 38B5     		push	{r3, r4, r5, lr}
+ 502 0002 0446     		mov	r4, r0
+ 503 0004 E8B1     		cbz	r0, .L100
+ 504 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 505              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 506 000a 72B6     		cpsid i
+ 507              	@ 0 "" 2
+ 508              		.thumb
+ 509 000c 0E4B     		ldr	r3, .L103
+ 510 000e 1A68     		ldr	r2, [r3]
+ 511 0010 0E4B     		ldr	r3, .L103+4
+ 512              	.L94:
+ 513 0012 1B68     		ldr	r3, [r3]
+ 514 0014 5968     		ldr	r1, [r3, #4]
+ 515 0016 81B1     		cbz	r1, .L101
+ 516 0018 A142     		cmp	r1, r4
+ 517 001a FAD1     		bne	.L94
+ 518 001c 197A     		ldrb	r1, [r3, #8]	@ zero_extendqisi2
+ 519 001e 0B29     		cmp	r1, #11
+ 520 0020 0BD1     		bne	.L101
+ 521 0022 0525     		movs	r5, #5
+ 522              	.L96:
+ 523 0024 5468     		ldr	r4, [r2, #4]
+ 524 0026 2CB1     		cbz	r4, .L102
+ 525 0028 D168     		ldr	r1, [r2, #12]
+ 526 002a 9942     		cmp	r1, r3
+ 527 002c 08BF     		it	eq
+ 528 002e 9576     		strbeq	r5, [r2, #26]
+ 529 0030 1268     		ldr	r2, [r2]
+ 530 0032 F7E7     		b	.L96
+ 531              	.L102:
+ 532 0034 0122     		movs	r2, #1
+ 533 0036 1A73     		strb	r2, [r3, #12]
+ 534 0038 00E0     		b	.L95
+ 535              	.L101:
+ 536 003a 0124     		movs	r4, #1
+ 537              	.L95:
+ 538 003c FFF7FEFF 		bl	__set_PRIMASK
+ 539 0040 00E0     		b	.L92
+ 540              	.L100:
+ 541 0042 0124     		movs	r4, #1
+ 542              	.L92:
+ 543 0044 2046     		mov	r0, r4
+ 544 0046 38BD     		pop	{r3, r4, r5, pc}
+ 545              	.L104:
+ 546              		.align	2
+ 547              	.L103:
+ 548 0048 00000000 		.word	idle
+ 549 004c 00000000 		.word	ipc
+ 551              		.section	.text.ezos_mutex_clear,"ax",%progbits
+ 552              		.align	1
+ 553              		.global	ezos_mutex_clear
+ 554              		.thumb
+ 555              		.thumb_func
+ 557              	ezos_mutex_clear:
+ 558              		@ args = 0, pretend = 0, frame = 0
+ 559              		@ frame_needed = 0, uses_anonymous_args = 0
+ 560 0000 10B5     		push	{r4, lr}
+ 561 0002 0446     		mov	r4, r0
+ 562 0004 90B1     		cbz	r0, .L111
+ 563 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 564              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 565 000a 72B6     		cpsid i
+ 566              	@ 0 "" 2
+ 567              		.thumb
+ 568 000c 094B     		ldr	r3, .L113
+ 569              	.L108:
+ 570 000e 1B68     		ldr	r3, [r3]
+ 571 0010 5A68     		ldr	r2, [r3, #4]
+ 572 0012 3AB1     		cbz	r2, .L112
+ 573 0014 A242     		cmp	r2, r4
+ 574 0016 FAD1     		bne	.L108
+ 575 0018 1A7A     		ldrb	r2, [r3, #8]	@ zero_extendqisi2
+ 576 001a 0B2A     		cmp	r2, #11
+ 577 001c 02D1     		bne	.L112
+ 578 001e 0024     		movs	r4, #0
+ 579 0020 1C73     		strb	r4, [r3, #12]
+ 580 0022 00E0     		b	.L109
+ 581              	.L112:
+ 582 0024 0124     		movs	r4, #1
+ 583              	.L109:
+ 584 0026 FFF7FEFF 		bl	__set_PRIMASK
+ 585 002a 00E0     		b	.L106
+ 586              	.L111:
+ 587 002c 0124     		movs	r4, #1
+ 588              	.L106:
+ 589 002e 2046     		mov	r0, r4
+ 590 0030 10BD     		pop	{r4, pc}
+ 591              	.L114:
+ 592 0032 00BF     		.align	2
+ 593              	.L113:
+ 594 0034 00000000 		.word	ipc
+ 596              		.section	.text.ezos_event_add,"ax",%progbits
+ 597              		.align	1
+ 598              		.global	ezos_event_add
+ 599              		.thumb
+ 600              		.thumb_func
+ 602              	ezos_event_add:
+ 603              		@ args = 0, pretend = 0, frame = 0
+ 604              		@ frame_needed = 0, uses_anonymous_args = 0
+ 605 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 606 0002 0F46     		mov	r7, r1
+ 607 0004 0446     		mov	r4, r0
+ 608 0006 78B1     		cbz	r0, .L118
+ 609 0008 FFF7FEFF 		bl	__get_PRIMASK
+ 610 000c 0646     		mov	r6, r0
+ 611              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 612 000e 72B6     		cpsid i
+ 613              	@ 0 "" 2
+ 614              		.thumb
+ 615 0010 0C21     		movs	r1, #12
+ 616 0012 2046     		mov	r0, r4
+ 617 0014 FFF7FEFF 		bl	ezos_ipc_add
+ 618 0018 0546     		mov	r5, r0
+ 619 001a 00B9     		cbnz	r0, .L117
+ 620 001c 2773     		strb	r7, [r4, #12]
+ 621              	.L117:
+ 622 001e 3046     		mov	r0, r6
+ 623 0020 FFF7FEFF 		bl	__set_PRIMASK
+ 624 0024 2846     		mov	r0, r5
+ 625 0026 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 626              	.L118:
+ 627 0028 0120     		movs	r0, #1
+ 628 002a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 630              		.section	.text.ezos_event_delete,"ax",%progbits
+ 631              		.align	1
+ 632              		.global	ezos_event_delete
+ 633              		.thumb
+ 634              		.thumb_func
+ 636              	ezos_event_delete:
+ 637              		@ args = 0, pretend = 0, frame = 0
+ 638              		@ frame_needed = 0, uses_anonymous_args = 0
+ 639 0000 38B5     		push	{r3, r4, r5, lr}
+ 640 0002 0446     		mov	r4, r0
+ 641 0004 60B1     		cbz	r0, .L121
+ 642 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 643 000a 0546     		mov	r5, r0
+ 644              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 645 000c 72B6     		cpsid i
+ 646              	@ 0 "" 2
+ 647              		.thumb
+ 648 000e 2046     		mov	r0, r4
+ 649 0010 FFF7FEFF 		bl	ezos_ipc_delete
+ 650 0014 0446     		mov	r4, r0
+ 651 0016 2846     		mov	r0, r5
+ 652 0018 FFF7FEFF 		bl	__set_PRIMASK
+ 653 001c 2046     		mov	r0, r4
+ 654 001e 38BD     		pop	{r3, r4, r5, pc}
+ 655              	.L121:
+ 656 0020 0120     		movs	r0, #1
+ 657 0022 38BD     		pop	{r3, r4, r5, pc}
+ 659              		.section	.text.ezos_event_take,"ax",%progbits
+ 660              		.align	1
+ 661              		.global	ezos_event_take
+ 662              		.thumb
+ 663              		.thumb_func
+ 665              	ezos_event_take:
+ 666              		@ args = 0, pretend = 0, frame = 0
+ 667              		@ frame_needed = 0, uses_anonymous_args = 0
+ 668 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 669 0004 0D46     		mov	r5, r1
+ 670 0006 1746     		mov	r7, r2
+ 671 0008 1E46     		mov	r6, r3
+ 672 000a 8146     		mov	r9, r0
+ 673 000c 20B3     		cbz	r0, .L138
+ 674 000e 264B     		ldr	r3, .L148
+ 675 0010 1A68     		ldr	r2, [r3]
+ 676 0012 9846     		mov	r8, r3
+ 677 0014 02B3     		cbz	r2, .L138
+ 678 0016 FFF7FEFF 		bl	__get_PRIMASK
+ 679 001a 8246     		mov	r10, r0
+ 680              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 681 001c 72B6     		cpsid i
+ 682              	@ 0 "" 2
+ 683              		.thumb
+ 684 001e 234B     		ldr	r3, .L148+4
+ 685 0020 1C68     		ldr	r4, [r3]
+ 686              	.L124:
+ 687 0022 6368     		ldr	r3, [r4, #4]
+ 688 0024 9BB1     		cbz	r3, .L139
+ 689 0026 4B45     		cmp	r3, r9
+ 690 0028 0FD1     		bne	.L125
+ 691 002a 237A     		ldrb	r3, [r4, #8]	@ zero_extendqisi2
+ 692 002c 0C2B     		cmp	r3, #12
+ 693 002e 0ED1     		bne	.L139
+ 694 0030 F907     		lsls	r1, r7, #31
+ 695 0032 03D5     		bpl	.L127
+ 696 0034 237B     		ldrb	r3, [r4, #12]	@ zero_extendqisi2
+ 697 0036 1D42     		tst	r5, r3
+ 698 0038 10D1     		bne	.L128
+ 699 003a 1BE0     		b	.L129
+ 700              	.L127:
+ 701 003c BA07     		lsls	r2, r7, #30
+ 702 003e 19D5     		bpl	.L129
+ 703 0040 237B     		ldrb	r3, [r4, #12]	@ zero_extendqisi2
+ 704 0042 2B40     		ands	r3, r3, r5
+ 705 0044 AB42     		cmp	r3, r5
+ 706 0046 15D1     		bne	.L129
+ 707 0048 08E0     		b	.L128
+ 708              	.L125:
+ 709 004a 2468     		ldr	r4, [r4]
+ 710 004c E9E7     		b	.L124
+ 711              	.L139:
+ 712 004e 0124     		movs	r4, #1
+ 713              	.L126:
+ 714 0050 5046     		mov	r0, r10
+ 715 0052 FFF7FEFF 		bl	__set_PRIMASK
+ 716 0056 24E0     		b	.L143
+ 717              	.L138:
+ 718 0058 0124     		movs	r4, #1
+ 719 005a 22E0     		b	.L143
+ 720              	.L128:
+ 721 005c 7B07     		lsls	r3, r7, #29
+ 722 005e 03D4     		bmi	.L134
+ 723 0060 237B     		ldrb	r3, [r4, #12]	@ zero_extendqisi2
+ 724 0062 23EA0505 		bic	r5, r3, r5
+ 725 0066 2573     		strb	r5, [r4, #12]
+ 726              	.L134:
+ 727 0068 D8F80030 		ldr	r3, [r8]
+ 728 006c 0024     		movs	r4, #0
+ 729 006e DC60     		str	r4, [r3, #12]
+ 730 0070 1C61     		str	r4, [r3, #16]
+ 731 0072 EDE7     		b	.L126
+ 732              	.L129:
+ 733 0074 D8F80020 		ldr	r2, [r8]
+ 734 0078 D368     		ldr	r3, [r2, #12]
+ 735 007a A342     		cmp	r3, r4
+ 736 007c 08D0     		beq	.L147
+ 737 007e 16B9     		cbnz	r6, .L130
+ 738 0080 D660     		str	r6, [r2, #12]
+ 739 0082 1661     		str	r6, [r2, #16]
+ 740 0084 07E0     		b	.L145
+ 741              	.L130:
+ 742 0086 D460     		str	r4, [r2, #12]
+ 743 0088 3046     		mov	r0, r6
+ 744 008a FFF7FEFF 		bl	ezos_delay
+ 745 008e 06E0     		b	.L146
+ 746              	.L147:
+ 747 0090 1369     		ldr	r3, [r2, #16]
+ 748 0092 13B9     		cbnz	r3, .L131
+ 749 0094 D360     		str	r3, [r2, #12]
+ 750              	.L145:
+ 751 0096 0924     		movs	r4, #9
+ 752 0098 DAE7     		b	.L126
+ 753              	.L131:
+ 754 009a 0623     		movs	r3, #6
+ 755 009c 9376     		strb	r3, [r2, #26]
+ 756              	.L146:
+ 757 009e 0824     		movs	r4, #8
+ 758 00a0 D6E7     		b	.L126
+ 759              	.L143:
+ 760 00a2 2046     		mov	r0, r4
+ 761 00a4 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 762              	.L149:
+ 763              		.align	2
+ 764              	.L148:
+ 765 00a8 00000000 		.word	run
+ 766 00ac 00000000 		.word	ipc
+ 768              		.section	.text.ezos_event_release,"ax",%progbits
+ 769              		.align	1
+ 770              		.global	ezos_event_release
+ 771              		.thumb
+ 772              		.thumb_func
+ 774              	ezos_event_release:
+ 775              		@ args = 0, pretend = 0, frame = 0
+ 776              		@ frame_needed = 0, uses_anonymous_args = 0
+ 777 0000 70B5     		push	{r4, r5, r6, lr}
+ 778 0002 0E46     		mov	r6, r1
+ 779 0004 0446     		mov	r4, r0
+ 780 0006 F0B1     		cbz	r0, .L159
+ 781 0008 FFF7FEFF 		bl	__get_PRIMASK
+ 782              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 783 000c 72B6     		cpsid i
+ 784              	@ 0 "" 2
+ 785              		.thumb
+ 786 000e 0F4B     		ldr	r3, .L162
+ 787 0010 1A68     		ldr	r2, [r3]
+ 788 0012 0F4B     		ldr	r3, .L162+4
+ 789              	.L153:
+ 790 0014 1B68     		ldr	r3, [r3]
+ 791 0016 5D68     		ldr	r5, [r3, #4]
+ 792 0018 8DB1     		cbz	r5, .L160
+ 793 001a A542     		cmp	r5, r4
+ 794 001c FAD1     		bne	.L153
+ 795 001e 197A     		ldrb	r1, [r3, #8]	@ zero_extendqisi2
+ 796 0020 0C29     		cmp	r1, #12
+ 797 0022 0CD1     		bne	.L160
+ 798 0024 0521     		movs	r1, #5
+ 799              	.L155:
+ 800 0026 5468     		ldr	r4, [r2, #4]
+ 801 0028 2CB1     		cbz	r4, .L161
+ 802 002a D468     		ldr	r4, [r2, #12]
+ 803 002c 9C42     		cmp	r4, r3
+ 804 002e 08BF     		it	eq
+ 805 0030 9176     		strbeq	r1, [r2, #26]
+ 806 0032 1268     		ldr	r2, [r2]
+ 807 0034 F7E7     		b	.L155
+ 808              	.L161:
+ 809 0036 1A7B     		ldrb	r2, [r3, #12]	@ zero_extendqisi2
+ 810 0038 1643     		orrs	r6, r6, r2
+ 811 003a 1E73     		strb	r6, [r3, #12]
+ 812 003c 00E0     		b	.L154
+ 813              	.L160:
+ 814 003e 0124     		movs	r4, #1
+ 815              	.L154:
+ 816 0040 FFF7FEFF 		bl	__set_PRIMASK
+ 817 0044 00E0     		b	.L151
+ 818              	.L159:
+ 819 0046 0124     		movs	r4, #1
+ 820              	.L151:
+ 821 0048 2046     		mov	r0, r4
+ 822 004a 70BD     		pop	{r4, r5, r6, pc}
+ 823              	.L163:
+ 824              		.align	2
+ 825              	.L162:
+ 826 004c 00000000 		.word	idle
+ 827 0050 00000000 		.word	ipc
+ 829              		.section	.text.ezos_event_reset,"ax",%progbits
+ 830              		.align	1
+ 831              		.global	ezos_event_reset
+ 832              		.thumb
+ 833              		.thumb_func
+ 835              	ezos_event_reset:
+ 836              		@ args = 0, pretend = 0, frame = 0
+ 837              		@ frame_needed = 0, uses_anonymous_args = 0
+ 838 0000 10B5     		push	{r4, lr}
+ 839 0002 0446     		mov	r4, r0
+ 840 0004 90B1     		cbz	r0, .L170
+ 841 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 842              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 843 000a 72B6     		cpsid i
+ 844              	@ 0 "" 2
+ 845              		.thumb
+ 846 000c 094B     		ldr	r3, .L172
+ 847              	.L167:
+ 848 000e 1B68     		ldr	r3, [r3]
+ 849 0010 5A68     		ldr	r2, [r3, #4]
+ 850 0012 3AB1     		cbz	r2, .L171
+ 851 0014 A242     		cmp	r2, r4
+ 852 0016 FAD1     		bne	.L167
+ 853 0018 1A7A     		ldrb	r2, [r3, #8]	@ zero_extendqisi2
+ 854 001a 0C2A     		cmp	r2, #12
+ 855 001c 02D1     		bne	.L171
+ 856 001e 0024     		movs	r4, #0
+ 857 0020 1C73     		strb	r4, [r3, #12]
+ 858 0022 00E0     		b	.L168
+ 859              	.L171:
+ 860 0024 0124     		movs	r4, #1
+ 861              	.L168:
+ 862 0026 FFF7FEFF 		bl	__set_PRIMASK
+ 863 002a 00E0     		b	.L165
+ 864              	.L170:
+ 865 002c 0124     		movs	r4, #1
+ 866              	.L165:
+ 867 002e 2046     		mov	r0, r4
+ 868 0030 10BD     		pop	{r4, pc}
+ 869              	.L173:
+ 870 0032 00BF     		.align	2
+ 871              	.L172:
+ 872 0034 00000000 		.word	ipc
+ 874              		.section	.text.ezos_mb_add,"ax",%progbits
+ 875              		.align	1
+ 876              		.global	ezos_mb_add
+ 877              		.thumb
+ 878              		.thumb_func
+ 880              	ezos_mb_add:
+ 881              		@ args = 0, pretend = 0, frame = 0
+ 882              		@ frame_needed = 0, uses_anonymous_args = 0
+ 883 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 884 0004 0E46     		mov	r6, r1
+ 885 0006 9046     		mov	r8, r2
+ 886 0008 0446     		mov	r4, r0
+ 887 000a A8B1     		cbz	r0, .L177
+ 888 000c FFF7FEFF 		bl	__get_PRIMASK
+ 889 0010 0746     		mov	r7, r0
+ 890              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 891 0012 72B6     		cpsid i
+ 892              	@ 0 "" 2
+ 893              		.thumb
+ 894 0014 0D21     		movs	r1, #13
+ 895 0016 2046     		mov	r0, r4
+ 896 0018 FFF7FEFF 		bl	ezos_ipc_add
+ 897 001c 0546     		mov	r5, r0
+ 898 001e 28B9     		cbnz	r0, .L176
+ 899 0020 E660     		str	r6, [r4, #12]
+ 900 0022 A4F81080 		strh	r8, [r4, #16]	@ movhi
+ 901 0026 6082     		strh	r0, [r4, #18]	@ movhi
+ 902 0028 A082     		strh	r0, [r4, #20]	@ movhi
+ 903 002a E082     		strh	r0, [r4, #22]	@ movhi
+ 904              	.L176:
+ 905 002c 3846     		mov	r0, r7
+ 906 002e FFF7FEFF 		bl	__set_PRIMASK
+ 907 0032 2846     		mov	r0, r5
+ 908 0034 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 909              	.L177:
+ 910 0038 0120     		movs	r0, #1
+ 911 003a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 913              		.section	.text.ezos_mb_delete,"ax",%progbits
+ 914              		.align	1
+ 915              		.global	ezos_mb_delete
+ 916              		.thumb
+ 917              		.thumb_func
+ 919              	ezos_mb_delete:
+ 920              		@ args = 0, pretend = 0, frame = 0
+ 921              		@ frame_needed = 0, uses_anonymous_args = 0
+ 922 0000 38B5     		push	{r3, r4, r5, lr}
+ 923 0002 0446     		mov	r4, r0
+ 924 0004 60B1     		cbz	r0, .L180
+ 925 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 926 000a 0546     		mov	r5, r0
+ 927              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 928 000c 72B6     		cpsid i
+ 929              	@ 0 "" 2
+ 930              		.thumb
+ 931 000e 2046     		mov	r0, r4
+ 932 0010 FFF7FEFF 		bl	ezos_ipc_delete
+ 933 0014 0446     		mov	r4, r0
+ 934 0016 2846     		mov	r0, r5
+ 935 0018 FFF7FEFF 		bl	__set_PRIMASK
+ 936 001c 2046     		mov	r0, r4
+ 937 001e 38BD     		pop	{r3, r4, r5, pc}
+ 938              	.L180:
+ 939 0020 0120     		movs	r0, #1
+ 940 0022 38BD     		pop	{r3, r4, r5, pc}
+ 942              		.section	.text.ezos_mb_send,"ax",%progbits
+ 943              		.align	1
+ 944              		.global	ezos_mb_send
+ 945              		.thumb
+ 946              		.thumb_func
+ 948              	ezos_mb_send:
+ 949              		@ args = 0, pretend = 0, frame = 0
+ 950              		@ frame_needed = 0, uses_anonymous_args = 0
+ 951 0000 70B5     		push	{r4, r5, r6, lr}
+ 952 0002 0E46     		mov	r6, r1
+ 953 0004 0446     		mov	r4, r0
+ 954 0006 0028     		cmp	r0, #0
+ 955 0008 30D0     		beq	.L191
+ 956 000a FFF7FEFF 		bl	__get_PRIMASK
+ 957              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 958 000e 72B6     		cpsid i
+ 959              	@ 0 "" 2
+ 960              		.thumb
+ 961 0010 184B     		ldr	r3, .L195
+ 962 0012 1A68     		ldr	r2, [r3]
+ 963 0014 184B     		ldr	r3, .L195+4
+ 964              	.L184:
+ 965 0016 1B68     		ldr	r3, [r3]
+ 966 0018 5D68     		ldr	r5, [r3, #4]
+ 967 001a 0DB3     		cbz	r5, .L192
+ 968 001c A542     		cmp	r5, r4
+ 969 001e FAD1     		bne	.L184
+ 970 0020 197A     		ldrb	r1, [r3, #8]	@ zero_extendqisi2
+ 971 0022 0D29     		cmp	r1, #13
+ 972 0024 1CD1     		bne	.L192
+ 973 0026 0521     		movs	r1, #5
+ 974              	.L186:
+ 975 0028 5468     		ldr	r4, [r2, #4]
+ 976 002a 2CB1     		cbz	r4, .L194
+ 977 002c D468     		ldr	r4, [r2, #12]
+ 978 002e 9C42     		cmp	r4, r3
+ 979 0030 08BF     		it	eq
+ 980 0032 9176     		strbeq	r1, [r2, #26]
+ 981 0034 1268     		ldr	r2, [r2]
+ 982 0036 F7E7     		b	.L186
+ 983              	.L194:
+ 984 0038 598A     		ldrh	r1, [r3, #18]
+ 985 003a 1A8A     		ldrh	r2, [r3, #16]
+ 986 003c 9142     		cmp	r1, r2
+ 987 003e 11D2     		bcs	.L193
+ 988 0040 998A     		ldrh	r1, [r3, #20]
+ 989 0042 DA68     		ldr	r2, [r3, #12]
+ 990 0044 5654     		strb	r6, [r2, r1]
+ 991 0046 9A8A     		ldrh	r2, [r3, #20]
+ 992 0048 198A     		ldrh	r1, [r3, #16]
+ 993 004a 0132     		adds	r2, r2, #1
+ 994 004c 92B2     		uxth	r2, r2
+ 995 004e 9A82     		strh	r2, [r3, #20]	@ movhi
+ 996 0050 9142     		cmp	r1, r2
+ 997 0052 5A8A     		ldrh	r2, [r3, #18]
+ 998 0054 98BF     		it	ls
+ 999 0056 9C82     		strhls	r4, [r3, #20]	@ movhi
+ 1000 0058 0132     		adds	r2, r2, #1
+ 1001 005a 5A82     		strh	r2, [r3, #18]	@ movhi
+ 1002 005c 0024     		movs	r4, #0
+ 1003 005e 02E0     		b	.L185
+ 1004              	.L192:
+ 1005 0060 0124     		movs	r4, #1
+ 1006 0062 00E0     		b	.L185
+ 1007              	.L193:
+ 1008 0064 0224     		movs	r4, #2
+ 1009              	.L185:
+ 1010 0066 FFF7FEFF 		bl	__set_PRIMASK
+ 1011 006a 00E0     		b	.L182
+ 1012              	.L191:
+ 1013 006c 0124     		movs	r4, #1
+ 1014              	.L182:
+ 1015 006e 2046     		mov	r0, r4
+ 1016 0070 70BD     		pop	{r4, r5, r6, pc}
+ 1017              	.L196:
+ 1018 0072 00BF     		.align	2
+ 1019              	.L195:
+ 1020 0074 00000000 		.word	idle
+ 1021 0078 00000000 		.word	ipc
+ 1023              		.section	.text.ezos_mb_receive,"ax",%progbits
+ 1024              		.align	1
+ 1025              		.global	ezos_mb_receive
+ 1026              		.thumb
+ 1027              		.thumb_func
+ 1029              	ezos_mb_receive:
+ 1030              		@ args = 0, pretend = 0, frame = 0
+ 1031              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1032 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 1033 0004 8846     		mov	r8, r1
+ 1034 0006 1546     		mov	r5, r2
+ 1035 0008 0646     		mov	r6, r0
+ 1036 000a 0028     		cmp	r0, #0
+ 1037 000c 47D0     		beq	.L209
+ 1038 000e 264F     		ldr	r7, .L212
+ 1039 0010 3B68     		ldr	r3, [r7]
+ 1040 0012 002B     		cmp	r3, #0
+ 1041 0014 43D0     		beq	.L209
+ 1042 0016 FFF7FEFF 		bl	__get_PRIMASK
+ 1043 001a 8146     		mov	r9, r0
+ 1044              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 1045 001c 72B6     		cpsid i
+ 1046              	@ 0 "" 2
+ 1047              		.thumb
+ 1048 001e 234B     		ldr	r3, .L212+4
+ 1049 0020 0124     		movs	r4, #1
+ 1050 0022 1B68     		ldr	r3, [r3]
+ 1051 0024 0022     		movs	r2, #0
+ 1052              	.L199:
+ 1053 0026 5968     		ldr	r1, [r3, #4]
+ 1054 0028 0029     		cmp	r1, #0
+ 1055 002a 34D0     		beq	.L201
+ 1056 002c B142     		cmp	r1, r6
+ 1057 002e 30D1     		bne	.L200
+ 1058 0030 197A     		ldrb	r1, [r3, #8]	@ zero_extendqisi2
+ 1059 0032 0D29     		cmp	r1, #13
+ 1060 0034 2FD1     		bne	.L201
+ 1061 0036 598A     		ldrh	r1, [r3, #18]
+ 1062 0038 A9B1     		cbz	r1, .L202
+ 1063 003a D88A     		ldrh	r0, [r3, #22]
+ 1064 003c D968     		ldr	r1, [r3, #12]
+ 1065 003e 095C     		ldrb	r1, [r1, r0]	@ zero_extendqisi2
+ 1066 0040 88F80010 		strb	r1, [r8]
+ 1067 0044 D98A     		ldrh	r1, [r3, #22]
+ 1068 0046 188A     		ldrh	r0, [r3, #16]
+ 1069 0048 0131     		adds	r1, r1, #1
+ 1070 004a 89B2     		uxth	r1, r1
+ 1071 004c D982     		strh	r1, [r3, #22]	@ movhi
+ 1072 004e 8842     		cmp	r0, r1
+ 1073 0050 598A     		ldrh	r1, [r3, #18]
+ 1074 0052 3C68     		ldr	r4, [r7]
+ 1075 0054 01F1FF31 		add	r1, r1, #-1
+ 1076 0058 98BF     		it	ls
+ 1077 005a DA82     		strhls	r2, [r3, #22]	@ movhi
+ 1078 005c 5982     		strh	r1, [r3, #18]	@ movhi
+ 1079 005e E260     		str	r2, [r4, #12]
+ 1080 0060 2261     		str	r2, [r4, #16]
+ 1081 0062 0024     		movs	r4, #0
+ 1082 0064 15E0     		b	.L200
+ 1083              	.L202:
+ 1084 0066 3968     		ldr	r1, [r7]
+ 1085 0068 CA68     		ldr	r2, [r1, #12]
+ 1086 006a 9A42     		cmp	r2, r3
+ 1087 006c 08D0     		beq	.L204
+ 1088 006e 15B9     		cbnz	r5, .L205
+ 1089 0070 CD60     		str	r5, [r1, #12]
+ 1090 0072 0D61     		str	r5, [r1, #16]
+ 1091 0074 07E0     		b	.L210
+ 1092              	.L205:
+ 1093 0076 CB60     		str	r3, [r1, #12]
+ 1094 0078 2846     		mov	r0, r5
+ 1095 007a FFF7FEFF 		bl	ezos_delay
+ 1096 007e 06E0     		b	.L211
+ 1097              	.L204:
+ 1098 0080 0B69     		ldr	r3, [r1, #16]
+ 1099 0082 13B9     		cbnz	r3, .L206
+ 1100 0084 CB60     		str	r3, [r1, #12]
+ 1101              	.L210:
+ 1102 0086 0924     		movs	r4, #9
+ 1103 0088 05E0     		b	.L201
+ 1104              	.L206:
+ 1105 008a 0623     		movs	r3, #6
+ 1106 008c 8B76     		strb	r3, [r1, #26]
+ 1107              	.L211:
+ 1108 008e 0824     		movs	r4, #8
+ 1109 0090 01E0     		b	.L201
+ 1110              	.L200:
+ 1111 0092 1B68     		ldr	r3, [r3]
+ 1112 0094 C7E7     		b	.L199
+ 1113              	.L201:
+ 1114 0096 4846     		mov	r0, r9
+ 1115 0098 FFF7FEFF 		bl	__set_PRIMASK
+ 1116 009c 00E0     		b	.L198
+ 1117              	.L209:
+ 1118 009e 0124     		movs	r4, #1
+ 1119              	.L198:
+ 1120 00a0 2046     		mov	r0, r4
+ 1121 00a2 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1122              	.L213:
+ 1123 00a6 00BF     		.align	2
+ 1124              	.L212:
+ 1125 00a8 00000000 		.word	run
+ 1126 00ac 00000000 		.word	ipc
+ 1128              		.section	.text.ezos_mb_clear,"ax",%progbits
+ 1129              		.align	1
+ 1130              		.global	ezos_mb_clear
+ 1131              		.thumb
+ 1132              		.thumb_func
+ 1134              	ezos_mb_clear:
+ 1135              		@ args = 0, pretend = 0, frame = 0
+ 1136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1137 0000 10B5     		push	{r4, lr}
+ 1138 0002 0446     		mov	r4, r0
+ 1139 0004 A0B1     		cbz	r0, .L220
+ 1140 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 1141              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 1142 000a 72B6     		cpsid i
+ 1143              	@ 0 "" 2
+ 1144              		.thumb
+ 1145 000c 0A4B     		ldr	r3, .L222
+ 1146              	.L217:
+ 1147 000e 1B68     		ldr	r3, [r3]
+ 1148 0010 5A68     		ldr	r2, [r3, #4]
+ 1149 0012 4AB1     		cbz	r2, .L221
+ 1150 0014 A242     		cmp	r2, r4
+ 1151 0016 FAD1     		bne	.L217
+ 1152 0018 1A7A     		ldrb	r2, [r3, #8]	@ zero_extendqisi2
+ 1153 001a 0D2A     		cmp	r2, #13
+ 1154 001c 04D1     		bne	.L221
+ 1155 001e 0024     		movs	r4, #0
+ 1156 0020 5C82     		strh	r4, [r3, #18]	@ movhi
+ 1157 0022 9C82     		strh	r4, [r3, #20]	@ movhi
+ 1158 0024 DC82     		strh	r4, [r3, #22]	@ movhi
+ 1159 0026 00E0     		b	.L218
+ 1160              	.L221:
+ 1161 0028 0124     		movs	r4, #1
+ 1162              	.L218:
+ 1163 002a FFF7FEFF 		bl	__set_PRIMASK
+ 1164 002e 00E0     		b	.L215
+ 1165              	.L220:
+ 1166 0030 0124     		movs	r4, #1
+ 1167              	.L215:
+ 1168 0032 2046     		mov	r0, r4
+ 1169 0034 10BD     		pop	{r4, pc}
+ 1170              	.L223:
+ 1171 0036 00BF     		.align	2
+ 1172              	.L222:
+ 1173 0038 00000000 		.word	ipc
+ 1175              		.section	.text.ezos_mq_add,"ax",%progbits
+ 1176              		.align	1
+ 1177              		.global	ezos_mq_add
+ 1178              		.thumb
+ 1179              		.thumb_func
+ 1181              	ezos_mq_add:
+ 1182              		@ args = 0, pretend = 0, frame = 0
+ 1183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1184 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 1185 0004 0E46     		mov	r6, r1
+ 1186 0006 1746     		mov	r7, r2
+ 1187 0008 9846     		mov	r8, r3
+ 1188 000a 0446     		mov	r4, r0
+ 1189 000c B8B1     		cbz	r0, .L228
+ 1190 000e B1B1     		cbz	r1, .L228
+ 1191 0010 FFF7FEFF 		bl	__get_PRIMASK
+ 1192 0014 8446     		mov	ip, r0
+ 1193              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 1194 0016 72B6     		cpsid i
+ 1195              	@ 0 "" 2
+ 1196              		.thumb
+ 1197 0018 0E21     		movs	r1, #14
+ 1198 001a 2046     		mov	r0, r4
+ 1199 001c FFF7FEFF 		bl	ezos_ipc_add
+ 1200 0020 0546     		mov	r5, r0
+ 1201 0022 30B9     		cbnz	r0, .L226
+ 1202 0024 E760     		str	r7, [r4, #12]
+ 1203 0026 2682     		strh	r6, [r4, #16]	@ movhi
+ 1204 0028 A4F81280 		strh	r8, [r4, #18]	@ movhi
+ 1205 002c A082     		strh	r0, [r4, #20]	@ movhi
+ 1206 002e E082     		strh	r0, [r4, #22]	@ movhi
+ 1207 0030 2083     		strh	r0, [r4, #24]	@ movhi
+ 1208              	.L226:
+ 1209 0032 6046     		mov	r0, ip
+ 1210 0034 FFF7FEFF 		bl	__set_PRIMASK
+ 1211 0038 2846     		mov	r0, r5
+ 1212 003a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 1213              	.L228:
+ 1214 003e 0120     		movs	r0, #1
+ 1215 0040 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 1217              		.section	.text.ezos_mq_delete,"ax",%progbits
+ 1218              		.align	1
+ 1219              		.global	ezos_mq_delete
+ 1220              		.thumb
+ 1221              		.thumb_func
+ 1223              	ezos_mq_delete:
+ 1224              		@ args = 0, pretend = 0, frame = 0
+ 1225              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1226 0000 38B5     		push	{r3, r4, r5, lr}
+ 1227 0002 0446     		mov	r4, r0
+ 1228 0004 60B1     		cbz	r0, .L231
+ 1229 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 1230 000a 0546     		mov	r5, r0
+ 1231              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 1232 000c 72B6     		cpsid i
+ 1233              	@ 0 "" 2
+ 1234              		.thumb
+ 1235 000e 2046     		mov	r0, r4
+ 1236 0010 FFF7FEFF 		bl	ezos_ipc_delete
+ 1237 0014 0446     		mov	r4, r0
+ 1238 0016 2846     		mov	r0, r5
+ 1239 0018 FFF7FEFF 		bl	__set_PRIMASK
+ 1240 001c 2046     		mov	r0, r4
+ 1241 001e 38BD     		pop	{r3, r4, r5, pc}
+ 1242              	.L231:
+ 1243 0020 0120     		movs	r0, #1
+ 1244 0022 38BD     		pop	{r3, r4, r5, pc}
+ 1246              		.section	.text.ezos_mq_send,"ax",%progbits
+ 1247              		.align	1
+ 1248              		.global	ezos_mq_send
+ 1249              		.thumb
+ 1250              		.thumb_func
+ 1252              	ezos_mq_send:
+ 1253              		@ args = 0, pretend = 0, frame = 0
+ 1254              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1255 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 1256 0002 0E46     		mov	r6, r1
+ 1257 0004 0446     		mov	r4, r0
+ 1258 0006 0028     		cmp	r0, #0
+ 1259 0008 3DD0     		beq	.L244
+ 1260 000a FFF7FEFF 		bl	__get_PRIMASK
+ 1261              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 1262 000e 72B6     		cpsid i
+ 1263              	@ 0 "" 2
+ 1264              		.thumb
+ 1265 0010 1E4B     		ldr	r3, .L249
+ 1266 0012 1A68     		ldr	r2, [r3]
+ 1267 0014 1E4B     		ldr	r3, .L249+4
+ 1268              	.L235:
+ 1269 0016 1B68     		ldr	r3, [r3]
+ 1270 0018 5D68     		ldr	r5, [r3, #4]
+ 1271 001a 002D     		cmp	r5, #0
+ 1272 001c 2DD0     		beq	.L245
+ 1273 001e A542     		cmp	r5, r4
+ 1274 0020 F9D1     		bne	.L235
+ 1275 0022 197A     		ldrb	r1, [r3, #8]	@ zero_extendqisi2
+ 1276 0024 0E29     		cmp	r1, #14
+ 1277 0026 28D1     		bne	.L245
+ 1278 0028 0521     		movs	r1, #5
+ 1279              	.L237:
+ 1280 002a 5568     		ldr	r5, [r2, #4]
+ 1281 002c 2DB1     		cbz	r5, .L247
+ 1282 002e D468     		ldr	r4, [r2, #12]
+ 1283 0030 9C42     		cmp	r4, r3
+ 1284 0032 08BF     		it	eq
+ 1285 0034 9176     		strbeq	r1, [r2, #26]
+ 1286 0036 1268     		ldr	r2, [r2]
+ 1287 0038 F7E7     		b	.L237
+ 1288              	.L247:
+ 1289 003a 1C8A     		ldrh	r4, [r3, #16]
+ 1290 003c 998A     		ldrh	r1, [r3, #20]
+ 1291 003e 5A8A     		ldrh	r2, [r3, #18]
+ 1292 0040 2144     		add	r1, r1, r4
+ 1293 0042 9142     		cmp	r1, r2
+ 1294 0044 1BDC     		bgt	.L246
+ 1295 0046 DA68     		ldr	r2, [r3, #12]
+ 1296 0048 DF8A     		ldrh	r7, [r3, #22]
+ 1297 004a 1744     		add	r7, r7, r2
+ 1298 004c 2A46     		mov	r2, r5
+ 1299              	.L240:
+ 1300 004e 91B2     		uxth	r1, r2
+ 1301 0050 8C42     		cmp	r4, r1
+ 1302 0052 03D0     		beq	.L248
+ 1303 0054 B15C     		ldrb	r1, [r6, r2]	@ zero_extendqisi2
+ 1304 0056 B954     		strb	r1, [r7, r2]
+ 1305 0058 0132     		adds	r2, r2, #1
+ 1306 005a F8E7     		b	.L240
+ 1307              	.L248:
+ 1308 005c D98A     		ldrh	r1, [r3, #22]
+ 1309 005e 1A8A     		ldrh	r2, [r3, #16]
+ 1310 0060 5C8A     		ldrh	r4, [r3, #18]
+ 1311 0062 1144     		add	r1, r1, r2
+ 1312 0064 89B2     		uxth	r1, r1
+ 1313 0066 8C42     		cmp	r4, r1
+ 1314 0068 D982     		strh	r1, [r3, #22]	@ movhi
+ 1315 006a 9CBF     		itt	ls
+ 1316 006c 0021     		movls	r1, #0
+ 1317 006e D982     		strhls	r1, [r3, #22]	@ movhi
+ 1318 0070 998A     		ldrh	r1, [r3, #20]
+ 1319 0072 0024     		movs	r4, #0
+ 1320 0074 0A44     		add	r2, r2, r1
+ 1321 0076 9A82     		strh	r2, [r3, #20]	@ movhi
+ 1322 0078 02E0     		b	.L236
+ 1323              	.L245:
+ 1324 007a 0124     		movs	r4, #1
+ 1325 007c 00E0     		b	.L236
+ 1326              	.L246:
+ 1327 007e 0224     		movs	r4, #2
+ 1328              	.L236:
+ 1329 0080 FFF7FEFF 		bl	__set_PRIMASK
+ 1330 0084 00E0     		b	.L233
+ 1331              	.L244:
+ 1332 0086 0124     		movs	r4, #1
+ 1333              	.L233:
+ 1334 0088 2046     		mov	r0, r4
+ 1335 008a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1336              	.L250:
+ 1337              		.align	2
+ 1338              	.L249:
+ 1339 008c 00000000 		.word	idle
+ 1340 0090 00000000 		.word	ipc
+ 1342              		.section	.text.ezos_mq_receive,"ax",%progbits
+ 1343              		.align	1
+ 1344              		.global	ezos_mq_receive
+ 1345              		.thumb
+ 1346              		.thumb_func
+ 1348              	ezos_mq_receive:
+ 1349              		@ args = 0, pretend = 0, frame = 0
+ 1350              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1351 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 1352 0004 8846     		mov	r8, r1
+ 1353 0006 1546     		mov	r5, r2
+ 1354 0008 0646     		mov	r6, r0
+ 1355 000a 0028     		cmp	r0, #0
+ 1356 000c 50D0     		beq	.L265
+ 1357 000e 2A4F     		ldr	r7, .L269
+ 1358 0010 3B68     		ldr	r3, [r7]
+ 1359 0012 002B     		cmp	r3, #0
+ 1360 0014 4CD0     		beq	.L265
+ 1361 0016 FFF7FEFF 		bl	__get_PRIMASK
+ 1362 001a 8146     		mov	r9, r0
+ 1363              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 1364 001c 72B6     		cpsid i
+ 1365              	@ 0 "" 2
+ 1366              		.thumb
+ 1367 001e 274B     		ldr	r3, .L269+4
+ 1368 0020 0124     		movs	r4, #1
+ 1369 0022 1B68     		ldr	r3, [r3]
+ 1370 0024 0022     		movs	r2, #0
+ 1371              	.L253:
+ 1372 0026 5968     		ldr	r1, [r3, #4]
+ 1373 0028 0029     		cmp	r1, #0
+ 1374 002a 3DD0     		beq	.L255
+ 1375 002c B142     		cmp	r1, r6
+ 1376 002e 39D1     		bne	.L254
+ 1377 0030 197A     		ldrb	r1, [r3, #8]	@ zero_extendqisi2
+ 1378 0032 0E29     		cmp	r1, #14
+ 1379 0034 38D1     		bne	.L255
+ 1380 0036 998A     		ldrh	r1, [r3, #20]
+ 1381 0038 F1B1     		cbz	r1, .L256
+ 1382 003a 188B     		ldrh	r0, [r3, #24]
+ 1383 003c D968     		ldr	r1, [r3, #12]
+ 1384 003e B3F810E0 		ldrh	lr, [r3, #16]
+ 1385 0042 0144     		add	r1, r1, r0
+ 1386 0044 0024     		movs	r4, #0
+ 1387              	.L257:
+ 1388 0046 A0B2     		uxth	r0, r4
+ 1389 0048 8645     		cmp	lr, r0
+ 1390 004a 04D0     		beq	.L268
+ 1391 004c 085D     		ldrb	r0, [r1, r4]	@ zero_extendqisi2
+ 1392 004e 08F80400 		strb	r0, [r8, r4]
+ 1393 0052 0134     		adds	r4, r4, #1
+ 1394 0054 F7E7     		b	.L257
+ 1395              	.L268:
+ 1396 0056 188B     		ldrh	r0, [r3, #24]
+ 1397 0058 198A     		ldrh	r1, [r3, #16]
+ 1398 005a 5C8A     		ldrh	r4, [r3, #18]
+ 1399 005c 0844     		add	r0, r0, r1
+ 1400 005e 80B2     		uxth	r0, r0
+ 1401 0060 1883     		strh	r0, [r3, #24]	@ movhi
+ 1402 0062 8442     		cmp	r4, r0
+ 1403 0064 988A     		ldrh	r0, [r3, #20]
+ 1404 0066 98BF     		it	ls
+ 1405 0068 1A83     		strhls	r2, [r3, #24]	@ movhi
+ 1406 006a 411A     		subs	r1, r0, r1
+ 1407 006c 9982     		strh	r1, [r3, #20]	@ movhi
+ 1408 006e 3968     		ldr	r1, [r7]
+ 1409 0070 0024     		movs	r4, #0
+ 1410 0072 CA60     		str	r2, [r1, #12]
+ 1411 0074 0A61     		str	r2, [r1, #16]
+ 1412 0076 15E0     		b	.L254
+ 1413              	.L256:
+ 1414 0078 3968     		ldr	r1, [r7]
+ 1415 007a CA68     		ldr	r2, [r1, #12]
+ 1416 007c 9A42     		cmp	r2, r3
+ 1417 007e 08D0     		beq	.L260
+ 1418 0080 15B9     		cbnz	r5, .L261
+ 1419 0082 CD60     		str	r5, [r1, #12]
+ 1420 0084 0D61     		str	r5, [r1, #16]
+ 1421 0086 07E0     		b	.L266
+ 1422              	.L261:
+ 1423 0088 CB60     		str	r3, [r1, #12]
+ 1424 008a 2846     		mov	r0, r5
+ 1425 008c FFF7FEFF 		bl	ezos_delay
+ 1426 0090 06E0     		b	.L267
+ 1427              	.L260:
+ 1428 0092 0B69     		ldr	r3, [r1, #16]
+ 1429 0094 13B9     		cbnz	r3, .L262
+ 1430 0096 CB60     		str	r3, [r1, #12]
+ 1431              	.L266:
+ 1432 0098 0924     		movs	r4, #9
+ 1433 009a 05E0     		b	.L255
+ 1434              	.L262:
+ 1435 009c 0623     		movs	r3, #6
+ 1436 009e 8B76     		strb	r3, [r1, #26]
+ 1437              	.L267:
+ 1438 00a0 0824     		movs	r4, #8
+ 1439 00a2 01E0     		b	.L255
+ 1440              	.L254:
+ 1441 00a4 1B68     		ldr	r3, [r3]
+ 1442 00a6 BEE7     		b	.L253
+ 1443              	.L255:
+ 1444 00a8 4846     		mov	r0, r9
+ 1445 00aa FFF7FEFF 		bl	__set_PRIMASK
+ 1446 00ae 00E0     		b	.L252
+ 1447              	.L265:
+ 1448 00b0 0124     		movs	r4, #1
+ 1449              	.L252:
+ 1450 00b2 2046     		mov	r0, r4
+ 1451 00b4 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1452              	.L270:
+ 1453              		.align	2
+ 1454              	.L269:
+ 1455 00b8 00000000 		.word	run
+ 1456 00bc 00000000 		.word	ipc
+ 1458              		.section	.text.ezos_mq_clear,"ax",%progbits
+ 1459              		.align	1
+ 1460              		.global	ezos_mq_clear
+ 1461              		.thumb
+ 1462              		.thumb_func
+ 1464              	ezos_mq_clear:
+ 1465              		@ args = 0, pretend = 0, frame = 0
+ 1466              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1467 0000 10B5     		push	{r4, lr}
+ 1468 0002 0446     		mov	r4, r0
+ 1469 0004 A0B1     		cbz	r0, .L277
+ 1470 0006 FFF7FEFF 		bl	__get_PRIMASK
+ 1471              	@ 1205 "D:\Users\draapho\Desktop\stm32_ezos_v231\drivers\libraries\CMSIS\CM3\CoreSupport/core_cm3.h
+ 1472 000a 72B6     		cpsid i
+ 1473              	@ 0 "" 2
+ 1474              		.thumb
+ 1475 000c 0A4B     		ldr	r3, .L279
+ 1476              	.L274:
+ 1477 000e 1B68     		ldr	r3, [r3]
+ 1478 0010 5A68     		ldr	r2, [r3, #4]
+ 1479 0012 4AB1     		cbz	r2, .L278
+ 1480 0014 A242     		cmp	r2, r4
+ 1481 0016 FAD1     		bne	.L274
+ 1482 0018 1A7A     		ldrb	r2, [r3, #8]	@ zero_extendqisi2
+ 1483 001a 0E2A     		cmp	r2, #14
+ 1484 001c 04D1     		bne	.L278
+ 1485 001e 0024     		movs	r4, #0
+ 1486 0020 9C82     		strh	r4, [r3, #20]	@ movhi
+ 1487 0022 DC82     		strh	r4, [r3, #22]	@ movhi
+ 1488 0024 1C83     		strh	r4, [r3, #24]	@ movhi
+ 1489 0026 00E0     		b	.L275
+ 1490              	.L278:
+ 1491 0028 0124     		movs	r4, #1
+ 1492              	.L275:
+ 1493 002a FFF7FEFF 		bl	__set_PRIMASK
+ 1494 002e 00E0     		b	.L272
+ 1495              	.L277:
+ 1496 0030 0124     		movs	r4, #1
+ 1497              	.L272:
+ 1498 0032 2046     		mov	r0, r4
+ 1499 0034 10BD     		pop	{r4, pc}
+ 1500              	.L280:
+ 1501 0036 00BF     		.align	2
+ 1502              	.L279:
+ 1503 0038 00000000 		.word	ipc
+ 1505              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 ezos_ipc.c
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:16     .text.ezos_ipc_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:20     .text.ezos_ipc_add:00000000 ezos_ipc_add
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:48     .text.ezos_ipc_add:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:51     .text.ezos_ipc_delete:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:55     .text.ezos_ipc_delete:00000000 ezos_ipc_delete
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:84     .text.ezos_ipc_delete:00000028 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:87     .text.ezos_sem_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:92     .text.ezos_sem_add:00000000 ezos_sem_add
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:121    .text.ezos_sem_delete:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:126    .text.ezos_sem_delete:00000000 ezos_sem_delete
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:150    .text.ezos_sem_take:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:155    .text.ezos_sem_take:00000000 ezos_sem_take
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:233    .text.ezos_sem_take:0000007c $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:237    .text.ezos_sem_release:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:242    .text.ezos_sem_release:00000000 ezos_sem_release
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:295    .text.ezos_sem_release:00000050 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:299    .text.ezos_sem_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:304    .text.ezos_sem_clear:00000000 ezos_sem_clear
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:341    .text.ezos_sem_clear:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:344    .text.ezos_mutex_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:349    .text.ezos_mutex_add:00000000 ezos_mutex_add
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:378    .text.ezos_mutex_delete:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:383    .text.ezos_mutex_delete:00000000 ezos_mutex_delete
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:407    .text.ezos_mutex_take:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:412    .text.ezos_mutex_take:00000000 ezos_mutex_take
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:489    .text.ezos_mutex_take:00000078 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:493    .text.ezos_mutex_release:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:498    .text.ezos_mutex_release:00000000 ezos_mutex_release
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:548    .text.ezos_mutex_release:00000048 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:552    .text.ezos_mutex_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:557    .text.ezos_mutex_clear:00000000 ezos_mutex_clear
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:594    .text.ezos_mutex_clear:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:597    .text.ezos_event_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:602    .text.ezos_event_add:00000000 ezos_event_add
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:631    .text.ezos_event_delete:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:636    .text.ezos_event_delete:00000000 ezos_event_delete
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:660    .text.ezos_event_take:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:665    .text.ezos_event_take:00000000 ezos_event_take
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:765    .text.ezos_event_take:000000a8 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:769    .text.ezos_event_release:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:774    .text.ezos_event_release:00000000 ezos_event_release
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:826    .text.ezos_event_release:0000004c $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:830    .text.ezos_event_reset:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:835    .text.ezos_event_reset:00000000 ezos_event_reset
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:872    .text.ezos_event_reset:00000034 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:875    .text.ezos_mb_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:880    .text.ezos_mb_add:00000000 ezos_mb_add
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:914    .text.ezos_mb_delete:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:919    .text.ezos_mb_delete:00000000 ezos_mb_delete
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:943    .text.ezos_mb_send:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:948    .text.ezos_mb_send:00000000 ezos_mb_send
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1020   .text.ezos_mb_send:00000074 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1024   .text.ezos_mb_receive:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1029   .text.ezos_mb_receive:00000000 ezos_mb_receive
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1125   .text.ezos_mb_receive:000000a8 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1129   .text.ezos_mb_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1134   .text.ezos_mb_clear:00000000 ezos_mb_clear
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1173   .text.ezos_mb_clear:00000038 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1176   .text.ezos_mq_add:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1181   .text.ezos_mq_add:00000000 ezos_mq_add
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1218   .text.ezos_mq_delete:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1223   .text.ezos_mq_delete:00000000 ezos_mq_delete
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1247   .text.ezos_mq_send:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1252   .text.ezos_mq_send:00000000 ezos_mq_send
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1339   .text.ezos_mq_send:0000008c $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1343   .text.ezos_mq_receive:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1348   .text.ezos_mq_receive:00000000 ezos_mq_receive
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1455   .text.ezos_mq_receive:000000b8 $d
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1459   .text.ezos_mq_clear:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1464   .text.ezos_mq_clear:00000000 ezos_mq_clear
+D:\Users\draapho\AppData\Local\Temp\ccrrgHw7.s:1503   .text.ezos_mq_clear:00000038 $d
+
+UNDEFINED SYMBOLS
+ipc
+__get_PRIMASK
+__set_PRIMASK
+ezos_delay
+run
+idle

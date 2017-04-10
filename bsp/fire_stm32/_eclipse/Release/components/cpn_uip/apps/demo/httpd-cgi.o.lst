@@ -1,0 +1,395 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"httpd-cgi.c"
+  15              		.section	.text.nullfunction,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	nullfunction:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 08B5     		push	{r3, lr}
+  24 0002 B0F85A00 		ldrh	r0, [r0, #90]
+  25 0006 FFF7FEFF 		bl	SOCKET_SUB_BEGIN
+  26 000a FFF7FEFF 		bl	SOCKET_SUB_END
+  27 000e 08BD     		pop	{r3, pc}
+  29              		.section	.text.net_stats,"ax",%progbits
+  30              		.align	1
+  31              		.thumb
+  32              		.thumb_func
+  34              	net_stats:
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37 0000 70B5     		push	{r4, r5, r6, lr}
+  38 0002 0446     		mov	r4, r0
+  39 0004 B0F85A00 		ldrh	r0, [r0, #90]
+  40 0008 FFF7FEFF 		bl	SOCKET_SUB_BEGIN
+  41 000c 124D     		ldr	r5, .L7
+  42 000e 0023     		movs	r3, #0
+  43 0010 124E     		ldr	r6, .L7+4
+  44 0012 84F85C30 		strb	r3, [r4, #92]
+  45              	.L3:
+  46 0016 94F85C30 		ldrb	r3, [r4, #92]	@ zero_extendqisi2
+  47 001a 1B2B     		cmp	r3, #27
+  48 001c 18D8     		bhi	.L6
+  49 001e 36F81330 		ldrh	r3, [r6, r3, lsl #1]
+  50 0022 40F2A651 		movw	r1, #1446
+  51 0026 0E4A     		ldr	r2, .L7+8
+  52 0028 2868     		ldr	r0, [r5]
+  53 002a FFF7FEFF 		bl	snprintf
+  54 002e 0146     		mov	r1, r0
+  55 0030 A4F85800 		strh	r0, [r4, #88]	@ movhi
+  56 0034 89B2     		uxth	r1, r1
+  57 0036 42F21072 		movw	r2, #10000
+  58 003a 2868     		ldr	r0, [r5]
+  59 003c FFF7FEFF 		bl	socket_tx
+  60 0040 FFF7FEFF 		bl	SOCKET_SUB_WAIT_SUB
+  61 0044 94F85C30 		ldrb	r3, [r4, #92]	@ zero_extendqisi2
+  62 0048 0133     		adds	r3, r3, #1
+  63 004a 84F85C30 		strb	r3, [r4, #92]
+  64 004e E2E7     		b	.L3
+  65              	.L6:
+  66 0050 FFF7FEFF 		bl	SOCKET_SUB_END
+  67 0054 70BD     		pop	{r4, r5, r6, pc}
+  68              	.L8:
+  69 0056 00BF     		.align	2
+  70              	.L7:
+  71 0058 00000000 		.word	uip_appdata
+  72 005c 00000000 		.word	uip_stat
+  73 0060 00000000 		.word	.LC0
+  75              		.section	.text.tcp_stats,"ax",%progbits
+  76              		.align	1
+  77              		.thumb
+  78              		.thumb_func
+  80              	tcp_stats:
+  81              		@ args = 0, pretend = 0, frame = 8
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  84 0004 0546     		mov	r5, r0
+  85 0006 8DB0     		sub	sp, sp, #52
+  86 0008 B0F85A00 		ldrh	r0, [r0, #90]
+  87 000c FFF7FEFF 		bl	SOCKET_SUB_BEGIN
+  88 0010 314E     		ldr	r6, .L21
+  89 0012 0023     		movs	r3, #0
+  90 0014 314F     		ldr	r7, .L21+4
+  91 0016 85F85C30 		strb	r3, [r5, #92]
+  92              	.L10:
+  93 001a 95F85C30 		ldrb	r3, [r5, #92]	@ zero_extendqisi2
+  94 001e 092B     		cmp	r3, #9
+  95 0020 55D8     		bhi	.L20
+  96 0022 4FF0380A 		mov	r10, #56
+  97 0026 0AFB03FA 		mul	r10, r10, r3
+  98 002a 0AEB0604 		add	r4, r10, r6
+  99 002e 637E     		ldrb	r3, [r4, #25]	@ zero_extendqisi2
+ 100 0030 1B07     		lsls	r3, r3, #28
+ 101 0032 46D0     		beq	.L11
+ 102 0034 A088     		ldrh	r0, [r4, #4]
+ 103 0036 D7F80090 		ldr	r9, [r7]
+ 104 003a FFF7FEFF 		bl	uip_htons
+ 105 003e 1AF80610 		ldrb	r1, [r10, r6]	@ zero_extendqisi2
+ 106 0042 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 107 0044 8046     		mov	r8, r0
+ 108 0046 E088     		ldrh	r0, [r4, #6]
+ 109 0048 94F802B0 		ldrb	fp, [r4, #2]	@ zero_extendqisi2
+ 110 004c 94F803A0 		ldrb	r10, [r4, #3]	@ zero_extendqisi2
+ 111 0050 0A91     		str	r1, [sp, #40]
+ 112 0052 0B93     		str	r3, [sp, #44]
+ 113 0054 FFF7FEFF 		bl	uip_htons
+ 114 0058 627E     		ldrb	r2, [r4, #25]	@ zero_extendqisi2
+ 115 005a 214B     		ldr	r3, .L21+8
+ 116 005c 02F00F0C 		and	ip, r2, #15
+ 117 0060 53F82C30 		ldr	r3, [r3, ip, lsl #2]
+ 118 0064 0A99     		ldr	r1, [sp, #40]
+ 119 0066 0593     		str	r3, [sp, #20]
+ 120 0068 94F81BE0 		ldrb	lr, [r4, #27]	@ zero_extendqisi2
+ 121 006c A37E     		ldrb	r3, [r4, #26]	@ zero_extendqisi2
+ 122 006e 248A     		ldrh	r4, [r4, #16]
+ 123 0070 0091     		str	r1, [sp]
+ 124 0072 002C     		cmp	r4, #0
+ 125 0074 0CBF     		ite	eq
+ 126 0076 2024     		moveq	r4, #32
+ 127 0078 2A24     		movne	r4, #42
+ 128 007a 0B99     		ldr	r1, [sp, #44]
+ 129 007c 12F0100F 		tst	r2, #16
+ 130 0080 0CBF     		ite	eq
+ 131 0082 2022     		moveq	r2, #32
+ 132 0084 2122     		movne	r2, #33
+ 133 0086 0191     		str	r1, [sp, #4]
+ 134 0088 0490     		str	r0, [sp, #16]
+ 135 008a CDF818E0 		str	lr, [sp, #24]
+ 136 008e 0793     		str	r3, [sp, #28]
+ 137 0090 0992     		str	r2, [sp, #36]
+ 138 0092 40F2A651 		movw	r1, #1446
+ 139 0096 134A     		ldr	r2, .L21+12
+ 140 0098 4346     		mov	r3, r8
+ 141 009a CDF808B0 		str	fp, [sp, #8]
+ 142 009e CDF80CA0 		str	r10, [sp, #12]
+ 143 00a2 0894     		str	r4, [sp, #32]
+ 144 00a4 4846     		mov	r0, r9
+ 145 00a6 FFF7FEFF 		bl	snprintf
+ 146 00aa 0C4B     		ldr	r3, .L21+4
+ 147 00ac 0146     		mov	r1, r0
+ 148 00ae A5F85800 		strh	r0, [r5, #88]	@ movhi
+ 149 00b2 89B2     		uxth	r1, r1
+ 150 00b4 1868     		ldr	r0, [r3]
+ 151 00b6 42F21072 		movw	r2, #10000
+ 152 00ba FFF7FEFF 		bl	socket_tx
+ 153 00be FFF7FEFF 		bl	SOCKET_SUB_WAIT_SUB
+ 154              	.L11:
+ 155 00c2 95F85C30 		ldrb	r3, [r5, #92]	@ zero_extendqisi2
+ 156 00c6 0133     		adds	r3, r3, #1
+ 157 00c8 85F85C30 		strb	r3, [r5, #92]
+ 158 00cc A5E7     		b	.L10
+ 159              	.L20:
+ 160 00ce FFF7FEFF 		bl	SOCKET_SUB_END
+ 161 00d2 0DB0     		add	sp, sp, #52
+ 162              		@ sp needed
+ 163 00d4 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 164              	.L22:
+ 165              		.align	2
+ 166              	.L21:
+ 167 00d8 00000000 		.word	uip_conns
+ 168 00dc 00000000 		.word	uip_appdata
+ 169 00e0 00000000 		.word	.LANCHOR0
+ 170 00e4 05000000 		.word	.LC1
+ 172              		.section	.text.file_stats,"ax",%progbits
+ 173              		.align	1
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	file_stats:
+ 178              		@ args = 0, pretend = 0, frame = 0
+ 179              		@ frame_needed = 0, uses_anonymous_args = 0
+ 180 0000 70B5     		push	{r4, r5, r6, lr}
+ 181 0002 0446     		mov	r4, r0
+ 182 0004 B0F85A00 		ldrh	r0, [r0, #90]
+ 183 0008 FFF7FEFF 		bl	SOCKET_SUB_BEGIN
+ 184 000c 206D     		ldr	r0, [r4, #80]
+ 185 000e 2021     		movs	r1, #32
+ 186 0010 FFF7FEFF 		bl	strchr
+ 187 0014 0C4D     		ldr	r5, .L24
+ 188 0016 0130     		adds	r0, r0, #1
+ 189 0018 2E68     		ldr	r6, [r5]
+ 190 001a FFF7FEFF 		bl	httpd_fs_count
+ 191 001e 40F2A651 		movw	r1, #1446
+ 192 0022 0346     		mov	r3, r0
+ 193 0024 094A     		ldr	r2, .L24+4
+ 194 0026 3046     		mov	r0, r6
+ 195 0028 FFF7FEFF 		bl	snprintf
+ 196 002c 0146     		mov	r1, r0
+ 197 002e 89B2     		uxth	r1, r1
+ 198 0030 42F21072 		movw	r2, #10000
+ 199 0034 A4F85800 		strh	r0, [r4, #88]	@ movhi
+ 200 0038 2868     		ldr	r0, [r5]
+ 201 003a FFF7FEFF 		bl	socket_tx
+ 202 003e FFF7FEFF 		bl	SOCKET_SUB_WAIT_SUB
+ 203 0042 FFF7FEFF 		bl	SOCKET_SUB_END
+ 204 0046 70BD     		pop	{r4, r5, r6, pc}
+ 205              	.L25:
+ 206              		.align	2
+ 207              	.L24:
+ 208 0048 00000000 		.word	uip_appdata
+ 209 004c 62000000 		.word	.LC2
+ 211              		.section	.text.httpd_cgi,"ax",%progbits
+ 212              		.align	1
+ 213              		.global	httpd_cgi
+ 214              		.thumb
+ 215              		.thumb_func
+ 217              	httpd_cgi:
+ 218              		@ args = 0, pretend = 0, frame = 0
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+ 220 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 221 0002 0A4D     		ldr	r5, .L32
+ 222 0004 0746     		mov	r7, r0
+ 223              	.L27:
+ 224 0006 55F8044F 		ldr	r4, [r5, #4]!
+ 225 000a 64B1     		cbz	r4, .L31
+ 226 000c 2668     		ldr	r6, [r4]
+ 227 000e 3046     		mov	r0, r6
+ 228 0010 FFF7FEFF 		bl	strlen
+ 229 0014 3946     		mov	r1, r7
+ 230 0016 0246     		mov	r2, r0
+ 231 0018 3046     		mov	r0, r6
+ 232 001a FFF7FEFF 		bl	strncmp
+ 233 001e 0028     		cmp	r0, #0
+ 234 0020 F1D1     		bne	.L27
+ 235 0022 6068     		ldr	r0, [r4, #4]
+ 236 0024 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 237              	.L31:
+ 238 0026 0248     		ldr	r0, .L32+4
+ 239 0028 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 240              	.L33:
+ 241 002a 00BF     		.align	2
+ 242              	.L32:
+ 243 002c FCFFFFFF 		.word	.LANCHOR1-4
+ 244 0030 00000000 		.word	nullfunction
+ 246              		.section	.rodata.net,"a",%progbits
+ 247              		.align	2
+ 250              	net:
+ 251 0000 66000000 		.word	.LC3
+ 252 0004 00000000 		.word	net_stats
+ 253              		.section	.data.calls,"aw",%progbits
+ 254              		.align	2
+ 255              		.set	.LANCHOR1,. + 0
+ 258              	calls:
+ 259 0000 00000000 		.word	file
+ 260 0004 00000000 		.word	tcp
+ 261 0008 00000000 		.word	net
+ 262 000c 00000000 		.word	0
+ 263              		.section	.rodata.established,"a",%progbits
+ 266              	established:
+ 267 0000 45535441 		.ascii	"ESTABLISHED\000"
+ 267      424C4953 
+ 267      48454400 
+ 268              		.section	.rodata.fin_wait_1,"a",%progbits
+ 271              	fin_wait_1:
+ 272 0000 46494E2D 		.ascii	"FIN-WAIT-1\000"
+ 272      57414954 
+ 272      2D3100
+ 273              		.section	.rodata.fin_wait_2,"a",%progbits
+ 276              	fin_wait_2:
+ 277 0000 46494E2D 		.ascii	"FIN-WAIT-2\000"
+ 277      57414954 
+ 277      2D3200
+ 278              		.section	.rodata.time_wait,"a",%progbits
+ 281              	time_wait:
+ 282 0000 54494D45 		.ascii	"TIME-WAIT,\000"
+ 282      2D574149 
+ 282      542C00
+ 283              		.section	.rodata.tcp,"a",%progbits
+ 284              		.align	2
+ 287              	tcp:
+ 288 0000 70000000 		.word	.LC4
+ 289 0004 00000000 		.word	tcp_stats
+ 290              		.section	.rodata.file,"a",%progbits
+ 291              		.align	2
+ 294              	file:
+ 295 0000 80000000 		.word	.LC5
+ 296 0004 00000000 		.word	file_stats
+ 297              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 298              	.LC0:
+ 299 0000 2535750A 		.ascii	"%5u\012\000"
+ 299      00
+ 300              	.LC1:
+ 301 0005 3C74723E 		.ascii	"<tr><td>%d</td><td>%u.%u.%u.%u:%u</td><td>%s</td><t"
+ 301      3C74643E 
+ 301      25643C2F 
+ 301      74643E3C 
+ 301      74643E25 
+ 302 0038 643E2575 		.ascii	"d>%u</td><td>%u</td><td>%c %c</td></tr>\015\012\000"
+ 302      3C2F7464 
+ 302      3E3C7464 
+ 302      3E25753C 
+ 302      2F74643E 
+ 303              	.LC2:
+ 304 0062 25357500 		.ascii	"%5u\000"
+ 305              	.LC3:
+ 306 0066 6E65742D 		.ascii	"net-stats\000"
+ 306      73746174 
+ 306      7300
+ 307              	.LC4:
+ 308 0070 7463702D 		.ascii	"tcp-connections\000"
+ 308      636F6E6E 
+ 308      65637469 
+ 308      6F6E7300 
+ 309              	.LC5:
+ 310 0080 66696C65 		.ascii	"file-stats\000"
+ 310      2D737461 
+ 310      747300
+ 311              		.section	.rodata.closed,"a",%progbits
+ 314              	closed:
+ 315 0000 434C4F53 		.ascii	"CLOSED\000"
+ 315      454400
+ 316              		.section	.rodata.syn_sent,"a",%progbits
+ 319              	syn_sent:
+ 320 0000 53594E2D 		.ascii	"SYN-SENT\000"
+ 320      53454E54 
+ 320      00
+ 321              		.section	.rodata.last_ack,"a",%progbits
+ 324              	last_ack:
+ 325 0000 4C415354 		.ascii	"LAST-ACK\000"
+ 325      2D41434B 
+ 325      00
+ 326              		.section	.rodata.syn_rcvd,"a",%progbits
+ 329              	syn_rcvd:
+ 330 0000 53594E2D 		.ascii	"SYN-RCVD\000"
+ 330      52435644 
+ 330      00
+ 331              		.section	.rodata.closing,"a",%progbits
+ 334              	closing:
+ 335 0000 434C4F53 		.ascii	"CLOSING\000"
+ 335      494E4700 
+ 336              		.section	.rodata.states,"a",%progbits
+ 337              		.align	2
+ 338              		.set	.LANCHOR0,. + 0
+ 341              	states:
+ 342 0000 00000000 		.word	closed
+ 343 0004 00000000 		.word	syn_rcvd
+ 344 0008 00000000 		.word	syn_sent
+ 345 000c 00000000 		.word	established
+ 346 0010 00000000 		.word	fin_wait_1
+ 347 0014 00000000 		.word	fin_wait_2
+ 348 0018 00000000 		.word	closing
+ 349 001c 00000000 		.word	time_wait
+ 350 0020 00000000 		.word	last_ack
+ 351              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 httpd-cgi.c
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:16     .text.nullfunction:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:20     .text.nullfunction:00000000 nullfunction
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:30     .text.net_stats:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:34     .text.net_stats:00000000 net_stats
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:71     .text.net_stats:00000058 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:76     .text.tcp_stats:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:80     .text.tcp_stats:00000000 tcp_stats
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:167    .text.tcp_stats:000000d8 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:173    .text.file_stats:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:177    .text.file_stats:00000000 file_stats
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:208    .text.file_stats:00000048 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:212    .text.httpd_cgi:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:217    .text.httpd_cgi:00000000 httpd_cgi
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:243    .text.httpd_cgi:0000002c $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:247    .rodata.net:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:250    .rodata.net:00000000 net
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:254    .data.calls:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:258    .data.calls:00000000 calls
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:294    .rodata.file:00000000 file
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:287    .rodata.tcp:00000000 tcp
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:266    .rodata.established:00000000 established
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:271    .rodata.fin_wait_1:00000000 fin_wait_1
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:276    .rodata.fin_wait_2:00000000 fin_wait_2
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:281    .rodata.time_wait:00000000 time_wait
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:284    .rodata.tcp:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:291    .rodata.file:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:314    .rodata.closed:00000000 closed
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:319    .rodata.syn_sent:00000000 syn_sent
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:324    .rodata.last_ack:00000000 last_ack
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:329    .rodata.syn_rcvd:00000000 syn_rcvd
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:334    .rodata.closing:00000000 closing
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:337    .rodata.states:00000000 $d
+D:\Users\draapho\AppData\Local\Temp\ccvcbJcA.s:341    .rodata.states:00000000 states
+
+UNDEFINED SYMBOLS
+SOCKET_SUB_BEGIN
+SOCKET_SUB_END
+snprintf
+socket_tx
+SOCKET_SUB_WAIT_SUB
+uip_appdata
+uip_stat
+uip_htons
+uip_conns
+strchr
+httpd_fs_count
+strlen
+strncmp

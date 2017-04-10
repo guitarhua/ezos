@@ -1,0 +1,191 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"app_spiflash.c"
+  15              		.section	.text.task_spiflash_test,"ax",%progbits
+  16              		.align	1
+  17              		.thumb
+  18              		.thumb_func
+  20              	task_spiflash_test:
+  21              		@ args = 0, pretend = 0, frame = 0
+  22              		@ frame_needed = 0, uses_anonymous_args = 0
+  23 0000 70B5     		push	{r4, r5, r6, lr}
+  24 0002 4FF48060 		mov	r0, #1024
+  25 0006 FFF7FEFF 		bl	malloc
+  26 000a 0446     		mov	r4, r0
+  27 000c 0028     		cmp	r0, #0
+  28 000e 58D0     		beq	.L2
+  29 0010 0020     		movs	r0, #0
+  30 0012 2E49     		ldr	r1, .L23
+  31 0014 FFF7FEFF 		bl	uart_printf
+  32 0018 0023     		movs	r3, #0
+  33              	.L4:
+  34 001a E354     		strb	r3, [r4, r3]
+  35 001c 0133     		adds	r3, r3, #1
+  36 001e B3F5806F 		cmp	r3, #1024
+  37 0022 FAD1     		bne	.L4
+  38 0024 FFF7FEFF 		bl	delay_tick_get
+  39 0028 0025     		movs	r5, #0
+  40 002a 0646     		mov	r6, r0
+  41              	.L6:
+  42 002c 2946     		mov	r1, r5
+  43 002e 2046     		mov	r0, r4
+  44 0030 4FF48062 		mov	r2, #1024
+  45 0034 05F58065 		add	r5, r5, #1024
+  46 0038 FFF7FEFF 		bl	spiflash_write_buf
+  47 003c B5F5C83F 		cmp	r5, #102400
+  48 0040 F4D1     		bne	.L6
+  49 0042 FFF7FEFF 		bl	spiflash_write_buf2flash
+  50 0046 FFF7FEFF 		bl	delay_tick_get
+  51 004a 2149     		ldr	r1, .L23+4
+  52 004c 821B     		subs	r2, r0, r6
+  53 004e 0020     		movs	r0, #0
+  54 0050 FFF7FEFF 		bl	uart_printf
+  55 0054 FFF7FEFF 		bl	delay_tick_get
+  56 0058 0646     		mov	r6, r0
+  57 005a 0020     		movs	r0, #0
+  58 005c FFF7FEFF 		bl	spiflash_read_start
+  59 0060 6425     		movs	r5, #100
+  60              	.L8:
+  61 0062 2046     		mov	r0, r4
+  62 0064 4FF48061 		mov	r1, #1024
+  63 0068 FFF7FEFF 		bl	spiflash_read_bytes
+  64 006c 013D     		subs	r5, r5, #1
+  65 006e F8D1     		bne	.L8
+  66 0070 FFF7FEFF 		bl	spiflash_read_end
+  67 0074 FFF7FEFF 		bl	delay_tick_get
+  68 0078 1649     		ldr	r1, .L23+8
+  69 007a 821B     		subs	r2, r0, r6
+  70 007c 2846     		mov	r0, r5
+  71 007e FFF7FEFF 		bl	uart_printf
+  72 0082 2E46     		mov	r6, r5
+  73              	.L9:
+  74 0084 0022     		movs	r2, #0
+  75              	.L15:
+  76 0086 A654     		strb	r6, [r4, r2]
+  77 0088 0132     		adds	r2, r2, #1
+  78 008a B2F5806F 		cmp	r2, #1024
+  79 008e FAD1     		bne	.L15
+  80 0090 2046     		mov	r0, r4
+  81 0092 2946     		mov	r1, r5
+  82 0094 FFF7FEFF 		bl	spiflash_read
+  83 0098 0023     		movs	r3, #0
+  84              	.L13:
+  85 009a E15C     		ldrb	r1, [r4, r3]	@ zero_extendqisi2
+  86 009c DAB2     		uxtb	r2, r3
+  87 009e 9142     		cmp	r1, r2
+  88 00a0 0BD1     		bne	.L11
+  89 00a2 0133     		adds	r3, r3, #1
+  90 00a4 B3F5806F 		cmp	r3, #1024
+  91 00a8 F7D1     		bne	.L13
+  92 00aa 05F58065 		add	r5, r5, #1024
+  93 00ae B5F5C83F 		cmp	r5, #102400
+  94 00b2 E7D1     		bne	.L9
+  95 00b4 0020     		movs	r0, #0
+  96 00b6 0849     		ldr	r1, .L23+12
+  97 00b8 01E0     		b	.L21
+  98              	.L11:
+  99 00ba 0849     		ldr	r1, .L23+16
+ 100 00bc 0020     		movs	r0, #0
+ 101              	.L21:
+ 102 00be FFF7FEFF 		bl	uart_printf
+ 103              	.L2:
+ 104 00c2 2046     		mov	r0, r4
+ 105 00c4 BDE87040 		pop	{r4, r5, r6, lr}
+ 106 00c8 FFF7FEBF 		b	free
+ 107              	.L24:
+ 108              		.align	2
+ 109              	.L23:
+ 110 00cc 00000000 		.word	.LC0
+ 111 00d0 20000000 		.word	.LC1
+ 112 00d4 47000000 		.word	.LC2
+ 113 00d8 84000000 		.word	.LC4
+ 114 00dc 6D000000 		.word	.LC3
+ 116              		.section	.text.spiflash_start,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	spiflash_start
+ 119              		.thumb
+ 120              		.thumb_func
+ 122              	spiflash_start:
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125 0000 07B5     		push	{r0, r1, r2, lr}
+ 126 0002 FFF7FEFF 		bl	spiflash_init
+ 127 0006 0548     		ldr	r0, .L26
+ 128 0008 0022     		movs	r2, #0
+ 129 000a 0423     		movs	r3, #4
+ 130 000c 0093     		str	r3, [sp]
+ 131 000e 0146     		mov	r1, r0
+ 132 0010 1346     		mov	r3, r2
+ 133 0012 FFF7FEFF 		bl	ezos_add
+ 134 0016 03B0     		add	sp, sp, #12
+ 135              		@ sp needed
+ 136 0018 5DF804FB 		ldr	pc, [sp], #4
+ 137              	.L27:
+ 138              		.align	2
+ 139              	.L26:
+ 140 001c 00000000 		.word	task_spiflash_test
+ 142              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 143              	.LC0:
+ 144 0000 0D0A0D0A 		.ascii	"\015\012\015\012===== spiflash test =====\015\012\000"
+ 144      3D3D3D3D 
+ 144      3D207370 
+ 144      69666C61 
+ 144      73682074 
+ 145              	.LC1:
+ 146 0020 73706966 		.ascii	"spiflash write 100K bytes used %u ms\015\012\000"
+ 146      6C617368 
+ 146      20777269 
+ 146      74652031 
+ 146      30304B20 
+ 147              	.LC2:
+ 148 0047 73706966 		.ascii	"spiflash read 100K bytes used %u ms\015\012\000"
+ 148      6C617368 
+ 148      20726561 
+ 148      64203130 
+ 148      304B2062 
+ 149              	.LC3:
+ 150 006d 73706966 		.ascii	"spiflash cmp error\015\012\015\012\000"
+ 150      6C617368 
+ 150      20636D70 
+ 150      20657272 
+ 150      6F720D0A 
+ 151              	.LC4:
+ 152 0084 73706966 		.ascii	"spiflash cmp ok\015\012\015\012\000"
+ 152      6C617368 
+ 152      20636D70 
+ 152      206F6B0D 
+ 152      0A0D0A00 
+ 153              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_spiflash.c
+D:\Users\draapho\AppData\Local\Temp\cc34Sv3U.s:16     .text.task_spiflash_test:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc34Sv3U.s:20     .text.task_spiflash_test:00000000 task_spiflash_test
+D:\Users\draapho\AppData\Local\Temp\cc34Sv3U.s:110    .text.task_spiflash_test:000000cc $d
+D:\Users\draapho\AppData\Local\Temp\cc34Sv3U.s:117    .text.spiflash_start:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\cc34Sv3U.s:122    .text.spiflash_start:00000000 spiflash_start
+D:\Users\draapho\AppData\Local\Temp\cc34Sv3U.s:140    .text.spiflash_start:0000001c $d
+
+UNDEFINED SYMBOLS
+malloc
+uart_printf
+delay_tick_get
+spiflash_write_buf
+spiflash_write_buf2flash
+spiflash_read_start
+spiflash_read_bytes
+spiflash_read_end
+spiflash_read
+free
+spiflash_init
+ezos_add

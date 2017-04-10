@@ -1,0 +1,190 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_iwdg.c"
+  15              		.section	.text.IWDG_WriteAccessCmd,"ax",%progbits
+  16              		.align	1
+  17              		.global	IWDG_WriteAccessCmd
+  18              		.thumb
+  19              		.thumb_func
+  21              	IWDG_WriteAccessCmd:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 45F25553 		movw	r3, #21845
+  25 0004 9842     		cmp	r0, r3
+  26 0006 10B5     		push	{r4, lr}
+  27 0008 0446     		mov	r4, r0
+  28 000a 04D0     		beq	.L2
+  29 000c 18B1     		cbz	r0, .L2
+  30 000e 0348     		ldr	r0, .L7
+  31 0010 5F21     		movs	r1, #95
+  32 0012 FFF7FEFF 		bl	assert_err
+  33              	.L2:
+  34 0016 024B     		ldr	r3, .L7+4
+  35 0018 1C60     		str	r4, [r3]
+  36 001a 10BD     		pop	{r4, pc}
+  37              	.L8:
+  38              		.align	2
+  39              	.L7:
+  40 001c 00000000 		.word	.LC0
+  41 0020 00300040 		.word	1073754112
+  43              		.section	.text.IWDG_SetPrescaler,"ax",%progbits
+  44              		.align	1
+  45              		.global	IWDG_SetPrescaler
+  46              		.thumb
+  47              		.thumb_func
+  49              	IWDG_SetPrescaler:
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52 0000 0628     		cmp	r0, #6
+  53 0002 10B5     		push	{r4, lr}
+  54 0004 0446     		mov	r4, r0
+  55 0006 03D9     		bls	.L10
+  56 0008 0348     		ldr	r0, .L11
+  57 000a 7321     		movs	r1, #115
+  58 000c FFF7FEFF 		bl	assert_err
+  59              	.L10:
+  60 0010 024B     		ldr	r3, .L11+4
+  61 0012 5C60     		str	r4, [r3, #4]
+  62 0014 10BD     		pop	{r4, pc}
+  63              	.L12:
+  64 0016 00BF     		.align	2
+  65              	.L11:
+  66 0018 00000000 		.word	.LC0
+  67 001c 00300040 		.word	1073754112
+  69              		.section	.text.IWDG_SetReload,"ax",%progbits
+  70              		.align	1
+  71              		.global	IWDG_SetReload
+  72              		.thumb
+  73              		.thumb_func
+  75              	IWDG_SetReload:
+  76              		@ args = 0, pretend = 0, frame = 0
+  77              		@ frame_needed = 0, uses_anonymous_args = 0
+  78 0000 B0F5805F 		cmp	r0, #4096
+  79 0004 10B5     		push	{r4, lr}
+  80 0006 0446     		mov	r4, r0
+  81 0008 03D3     		bcc	.L14
+  82 000a 0348     		ldr	r0, .L15
+  83 000c 8021     		movs	r1, #128
+  84 000e FFF7FEFF 		bl	assert_err
+  85              	.L14:
+  86 0012 024B     		ldr	r3, .L15+4
+  87 0014 9C60     		str	r4, [r3, #8]
+  88 0016 10BD     		pop	{r4, pc}
+  89              	.L16:
+  90              		.align	2
+  91              	.L15:
+  92 0018 00000000 		.word	.LC0
+  93 001c 00300040 		.word	1073754112
+  95              		.section	.text.IWDG_ReloadCounter,"ax",%progbits
+  96              		.align	1
+  97              		.global	IWDG_ReloadCounter
+  98              		.thumb
+  99              		.thumb_func
+ 101              	IWDG_ReloadCounter:
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104              		@ link register save eliminated.
+ 105 0000 024B     		ldr	r3, .L18
+ 106 0002 4AF6AA22 		movw	r2, #43690
+ 107 0006 1A60     		str	r2, [r3]
+ 108 0008 7047     		bx	lr
+ 109              	.L19:
+ 110 000a 00BF     		.align	2
+ 111              	.L18:
+ 112 000c 00300040 		.word	1073754112
+ 114              		.section	.text.IWDG_Enable,"ax",%progbits
+ 115              		.align	1
+ 116              		.global	IWDG_Enable
+ 117              		.thumb
+ 118              		.thumb_func
+ 120              	IWDG_Enable:
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              		@ link register save eliminated.
+ 124 0000 024B     		ldr	r3, .L21
+ 125 0002 4CF6CC42 		movw	r2, #52428
+ 126 0006 1A60     		str	r2, [r3]
+ 127 0008 7047     		bx	lr
+ 128              	.L22:
+ 129 000a 00BF     		.align	2
+ 130              	.L21:
+ 131 000c 00300040 		.word	1073754112
+ 133              		.section	.text.IWDG_GetFlagStatus,"ax",%progbits
+ 134              		.align	1
+ 135              		.global	IWDG_GetFlagStatus
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	IWDG_GetFlagStatus:
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142 0000 431E     		subs	r3, r0, #1
+ 143 0002 9BB2     		uxth	r3, r3
+ 144 0004 012B     		cmp	r3, #1
+ 145 0006 10B5     		push	{r4, lr}
+ 146 0008 0446     		mov	r4, r0
+ 147 000a 03D9     		bls	.L24
+ 148 000c 0548     		ldr	r0, .L25
+ 149 000e A521     		movs	r1, #165
+ 150 0010 FFF7FEFF 		bl	assert_err
+ 151              	.L24:
+ 152 0014 044B     		ldr	r3, .L25+4
+ 153 0016 DB68     		ldr	r3, [r3, #12]
+ 154 0018 1C42     		tst	r4, r3
+ 155 001a 0CBF     		ite	eq
+ 156 001c 0020     		moveq	r0, #0
+ 157 001e 0120     		movne	r0, #1
+ 158 0020 10BD     		pop	{r4, pc}
+ 159              	.L26:
+ 160 0022 00BF     		.align	2
+ 161              	.L25:
+ 162 0024 00000000 		.word	.LC0
+ 163 0028 00300040 		.word	1073754112
+ 165              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 166              	.LC0:
+ 167 0000 443A2F55 		.ascii	"D:/Users/draapho/Desktop/stm32_ezos_v231/drivers/li"
+ 167      73657273 
+ 167      2F647261 
+ 167      6170686F 
+ 167      2F446573 
+ 168 0033 62726172 		.ascii	"braries/STM32F10x_StdPeriph_Driver/src/stm32f10x_iw"
+ 168      6965732F 
+ 168      53544D33 
+ 168      32463130 
+ 168      785F5374 
+ 169 0066 64672E63 		.ascii	"dg.c\000"
+ 169      00
+ 170              		.ident	"GCC: (Sourcery CodeBench Lite 2013.11-24) 4.8.1"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_iwdg.c
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:16     .text.IWDG_WriteAccessCmd:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:21     .text.IWDG_WriteAccessCmd:00000000 IWDG_WriteAccessCmd
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:40     .text.IWDG_WriteAccessCmd:0000001c $d
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:44     .text.IWDG_SetPrescaler:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:49     .text.IWDG_SetPrescaler:00000000 IWDG_SetPrescaler
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:66     .text.IWDG_SetPrescaler:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:70     .text.IWDG_SetReload:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:75     .text.IWDG_SetReload:00000000 IWDG_SetReload
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:92     .text.IWDG_SetReload:00000018 $d
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:96     .text.IWDG_ReloadCounter:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:101    .text.IWDG_ReloadCounter:00000000 IWDG_ReloadCounter
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:112    .text.IWDG_ReloadCounter:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:115    .text.IWDG_Enable:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:120    .text.IWDG_Enable:00000000 IWDG_Enable
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:131    .text.IWDG_Enable:0000000c $d
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:134    .text.IWDG_GetFlagStatus:00000000 $t
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:139    .text.IWDG_GetFlagStatus:00000000 IWDG_GetFlagStatus
+D:\Users\draapho\AppData\Local\Temp\ccqJWB4A.s:162    .text.IWDG_GetFlagStatus:00000024 $d
+
+UNDEFINED SYMBOLS
+assert_err
